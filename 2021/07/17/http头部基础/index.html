@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>http头部基础 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="http头部抓包后每一项解析 Accept：告诉 WEB 服务器自己接受什么介质类型，*&#x2F;* 表示任何类型，type&#x2F;* 表示该类型下的所有子类型，type&#x2F;sub-type。 Accept-Charset： 浏览器申明自己接收的字符集Accept-Encoding： 浏览器申明自己接收的编码方法，通常指定压缩方法，是否支持压缩， 支持什么压缩方法（gzip，deflate）Accept-Lang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="http头部基础">
+<meta property="og:url" content="http://example.com/2021/07/17/http%E5%A4%B4%E9%83%A8%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="http头部抓包后每一项解析 Accept：告诉 WEB 服务器自己接受什么介质类型，*&#x2F;* 表示任何类型，type&#x2F;* 表示该类型下的所有子类型，type&#x2F;sub-type。 Accept-Charset： 浏览器申明自己接收的字符集Accept-Encoding： 浏览器申明自己接收的编码方法，通常指定压缩方法，是否支持压缩， 支持什么压缩方法（gzip，deflate）Accept-Lang">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/sql1.jpg">
+<meta property="article:published_time" content="2021-07-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-16T07:40:17.727Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="http">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/sql1.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 14px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-http头部基础" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/http%E5%A4%B4%E9%83%A8%E5%9F%BA%E7%A1%80/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      http头部基础
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/http/" rel="tag">http</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="http头部"><a href="#http头部" class="headerlink" title="http头部"></a>http头部</h1><h2 id="抓包后每一项解析"><a href="#抓包后每一项解析" class="headerlink" title="抓包后每一项解析"></a>抓包后每一项解析</h2><ol>
+<li>Accept：告诉 WEB 服务器自己接受什么介质类型，*/* 表示任何类型，type/* 表示该类型下的所有子类型，type/sub-type。</li>
+<li>Accept-Charset： 浏览器申明自己接收的字符集<br>Accept-Encoding： 浏览器申明自己接收的编码方法，通常指定压缩方法，是否支持压缩， 支持什么压缩方法（gzip，deflate）<br>Accept-Language：：浏览器申明自己接收的语言<br>语言跟字符集的区别：中文是语言，中文有多种字符集，比如 big5，gb2312，gbk 等等。</li>
+<li>Accept-Ranges：WEB 服务器表明自己是否接受获取其某个实体的一部分（比如文件的一部分）的请求。bytes：表示接受，none：表示不接受。</li>
+<li>Age：当代理服务器用自己缓存的实体去响应请求时，用该头部表明该实体从产生到现在经过多长时间了。</li>
+<li>Authorization：当客户端接收到来自 WEB 服务器的 WWW-Authenticate 响应时，用该头部来回应自己的身份验证信息给 WEB 服务器。</li>
+<li>Cache-Control：请求：no-cache（不要缓存的实体，要求现在从WEB 服务器去取）<pre><code>                               max-age：（只接受 Age 值小于 max-age 值，并且没有过期的对象）
+                               max-stale：（可以接受过去的对象，但是过期时间必须小于 max-stale 值）
+                               min-fresh：（接受其新鲜生命期大于其当前 Age 跟 min-fresh 值之和的缓存对象） 响应：public(可以用 Cached 内容回应任何用户)
+                               private（只能用缓存内容回应先前请求该内容的那个用户）
+                               no-cache（可以缓存，但是只有在跟 WEB 服务器验证了其有效后，才能返回给客户端）
+                               max-age：（本响应包含的对象的过期时间） ALL: no-store（不允许缓存）
+</code></pre>
+</li>
+<li>Connection：请求：close（告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，断开连接，不要等待本次连接的后续请求了）。<pre><code>                             keepalive（告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，保持连接，等待本次连接的后续请求）。
+                    响应：close（连接已经关闭）。
+                              keepalive（连接保持着，在等待本次连接的后续请求）。
+                              Keep-Alive：如果浏览器请求保持连接，则该头部表明希望 WEB 服务器保持连接多长时间
+                              秒）。例如：Keep-Alive：300
+</code></pre>
+</li>
+<li>Content-Encoding：WEB 服务器表明自己使用了什么压缩方法（gzip，deflate）压缩响应中的对象。例如：Content-Encoding：gzip</li>
+<li>Content-Language：WEB 服务器告诉浏览器自己响应的对象的语言。</li>
+<li>Content-Length： WEB 服务器告诉浏览器自己响应的对象的长度。例如：Content-Length: 26012</li>
+<li>Content-Range： WEB 服务器表明该响应包含的部分对象为整个对象的哪个部分。例如：<br> Content-Range: bytes 21010-47021/47022</li>
+<li>Content-Type： WEB 服务器告诉浏览器自己响应的对象的类型。例如：Content-Type：application/xml</li>
+<li>ETag：就是一个对象（比如 URL）的标志值，就一个对象而言，比如一个 html 文件， 如果被修改了，其 Etag 也会别修改，所以 ETag的作用跟 Last-Modified的作用差不多，主要供 WEB 服务器判断一个对象是否改变了。比如前一次请求某个 html 文件时，获得了其<pre><code>        ETag，当这次又请求这个文件时，浏览器就会把先前获得的 ETag 值发送给 WEB 服务器， 然后 WEB 服务器会把这个 ETag 跟该文件的当前 ETag 进行对比，然后就知道这个文件有没有改变了。
+</code></pre>
+</li>
+<li>Expired：WEB 服务器表明该实体将在什么时候过期，对于过期了的对象，只有在跟<pre><code>            WEB服务器验证了其有效性后，才能用来响应客户请求。是HTTP/1.0的头部。例如：Expires：Sat, 23 May 2009 10:02:12 GMT
+</code></pre>
+</li>
+<li>Host：客户端指定自己想访问的 WEB 服务器的域名/IP 地址和端口号。例如：Host：rss.sina.com.cn</li>
+<li>If-Match：如果对象的 ETag 没有改变，其实也就意味著对象没有改变，才执行请求的动作。</li>
+<li>If-None-Match：如果对象的 ETag 改变了，其实也就意味著对象也改变了，才执行请求的动作。</li>
+<li>If-Modified-Since：如果请求的对象在该头部指定的时间之后修改了，才执行请求的动作（ 比如返回对象）， 否则返回代码 304 ， 告诉浏览器 该对象没有修改。例如： If-Modified-Since：Thu, 10 Apr 2008 09:14:42 GMT</li>
+<li>If-Unmodified-Since：如果请求的对象在该头部指定的时间之后没修改过，才执行请求的动作（比如返回对象）。</li>
+<li>If-Range：浏览器告诉 WEB 服务器，如果我请求的对象没有改变，就把我缺少的部分给我，如果对象改变了，就把整个对象给我。浏览器通过发送请求对象的 ETag 或者 自己所知道的最后修改时间给 WEB 服务器，让其判断对象是否改变了。总是跟 Range 头部一起使用。</li>
+<li>Last-Modified：WEB 服务器认为对象的最后修改时间，比如文件的最后修改时间，动态页面的最后产生时间等等。例如：Last-Modified：Tue, 06 May 2008 02:42:43 GMT</li>
+<li>Location：WEB 服务器告诉浏览器，试图访问的对象已经被移到别的位置了，到该头部 指 定 的 位 置 去 取 。 例 如 ： Location ： <a target="_blank" rel="noopener" href="http://i0.sinaimg.cn/dy/deco/2008/0528/sinahome_0803_ws_005_text_0.gif">http://i0.sinaimg.cn/dy/deco/2008/0528/sinahome_0803_ws_005_text_0.gif</a></li>
+<li>Pramga：主要使用 Pramga: no-cache，相当于 Cache-Control： no-cache。例如：Pragma： no-cache</li>
+<li>Proxy-Authenticate： 代理服务器响应浏览器， 要求其提供代理身份验证信息。<br>  Proxy-Authorization：浏览器响应代理服务器的身份验证请求，提供自己的身份信息。</li>
+<li>Range：浏览器（比如 Flashget 多线程下载时）告诉 WEB 服务器自己想取对象的哪部分。例如：Range: bytes=1173546-</li>
+<li>Referer：浏览器向 WEB 服务器表明自己是从哪个 网页/URL 获得/点击 当前请求中的网址/URL。例如：Referer：<a target="_blank" rel="noopener" href="http://www.sina.com/">http://www.sina.com/</a></li>
+<li>Server: WEB 服务器表明自己是什么软件及版本等信息。例如：Server：Apache/2.0.61 (Unix)</li>
+<li>User-Agent: 浏览器表明自己的身份（是哪种浏览器）。例如：User-Agent：Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.14) Gecko/20080404 Firefox/2、0、0、14</li>
+<li>Transfer-Encoding: WEB 服务器表明自己对本响应消息体（不是消息体里面的对象）作了怎样的编码，比如是否分块（chunked）。例如：Transfer-Encoding: chunked</li>
+<li>Vary: WEB 服务器用该头部的内容告诉 Cache 服务器，在什么条件下才能用本响应所返回的对象响应后续的请求。假如源 WEB 服务器在接到第一个请求消息时，其响应消息的头部为：Content- Encoding: gzip; Vary:Content-Encoding 那么 Cache 服务器会分析后续请求消<pre><code>      息的头部，检查其 Accept-Encoding，是否跟先前响应的 Vary 头部值一致，即是否使用相同的内容编码方法，这样就可以防止 Cache 服务器用自己 Cache 里面压缩后的实体响应给不具备解压能力的浏览器。例如：Vary：Accept-Encoding
+</code></pre>
+</li>
+<li>Via： 列出从客户端到 OCS 或者相反方向的响应经过了哪些代理服务器，他们用什么协议（和版本）发送的请求。当客户端请求到达第一个代理服务器时，该服务器会在自己发出的请求里面添 加 Via 头部，并填上自己的相关信息，当下一个代理服务器收到第一个代理服务器的请求时，会在自己发出的请求里面复制前一个代理服务器的请求的 Via 头部，并把自己的相关信息加到后面，以此类推，当 OCS 收到最后一个代理服务器的请求时，检查<pre><code>      Via 头部， 就知道该请求所经过的路由。例如： Via： 1.0 236.D0707195.sina.com.cn:80 (squid/2.6.STABLE13）
+</code></pre>
+</li>
+</ol>
+<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><h3 id="什么是cookie"><a href="#什么是cookie" class="headerlink" title="什么是cookie"></a>什么是cookie</h3><p>Cookie是由服务器端生成，发送给User-Agent(一般是浏览器）,(服务器告诉浏览器设置一下cookie),浏览器自动会将Cookie以key/value保存到某个目录下的文本文件内，下次请求同一网站时也会自动发送该Cookie给服务器，即添加在请求<br>头部（前提是浏览器设置为启用cookie)。Cookie就是一个小型文件（浏览器对cookie的内存大小是有限制的——用来记录一些信息）</p>
+<h3 id="Cookie的特点"><a href="#Cookie的特点" class="headerlink" title="Cookie的特点"></a>Cookie的特点</h3><h4 id="具有保质期"><a href="#具有保质期" class="headerlink" title="具有保质期"></a>具有保质期</h4><p>即有永久的也含有临时的，每个浏览器都含有自己的cookie,每次请求的时候，都会根据domain来发送相应的cookie,可通过设置expires、max-age来设定保存日期，不设置的话默认是临时存储，即关闭浏览器就消失。</p>
+<h4 id="满足同源策略"><a href="#满足同源策略" class="headerlink" title="满足同源策略"></a>满足同源策略</h4><p>虽然网站images.google.com与网站<a target="_blank" rel="noopener" href="http://www.google.com同属于google,但是域名不一样,二者同样不能互相操作彼此的cookie.而且path也必须一样才能相互访问彼此的cookie,需要注意不同浏览器对path访问规定不一样,对于chrome,path必须为当前目录,设置为其他目录无效,只能/">www.google.com同属于Google,但是域名不一样，二者同样不能互相操作彼此的Cookie。而且path也必须一样才能相互访问彼此的cookie,需要注意不同浏览器对path访问规定不一样，对于chrome,path必须为当前目录，设置为其他目录无效，只能</a><br>当前页面只能访问当前目录及其以上的cookie</p>
+<h3 id="Cookie-内存大小"><a href="#Cookie-内存大小" class="headerlink" title="Cookie 内存大小"></a>Cookie 内存大小</h3><p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/sql1.jpg" alt="sql1"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/17/nuctf%5Bjust%20serialize%5D%E5%86%85%E7%BD%AE%E7%B1%BB%E5%92%8Cphp%E5%BC%95%E7%94%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          nuctf[just serialize]内置类和php引用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/17/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">php反序列化逃逸</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="http头部基础" data-title="http头部基础" data-url="http://example.com/2021/07/17/http%E5%A4%B4%E9%83%A8%E5%9F%BA%E7%A1%80/"  data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" data-content="http头部基础">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

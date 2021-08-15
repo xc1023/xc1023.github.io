@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>伪协议 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="php伪协议我们在ctf中可能遇到的包含函数1234567891011include( )require( )include_once( )require_once( )highlight_file( )show_source( )readfile( )file_get_contents( )fopen( )file( )  PHP伪协议其实就是支持的协议和封装协议，有12种： 123456789">
+<meta property="og:type" content="article">
+<meta property="og:title" content="伪协议">
+<meta property="og:url" content="http://example.com/2021/07/17/%E4%BC%AA%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="php伪协议我们在ctf中可能遇到的包含函数1234567891011include( )require( )include_once( )require_once( )highlight_file( )show_source( )readfile( )file_get_contents( )fopen( )file( )  PHP伪协议其实就是支持的协议和封装协议，有12种： 123456789">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-16T07:29:30.339Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 14px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-伪协议" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E4%BC%AA%E5%8D%8F%E8%AE%AE/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      伪协议
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php伪协议"><a href="#php伪协议" class="headerlink" title="php伪协议"></a>php伪协议</h1><h2 id="我们在ctf中可能遇到的包含函数"><a href="#我们在ctf中可能遇到的包含函数" class="headerlink" title="我们在ctf中可能遇到的包含函数"></a>我们在ctf中可能遇到的包含函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">include( )</span><br><span class="line">require( )</span><br><span class="line">include_once( )</span><br><span class="line">require_once( )</span><br><span class="line">highlight_file( )</span><br><span class="line">show_source( )</span><br><span class="line">readfile( )</span><br><span class="line">file_get_contents( )</span><br><span class="line">fopen( )</span><br><span class="line">file( )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>PHP伪协议其实就是支持的协议和封装协议，有12种：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">file:// ——访问本地文件</span><br><span class="line">http://——访问HTTP(s)网址</span><br><span class="line">ftp://——访问FTP(s)URLs</span><br><span class="line">php://——访问各个输入或输出流（I/O streams）</span><br><span class="line">zlib://——压缩流</span><br><span class="line">data://——数据(RFC2397)</span><br><span class="line">glob://——查找匹配的文件路径模式</span><br><span class="line">phar://——PHP归档</span><br><span class="line">ssh2://——Secure Shell2</span><br><span class="line">rar://——RAR</span><br><span class="line">ogg://——音频流</span><br><span class="line">expect://——处理交互的流</span><br></pre></td></tr></table></figure>
+
+<h2 id="file"><a href="#file" class="headerlink" title="file://"></a>file://</h2><p>file://用于读取本地文件，不受allow_url_fopen和allow_url_include影响</p>
+<h3 id="file-文件的绝对路径和文件名"><a href="#file-文件的绝对路径和文件名" class="headerlink" title="file://[文件的绝对路径和文件名]"></a>file://[文件的绝对路径和文件名]</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?file=file://D:/soft/xiaocheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="文件的相对路径和文件名"><a href="#文件的相对路径和文件名" class="headerlink" title="[文件的相对路径和文件名]"></a>[文件的相对路径和文件名]</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?file=./xioacheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="http-网络路径和文件名"><a href="#http-网络路径和文件名" class="headerlink" title="http://网络路径和文件名"></a>http://网络路径和文件名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/xioacheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="php"><a href="#php" class="headerlink" title="php://"></a>php://</h2><h3 id="php-用于访问各个输入-输出流（I-O-streams-，不受allow-url-fopen影响"><a href="#php-用于访问各个输入-输出流（I-O-streams-，不受allow-url-fopen影响" class="headerlink" title="php://用于访问各个输入/输出流（I/O streams)，不受allow_url_fopen影响"></a>php://用于访问各个输入/输出流（I/O streams)，不受allow_url_fopen影响</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">php://filter 用于读取源码</span><br><span class="line">php://input 用于执行php代码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用上面两种格式的php伪协议格式时，需要allow_url_include是on</p>
+<h3 id="常用php-filter读取文件源码的格式（针对php文件需要base64编码）："><a href="#常用php-filter读取文件源码的格式（针对php文件需要base64编码）：" class="headerlink" title="常用php://filter读取文件源码的格式（针对php文件需要base64编码）："></a>常用php://filter读取文件源码的格式（针对php文件需要base64编码）：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php://filter/read=convert.base64-encode/resource=[文件名]（如果文件内容非php语法，则输出源码内容，如果是php语法，则执行php代码）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="常用php-input执行php代码的格式（输入的php代码部分需要post提交）"><a href="#常用php-input执行php代码的格式（输入的php代码部分需要post提交）" class="headerlink" title="常用php://input执行php代码的格式（输入的php代码部分需要post提交）"></a>常用php://input执行php代码的格式（输入的php代码部分需要post提交）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php://input[POST DATA]&lt;?php phpinfo(); ?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="zip-协议-amp-bzaip2-协议-amp-zlib-协议"><a href="#zip-协议-amp-bzaip2-协议-amp-zlib-协议" class="headerlink" title="zip://协议&amp;bzaip2://协议&amp;zlib://协议"></a>zip://协议&amp;bzaip2://协议&amp;zlib://协议</h2><h3 id="zip-协议-amp-bzaip2-协议-amp-zlib-协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀"><a href="#zip-协议-amp-bzaip2-协议-amp-zlib-协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀" class="headerlink" title="zip://协议&amp;bzaip2://协议&amp;zlib://协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀"></a>zip://协议&amp;bzaip2://协议&amp;zlib://协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀</h3><h4 id="zip-压缩文件的绝对路径-23-压缩文件内的子文件名-编码-23）"><a href="#zip-压缩文件的绝对路径-23-压缩文件内的子文件名-编码-23）" class="headerlink" title="zip://[压缩文件的绝对路径]%23[压缩文件内的子文件名](#编码%23）"></a>zip://[压缩文件的绝对路径]%23[压缩文件内的子文件名](#编码%23）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zip://D:\www\xiaocheng.zip%23cheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="compress-bzip2-file-bz2压缩xiaocheng-txt为xiaocheng-bz2并上传（同样支持任意后缀名）"><a href="#compress-bzip2-file-bz2压缩xiaocheng-txt为xiaocheng-bz2并上传（同样支持任意后缀名）" class="headerlink" title="compress.bzip2://file.bz2压缩xiaocheng.txt为xiaocheng.bz2并上传（同样支持任意后缀名）"></a>compress.bzip2://file.bz2压缩xiaocheng.txt为xiaocheng.bz2并上传（同样支持任意后缀名）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">compress.bzip2://D:\www\xioacheng.bz2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="compress-zlib-file-gz压缩xiaocheng-txt为xiaocheng-gz并上传（同样支持任意后缀名）"><a href="#compress-zlib-file-gz压缩xiaocheng-txt为xiaocheng-gz并上传（同样支持任意后缀名）" class="headerlink" title="compress.zlib://file.gz压缩xiaocheng.txt为xiaocheng.gz并上传（同样支持任意后缀名）"></a>compress.zlib://file.gz压缩xiaocheng.txt为xiaocheng.gz并上传（同样支持任意后缀名）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compress.zlib://D:\www\xiaocheng.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="data-协议"><a href="#data-协议" class="headerlink" title="data://协议"></a>data://协议</h2><p>data://协议可以执行php代码，但是需要allow_url_include和allow_url_fopen是on的，也可以写入文本数据</p>
+<p>data://协议常用的格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data://text/plain,&lt;?php phpinfo(); ?&gt;</span><br></pre></td></tr></table></figure>
+<p>其它格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">data://,&lt;文本数据&gt;</span><br><span class="line"></span><br><span class="line">data://text/plain,&lt;文本数据&gt;</span><br><span class="line"></span><br><span class="line">data://text/html,&lt;html代码&gt;</span><br><span class="line"></span><br><span class="line">data://text/css,&lt;CSS代码&gt;</span><br><span class="line"></span><br><span class="line">data://text/javascript,&lt;js代码&gt;</span><br><span class="line"></span><br><span class="line">data://text/gif;base24,&lt;base24编码的gif图片数据&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="phar-协议"><a href="#phar-协议" class="headerlink" title="phar://协议"></a>phar://协议</h2><p>phar://协议可以访问zip格式压缩包内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?file=phar://D:\www\xiaocheng.zip\xioacheng.txt</span><br></pre></td></tr></table></figure>
+
+<p>详细请看：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018991087">https://segmentfault.com/a/1190000018991087</a><br>    <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2fce6931dd06">https://www.jianshu.com/p/2fce6931dd06</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/17/suctf2019easysql(%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          suctf2019easysql(堆叠注入）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/17/%E5%AE%89%E6%B4%B5%E6%9D%AF2019serilaze/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">安洵杯2019serilaze</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="伪协议" data-title="伪协议" data-url="http://example.com/2021/07/17/%E4%BC%AA%E5%8D%8F%E8%AE%AE/"  data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg" data-content="伪协议">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
