@@ -329,7 +329,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="逻辑sql注入"><a href="#逻辑sql注入" class="headerlink" title="逻辑sql注入"></a>逻辑sql注入</h1><p>打开页面源码，看到</p>
+        <h1 id="逻辑sql注入"><a href="#逻辑sql注入" class="headerlink" title="逻辑sql注入"></a>逻辑sql注入</h1><p>关键词判断</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">联合注入：unin被过滤</span><br><span class="line">报错注入：and、or、updatexml被过滤</span><br><span class="line">bool注入和time注入：and、or被过滤</span><br></pre></td></tr></table></figure>
+
+<p>打开页面源码，看到</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--MMZFM422K5HDASKDN5TVU3SKOZRFGQRRMMZFM6KJJBSG6WSYJJWESSCWPJNFQSTVLFLTC3CJIQYGOSTZKJ2VSVZRNRFHOPJ5--&gt;</span><br></pre></td></tr></table></figure>
 <p>由于base32的特征是纯大写+数字，所以进行base32解密，得到有等于号的字母加数字，猜测是base64，进行base64解密，得到</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where username = &#x27;$name&#x27;</span><br></pre></td></tr></table></figure>
