@@ -17,9 +17,9 @@
 <meta property="og:description" content="phpmyadmin任意包含文件漏洞及任意代码执行漏洞打开页面后，用御剑对网址进行扫描，发现http:&#x2F;&#x2F;url&#x2F;phpmyadmin&#x2F;可以进入到phpmyadmin的界面中，此时我们可以想到phpmyadmin4.8.1的任意包含漏洞及任意执行代码漏洞，可以从网址：https:&#x2F;&#x2F;files.phpmyadmin.net&#x2F;phpMyAdmin&#x2F;4.8.1&#x2F;phpMyAdmin-4.8.1-all">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-08-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-31T15:20:53.054Z">
+<meta property="article:modified_time" content="2021-08-31T16:06:59.065Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="框架">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -118,7 +118,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -199,7 +199,7 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li></ul>
 	</div>
 
         
@@ -236,8 +236,8 @@
 <p>而后创建数据库及库中的表及表中的字段内容，内容可以为php代码，之后构造payload进行文件包含，并执行恶意代码</p>
 <h3 id="包含session文件"><a href="#包含session文件" class="headerlink" title="包含session文件"></a>包含session文件</h3><p>session文件路径以实际为主<br>构造sql语句并夹杂恶意代码，如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT &quot;php代码&quot;</span><br></pre></td></tr></table></figure>
-<p>而后可以使用火狐的web开发者工具中的存储选项中的cookie值中phpmyadmin中的value值，这是生成的session文件名，一般存储位置为上面的数据库路径中的mysql/data改为temp/temp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?target=db_datadict.php%253f/../../../按实际情况定/按实际情况定/temp/temp/sess_cookie中的phpmyadmin中的value值</span><br></pre></td></tr></table></figure>
+<p>而后可以使用火狐的web开发者工具中的存储选项中的cookie值中phpmyadmin中的value值，这是生成的session文件名，一般存储位置为上面的数据库路径中的mysql/data改为tmp/tmp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?target=db_datadict.php%253f/../../../按实际情况定/按实际情况定/tmp/tmp/sess_cookie中的phpmyadmin中的value值</span><br></pre></td></tr></table></figure>
 <p>而其中../以实际为主，要一个一个试</p>
 <p>详细请看：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/leixiao-/p/10265150.html#autoid-1-0-0">https://www.cnblogs.com/leixiao-/p/10265150.html#autoid-1-0-0</a></p>
 
