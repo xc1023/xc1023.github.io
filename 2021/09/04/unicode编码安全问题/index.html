@@ -3,23 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>sql导入导出文件 | Hexo</title>
+  <title>unicode编码安全问题 | Hexo</title>
 
   <!-- keywords -->
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="导出文件的常用函数load_file(file_name) 读取文件并返回文件内容作为一个字符串 读取文件条件：（1）必须有权读取且文件必须完全可读（2）欲读取文件必须在服务器上（3）必须指定文件完整路径（4）欲读取文件必须小于max_allowed_packet(最大允许传输包） 判断读取文件是否有权限 and (select count() from mysql.user&gt;&#x2F;0)（1）若">
+  <meta name="description" content="unicode编码安全问题当打开页面时，发现是一个购买的网页，然后输入id为1、2或3，然后输入price，发现显示是错误的商品，然后输入id为4，输入price为1337时，回显只能是一个字符 而后我们再看源码，发现有一个重要的信息 1&lt;meta charset&#x3D;&quot;utf-8&quot;&gt;&lt;!--Ah,really important,seriously. --&amp;gt">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sql导入导出文件">
-<meta property="og:url" content="http://example.com/2021/07/17/sql%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:title" content="unicode编码安全问题">
+<meta property="og:url" content="http://example.com/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="导出文件的常用函数load_file(file_name) 读取文件并返回文件内容作为一个字符串 读取文件条件：（1）必须有权读取且文件必须完全可读（2）欲读取文件必须在服务器上（3）必须指定文件完整路径（4）欲读取文件必须小于max_allowed_packet(最大允许传输包） 判断读取文件是否有权限 and (select count() from mysql.user&gt;&#x2F;0)（1）若">
+<meta property="og:description" content="unicode编码安全问题当打开页面时，发现是一个购买的网页，然后输入id为1、2或3，然后输入price，发现显示是错误的商品，然后输入id为4，输入price为1337时，回显只能是一个字符 而后我们再看源码，发现有一个重要的信息 1&lt;meta charset&#x3D;&quot;utf-8&quot;&gt;&lt;!--Ah,really important,seriously. --&amp;gt">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-07-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-07-16T07:23:34.880Z">
+<meta property="article:published_time" content="2021-09-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-04T08:17:43.077Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="sql注入">
+<meta property="article:tag" content="SSRF">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -172,11 +172,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-sql导入导出文件" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-unicode编码安全问题" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/07/17/sql%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+      <a href="/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/" class="article-date">
+  	<time datetime="2021-09-03T16:00:00.000Z" itemprop="datePublished">2021-09-04</time>
 </a>
     </div>
   
@@ -189,7 +189,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      sql导入导出文件
+      unicode编码安全问题
       
     </h1>
   
@@ -199,7 +199,7 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSRF/" rel="tag">SSRF</a></li></ul>
 	</div>
 
         
@@ -211,36 +211,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="导出文件的常用函数"><a href="#导出文件的常用函数" class="headerlink" title="导出文件的常用函数"></a>导出文件的常用函数</h1><h2 id="load-file-file-name"><a href="#load-file-file-name" class="headerlink" title="load_file(file_name)"></a>load_file(file_name)</h2><ol>
-<li>读取文件并返回文件内容作为一个字符串</li>
-<li>读取文件条件：<br>（1）必须有权读取且文件必须完全可读<br>（2）欲读取文件必须在服务器上<br>（3）必须指定文件完整路径<br>（4）欲读取文件必须小于max_allowed_packet(最大允许传输包）</li>
-<li>判断读取文件是否有权限<br> and (select count(<em>) from mysql.user&gt;/0</em>)<br>（1）若返回正确，则文件有权可读<br>（2）若返回错误，则需要管理员给数据库账户降权<br> 注意：如果NTFS设置得当，是没有权限读取文件的，当遇到administrators才能访问的文件，使用者就别想load_file出来</li>
-<li>load_file()里的文件路径可以是ascii码或十六进制，也可以是路径形式（路径里的/用\代替）</li>
-</ol>
-<h2 id="replace"><a href="#replace" class="headerlink" title="replace()"></a>replace()</h2><ol>
-<li>替换字符</li>
-<li>格式：replace(原字段，”原字段旧内容”,”原字段新内容”)</li>
-</ol>
-<h2 id="hex"><a href="#hex" class="headerlink" title="hex()"></a>hex()</h2><ol>
-<li>将文件导出来，将load_file()读取的二进制文件转换为十六进制</li>
-</ol>
-<h1 id="实际注入中的难点"><a href="#实际注入中的难点" class="headerlink" title="实际注入中的难点"></a>实际注入中的难点</h1><ol>
-<li>绝对物理路径</li>
-<li>构造有效地畸形语句（报错爆出绝对路径）</li>
-<li>在许多php程序中，只要提交一个疑问进去，如果dispaly_errors=on的话，就会爆出web程序绝对的路径</li>
-</ol>
-<h1 id="导入数据库的常用函数"><a href="#导入数据库的常用函数" class="headerlink" title="导入数据库的常用函数"></a>导入数据库的常用函数</h1><h2 id="load-data-infile"><a href="#load-data-infile" class="headerlink" title="load data infile()"></a>load data infile()</h2><ol>
-<li>在一个文本文件中读取行，并装入一个表中，文件名称必须是文字字符串</li>
-<li>如：load data infile’/tml/t0.txt’ignore into t0 character set gbk fields teminated by lines terminated by’\n’<br>character set gbk是字符集设置为gbk,fields teminated by 为每一项数据之间的分隔符，lines terminated by’\n’是行   的结尾符</li>
-<li>判断方式：错误代码是2的时候，文件不存在，错误代码为13的时候为没有权限，可以考虑/tmp等文件夹</li>
-</ol>
-<h1 id="导入到文件函数"><a href="#导入到文件函数" class="headerlink" title="导入到文件函数"></a>导入到文件函数</h1><h2 id="select…-into-outfile’file-name’"><a href="#select…-into-outfile’file-name’" class="headerlink" title="select….into outfile’file_name’"></a>select….into outfile’file_name’</h2><ol>
-<li>可以把选择的行写入一个文件中，文件在服务器主机中创建，但必须拥有file权限，才能用这一语法，但file_name不能是一   个已经存在的文件</li>
-<li>两种利用方式：<br>（1）直接将select内容导入到文件中<br> 如：select version() into outfile”c:\phpnow\htdocs\test.php”,version()可以换成一句话代码<br>（2）修改文件结尾<br> 如： select version() into outfile”c:\phpnow\htdocs\test.php”lines terminated by 0x16进制文件</li>
-<li>secure_file_pri参数会限制load_file(),select…into outfile””,load data infile等函数，有三种情况：<br>（1）secure_file-pri=null时表示限制mysql,不准导入导出文件（mysql中的默认值）<br>（2）secure_file_pri=目录时限制mysql导出导入文件只发生在这个目录下<br>（3）secure_file_pri=没有具体值时，不限制mysql导出导入文件</li>
-<li>如果secure_file_pri=null(默认值），则只要改成secure_file_pri=”/“,然后重启mysql就可以了</li>
-</ol>
+        <h1 id="unicode编码安全问题"><a href="#unicode编码安全问题" class="headerlink" title="unicode编码安全问题"></a>unicode编码安全问题</h1><p>当打开页面时，发现是一个购买的网页，然后输入id为1、2或3，然后输入price，发现显示是错误的商品，然后输入id为4，输入price为1337时，回显只能是一个字符</p>
+<p>而后我们再看源码，发现有一个重要的信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=&quot;utf-8&quot;&gt;&lt;!--Ah,really important,seriously. --&gt;</span><br></pre></td></tr></table></figure>
+<p>因此，我们可以想到使用unicode编码中的等价性来绕过只能输入一个字符的限制，所以我们可以在下面的网站搜索大于1337的字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://www.compart.com/en/unicode/</span><br><span class="line"></span><br><span class="line">搜索框输入：thousands</span><br></pre></td></tr></table></figure>
 
+<p>即可查到大于1000或等于1000的字符，然后取出它的utf-8的形式，将/u改为%即可</p>
+<p>unicode设计有许多安全的问题，详细请看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">浅谈Unicode设计安全：https://xz.aliyun.com/t/5402</span><br><span class="line"></span><br><span class="line">unicode等价性浅谈：https://blog.lyle.ac.cn/2018/10/29/unicode-normalization/</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -249,18 +228,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2021/07/17/php%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">&lt;</strong>
-      <div class="article-nav-title">
-        
-          php数据类型
-        
-      </div>
-    </a>
   
-  
-    <a href="/2021/07/17/sql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">sql布尔盲注</div>
+    <a href="/2021/09/03/%E5%90%84%E5%87%BD%E6%95%B0%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">各函数过滤绕过反序列化漏洞</div>
       <strong class="article-nav-caption">&gt;</strong>
     </a>
   
@@ -270,7 +240,7 @@
 </article>
 
 
-<div class="ds-share share" data-thread-key="sql导入导出文件" data-title="sql导入导出文件" data-url="http://example.com/2021/07/17/sql%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="sql导入导出文件">
+<div class="ds-share share" data-thread-key="unicode编码安全问题" data-title="unicode编码安全问题" data-url="http://example.com/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="unicode编码安全问题">
     <div class="ds-share-inline">
       <ul  class="ds-share-icons-16">
       	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
