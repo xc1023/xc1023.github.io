@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>各类模板注入(由于上传限制，删除了一些东西，属于不完整版) | Hexo</title>
+  <title>各类模板注入 | Hexo</title>
 
   <!-- keywords -->
   
@@ -11,13 +11,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="各类模板注入注入是格式化字符串漏洞的一种体现，其中模板注入是格式化字符串的非常好的体现，SSTI不属于任何一种语言，只要使用模板的地方就会出现SSTI漏洞 格式化字符串漏洞格式化字符串漏洞是像printf(user_input)类似的代码实现的，其中user_input是用户输入的数据，如果Set-UID root权限开启的时，printf语句可以导致以下结果 12345使得程序崩溃任意一块内存读">
 <meta property="og:type" content="article">
-<meta property="og:title" content="各类模板注入(由于上传限制，删除了一些东西，属于不完整版)">
+<meta property="og:title" content="各类模板注入">
 <meta property="og:url" content="http://example.com/2021/09/04/%E5%90%84%E7%B1%BB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="各类模板注入注入是格式化字符串漏洞的一种体现，其中模板注入是格式化字符串的非常好的体现，SSTI不属于任何一种语言，只要使用模板的地方就会出现SSTI漏洞 格式化字符串漏洞格式化字符串漏洞是像printf(user_input)类似的代码实现的，其中user_input是用户输入的数据，如果Set-UID root权限开启的时，printf语句可以导致以下结果 12345使得程序崩溃任意一块内存读">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-09-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-04T19:40:01.146Z">
+<meta property="article:modified_time" content="2021-09-04T19:45:46.054Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="SSTI">
 <meta name="twitter:card" content="summary">
@@ -189,7 +189,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      各类模板注入(由于上传限制，删除了一些东西，属于不完整版)
+      各类模板注入
       
     </h1>
   
@@ -235,11 +235,14 @@
 
 
 <h2 id="模板注入实例"><a href="#模板注入实例" class="headerlink" title="模板注入实例"></a>模板注入实例</h2><p>原理：服务端接收用户的恶意输入后，未经过处理作为web应用模板内容的一部分，模板引擎在进行目标编译渲染时，执行了用户插入的可以破坏模板的语句，导致敏感信息泄露、代码执行或拿到shell</p>
-<h3 id="PHP实例"><a href="#PHP实例" class="headerlink" title="PHP实例"></a>PHP实例</h3><p>请看最下面网址</p>
+<h3 id="PHP实例"><a href="#PHP实例" class="headerlink" title="PHP实例"></a>PHP实例</h3><h4 id="实例2"><a href="#实例2" class="headerlink" title="实例2"></a>实例2</h4><p>其中{name}的大括号不是模板变量外面的括号，只是为了区别变量和字符串常量，所以可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>模板引擎会将此解析，结果为49</p>
+<p>两个实例使用的都是Twig模板引擎</p>
 <h3 id="python实例"><a href="#python实例" class="headerlink" title="python实例"></a>python实例</h3><h4 id="实例1"><a href="#实例1" class="headerlink" title="实例1"></a>实例1</h4><p>源码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@app.errorhandler(404)</span><br><span class="line">def page_not_found(e):</span><br><span class="line">    template = &#x27;&#x27;&#x27;&#123;%% extends &quot;layout.html&quot; %%&#125;</span><br><span class="line">&#123;%% block body %%&#125;</span><br><span class="line">    &lt;div class=&quot;center-content error&quot;&gt;</span><br><span class="line">        &lt;h1&gt;Oops! That page doesn&#x27;t exist.&lt;/h1&gt;</span><br><span class="line">        &lt;h3&gt;%s&lt;/h3&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;%% endblock %%&#125;</span><br><span class="line">&#x27;&#x27;&#x27; % (request.url)</span><br><span class="line">    return render_template_string(template), 404</span><br></pre></td></tr></table></figure>
 <p>其中代码里面使用%(request.url)是格式化字符串，所以我们只要将49放在url后面，然后它会通过render_template_string()渲染，然后进行解析，结果为49</p>
-<h4 id="实例2"><a href="#实例2" class="headerlink" title="实例2"></a>实例2</h4><p>源码</p>
+<h4 id="实例2-1"><a href="#实例2-1" class="headerlink" title="实例2"></a>实例2</h4><p>源码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># coding: utf-8</span><br><span class="line">import sys</span><br><span class="line">from jinja2 importTemplate</span><br><span class="line"></span><br><span class="line">template = Template(&quot;Your input: &#123;&#125;&quot;.format(sys.argv[1] if len(sys.argv) &gt; 1 else &#x27;&lt;empty&gt;&#x27;))</span><br><span class="line">print template.render()</span><br></pre></td></tr></table></figure>
 <p>代码里利用format()语句来进行格式化字符串，所以我们可以输入49，然后再经过render()来对模板变量渲染解析，结果</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You input:49</span><br></pre></td></tr></table></figure>
@@ -265,7 +268,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public String replacePlaceholders(String value, final Properties properties) &#123;</span><br><span class="line">    Assert.notNull(properties, &quot;\&#x27;properties\&#x27; must not be null&quot;);</span><br><span class="line">    return this.replacePlaceholders(value, new PropertyPlaceholderHelper.PlaceholderResolver() &#123;</span><br><span class="line">        public String resolvePlaceholder(String placeholderName) &#123;</span><br><span class="line">            return properties.getProperty(placeholderName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们发现这个函数是个递归，如果表达式的值中有${xxx}这样形式的字符串存在，则以xxx执行，无论有多少个{}，都会被去掉</p>
 <p>首先传入了${errorSummary}，然后取errorSummary为表达式进行执行，发现有${2334-1}，则去掉${}后，将2334-1当作表达式执行</p>
-<h4 id="实例2-1"><a href="#实例2-1" class="headerlink" title="实例2"></a>实例2</h4><p>此漏洞是2015年blackhat大会讲述的Alfresco的一个SSTI漏洞</p>
+<h4 id="实例2-2"><a href="#实例2-2" class="headerlink" title="实例2"></a>实例2</h4><p>此漏洞是2015年blackhat大会讲述的Alfresco的一个SSTI漏洞</p>
 <p>实例代码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;#assign ex=&quot;freemarker.template.utility.Execute&quot;?new()&gt;$&#123;ex(&quot;id&quot;)&#125;</span><br></pre></td></tr></table></figure>
 
@@ -374,7 +377,7 @@
 </article>
 
 
-<div class="ds-share share" data-thread-key="各类模板注入" data-title="各类模板注入(由于上传限制，删除了一些东西，属于不完整版)" data-url="http://example.com/2021/09/04/%E5%90%84%E7%B1%BB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="各类模板注入(由于上传限制，删除了一些东西，属于不完整版)">
+<div class="ds-share share" data-thread-key="各类模板注入" data-title="各类模板注入" data-url="http://example.com/2021/09/04/%E5%90%84%E7%B1%BB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="各类模板注入">
     <div class="ds-share-inline">
       <ul  class="ds-share-icons-16">
       	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
