@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 10px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 11.67px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 10px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -253,7 +253,7 @@
   
     <h1 itemprop="name">
       <a class="article-title" href="/2021/09/04/%E5%90%84%E7%B1%BB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">
-        各类模板注入
+        各类模板注入(由于上传限制，删除了一些东西，属于不完整版)
         
       </a>
     </h1>
@@ -268,6 +268,12 @@
 <h2 id="格式化字符串漏洞"><a href="#格式化字符串漏洞" class="headerlink" title="格式化字符串漏洞"></a>格式化字符串漏洞</h2><p>格式化字符串漏洞是像printf(user_input)类似的代码实现的，其中user_input是用户输入的数据，如果Set-UID root权限开启的时，printf语句可以导致以下结果</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">使得程序崩溃</span><br><span class="line"></span><br><span class="line">任意一块内存读取数据</span><br><span class="line"></span><br><span class="line">修改任意一块内存里的数据</span><br></pre></td></tr></table></figure>
 <p>最后一种结果最危险，可以修改set-UID root程序内部变量的值，从而改变这些程序的行为</p>
+<p>格式化字符串的形式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;The magic number is:%d&quot;,1911) #结果为The magic number is:1911</span><br><span class="line"></span><br><span class="line">print(&quot;My name is %s&quot;%(&#x27;phithon&#x27;,) #结果为My name is phithon</span><br><span class="line"></span><br><span class="line">print(&quot;My name is %(name)%&quot;%&#123;&#x27;name&#x27;:&#x27;phithon&#x27;&#125; #结果为My name is phithon</span><br><span class="line"></span><br><span class="line">print(&quot;My name is &#123;&#125;&quot;.format(&#x27;phithon&#x27;) #结果为My name is phithon</span><br><span class="line"></span><br><span class="line">print(&quot;My name is &#123;name&#125;&quot;.format(name=&#x27;phithon&#x27;) #结果为My name is phithon</span><br></pre></td></tr></table></figure>
+
+<p>其中使用format()方法来格式化字符串的其它表示形式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;username&#125;&quot;.format(username=&#x27;phithon&#x27;) # 普通用法</span><br><span class="line"></span><br><span class="line">&#123;username!r&#125;&quot;.format(username=&#x27;phithon&#x27;) # 等同于repr(username)</span><br><span class="line"></span><br><span class="line">&#123;number:0.2f&#125;&quot;.format(number=0.5678) #等同于&quot;%0.2f&quot;%0.5678，保留两位小数</span><br><span class="line"></span><br><span class="line">int: &#123;0:d&#125;;  hex: &#123;0:#x&#125;;  oct: &#123;0:#o&#125;;  bin: &#123;0:#b&#125;&quot;.format(42) # 转换进制</span><br><span class="line"></span><br><span class="line">&#123;user.username&#125;&quot;.format(user=request.username) #获取对象属性</span><br><span class="line"></span><br><span class="line">&#123;arr[2]&#125;&quot;.format(arr=[0,1,2,3,4]) #获取数组键值</span><br></pre></td></tr></table></figure>
+<p>详细请看：<a target="_blank" rel="noopener" href="https://www.leavesongs.com/penetration/python-string-format-vulnerability.html">https://www.leavesongs.com/penetration/python-string-format-vulnerability.html</a><br>                  <a target="_blank" rel="noopener" href="https://github.com/shiyanlou/seedlab/blob/master/formatstring.md">https://github.com/shiyanlou/seedlab/blob/master/formatstring.md</a></p>
 <h2 id="常见的模板引擎"><a href="#常见的模板引擎" class="headerlink" title="常见的模板引擎"></a>常见的模板引擎</h2><h3 id="php常见"><a href="#php常见" class="headerlink" title="php常见"></a>php常见</h3><h4 id="Smarty"><a href="#Smarty" class="headerlink" title="Smarty"></a>Smarty</h4><p>Smarty算是一种比较老的PHP模板引擎，使用比较广泛</p>
 <h4 id="Twig"><a href="#Twig" class="headerlink" title="Twig"></a>Twig</h4><p>Twig是来自于Symfony的模板引擎，比较容易安装，操作有点像Mustache和liquid</p>
 <h4 id="Blade"><a href="#Blade" class="headerlink" title="Blade"></a>Blade</h4><p>Blade是Laravel提供的一个既简单又强大的模板引擎，与其它的php引擎不同的是它并不限制在视图使用原生的php代码，所有的Blade视图文件都会被编译为原生的php代码并缓存起来，除非它被修改，否则不会再被编译</p>
@@ -282,6 +288,7 @@
 
 
 <h2 id="模板注入实例"><a href="#模板注入实例" class="headerlink" title="模板注入实例"></a>模板注入实例</h2><p>原理：服务端接收用户的恶意输入后，未经过处理作为web应用模板内容的一部分，模板引擎在进行目标编译渲染时，执行了用户插入的可以破坏模板的语句，导致敏感信息泄露、代码执行或拿到shell</p>
+<h3 id="PHP实例"><a href="#PHP实例" class="headerlink" title="PHP实例"></a>PHP实例</h3><p>请看最下面网址</p>
 <h3 id="python实例"><a href="#python实例" class="headerlink" title="python实例"></a>python实例</h3><h4 id="实例1"><a href="#实例1" class="headerlink" title="实例1"></a>实例1</h4><p>源码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@app.errorhandler(404)</span><br><span class="line">def page_not_found(e):</span><br><span class="line">    template = &#x27;&#x27;&#x27;&#123;%% extends &quot;layout.html&quot; %%&#125;</span><br><span class="line">&#123;%% block body %%&#125;</span><br><span class="line">    &lt;div class=&quot;center-content error&quot;&gt;</span><br><span class="line">        &lt;h1&gt;Oops! That page doesn&#x27;t exist.&lt;/h1&gt;</span><br><span class="line">        &lt;h3&gt;%s&lt;/h3&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;%% endblock %%&#125;</span><br><span class="line">&#x27;&#x27;&#x27; % (request.url)</span><br><span class="line">    return render_template_string(template), 404</span><br></pre></td></tr></table></figure>
 <p>其中代码里面使用%(request.url)是格式化字符串，所以我们只要将49放在url后面，然后它会通过render_template_string()渲染，然后进行解析，结果为49</p>
@@ -1076,7 +1083,7 @@ while count==1:
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li></ul>
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li></ul>
 	</div>
 
       
