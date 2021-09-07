@@ -169,6 +169,93 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-sql导入导出文件" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/sql%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/sql%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6/">
+        sql导入导出文件
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="导出文件的常用函数"><a href="#导出文件的常用函数" class="headerlink" title="导出文件的常用函数"></a>导出文件的常用函数</h1><h2 id="load-file-file-name"><a href="#load-file-file-name" class="headerlink" title="load_file(file_name)"></a>load_file(file_name)</h2><ol>
+<li>读取文件并返回文件内容作为一个字符串</li>
+<li>读取文件条件：<br>（1）必须有权读取且文件必须完全可读<br>（2）欲读取文件必须在服务器上<br>（3）必须指定文件完整路径<br>（4）欲读取文件必须小于max_allowed_packet(最大允许传输包）</li>
+<li>判断读取文件是否有权限<br> and (select count(<em>) from mysql.user&gt;/0</em>)<br>（1）若返回正确，则文件有权可读<br>（2）若返回错误，则需要管理员给数据库账户降权<br> 注意：如果NTFS设置得当，是没有权限读取文件的，当遇到administrators才能访问的文件，使用者就别想load_file出来</li>
+<li>load_file()里的文件路径可以是ascii码或十六进制，也可以是路径形式（路径里的/用\代替）</li>
+</ol>
+<h2 id="replace"><a href="#replace" class="headerlink" title="replace()"></a>replace()</h2><ol>
+<li>替换字符</li>
+<li>格式：replace(原字段，”原字段旧内容”,”原字段新内容”)</li>
+</ol>
+<h2 id="hex"><a href="#hex" class="headerlink" title="hex()"></a>hex()</h2><ol>
+<li>将文件导出来，将load_file()读取的二进制文件转换为十六进制</li>
+</ol>
+<h1 id="实际注入中的难点"><a href="#实际注入中的难点" class="headerlink" title="实际注入中的难点"></a>实际注入中的难点</h1><ol>
+<li>绝对物理路径</li>
+<li>构造有效地畸形语句（报错爆出绝对路径）</li>
+<li>在许多php程序中，只要提交一个疑问进去，如果dispaly_errors=on的话，就会爆出web程序绝对的路径</li>
+</ol>
+<h1 id="导入数据库的常用函数"><a href="#导入数据库的常用函数" class="headerlink" title="导入数据库的常用函数"></a>导入数据库的常用函数</h1><h2 id="load-data-infile"><a href="#load-data-infile" class="headerlink" title="load data infile()"></a>load data infile()</h2><ol>
+<li>在一个文本文件中读取行，并装入一个表中，文件名称必须是文字字符串</li>
+<li>如：load data infile’/tml/t0.txt’ignore into t0 character set gbk fields teminated by lines terminated by’\n’<br>character set gbk是字符集设置为gbk,fields teminated by 为每一项数据之间的分隔符，lines terminated by’\n’是行   的结尾符</li>
+<li>判断方式：错误代码是2的时候，文件不存在，错误代码为13的时候为没有权限，可以考虑/tmp等文件夹</li>
+</ol>
+<h1 id="导入到文件函数"><a href="#导入到文件函数" class="headerlink" title="导入到文件函数"></a>导入到文件函数</h1><h2 id="select…-into-outfile’file-name’"><a href="#select…-into-outfile’file-name’" class="headerlink" title="select….into outfile’file_name’"></a>select….into outfile’file_name’</h2><ol>
+<li>可以把选择的行写入一个文件中，文件在服务器主机中创建，但必须拥有file权限，才能用这一语法，但file_name不能是一   个已经存在的文件</li>
+<li>两种利用方式：<br>（1）直接将select内容导入到文件中<br> 如：select version() into outfile”c:\phpnow\htdocs\test.php”,version()可以换成一句话代码<br>（2）修改文件结尾<br> 如： select version() into outfile”c:\phpnow\htdocs\test.php”lines terminated by 0x16进制文件</li>
+<li>secure_file_pri参数会限制load_file(),select…into outfile””,load data infile等函数，有三种情况：<br>（1）secure_file-pri=null时表示限制mysql,不准导入导出文件（mysql中的默认值）<br>（2）secure_file_pri=目录时限制mysql导出导入文件只发生在这个目录下<br>（3）secure_file_pri=没有具体值时，不限制mysql导出导入文件</li>
+<li>如果secure_file_pri=null(默认值），则只要改成secure_file_pri=”/“,然后重启mysql就可以了</li>
+</ol>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-sql布尔盲注" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -808,64 +895,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-对cipher进行翻转" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%E5%AF%B9cipher%E8%BF%9B%E8%A1%8C%E7%BF%BB%E8%BD%AC/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%E5%AF%B9cipher%E8%BF%9B%E8%A1%8C%E7%BF%BB%E8%BD%AC/">
-        对cipher进行翻转
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="CBC中对cipher进行翻转"><a href="#CBC中对cipher进行翻转" class="headerlink" title="CBC中对cipher进行翻转"></a>CBC中对cipher进行翻转</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">import base64</span><br><span class="line">import requests</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">iv_raw=&#x27;NdSNDmRE9krO3GFhtgtpCQ%3D%3D&#x27;</span><br><span class="line">print(&quot;原来的iv_raw：&quot;+iv_raw)</span><br><span class="line"></span><br><span class="line">cipher_raw=&#x27;ZtbLOd8aevMJOTnaG6irEdkhmf3qfqBigqioL1vsDugWkwYJ%2FHUZrkF56V6zza4ZdzNex8EOb1u%2Bc%2FPPakb0VA%3D%3D&#x27;</span><br><span class="line"></span><br><span class="line">print(&quot;原来的cipher：&quot;+cipher_raw)</span><br><span class="line"></span><br><span class="line">cipher=base64.b64decode(urllib.unquote(cipher_raw)) #对cipher_raw用urllib.unqote进行url解码，然后用base64.b54decode()对url解码出来的东西进行base64字节流解码</span><br><span class="line"></span><br><span class="line">#a:2:&#123;s:8:&quot;username&quot;;s:5:&quot;zdmin&quot;;s:8:&quot;password&quot;;s:5:&quot;12345&quot;&#125;</span><br><span class="line">#s:2:&#123;s:8:&quot;userna</span><br><span class="line">#me&quot;;s:5:&quot;zdmin&quot;;</span><br><span class="line">#s:8:&quot;password&quot;;s</span><br><span class="line">#:3:&quot;12345&quot;;&#125;</span><br><span class="line"></span><br><span class="line">xor_cipher=cipher[0:9]+chr(ord(cipher[9])^ord(&#x27;z&#x27;)^ord(&#x27;a&#x27;))+cipher[10:] #取出cipher（即原序列化）中我们要更改的字符，然后用异或的方式进行更改</span><br><span class="line"></span><br><span class="line">print(&quot;翻转后的cipher：&quot;)</span><br><span class="line">print(urllib.quote(base64.b64encode(xor_cipher)))</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
 	</div>
 
       
