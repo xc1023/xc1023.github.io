@@ -498,8 +498,7 @@ __destruct()--------------------在类的对象被销毁之前被调用
 <p>查看实现类和成员</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;.__class__.mro__[1].__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
-
-
+<p>然后我们可以使用内置类进行文件的读取和命令的执行，由于辛苦总结后，竟然发现无法上传，所以请看SSTI语句总结的网址</p>
 <p>同时我们也可以构造</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;config.items()&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p>来读取config文件，它包含了应用程序所有配置，详细可看各类模板漏洞那篇</p>

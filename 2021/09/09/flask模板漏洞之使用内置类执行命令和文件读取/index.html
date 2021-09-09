@@ -17,7 +17,7 @@
 <meta property="og:description" content="flask模板漏洞对于flask模板漏洞，我们可以通过看源码中是否有格式化字符串来判断是否有flask模板漏洞 然后如果存在flask模板漏洞，我们可以利用flask模板中内置类来进行文件的读取和命令的执行，而模板中的变量 12345控制结构：&amp;#123;% %&amp;#125;变量取值：&amp;#123;&amp;#123; &amp;#125;&amp;#125;注释：&amp;#123;# #&amp;#125;  python中重要的魔术方">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-09-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-09T17:34:07.103Z">
+<meta property="article:modified_time" content="2021-09-09T17:38:56.728Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="模板">
 <meta name="twitter:card" content="summary">
@@ -230,8 +230,7 @@
 <p>查看实现类和成员</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;.__class__.mro__[1].__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
-
-
+<p>然后我们可以使用内置类进行文件的读取和命令的执行，由于辛苦总结后，竟然发现无法上传，所以请看SSTI语句总结的网址</p>
 <p>同时我们也可以构造</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;config.items()&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p>来读取config文件，它包含了应用程序所有配置，详细可看各类模板漏洞那篇</p>
