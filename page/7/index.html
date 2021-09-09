@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 11.67px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 11.67px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,100 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-suctf2019easysql(堆叠注入）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/suctf2019easysql(%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5%EF%BC%89/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/suctf2019easysql(%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5%EF%BC%89/">
+        suctf2019easysql(堆叠注入）
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="suctf2019easysql"><a href="#suctf2019easysql" class="headerlink" title="suctf2019easysql"></a>suctf2019easysql</h1><h2 id="待定系数法"><a href="#待定系数法" class="headerlink" title="待定系数法"></a>待定系数法</h2><p>可以猜测sql语句：select (a,$query,b) from table(c)</p>
+<p>如果直接查询1，返回1，<br>则如果a是存在的，则不可能单独输出这一列的数据出来，否则不可能只输出一个值出来<br>同理，如果b是存在的，则不可能单独输出这一列的数据出来。<br>如果a和b都是不存在的，则查询数字时必然会返回数字本身<br>所以可以通过判断返回的数据判断a,b是否是存在的<br>c是否存在，主要看数据表的数量和会调用哪个数据表中的数据信息</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>首先我们可以尝试各种符号的闭合，当尝试到双引号时，发现会出现nonono的字样，可以判断对双引号有过滤，然后<br>尝试其它的符号时发现没有返回，可判断当输入出现错误时，页面不会返回错误的信息<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql1.jpg" alt="suctf2019easysql1"></p>
+<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql2.jpg" alt="suctf2019easysql2"></p>
+<p>然后我们可以尝试1#或1–+，发现返回正确的数据，而#和–+是注释符的作用，因此可以判断是整型注入</p>
+<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql3.jpg" alt="suctf2019easysql3"></p>
+<p>然后我们构造联合注入，发现union被过滤掉了，不过使用堆叠注入的时候，发现没有问题<br>因此我们可以构造payload:<br>显示数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1;show databases;</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql4.jpg" alt="suctf2019easysql4"><br>显示数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1;show tables;</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql5.jpg" alt="suctf2019easysql5"><br>当时使用payload：1;show columns from flag;  时，发现flag被过滤掉</p>
+<p>此时我们可以知道只有一张数据表，它是flag，因此我们可以猜测sql的语句中一定有：select和from flag<br>因此我们可以使用待定系数法，构造几个未知的变量，然后根据sql语句的格式猜测本题sql语句的格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select (a,$query,b) from flag(c)</span><br></pre></td></tr></table></figure>
+
+<p>如果查询1，发现返回1<br>如果a存在的话，不可能单独输出一列的数据信息，否则不会输出一个值的信息出来<br>同理，如果b存在的话，也不可能单独输出一列的数据信息出来<br>又因为如果a,b都不存在的话，则查询什么数字，则返回什么数字<br>因此可判断要么a,b都存在，要么a和b存在其一</p>
+<p>因此可以构造出payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1；  此时sql语句为：select (a) 1; (b) from flag</span><br></pre></td></tr></table></figure>
+<p>返回1的值，而没有报错或无返回</p>
+<p>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2;  此时sql语句为：select (a) 2; (b) from flag</span><br></pre></td></tr></table></figure>
+<p>返回2的数值，而没有报错或无返回</p>
+<p>由此可进一步判断，(a)很可能是不存在的</p>
+<p>由于无论输入的是什么数值进去，返回的都是1，由经验可判断能是$query || 1，在sql语句中<br>||符号是逻辑或的意思，如果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NULL || NULL =NULL</span><br><span class="line"></span><br><span class="line">NULL || 非零数值=1，否则返回NULL</span><br><span class="line"></span><br><span class="line">两个操作数都为非NULL值，则只要有一个操作数为非零值，则返回1，否则返回0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>因为输入的数字都是返回1的，且由以上||的定义可知，$query || （不是NULL值，也不是非零数字），由此可猜测<br>sql语句格式为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select $query || （不是NULL值，也不是非零数字）from flag</span><br></pre></td></tr></table></figure>
+
+<p>因此有两种方法：<br>第一种<br>只需输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*,1  此时sql语句：select  * , 1 ||（不是NULL值，也不是非零数字）from flag</span><br></pre></td></tr></table></figure>
+<p>可输出两列的信息数据</p>
+<p>第二种<br>sql_mode是一组mysql支持的基本语法及检验规则<br>查看命令为：select @@sql-mode;</p>
+<p>可以构造payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1;set sql_mode=PIPES_S_CONCAT;select 1;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>sql_mode的具体知识看；<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/piperck/p/9835695.html">https://www.cnblogs.com/piperck/p/9835695.html</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-伪协议" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -841,101 +935,6 @@ echo serialize($a);
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-[BJDCTF2020]Easy MD5(MD5漏洞)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%5BBJDCTF2020%5DEasy%20MD5(MD5%E6%BC%8F%E6%B4%9E)/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%5BBJDCTF2020%5DEasy%20MD5(MD5%E6%BC%8F%E6%B4%9E)/">
-        Easy MD5
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="MD5漏洞"><a href="#MD5漏洞" class="headerlink" title="MD5漏洞"></a>MD5漏洞</h1><h2 id="数字与字符串"><a href="#数字与字符串" class="headerlink" title="数字与字符串"></a>数字与字符串</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var_dump(0==&#x27;a&#x27;)</span><br><span class="line"></span><br><span class="line">var_dump(&#x27;0&#x27;==&#x27;a&#x27;)</span><br></pre></td></tr></table></figure>
-
-<p>前者为ture，后者为false。在php中如果在将字符串转换为整型时，前面是数字，后面是字母的字符串，则取字符串的第一个字母前面的数字。</p>
-<p>实例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if(123==&quot;123abc&quot;)&#123;</span><br><span class="line">echo intval(&quot;123abc&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="MD5漏洞-1"><a href="#MD5漏洞-1" class="headerlink" title="MD5漏洞"></a>MD5漏洞</h2><h3 id="如果两个MD5的值进行比较时，这两个值的开头都为0E的话，则它们的hash值会被默认为0，那么在php的比较中两个不同数值的MD5的值进行比较时，就会相同"><a href="#如果两个MD5的值进行比较时，这两个值的开头都为0E的话，则它们的hash值会被默认为0，那么在php的比较中两个不同数值的MD5的值进行比较时，就会相同" class="headerlink" title="如果两个MD5的值进行比较时，这两个值的开头都为0E的话，则它们的hash值会被默认为0，那么在php的比较中两个不同数值的MD5的值进行比较时，就会相同"></a>如果两个MD5的值进行比较时，这两个值的开头都为0E的话，则它们的hash值会被默认为0，那么在php的比较中两个不同数值的MD5的值进行比较时，就会相同</h3><p>而hash值开头为0E的数有</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">以下值在md5加密后以0E开头：</span><br><span class="line"></span><br><span class="line">    QNKCDZO</span><br><span class="line">    240610708</span><br><span class="line">    s878926199a</span><br><span class="line">    s155964671a</span><br><span class="line">    s214587387a</span><br><span class="line">    s214587387a</span><br><span class="line"></span><br><span class="line">以下值在sha1加密后以0E开头：</span><br><span class="line"></span><br><span class="line">    sha1(‘aaroZmOk’)</span><br><span class="line">    sha1(‘aaK1STfY’)</span><br><span class="line">    sha1(‘aaO8zKZF’)</span><br><span class="line">    sha1(‘aa3OFF9m’)</span><br></pre></td></tr></table></figure>
-
-<h3 id="php特性"><a href="#php特性" class="headerlink" title="php特性"></a>php特性</h3><p>在php中===表示不仅比较两个数值，而且还要比较两个数值的类型<br>而在MD5加密中，有一个特性：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">md5([1,2,3])==md5([2,3,4])==null</span><br></pre></td></tr></table></figure>
-<p>因此如果传入的数值时数组，并且对传入的数组还要进行md5加密，则会实现绕过</p>
-<p>实例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if(md5($_GET[&#x27;a&#x27;])===md5($_GET[&#x27;b&#x27;]))&#123;</span><br><span class="line"></span><br><span class="line">echo &quot;haha&quot;;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">echo &quot;ha&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<h3 id="MD5的碰撞"><a href="#MD5的碰撞" class="headerlink" title="MD5的碰撞"></a>MD5的碰撞</h3><p>虽然两个数值不同，但是经过md5加密后，数值相同，如果是post提交的话，数值要进行urlencode</p>
-<p>下面有两个不同数值的md5相同</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Param1=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Param2=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p>通过sql注入的尝试，发现不行，就用dirmap扫描，好像也扫不不出什么东西，就用bp抓包,发现了sql语句</p>
-<p>![BJDCTF2020 Easy MD51](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/[BJDCTF2020]Easy">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/[BJDCTF2020]Easy</a> MD51.jpg)</p>
-<p>通过sql语句中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">password=&quot;&#x27;&quot;.md5($pass,TRUE).&quot;&#x27;&quot;</span><br></pre></td></tr></table></figure>
-
-<p>可构造exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">echo (&quot;password=&quot;.&quot;&#x27;&quot;.md5($_GET[&#x27;a&#x27;],TRUE).&quot;&#x27;&quot;);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>可以知道，当输入为ffifdyop，可以得到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">password=&#x27;&#x27;or&#x27;6É]™é!r,ùíb&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>构造了一句万能语句，从而实现绕过</p>
-<p>而后打开页面源码，可以看见一段代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line">$a = $GET[&#x27;a&#x27;];</span><br><span class="line">$b = $_GET[&#x27;b&#x27;];</span><br><span class="line"></span><br><span class="line">if($a != $b &amp;&amp; md5($a) == md5($b))&#123;</span><br><span class="line">    // wow, glzjin wants a girl friend.</span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure>
-
-<p>可知get提交a[]=1&amp;b[]=2，即可实现绕过</p>
-<p>而后又得到了一段代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">include &quot;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;param1&#x27;]!==$_POST[&#x27;param2&#x27;]&amp;&amp;md5($_POST[&#x27;param1&#x27;])===md5($_POST[&#x27;param2&#x27;]))&#123;</span><br><span class="line">    echo $flag;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
-<p>由代码中，我们可以再次使用数组绕过，构造param1[]=1&amp;param2[]=2，且用post提交</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       
