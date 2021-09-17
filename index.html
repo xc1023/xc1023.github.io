@@ -234,6 +234,10 @@
 <li><p>操作系统环境下劫持系统函数注入代码</p>
 <p> 由于被劫持系统函数需要有我们重新实现一次，所以函数原型必须一致，所以为了方便，一般选择常用无参的系统函数，如：getuid()函数就比较合适，可以使用man 2 getuid来看函数原型</p>
 </li>
+<li><p>找寻内部启动新进程的 PHP 函数</p>
+</li>
+<li><p>PHP 环境下劫持系统函数注入代码</p>
+</li>
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对于第二步，我们可以编写原型的getuid()函数</span><br></pre></td></tr></table></figure>
 <p>#include &lt;unistd.h&gt;<br>#include &lt;sys/types.h&gt;</p>
