@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 13.33px;">java</a> <a href="/tags/misc/" style="font-size: 11.67px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 13.33px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,81 +168,6 @@
 	</div>
 </nav>
       <div class="body-wrap">
-  
-    <article id="post-[极客大挑战 2019]Secret File(Include文件包含）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DSecret%20File(Include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DSecret%20File(Include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%89/">
-        Secret File(Include文件包含）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="include文件包含"><a href="#include文件包含" class="headerlink" title="include文件包含"></a>include文件包含</h1><h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>通过看页面源码可以看见一个Archive_room.php的文件，通过构造payload:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Archive_room.php</span><br></pre></td></tr></table></figure>
-<p>看见一个页面，然后点击select，发现查阅结束</p>
-<p>![极客大挑战 2019Secret File1](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/极客大挑战</a> 2019Secret File1.jpg)</p>
-<p>然后再来一次，这次边点击边抓包，而后再将包发送一次发现一个php文件</p>
-<p>![极客大挑战 2019Secret File2](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/极客大挑战</a> 2019Secret File2.jpg)</p>
-<p>构造payload:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secr3t.php</span><br></pre></td></tr></table></figure>
-<p>看见一串源码，并分析源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    error_reporting(0);</span><br><span class="line">    $file=$_GET[&#x27;file&#x27;];</span><br><span class="line">    if(strstr($file,&quot;../&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;</span><br><span class="line">        echo &quot;Oh no!&quot;;</span><br><span class="line">        exit();</span><br><span class="line">    &#125;</span><br><span class="line">    include($file); </span><br><span class="line">//flag放在了flag.php里</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>通过分析，发现它过滤了../和tp和intput和data，且还看见了变量file和include文件包含，因此可以使用<br>include文件包含和伪协议，构造payload:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/read=convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
-<p>![极客大挑战 2019Secret File3](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/极客大挑战</a> 2019Secret File3.jpg)</p>
-<p>就可以得到一串base64编码的数值，然后进行解码即可得到flag</p>
-<p>strstr(str1,str2)函数：判断str2是否是str1的子串，如果是则返回从str1字符串中str2第一次出现的位置开始到str1字符串的结尾，不是则返回null</p>
-<p>stristr(str1,str2,ture/flase)函数：搜索str2在str1第一次出现的位置，如果是false，则返回第一次出现位置之后的字符串，ture则返回第一次出现位置之前的字符串，默认为flase，搜索不到则返回null</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
   
     <article id="post-Exec(命令执行)" class="article article-type-post" itemscope itemprop="blogPost">
   
