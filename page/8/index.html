@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,87 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-php反序列化逃逸" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/">
+        php反序列化逃逸
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="反序列化逃逸"><a href="#反序列化逃逸" class="headerlink" title="反序列化逃逸"></a>反序列化逃逸</h1><h2 id="关键词增多的逃逸"><a href="#关键词增多的逃逸" class="headerlink" title="关键词增多的逃逸"></a>关键词增多的逃逸</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"> </span><br><span class="line">$_SESSION[&#x27;user&#x27;]=&#x27;get&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;]=&#x27;fun&#x27;;</span><br><span class="line"></span><br><span class="line">echo serialize($_SESSION);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>此时输出的会是$_SESSION序列化的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:2:&#123;s:4:&quot;user&quot;;s:3:&quot;get&quot;;s:8:&quot;function&quot;;s:3:&quot;fun&quot;;&#125; </span><br></pre></td></tr></table></figure>
+
+<p>此时我想更改function的值，我们可以增加关键词数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_SESSION[&#x27;user&#x27;]=get&quot;;s:8:&quot;function&quot;;s:4:&quot;funs&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>此时输出的是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:2:&#123;s:4:&quot;user&quot;;s:32:&quot;get&quot;;s:8:&quot;function&quot;;s:4:&quot;funs&quot;;&#125;&quot;;s:8:&quot;function&quot;;s:3:&quot;fun&quot;;&#125; </span><br></pre></td></tr></table></figure>
+
+<p>在反序列化中以分号作为分隔，以}作为结束，因此逃逸出了”;s:8:”function”;s:3:”fun”;}，这逃逸出来的部分会被忽视掉<br>此时function值就发生了改变</p>
+<h2 id="关键词减少的逃逸"><a href="#关键词减少的逃逸" class="headerlink" title="关键词减少的逃逸"></a>关键词减少的逃逸</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">function fittle($img)&#123;</span><br><span class="line">$array=array(&#x27;user&#x27;,&#x27;flag&#x27;);</span><br><span class="line">$iop=&#x27;/&#x27;.implode(&quot;|&quot;,$array).&#x27;/i&#x27;;</span><br><span class="line">return preg_repalce($iop,&quot;&quot;,$img);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">$_SESSION[&#x27;user&#x27;]=&#x27;get&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;]=fun;</span><br><span class="line"></span><br><span class="line">echo fittle(serialize($_SESSION));</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>如果?f=fun，此时输出的是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:2:&#123;s:4:&quot;&quot;;s:3:&quot;get&quot;;s:8:&quot;function&quot;;s:3:&quot;fun&quot;;&#125; </span><br></pre></td></tr></table></figure>
+
+<p>此时我们看到user被过滤掉了，而字符串数仍然为4，不变，所以容易造成逃逸</p>
+<p>我们可以构造多个user来逃逸</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_SESSION[&#x27;user&#x27;]=useruseruser&quot;;s:3:&quot;get&quot;;s:8:&quot;function&quot;;s:3:&quot;funs&quot;;s:3:&quot;abb&quot;;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>此时得出的结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:2:&#123;s:4:&quot;user&quot;;s:61:&quot;useruseruser&quot;;s:3:&quot;get&quot;;s:8:&quot;function&quot;;s:3:&quot;funs&quot;;s:3:&quot;abb&quot;;&#125;&quot;;s:8:&quot;function&quot;;s:3:&quot;fun&quot;;&#125; </span><br></pre></td></tr></table></figure>
+
+<p>可见”;s:8:”function”;s:3:”fun”;} 这部分逃逸出来，被忽视掉，function值发生改变</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-php基础" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -913,100 +994,6 @@ echo strcmp($_GET['ret'],'wer');
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-suctf2019easysql(堆叠注入）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/suctf2019easysql(%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/suctf2019easysql(%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5%EF%BC%89/">
-        suctf2019easysql(堆叠注入）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="suctf2019easysql"><a href="#suctf2019easysql" class="headerlink" title="suctf2019easysql"></a>suctf2019easysql</h1><h2 id="待定系数法"><a href="#待定系数法" class="headerlink" title="待定系数法"></a>待定系数法</h2><p>可以猜测sql语句：select (a,$query,b) from table(c)</p>
-<p>如果直接查询1，返回1，<br>则如果a是存在的，则不可能单独输出这一列的数据出来，否则不可能只输出一个值出来<br>同理，如果b是存在的，则不可能单独输出这一列的数据出来。<br>如果a和b都是不存在的，则查询数字时必然会返回数字本身<br>所以可以通过判断返回的数据判断a,b是否是存在的<br>c是否存在，主要看数据表的数量和会调用哪个数据表中的数据信息</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>首先我们可以尝试各种符号的闭合，当尝试到双引号时，发现会出现nonono的字样，可以判断对双引号有过滤，然后<br>尝试其它的符号时发现没有返回，可判断当输入出现错误时，页面不会返回错误的信息<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql1.jpg" alt="suctf2019easysql1"></p>
-<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql2.jpg" alt="suctf2019easysql2"></p>
-<p>然后我们可以尝试1#或1–+，发现返回正确的数据，而#和–+是注释符的作用，因此可以判断是整型注入</p>
-<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql3.jpg" alt="suctf2019easysql3"></p>
-<p>然后我们构造联合注入，发现union被过滤掉了，不过使用堆叠注入的时候，发现没有问题<br>因此我们可以构造payload:<br>显示数据库</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1;show databases;</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql4.jpg" alt="suctf2019easysql4"><br>显示数据表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1;show tables;</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql5.jpg" alt="suctf2019easysql5"><br>当时使用payload：1;show columns from flag;  时，发现flag被过滤掉</p>
-<p>此时我们可以知道只有一张数据表，它是flag，因此我们可以猜测sql的语句中一定有：select和from flag<br>因此我们可以使用待定系数法，构造几个未知的变量，然后根据sql语句的格式猜测本题sql语句的格式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select (a,$query,b) from flag(c)</span><br></pre></td></tr></table></figure>
-
-<p>如果查询1，发现返回1<br>如果a存在的话，不可能单独输出一列的数据信息，否则不会输出一个值的信息出来<br>同理，如果b存在的话，也不可能单独输出一列的数据信息出来<br>又因为如果a,b都不存在的话，则查询什么数字，则返回什么数字<br>因此可判断要么a,b都存在，要么a和b存在其一</p>
-<p>因此可以构造出payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1；  此时sql语句为：select (a) 1; (b) from flag</span><br></pre></td></tr></table></figure>
-<p>返回1的值，而没有报错或无返回</p>
-<p>构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2;  此时sql语句为：select (a) 2; (b) from flag</span><br></pre></td></tr></table></figure>
-<p>返回2的数值，而没有报错或无返回</p>
-<p>由此可进一步判断，(a)很可能是不存在的</p>
-<p>由于无论输入的是什么数值进去，返回的都是1，由经验可判断能是$query || 1，在sql语句中<br>||符号是逻辑或的意思，如果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NULL || NULL =NULL</span><br><span class="line"></span><br><span class="line">NULL || 非零数值=1，否则返回NULL</span><br><span class="line"></span><br><span class="line">两个操作数都为非NULL值，则只要有一个操作数为非零值，则返回1，否则返回0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>因为输入的数字都是返回1的，且由以上||的定义可知，$query || （不是NULL值，也不是非零数字），由此可猜测<br>sql语句格式为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select $query || （不是NULL值，也不是非零数字）from flag</span><br></pre></td></tr></table></figure>
-
-<p>因此有两种方法：<br>第一种<br>只需输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*,1  此时sql语句：select  * , 1 ||（不是NULL值，也不是非零数字）from flag</span><br></pre></td></tr></table></figure>
-<p>可输出两列的信息数据</p>
-<p>第二种<br>sql_mode是一组mysql支持的基本语法及检验规则<br>查看命令为：select @@sql-mode;</p>
-<p>可以构造payload:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1;set sql_mode=PIPES_S_CONCAT;select 1;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>sql_mode的具体知识看；<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/piperck/p/9835695.html">https://www.cnblogs.com/piperck/p/9835695.html</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
 	</div>
 
       

