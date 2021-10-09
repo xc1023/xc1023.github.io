@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 11.25px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 11.25px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.25px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,203 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-http头部基础" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/http%E5%A4%B4%E9%83%A8%E5%9F%BA%E7%A1%80/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/http%E5%A4%B4%E9%83%A8%E5%9F%BA%E7%A1%80/">
+        http头部基础
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="http头部"><a href="#http头部" class="headerlink" title="http头部"></a>http头部</h1><h2 id="抓包后每一项解析"><a href="#抓包后每一项解析" class="headerlink" title="抓包后每一项解析"></a>抓包后每一项解析</h2><ol>
+<li>Accept：告诉 WEB 服务器自己接受什么介质类型，*/* 表示任何类型，type/* 表示该类型下的所有子类型，type/sub-type。</li>
+<li>Accept-Charset： 浏览器申明自己接收的字符集<br>Accept-Encoding： 浏览器申明自己接收的编码方法，通常指定压缩方法，是否支持压缩， 支持什么压缩方法（gzip，deflate）<br>Accept-Language：：浏览器申明自己接收的语言<br>语言跟字符集的区别：中文是语言，中文有多种字符集，比如 big5，gb2312，gbk 等等。</li>
+<li>Accept-Ranges：WEB 服务器表明自己是否接受获取其某个实体的一部分（比如文件的一部分）的请求。bytes：表示接受，none：表示不接受。</li>
+<li>Age：当代理服务器用自己缓存的实体去响应请求时，用该头部表明该实体从产生到现在经过多长时间了。</li>
+<li>Authorization：当客户端接收到来自 WEB 服务器的 WWW-Authenticate 响应时，用该头部来回应自己的身份验证信息给 WEB 服务器。</li>
+<li>Cache-Control：请求：no-cache（不要缓存的实体，要求现在从WEB 服务器去取）<pre><code>                               max-age：（只接受 Age 值小于 max-age 值，并且没有过期的对象）
+                               max-stale：（可以接受过去的对象，但是过期时间必须小于 max-stale 值）
+                               min-fresh：（接受其新鲜生命期大于其当前 Age 跟 min-fresh 值之和的缓存对象） 响应：public(可以用 Cached 内容回应任何用户)
+                               private（只能用缓存内容回应先前请求该内容的那个用户）
+                               no-cache（可以缓存，但是只有在跟 WEB 服务器验证了其有效后，才能返回给客户端）
+                               max-age：（本响应包含的对象的过期时间） ALL: no-store（不允许缓存）
+</code></pre>
+</li>
+<li>Connection：请求：close（告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，断开连接，不要等待本次连接的后续请求了）。<pre><code>                             keepalive（告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，保持连接，等待本次连接的后续请求）。
+                    响应：close（连接已经关闭）。
+                              keepalive（连接保持着，在等待本次连接的后续请求）。
+                              Keep-Alive：如果浏览器请求保持连接，则该头部表明希望 WEB 服务器保持连接多长时间
+                              秒）。例如：Keep-Alive：300
+</code></pre>
+</li>
+<li>Content-Encoding：WEB 服务器表明自己使用了什么压缩方法（gzip，deflate）压缩响应中的对象。例如：Content-Encoding：gzip</li>
+<li>Content-Language：WEB 服务器告诉浏览器自己响应的对象的语言。</li>
+<li>Content-Length： WEB 服务器告诉浏览器自己响应的对象的长度。例如：Content-Length: 26012</li>
+<li>Content-Range： WEB 服务器表明该响应包含的部分对象为整个对象的哪个部分。例如：<br> Content-Range: bytes 21010-47021/47022</li>
+<li>Content-Type： WEB 服务器告诉浏览器自己响应的对象的类型。例如：Content-Type：application/xml</li>
+<li>ETag：就是一个对象（比如 URL）的标志值，就一个对象而言，比如一个 html 文件， 如果被修改了，其 Etag 也会别修改，所以 ETag的作用跟 Last-Modified的作用差不多，主要供 WEB 服务器判断一个对象是否改变了。比如前一次请求某个 html 文件时，获得了其<pre><code>        ETag，当这次又请求这个文件时，浏览器就会把先前获得的 ETag 值发送给 WEB 服务器， 然后 WEB 服务器会把这个 ETag 跟该文件的当前 ETag 进行对比，然后就知道这个文件有没有改变了。
+</code></pre>
+</li>
+<li>Expired：WEB 服务器表明该实体将在什么时候过期，对于过期了的对象，只有在跟<pre><code>            WEB服务器验证了其有效性后，才能用来响应客户请求。是HTTP/1.0的头部。例如：Expires：Sat, 23 May 2009 10:02:12 GMT
+</code></pre>
+</li>
+<li>Host：客户端指定自己想访问的 WEB 服务器的域名/IP 地址和端口号。例如：Host：rss.sina.com.cn</li>
+<li>If-Match：如果对象的 ETag 没有改变，其实也就意味著对象没有改变，才执行请求的动作。</li>
+<li>If-None-Match：如果对象的 ETag 改变了，其实也就意味著对象也改变了，才执行请求的动作。</li>
+<li>If-Modified-Since：如果请求的对象在该头部指定的时间之后修改了，才执行请求的动作（ 比如返回对象）， 否则返回代码 304 ， 告诉浏览器 该对象没有修改。例如： If-Modified-Since：Thu, 10 Apr 2008 09:14:42 GMT</li>
+<li>If-Unmodified-Since：如果请求的对象在该头部指定的时间之后没修改过，才执行请求的动作（比如返回对象）。</li>
+<li>If-Range：浏览器告诉 WEB 服务器，如果我请求的对象没有改变，就把我缺少的部分给我，如果对象改变了，就把整个对象给我。浏览器通过发送请求对象的 ETag 或者 自己所知道的最后修改时间给 WEB 服务器，让其判断对象是否改变了。总是跟 Range 头部一起使用。</li>
+<li>Last-Modified：WEB 服务器认为对象的最后修改时间，比如文件的最后修改时间，动态页面的最后产生时间等等。例如：Last-Modified：Tue, 06 May 2008 02:42:43 GMT</li>
+<li>Location：WEB 服务器告诉浏览器，试图访问的对象已经被移到别的位置了，到该头部 指 定 的 位 置 去 取 。 例 如 ： Location ： <a target="_blank" rel="noopener" href="http://i0.sinaimg.cn/dy/deco/2008/0528/sinahome_0803_ws_005_text_0.gif">http://i0.sinaimg.cn/dy/deco/2008/0528/sinahome_0803_ws_005_text_0.gif</a></li>
+<li>Pramga：主要使用 Pramga: no-cache，相当于 Cache-Control： no-cache。例如：Pragma： no-cache</li>
+<li>Proxy-Authenticate： 代理服务器响应浏览器， 要求其提供代理身份验证信息。<br>  Proxy-Authorization：浏览器响应代理服务器的身份验证请求，提供自己的身份信息。</li>
+<li>Range：浏览器（比如 Flashget 多线程下载时）告诉 WEB 服务器自己想取对象的哪部分。例如：Range: bytes=1173546-</li>
+<li>Referer：浏览器向 WEB 服务器表明自己是从哪个 网页/URL 获得/点击 当前请求中的网址/URL。例如：Referer：<a target="_blank" rel="noopener" href="http://www.sina.com/">http://www.sina.com/</a></li>
+<li>Server: WEB 服务器表明自己是什么软件及版本等信息。例如：Server：Apache/2.0.61 (Unix)</li>
+<li>User-Agent: 浏览器表明自己的身份（是哪种浏览器）。例如：User-Agent：Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.14) Gecko/20080404 Firefox/2、0、0、14</li>
+<li>Transfer-Encoding: WEB 服务器表明自己对本响应消息体（不是消息体里面的对象）作了怎样的编码，比如是否分块（chunked）。例如：Transfer-Encoding: chunked</li>
+<li>Vary: WEB 服务器用该头部的内容告诉 Cache 服务器，在什么条件下才能用本响应所返回的对象响应后续的请求。假如源 WEB 服务器在接到第一个请求消息时，其响应消息的头部为：Content- Encoding: gzip; Vary:Content-Encoding 那么 Cache 服务器会分析后续请求消<pre><code>      息的头部，检查其 Accept-Encoding，是否跟先前响应的 Vary 头部值一致，即是否使用相同的内容编码方法，这样就可以防止 Cache 服务器用自己 Cache 里面压缩后的实体响应给不具备解压能力的浏览器。例如：Vary：Accept-Encoding
+</code></pre>
+</li>
+<li>Via： 列出从客户端到 OCS 或者相反方向的响应经过了哪些代理服务器，他们用什么协议（和版本）发送的请求。当客户端请求到达第一个代理服务器时，该服务器会在自己发出的请求里面添 加 Via 头部，并填上自己的相关信息，当下一个代理服务器收到第一个代理服务器的请求时，会在自己发出的请求里面复制前一个代理服务器的请求的 Via 头部，并把自己的相关信息加到后面，以此类推，当 OCS 收到最后一个代理服务器的请求时，检查<pre><code>      Via 头部， 就知道该请求所经过的路由。例如： Via： 1.0 236.D0707195.sina.com.cn:80 (squid/2.6.STABLE13）
+</code></pre>
+</li>
+</ol>
+<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><h3 id="什么是cookie"><a href="#什么是cookie" class="headerlink" title="什么是cookie"></a>什么是cookie</h3><p>Cookie是由服务器端生成，发送给User-Agent(一般是浏览器）,(服务器告诉浏览器设置一下cookie),浏览器自动会将Cookie以key/value保存到某个目录下的文本文件内，下次请求同一网站时也会自动发送该Cookie给服务器，即添加在请求<br>头部（前提是浏览器设置为启用cookie)。Cookie就是一个小型文件（浏览器对cookie的内存大小是有限制的——用来记录一些信息）</p>
+<h3 id="Cookie的特点"><a href="#Cookie的特点" class="headerlink" title="Cookie的特点"></a>Cookie的特点</h3><h4 id="具有保质期"><a href="#具有保质期" class="headerlink" title="具有保质期"></a>具有保质期</h4><p>即有永久的也含有临时的，每个浏览器都含有自己的cookie,每次请求的时候，都会根据domain来发送相应的cookie,可通过设置expires、max-age来设定保存日期，不设置的话默认是临时存储，即关闭浏览器就消失。</p>
+<h4 id="满足同源策略"><a href="#满足同源策略" class="headerlink" title="满足同源策略"></a>满足同源策略</h4><p>虽然网站images.google.com与网站<a target="_blank" rel="noopener" href="http://www.google.com同属于google,但是域名不一样,二者同样不能互相操作彼此的cookie.而且path也必须一样才能相互访问彼此的cookie,需要注意不同浏览器对path访问规定不一样,对于chrome,path必须为当前目录,设置为其他目录无效,只能/">www.google.com同属于Google,但是域名不一样，二者同样不能互相操作彼此的Cookie。而且path也必须一样才能相互访问彼此的cookie,需要注意不同浏览器对path访问规定不一样，对于chrome,path必须为当前目录，设置为其他目录无效，只能</a><br>当前页面只能访问当前目录及其以上的cookie</p>
+<h3 id="Cookie-内存大小"><a href="#Cookie-内存大小" class="headerlink" title="Cookie 内存大小"></a>Cookie 内存大小</h3><p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/sql1.jpg" alt="sql1"></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/http/" rel="tag">http</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-php反序列化逃逸" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/">
+        php反序列化逃逸
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="反序列化逃逸"><a href="#反序列化逃逸" class="headerlink" title="反序列化逃逸"></a>反序列化逃逸</h1><h2 id="关键词增多的逃逸"><a href="#关键词增多的逃逸" class="headerlink" title="关键词增多的逃逸"></a>关键词增多的逃逸</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"> </span><br><span class="line">$_SESSION[&#x27;user&#x27;]=&#x27;get&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;]=&#x27;fun&#x27;;</span><br><span class="line"></span><br><span class="line">echo serialize($_SESSION);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>此时输出的会是$_SESSION序列化的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:2:&#123;s:4:&quot;user&quot;;s:3:&quot;get&quot;;s:8:&quot;function&quot;;s:3:&quot;fun&quot;;&#125; </span><br></pre></td></tr></table></figure>
+
+<p>此时我想更改function的值，我们可以增加关键词数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_SESSION[&#x27;user&#x27;]=get&quot;;s:8:&quot;function&quot;;s:4:&quot;funs&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>此时输出的是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:2:&#123;s:4:&quot;user&quot;;s:32:&quot;get&quot;;s:8:&quot;function&quot;;s:4:&quot;funs&quot;;&#125;&quot;;s:8:&quot;function&quot;;s:3:&quot;fun&quot;;&#125; </span><br></pre></td></tr></table></figure>
+
+<p>在反序列化中以分号作为分隔，以}作为结束，因此逃逸出了”;s:8:”function”;s:3:”fun”;}，这逃逸出来的部分会被忽视掉<br>此时function值就发生了改变</p>
+<h2 id="关键词减少的逃逸"><a href="#关键词减少的逃逸" class="headerlink" title="关键词减少的逃逸"></a>关键词减少的逃逸</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">function fittle($img)&#123;</span><br><span class="line">$array=array(&#x27;user&#x27;,&#x27;flag&#x27;);</span><br><span class="line">$iop=&#x27;/&#x27;.implode(&quot;|&quot;,$array).&#x27;/i&#x27;;</span><br><span class="line">return preg_repalce($iop,&quot;&quot;,$img);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">$_SESSION[&#x27;user&#x27;]=&#x27;get&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;]=fun;</span><br><span class="line"></span><br><span class="line">echo fittle(serialize($_SESSION));</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>如果?f=fun，此时输出的是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:2:&#123;s:4:&quot;&quot;;s:3:&quot;get&quot;;s:8:&quot;function&quot;;s:3:&quot;fun&quot;;&#125; </span><br></pre></td></tr></table></figure>
+
+<p>此时我们看到user被过滤掉了，而字符串数仍然为4，不变，所以容易造成逃逸</p>
+<p>我们可以构造多个user来逃逸</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_SESSION[&#x27;user&#x27;]=useruseruser&quot;;s:3:&quot;get&quot;;s:8:&quot;function&quot;;s:3:&quot;funs&quot;;s:3:&quot;abb&quot;;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>此时得出的结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:2:&#123;s:4:&quot;user&quot;;s:61:&quot;useruseruser&quot;;s:3:&quot;get&quot;;s:8:&quot;function&quot;;s:3:&quot;funs&quot;;s:3:&quot;abb&quot;;&#125;&quot;;s:8:&quot;function&quot;;s:3:&quot;fun&quot;;&#125; </span><br></pre></td></tr></table></figure>
+
+<p>可见”;s:8:”function”;s:3:”fun”;} 这部分逃逸出来，被忽视掉，function值发生改变</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-php基础" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -843,161 +1040,6 @@ echo strcmp($_GET['ret'],'wer');
 <li>利用sleep()函数进行注入<br>?Id=1’and if(ascii(substr(database(),1,1))=115,1,sleep(5)) –+</li>
 <li>利用benchmark()进行延时注入<br>?Id=1’union select (if(subsring(current,1,1)=char(115),benchmark(50000,encode(‘MSG’,’by 5      seconds       ’)),null)),2,3 from(select database() as current) as tb1 –+</li>
 </ol>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-web_AliceWebsite（网鼎杯青龙组第二题）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/web_AliceWebsite%EF%BC%88%E7%BD%91%E9%BC%8E%E6%9D%AF%E9%9D%92%E9%BE%99%E7%BB%84%E7%AC%AC%E4%BA%8C%E9%A2%98%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/web_AliceWebsite%EF%BC%88%E7%BD%91%E9%BC%8E%E6%9D%AF%E9%9D%92%E9%BE%99%E7%BB%84%E7%AC%AC%E4%BA%8C%E9%A2%98%EF%BC%89/">
-        web_AliceWebsite
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="web-AliceWebsite"><a href="#web-AliceWebsite" class="headerlink" title="web_AliceWebsite"></a>web_AliceWebsite</h1><p>通过对源代码的审计，我们可以看到服务器对输入没有任何的处理和过滤</p>
-<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/WDB1.jpg" alt="WDB1"></p>
-<p>所以直接输入?action=/flag即可</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-suctf2019easysql(堆叠注入）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/suctf2019easysql(%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/suctf2019easysql(%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5%EF%BC%89/">
-        suctf2019easysql(堆叠注入）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="suctf2019easysql"><a href="#suctf2019easysql" class="headerlink" title="suctf2019easysql"></a>suctf2019easysql</h1><h2 id="待定系数法"><a href="#待定系数法" class="headerlink" title="待定系数法"></a>待定系数法</h2><p>可以猜测sql语句：select (a,$query,b) from table(c)</p>
-<p>如果直接查询1，返回1，<br>则如果a是存在的，则不可能单独输出这一列的数据出来，否则不可能只输出一个值出来<br>同理，如果b是存在的，则不可能单独输出这一列的数据出来。<br>如果a和b都是不存在的，则查询数字时必然会返回数字本身<br>所以可以通过判断返回的数据判断a,b是否是存在的<br>c是否存在，主要看数据表的数量和会调用哪个数据表中的数据信息</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>首先我们可以尝试各种符号的闭合，当尝试到双引号时，发现会出现nonono的字样，可以判断对双引号有过滤，然后<br>尝试其它的符号时发现没有返回，可判断当输入出现错误时，页面不会返回错误的信息<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql1.jpg" alt="suctf2019easysql1"></p>
-<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql2.jpg" alt="suctf2019easysql2"></p>
-<p>然后我们可以尝试1#或1–+，发现返回正确的数据，而#和–+是注释符的作用，因此可以判断是整型注入</p>
-<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql3.jpg" alt="suctf2019easysql3"></p>
-<p>然后我们构造联合注入，发现union被过滤掉了，不过使用堆叠注入的时候，发现没有问题<br>因此我们可以构造payload:<br>显示数据库</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1;show databases;</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql4.jpg" alt="suctf2019easysql4"><br>显示数据表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1;show tables;</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/suctf2019easysql5.jpg" alt="suctf2019easysql5"><br>当时使用payload：1;show columns from flag;  时，发现flag被过滤掉</p>
-<p>此时我们可以知道只有一张数据表，它是flag，因此我们可以猜测sql的语句中一定有：select和from flag<br>因此我们可以使用待定系数法，构造几个未知的变量，然后根据sql语句的格式猜测本题sql语句的格式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select (a,$query,b) from flag(c)</span><br></pre></td></tr></table></figure>
-
-<p>如果查询1，发现返回1<br>如果a存在的话，不可能单独输出一列的数据信息，否则不会输出一个值的信息出来<br>同理，如果b存在的话，也不可能单独输出一列的数据信息出来<br>又因为如果a,b都不存在的话，则查询什么数字，则返回什么数字<br>因此可判断要么a,b都存在，要么a和b存在其一</p>
-<p>因此可以构造出payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1；  此时sql语句为：select (a) 1; (b) from flag</span><br></pre></td></tr></table></figure>
-<p>返回1的值，而没有报错或无返回</p>
-<p>构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2;  此时sql语句为：select (a) 2; (b) from flag</span><br></pre></td></tr></table></figure>
-<p>返回2的数值，而没有报错或无返回</p>
-<p>由此可进一步判断，(a)很可能是不存在的</p>
-<p>由于无论输入的是什么数值进去，返回的都是1，由经验可判断能是$query || 1，在sql语句中<br>||符号是逻辑或的意思，如果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NULL || NULL =NULL</span><br><span class="line"></span><br><span class="line">NULL || 非零数值=1，否则返回NULL</span><br><span class="line"></span><br><span class="line">两个操作数都为非NULL值，则只要有一个操作数为非零值，则返回1，否则返回0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>因为输入的数字都是返回1的，且由以上||的定义可知，$query || （不是NULL值，也不是非零数字），由此可猜测<br>sql语句格式为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select $query || （不是NULL值，也不是非零数字）from flag</span><br></pre></td></tr></table></figure>
-
-<p>因此有两种方法：<br>第一种<br>只需输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*,1  此时sql语句：select  * , 1 ||（不是NULL值，也不是非零数字）from flag</span><br></pre></td></tr></table></figure>
-<p>可输出两列的信息数据</p>
-<p>第二种<br>sql_mode是一组mysql支持的基本语法及检验规则<br>查看命令为：select @@sql-mode;</p>
-<p>可以构造payload:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1;set sql_mode=PIPES_S_CONCAT;select 1;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>sql_mode的具体知识看；<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/piperck/p/9835695.html">https://www.cnblogs.com/piperck/p/9835695.html</a></p>
 
       
     </div>

