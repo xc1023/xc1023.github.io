@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hexo</title>
+  
+  
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2021-10-18T05:01:18.505Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>John Doe</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CRLF漏洞以及SOAP漏洞利用之CRLF与SSRF</title>
+    <link href="http://example.com/2021/10/18/CRLF%E6%BC%8F%E6%B4%9E%E4%BB%A5%E5%8F%8ASoapClinet%E8%A7%A6%E5%8F%91%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+    <id>http://example.com/2021/10/18/CRLF%E6%BC%8F%E6%B4%9E%E4%BB%A5%E5%8F%8ASoapClinet%E8%A7%A6%E5%8F%91%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</id>
+    <published>2021-10-17T16:00:00.000Z</published>
+    <updated>2021-10-18T05:01:18.505Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="ssrf" scheme="http://example.com/tags/ssrf/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ruby ERB模板注入以及jwt伪造</title>
+    <link href="http://example.com/2021/10/17/ruby%20ERB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Ajwt%E4%BC%AA%E9%80%A0/"/>
+    <id>http://example.com/2021/10/17/ruby%20ERB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Ajwt%E4%BC%AA%E9%80%A0/</id>
+    <published>2021-10-16T16:00:00.000Z</published>
+    <updated>2021-10-17T14:05:35.550Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pop链4之反序列化逃逸</title>
+    <link href="http://example.com/2021/10/14/pop%E9%93%BE4%E4%B9%8B%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/"/>
+    <id>http://example.com/2021/10/14/pop%E9%93%BE4%E4%B9%8B%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/</id>
+    <published>2021-10-13T16:00:00.000Z</published>
+    <updated>2021-10-14T15:25:17.784Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>table语句</title>
+    <link href="http://example.com/2021/10/14/table%E8%AF%AD%E5%8F%A5/"/>
+    <id>http://example.com/2021/10/14/table%E8%AF%AD%E5%8F%A5/</id>
+    <published>2021-10-13T16:00:00.000Z</published>
+    <updated>2021-10-14T15:14:21.250Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="sql注入" scheme="http://example.com/tags/sql%E6%B3%A8%E5%85%A5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>伪随机数以及文件泄露</title>
+    <link href="http://example.com/2021/10/14/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2/"/>
+    <id>http://example.com/2021/10/14/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2/</id>
+    <published>2021-10-13T16:00:00.000Z</published>
+    <updated>2021-10-14T08:17:38.675Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>逗号的绕过以及二次注入</title>
+    <link href="http://example.com/2021/10/13/%E9%80%97%E5%8F%B7%E7%9A%84%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/"/>
+    <id>http://example.com/2021/10/13/%E9%80%97%E5%8F%B7%E7%9A%84%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/</id>
+    <published>2021-10-12T16:00:00.000Z</published>
+    <updated>2021-10-12T18:46:39.701Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="sql注入" scheme="http://example.com/tags/sql%E6%B3%A8%E5%85%A5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pop链3之__get()和__call()魔术方法的使用</title>
+    <link href="http://example.com/2021/10/13/pop%E9%93%BE3%E4%B9%8B__get()%E5%92%8C__call()%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://example.com/2021/10/13/pop%E9%93%BE3%E4%B9%8B__get()%E5%92%8C__call()%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8/</id>
+    <published>2021-10-12T16:00:00.000Z</published>
+    <updated>2021-10-13T13:06:36.080Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vm2沙箱逃逸</title>
+    <link href="http://example.com/2021/10/12/vm2%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/"/>
+    <id>http://example.com/2021/10/12/vm2%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/</id>
+    <published>2021-10-11T16:00:00.000Z</published>
+    <updated>2021-10-12T17:55:56.382Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="nodejs" scheme="http://example.com/tags/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>反引号的使用以及php短标签</title>
+    <link href="http://example.com/2021/10/11/%E5%8F%8D%E5%BC%95%E5%8F%B7%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8Aphp%E7%9F%AD%E6%A0%87%E7%AD%BE/"/>
+    <id>http://example.com/2021/10/11/%E5%8F%8D%E5%BC%95%E5%8F%B7%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8Aphp%E7%9F%AD%E6%A0%87%E7%AD%BE/</id>
+    <published>2021-10-10T16:00:00.000Z</published>
+    <updated>2021-10-11T08:20:28.704Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>$_SERVER[&#39;QUERY_STRING&#39;]绕过以及 y1ngzuishuai 的正则匹配绕过以及$_REQUEST 的字母匹配绕过以及sha1()函数绕过以及create_function () 代码注入</title>
+    <link href="http://example.com/2021/10/10/$_SERVER[&#39;QUERY_STRING&#39;]%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%20y1ngzuishuai%20%E7%9A%84%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A$_REQUEST%20%E7%9A%84%E5%AD%97%E6%AF%8D%E5%8C%B9%E9%85%8D%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Asha1()%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Acreate_function%20()%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/"/>
+    <id>http://example.com/2021/10/10/$_SERVER[&#39;QUERY_STRING&#39;]%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%20y1ngzuishuai%20%E7%9A%84%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A$_REQUEST%20%E7%9A%84%E5%AD%97%E6%AF%8D%E5%8C%B9%E9%85%8D%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Asha1()%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Acreate_function%20()%20%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5/</id>
+    <published>2021-10-09T16:00:00.000Z</published>
+    <updated>2021-10-11T04:33:16.750Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ThinkPHP6任意文件操作漏洞分析</title>
+    <link href="http://example.com/2021/10/09/ThinkPHP6%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/"/>
+    <id>http://example.com/2021/10/09/ThinkPHP6%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/</id>
+    <published>2021-10-08T16:00:00.000Z</published>
+    <updated>2021-10-09T13:24:30.454Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>preg_replace绕过以及sha1()函数的绕过以及json编码</title>
+    <link href="http://example.com/2021/10/08/preg_replace%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Asha1()%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Ajson%E7%BC%96%E7%A0%81/"/>
+    <id>http://example.com/2021/10/08/preg_replace%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Asha1()%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Ajson%E7%BC%96%E7%A0%81/</id>
+    <published>2021-10-07T16:00:00.000Z</published>
+    <updated>2021-10-08T13:54:22.538Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>重定向以及session文件包含以及php临时文件包含</title>
+    <link href="http://example.com/2021/10/07/%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8Asession%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BB%A5%E5%8F%8Aphp%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/"/>
+    <id>http://example.com/2021/10/07/%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8Asession%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BB%A5%E5%8F%8Aphp%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</id>
+    <published>2021-10-06T16:00:00.000Z</published>
+    <updated>2021-10-07T13:27:24.434Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>flask模板注入以及arjun和tplmap工具运用以及rc4加密</title>
+    <link href="http://example.com/2021/10/06/flask%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Aarjun%E5%92%8Ctalmap%E5%B7%A5%E5%85%B7%E8%BF%90%E7%94%A8%E4%BB%A5%E5%8F%8Arc4%E5%8A%A0%E5%AF%86/"/>
+    <id>http://example.com/2021/10/06/flask%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Aarjun%E5%92%8Ctalmap%E5%B7%A5%E5%85%B7%E8%BF%90%E7%94%A8%E4%BB%A5%E5%8F%8Arc4%E5%8A%A0%E5%AF%86/</id>
+    <published>2021-10-05T16:00:00.000Z</published>
+    <updated>2021-10-06T17:29:34.275Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="模板" scheme="http://example.com/tags/%E6%A8%A1%E6%9D%BF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>json字符绕过以及伪协议</title>
+    <link href="http://example.com/2021/10/05/json%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BC%AA%E5%8D%8F%E8%AE%AE/"/>
+    <id>http://example.com/2021/10/05/json%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BC%AA%E5%8D%8F%E8%AE%AE/</id>
+    <published>2021-10-04T16:00:00.000Z</published>
+    <updated>2021-10-05T02:42:19.827Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>异或绕过以及文件上传之.htaccess文件以及open_basedir绕过</title>
+    <link href="http://example.com/2021/10/04/%E5%BC%82%E6%88%96%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B9%8B.htaccess%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8Aopen_basedir%E7%BB%95%E8%BF%87/"/>
+    <id>http://example.com/2021/10/04/%E5%BC%82%E6%88%96%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B9%8B.htaccess%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8Aopen_basedir%E7%BB%95%E8%BF%87/</id>
+    <published>2021-10-03T16:00:00.000Z</published>
+    <updated>2021-10-04T15:52:09.849Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>简单的cookie伪造</title>
+    <link href="http://example.com/2021/10/03/%E7%AE%80%E5%8D%95%E7%9A%84cookie%E4%BC%AA%E9%80%A0/"/>
+    <id>http://example.com/2021/10/03/%E7%AE%80%E5%8D%95%E7%9A%84cookie%E4%BC%AA%E9%80%A0/</id>
+    <published>2021-10-02T16:00:00.000Z</published>
+    <updated>2021-10-03T17:31:20.901Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="ssrf" scheme="http://example.com/tags/ssrf/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>正则过滤</title>
+    <link href="http://example.com/2021/10/02/%E6%AD%A3%E5%88%99%E7%BB%95%E8%BF%87/"/>
+    <id>http://example.com/2021/10/02/%E6%AD%A3%E5%88%99%E7%BB%95%E8%BF%87/</id>
+    <published>2021-10-01T16:00:00.000Z</published>
+    <updated>2021-10-02T19:13:06.010Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="sql注入" scheme="http://example.com/tags/sql%E6%B3%A8%E5%85%A5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>json_schema原型链污染(nodejs)</title>
+    <link href="http://example.com/2021/10/01/json_schema%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/"/>
+    <id>http://example.com/2021/10/01/json_schema%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/</id>
+    <published>2021-09-30T16:00:00.000Z</published>
+    <updated>2021-10-01T16:51:33.960Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="java" scheme="http://example.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>反弹shell以及proc虚拟文件系统</title>
+    <link href="http://example.com/2021/09/30/%E5%8F%8D%E5%BC%B9shell%E4%BB%A5%E5%8F%8Aproc%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://example.com/2021/09/30/%E5%8F%8D%E5%BC%B9shell%E4%BB%A5%E5%8F%8Aproc%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</id>
+    <published>2021-09-29T16:00:00.000Z</published>
+    <updated>2021-09-30T17:44:58.924Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="ssrf" scheme="http://example.com/tags/ssrf/"/>
+    
+  </entry>
+  
+</feed>
