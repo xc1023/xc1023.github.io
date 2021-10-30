@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-10-26T12:21:22.747Z</updated>
+  <updated>2021-10-27T12:06:43.719Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>finfo_open函数和finfo_file函数绕过以及getimagesize函数绕过</title>
+    <link href="http://example.com/2021/10/27/finfo_open%E5%87%BD%E6%95%B0%E5%92%8Cfinfo_file%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Agetimagesize%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/"/>
+    <id>http://example.com/2021/10/27/finfo_open%E5%87%BD%E6%95%B0%E5%92%8Cfinfo_file%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Agetimagesize%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/</id>
+    <published>2021-10-26T16:00:00.000Z</published>
+    <updated>2021-10-27T12:06:43.719Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;finfo-open函数和finfo-file函数绕过以及getimagesize函数绕过&quot;&gt;&lt;a href=&quot;#finfo-open函数和finfo-file函数绕过以及getimagesize函数绕过&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+  </entry>
   
   <entry>
     <title>强网拟态部分web</title>
@@ -449,30 +472,6 @@
     
     
     <category term="模板" scheme="http://example.com/tags/%E6%A8%A1%E6%9D%BF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>json字符绕过以及伪协议</title>
-    <link href="http://example.com/2021/10/05/json%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BC%AA%E5%8D%8F%E8%AE%AE/"/>
-    <id>http://example.com/2021/10/05/json%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BC%AA%E5%8D%8F%E8%AE%AE/</id>
-    <published>2021-10-04T16:00:00.000Z</published>
-    <updated>2021-10-05T02:42:19.827Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;json字符绕过以及伪协议&quot;&gt;&lt;a href=&quot;#json字符绕过以及伪协议&quot; class=&quot;headerlink&quot; title=&quot;json字符绕过以及伪协议&quot;&gt;&lt;/a&gt;json字符绕过以及伪协议&lt;/h1&gt;&lt;p&gt;打开页面，发现是源码&lt;/p&gt;
-&lt;figure</summary>
-        
-      
-    
-    
-    
-    
-    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
     
   </entry>
   

