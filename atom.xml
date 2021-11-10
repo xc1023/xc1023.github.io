@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-03T13:41:17.794Z</updated>
+  <updated>2021-11-10T14:12:50.377Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Thinkphpv6.0.2反序列化链</title>
+    <link href="http://example.com/2021/11/10/Thinkphpv6.0.2%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/"/>
+    <id>http://example.com/2021/11/10/Thinkphpv6.0.2%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/</id>
+    <published>2021-11-09T16:00:00.000Z</published>
+    <updated>2021-11-10T14:12:50.377Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Thinkphpv6-0-2反序列化链&quot;&gt;&lt;a href=&quot;#Thinkphpv6-0-2反序列化链&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
   
   <entry>
     <title>thinkPHP5.0.24反序列化链</title>
@@ -449,29 +472,6 @@
     
     
     <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>preg_replace绕过以及sha1()函数的绕过以及json编码</title>
-    <link href="http://example.com/2021/10/08/preg_replace%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Asha1()%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Ajson%E7%BC%96%E7%A0%81/"/>
-    <id>http://example.com/2021/10/08/preg_replace%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Asha1()%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E4%BB%A5%E5%8F%8Ajson%E7%BC%96%E7%A0%81/</id>
-    <published>2021-10-07T16:00:00.000Z</published>
-    <updated>2021-10-08T13:54:22.538Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;preg-replace绕过以及sha1-函数绕过以及json编码&quot;&gt;&lt;a href=&quot;#preg-replace绕过以及sha1-函数绕过以及json编码&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
     
   </entry>
   

