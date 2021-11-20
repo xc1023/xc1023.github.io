@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-11-10T14:12:50.377Z</updated>
+  <updated>2021-11-20T14:27:46.304Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>yii框架2.0.37</title>
+    <link href="http://example.com/2021/11/19/yii%E6%A1%86%E6%9E%B62.0.37/"/>
+    <id>http://example.com/2021/11/19/yii%E6%A1%86%E6%9E%B62.0.37/</id>
+    <published>2021-11-18T16:00:00.000Z</published>
+    <updated>2021-11-20T14:27:46.304Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;yii框架2-0-37&quot;&gt;&lt;a href=&quot;#yii框架2-0-37&quot; class=&quot;headerlink&quot; title=&quot;yii框架2.0.37&quot;&gt;&lt;/a&gt;yii框架2.0.37&lt;/h1&gt;&lt;h2 id=&quot;环境&quot;&gt;&lt;a href=&quot;#环境&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
   
   <entry>
     <title>Thinkphpv6.0.2反序列化链</title>
@@ -449,29 +472,6 @@
     
     
     <category term="代码审计" scheme="http://example.com/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ThinkPHP6任意文件操作漏洞分析</title>
-    <link href="http://example.com/2021/10/09/ThinkPHP6%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/"/>
-    <id>http://example.com/2021/10/09/ThinkPHP6%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E6%BC%8F%E6%B4%9E/</id>
-    <published>2021-10-08T16:00:00.000Z</published>
-    <updated>2021-10-09T13:24:30.454Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;ThinkPHP6任意文件操作漏洞分析&quot;&gt;&lt;a href=&quot;#ThinkPHP6任意文件操作漏洞分析&quot; class=&quot;headerlink&quot; title=&quot;ThinkPHP6任意文件操作漏洞分析&quot;&gt;&lt;/a&gt;ThinkPHP6任意文件操作漏洞分析&lt;/h1&gt;&lt;h2</summary>
-        
-      
-    
-    
-    
-    
-    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
     
   </entry>
   
